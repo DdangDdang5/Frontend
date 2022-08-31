@@ -33,6 +33,11 @@ const AuctionList = () => {
         <Auction />
         <Auction />
         <Auction />
+        <Auction />
+        <Auction />
+        <Auction />
+        <Auction />
+        <Auction />
       </AuctionListContents>
 
       <FooterContainer>
@@ -50,6 +55,7 @@ const AuctionListLayout = styled.div`
 `;
 
 const AuctionListNav = styled.div`
+  margin-top: 70px;
   display: flex;
   div {
     margin: 10px 20px;
@@ -58,9 +64,15 @@ const AuctionListNav = styled.div`
 const AuctionListContents = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 0px 20px;
-  height: 50%;
-  border: 1px solid red;
+  margin: 0px 10px;
+  height: 650px;
+  border: 3px solid red;
+  overflow: auto;
+  /* 스크롤바 안보이게 */
+  ::-webkit-scrollbar {
+    display: none;
+    width: 0;
+  }
 `;
 const FooterContainer = styled.div``;
 export default AuctionList;

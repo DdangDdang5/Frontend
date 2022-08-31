@@ -2,11 +2,13 @@ import React from "react";
 import styled from "styled-components";
 
 const Auction = () => {
+  const Img = (
+    <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
+  );
+
   return (
     <AuctionItemWrap>
-      <ItemPicture>
-        <div>사진</div>
-      </ItemPicture>
+      <ItemPicture>{Img}</ItemPicture>
 
       <ItemContentWrap>
         <ItemContentHeader>
@@ -30,7 +32,7 @@ const AuctionItemWrap = styled.div`
   display: flex;
   flex-direction: row;
   height: 74px;
-  margin: 10px 0px;
+  margin: 5px 0;
   border: 1px solid black;
 `;
 const ItemPicture = styled.div`
@@ -38,7 +40,7 @@ const ItemPicture = styled.div`
   justify-content: center;
   align-items: center;
   height: 100%;
-  div {
+  img {
     height: 100%;
     width: 74px;
     display: flex;
