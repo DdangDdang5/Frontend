@@ -70,3 +70,19 @@ self.addEventListener('message', (event) => {
 });
 
 // Any other custom service worker logic can go here.
+self.addEventListener('sync', (event) => {
+  console.log('I heard a sync event. Sending Posts to server', event);
+  event.waitUntil(sendPostsToServer()
+    .then(res => {
+      console.log(res);
+    })
+    .catch(e=>{console.log(e)}));
+});
+
+
+async function sendPostsToServer() {
+  // POST to server
+	// await registration.periodicSync.register('get-daily-news', {
+	// 	minInterval: 24 * 60 * 60 * 1000
+	// });
+}
