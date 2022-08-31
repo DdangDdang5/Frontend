@@ -1,13 +1,25 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const Footer = () => {
   return (
     <FooterWrap>
-      <div>홈</div>
-      <div>검색</div>
-      <div>채팅</div>
-      <div>마이페이지</div>
+      <FooterContainer>
+        <Img>사진</Img>
+        <Text>홈</Text>
+      </FooterContainer>
+      <FooterContainer>
+        <Img>사진</Img>
+        <Text>검색</Text>
+      </FooterContainer>
+      <FooterContainer>
+        <Img>사진</Img>
+        <Text>채팅</Text>
+      </FooterContainer>
+      <FooterContainer>
+        <Img>사진</Img>
+        <Text>마이페이지</Text>
+      </FooterContainer>
     </FooterWrap>
   );
 };
@@ -15,12 +27,22 @@ const Footer = () => {
 const FooterWrap = styled.div`
   display: flex;
   justify-content: space-between;
-  div {
-    border-radius: 50px;
-    border: 1px solid black;
-    padding: 5px;
-    margin: 10px;
-  }
+`;
+const FooterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const Img = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid red;
+  border-radius: 50px;
+`;
+const Text = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default Footer;

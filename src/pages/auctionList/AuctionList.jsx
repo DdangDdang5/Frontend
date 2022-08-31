@@ -1,36 +1,39 @@
-import React from 'react';
+import React, { useEffect } from "react";
 
 //components
-import Footer from '../../components/footer/Footer';
+import Footer from "../../components/footer/Footer";
+import Header from "../../components/header/Header";
 
 //reducer
+import { useDispatch, useSelector } from "react-redux";
+import Auction from "../../components/auction/Auction";
 
 //styled
-import styled from 'styled-components';
-import AuctionItem from '../../components/auctionItem/AuctionItem';
+import styled from "styled-components";
 
 const AuctionList = () => {
+  const dispatch = useDispatch();
+  const AuctionListData = useSelector((state) => state.auctionList.auctionList);
+
+  // useEffect(() => {
+  //   dispatch();
+  // }, []);
+
   return (
     <AuctionListLayout>
-      <Header>
-        <HeaderLeft>경매목록</HeaderLeft>
-        <HeaderRight>
-          <div>돋보기</div>
-          <div>알람</div>
-        </HeaderRight>
-      </Header>
+      <Header />
 
-      <Nav>
+      <AuctionListNav>
         <div>카테고리</div>
         <div>지역</div>
-      </Nav>
+      </AuctionListNav>
 
-      <Contents>
-        <AuctionItem />
-        <AuctionItem />
-        <AuctionItem />
-        <AuctionItem />
-      </Contents>
+      <AuctionListContents>
+        <Auction />
+        <Auction />
+        <Auction />
+        <Auction />
+      </AuctionListContents>
 
       <FooterContainer>
         <Footer />
@@ -46,28 +49,13 @@ const AuctionListLayout = styled.div`
   height: 100%;
 `;
 
-const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-const HeaderLeft = styled.div`
-  font: bold;
-  margin: 10px;
-`;
-const HeaderRight = styled.div`
-  display: flex;
-  div {
-    margin: 10px;
-  }
-`;
-const Nav = styled.div`
+const AuctionListNav = styled.div`
   display: flex;
   div {
     margin: 10px 20px;
   }
 `;
-const Contents = styled.div`
+const AuctionListContents = styled.div`
   display: flex;
   flex-direction: column;
   margin: 0px 20px;
