@@ -1,48 +1,28 @@
+// React import
 import React from "react";
-import styled from "styled-components";
+
+// Style import
+import {
+  FooterContainer,
+  FooterIcon,
+  FooterItemContainer,
+} from "./Footer.styled";
 
 const Footer = () => {
+  const footerList = ["홈", "검색", "채팅", "마이페이지"];
+
   return (
-    <FooterWrap>
-      <FooterContainer>
-        <Img>사진</Img>
-        <Text>홈</Text>
-      </FooterContainer>
-      <FooterContainer>
-        <Img>사진</Img>
-        <Text>검색</Text>
-      </FooterContainer>
-      <FooterContainer>
-        <Img>사진</Img>
-        <Text>채팅</Text>
-      </FooterContainer>
-      <FooterContainer>
-        <Img>사진</Img>
-        <Text>마이페이지</Text>
-      </FooterContainer>
-    </FooterWrap>
+    <FooterContainer>
+      <FooterItemContainer>
+        {footerList.map((item, idx) => (
+          <FooterIcon key={idx}>
+            <img src="maskable.png" alt={item} />
+            {item}
+          </FooterIcon>
+        ))}
+      </FooterItemContainer>
+    </FooterContainer>
   );
 };
-
-const FooterWrap = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-const FooterContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const Img = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid red;
-  border-radius: 50px;
-`;
-const Text = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 export default Footer;
