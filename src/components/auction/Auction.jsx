@@ -17,7 +17,10 @@ const Auction = () => {
         </ItemContentHeader>
 
         {/* 줄에 표시되는 글자수 제한 */}
-        <ItemContentBody>제목은 한줄만 노출</ItemContentBody>
+        <ItemContentBody>
+          제목은 한줄만 노출
+          dsfdsfdsfsdfdsfdsfsdfsdfdsfdsfsdsfdsfdsfsdfdssdfsdfdsfdsf
+        </ItemContentBody>
 
         <ItemContentFooter>
           <StartPrice>입찰시작가</StartPrice>
@@ -32,8 +35,8 @@ const AuctionItemWrap = styled.div`
   display: flex;
   flex-direction: row;
   height: 74px;
+  width: 100%;
   margin: 5px 0;
-  border: 1px solid black;
 `;
 const ItemPicture = styled.div`
   display: flex;
@@ -71,6 +74,7 @@ const ItemContentHeader = styled.div`
 const ItemContentBody = styled.div`
   display: flex;
   margin-bottom: 5px;
+  width: 390px;
 `;
 const ItemContentFooter = styled.div`
   display: flex;

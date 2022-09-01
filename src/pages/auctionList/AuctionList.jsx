@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 //components
 import Footer from "../../components/footer/Footer";
@@ -15,17 +15,27 @@ const AuctionList = () => {
   const dispatch = useDispatch();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
 
-  // useEffect(() => {
-  //   dispatch();
-  // }, []);
+  const [category, setCategory] = useState(true);
 
   return (
     <AuctionListLayout>
       <Header />
 
       <AuctionListNav>
-        <div>카테고리</div>
-        <div>지역</div>
+        <CategoryBtn
+          category={category}
+          onClick={() => {
+            setCategory(true);
+          }}>
+          <CategoryBtnText>카테고리</CategoryBtnText>
+        </CategoryBtn>
+        <CategoryBtn
+          category={!category}
+          onClick={() => {
+            setCategory(false);
+          }}>
+          <CategoryBtnText>지역</CategoryBtnText>
+        </CategoryBtn>
       </AuctionListNav>
 
       <AuctionListContents>
@@ -57,22 +67,27 @@ const AuctionListLayout = styled.div`
 const AuctionListNav = styled.div`
   margin-top: 70px;
   display: flex;
-  div {
-    margin: 10px 20px;
-  }
+`;
+const CategoryBtn = styled.div`
+  height: 30px;
+  width: 80px;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  border-bottom: ${({ category }) => (category ? "solid 2px blue;" : "")};
+`;
+const CategoryBtnText = styled.h3`
+  font-size: 16px;
 `;
 const AuctionListContents = styled.div`
   display: flex;
+  justify-content: flex-start;
+  align-items: center;
   flex-direction: column;
-  margin: 0px 10px;
-  height: 650px;
-  border: 3px solid red;
+  height: 665px;
+  margin: 10px;
   overflow: auto;
-  /* 스크롤바 안보이게 */
-  ::-webkit-scrollbar {
-    display: none;
-    width: 0;
-  }
 `;
 const FooterContainer = styled.div``;
+
 export default AuctionList;
