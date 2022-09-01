@@ -8,14 +8,21 @@ import Header from "../../components/header/Header";
 //reducer
 import { useDispatch, useSelector } from "react-redux";
 import Auction from "../../components/auction/Auction";
+import { auctionItemList } from "../../redux/modules/AuctionListSlice";
 
 //styled
 import styled from "styled-components";
 
 const AuctionList = () => {
+  // const token = localStorage.
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
+
+  useEffect(() => {
+    dispatch(auctionItemList());
+  }, []);
 
   const [category, setCategory] = useState(true);
 
@@ -50,21 +57,22 @@ const AuctionList = () => {
         <Auction />
         <Auction />
         <Auction />
+        <Auction />
+        <Auction />
+        <Auction />
+        <Auction />
+        <Auction />
       </AuctionListContents>
-      <button>기능버튼</button>
+      {/* <PlusBtn>+</PlusBtn> */}
 
-      <FooterContainer>
-        <Footer />
-      </FooterContainer>
+      <Footer />
     </AuctionListLayout>
   );
 };
 
 const AuctionListLayout = styled.div`
-  border: 1px solid yellow;
   display: flex;
   flex-direction: column;
-  height: 100%;
 `;
 
 const AuctionListNav = styled.div`
@@ -84,13 +92,25 @@ const CategoryBtnText = styled.h3`
 `;
 const AuctionListContents = styled.div`
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: column;
-  height: 600px;
-  margin: 10px;
-  overflow: auto;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow-y: auto;
 `;
-const FooterContainer = styled.div``;
+const PlusBtn = styled.button`
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 500px;
+  font-size: 50px;
+  color: white;
+  padding: 0px 15px;
+  background-color: orange;
+  :hover {
+    background-color: #de5539;
+  }
+`;
 
 export default AuctionList;
