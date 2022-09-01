@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //components
 import Footer from "../../components/footer/Footer";
@@ -10,7 +11,6 @@ import Auction from "../../components/auction/Auction";
 
 //styled
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 const AuctionList = () => {
   const dispatch = useDispatch();
@@ -51,6 +51,7 @@ const AuctionList = () => {
         <Auction />
         <Auction />
       </AuctionListContents>
+      <button>기능버튼</button>
 
       <FooterContainer>
         <Footer />
@@ -86,7 +87,7 @@ const AuctionListContents = styled.div`
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  height: 665px;
+  height: 600px;
   margin: 10px;
   overflow: auto;
 `;
