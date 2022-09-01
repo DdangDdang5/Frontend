@@ -4,6 +4,7 @@ import React, { useState } from "react";
 // Package import
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import Header from "../../components/header/Header";
 
 // Style import
 import {
@@ -131,6 +132,7 @@ const Chat = () => {
 
   return (
     <ChatContainer>
+			<Header borderBottom="1px solid gray" logo={false}/>
       {/* {userData.connected ? (
         <ChatBox>
           <MemberList>

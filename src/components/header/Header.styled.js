@@ -20,6 +20,12 @@ export const HeaderContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
+	
+  img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
 `;
 
 export const Logo = styled.span`
@@ -31,10 +37,4 @@ export const HeaderIconContainer = styled.div`
 
   display: flex;
   gap: 20px;
-
-  img {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-  }
 `;
