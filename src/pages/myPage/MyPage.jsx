@@ -19,13 +19,22 @@ const MyPage = () => {
           <div>정보</div>
         </div>
       </MyProfile>
+      <div>
+        <div>매너온도</div>
+        <div>매너온도 점수</div>
+      </div>
 
       <MyStateContainer>
-        <div>판매내역</div>
-        <div>구매내역</div>
-        <div>관심목록</div>
+        <button>판매내역</button>
+        <button>구매내역</button>
+        <button>관심목록</button>
       </MyStateContainer>
-
+      <div>
+        <div>프로필 수정</div>
+        <div>키워드 알림</div>
+        <div></div>
+        <div></div>
+      </div>
       <Footer />
     </MyPageLayout>
   );
@@ -42,7 +51,7 @@ const MyProfile = styled.div`
 const MyStateContainer = styled.div`
   display: flex;
   margin: 0px 10px 10px 10px;
-  div {
+  button {
     display: flex;
     width: 100%;
     justify-content: center;

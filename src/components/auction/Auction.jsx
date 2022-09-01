@@ -1,13 +1,15 @@
 import React from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const Auction = () => {
+  const navigate = useNavigate();
   const Img = (
     <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
   );
 
   return (
-    <AuctionItemWrap>
+    <AuctionItemWrap onClick={() => navigate("/auctionDetail")}>
       <ItemPicture>{Img}</ItemPicture>
 
       <ItemContentWrap>
@@ -59,6 +61,9 @@ const ItemContentWrap = styled.div`
   justify-content: center;
   align-items: flex-start;
   margin: 0px 10px;
+  max-height: 74px;
+  width: 100%;
+  background-color: yellow;
 `;
 const ItemContentHeader = styled.div`
   display: flex;
@@ -75,6 +80,7 @@ const ItemContentBody = styled.div`
   display: flex;
   margin-bottom: 5px;
   width: 390px;
+  font-size: 13px;
 `;
 const ItemContentFooter = styled.div`
   display: flex;
