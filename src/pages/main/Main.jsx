@@ -8,30 +8,32 @@ import AuctionCategoryList from "../../components/auctionCategoryList/AuctionCat
 
 // Style import
 import {
-  MainContainer,
-  MainContent,
+	AddAuction,
   Banner,
-  BannerTitle,
   BannerContent,
-  BannerPriceWrap,
   BannerPrice,
+  BannerPriceWrap,
+  BannerTime,
+  BannerTitle,
+  LastItem,
+  LastList,
   ListContainer,
-  PopularItem,
-  TagWrap,
-  PopularList,
-  PopularTitle,
-  PopularPriceWrap,
-  PopularPrice,
-  NewItem,
-  NewItemContent,
-  NewItemTitle,
-  NewItemPriceWrap,
-  NewItemPrice,
-  NewList,
   ListHeader,
   ListHeaderMore,
-  LastList,
-  LastItem,
+  MainContainer,
+  MainContent,
+  NewItem,
+  NewItemContent,
+  NewItemPrice,
+  NewItemPriceWrap,
+  NewItemTitle,
+  NewList,
+  PopularItem,
+  PopularList,
+  PopularPrice,
+  PopularPriceWrap,
+  PopularTitle,
+  TagWrap,
 } from "./Main.styled";
 
 const Main = () => {
@@ -43,7 +45,7 @@ const Main = () => {
         {/* 배너 */}
         <Banner>
           <BannerContent>
-            <span>6일 12:36:01</span>
+            <BannerTime>6일 12:36:01</BannerTime>
             <BannerTitle>
               폰트사이즈가 고민입니다.. 최대길이는 이 정도입니다.
             </BannerTitle>
@@ -143,6 +145,8 @@ const Main = () => {
           </LastList>
         </ListContainer>
       </MainContent>
+
+			<AddAuction src="maskable.png" alt="auction-img" />
 
       <Footer />
     </MainContainer>

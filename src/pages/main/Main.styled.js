@@ -9,6 +9,7 @@ export const MainContainer = styled.div`
 export const MainContent = styled.div`
   width: 100%;
   background-color: aliceblue;
+  font-size: 14px;
 
   position: absolute;
   top: 70px;
@@ -31,52 +32,54 @@ export const Banner = styled.div`
 `;
 
 export const BannerContent = styled.div`
-  width: 70%;
-  /* background-color: aqua; */
+  width: 80%;
 
   display: flex;
   flex-direction: column;
 `;
 
+export const BannerTime = styled.span`
+  font-size: 18px;
+`;
+
 export const BannerTitle = styled.span`
-  font-size: 20px;
-  margin-top: 5px;
+  margin-top: 4px;
+  font-size: 22px;
 `;
 
 export const BannerPriceWrap = styled.div`
-  /* background-color: aqua; */
   text-align: end;
 `;
 
 export const BannerPrice = styled.span`
-  font-weight: bold;
+  margin-left: 4px;
   font-size: 24px;
+  font-weight: bold;
 `;
 
 export const ListContainer = styled.div`
-  margin: 20px;
-	/* background-color: aqua; */
+  margin: 32px 20px;
 `;
 
 export const ListHeader = styled.span`
-  font-size: ${(props) => props.fontSize ?  props.fontSize : "20px"};
+  font-size: ${(props) => (props.fontSize ? props.fontSize : "20px")};
   font-weight: bold;
-	
+
   display: flex;
   justify-content: space-between;
-	align-items: center;
+  align-items: center;
 `;
 
 export const ListHeaderMore = styled.div`
   font-size: 14px;
-	font-weight: normal;
+  font-weight: normal;
 
   display: flex;
   align-items: center;
 
   img {
-    width: 30px;
-    height: 30px;
+    width: 23px;
+    height: 23px;
   }
 `;
 
@@ -86,15 +89,19 @@ export const PopularList = styled.div`
   display: flex;
   gap: 12px;
   overflow: scroll;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const PopularItem = styled.div`
   width: 185px;
-  min-width: 180px;
+  min-width: 185px;
   height: 250px;
   padding: 16px;
-  background-color: gray;
 
+  background-color: gray;
   border-radius: 8px;
 
   display: flex;
@@ -106,12 +113,11 @@ export const TagWrap = styled.div`
   margin-bottom: 10px;
 
   display: flex;
-  gap: 6px;
+  gap: 4px;
 
   span {
     padding: 1px 6px;
 
-    font-size: 14px;
     background-color: ${(props) => props.backgroundColor};
     border-radius: 100px;
   }
@@ -175,22 +181,37 @@ export const NewItemPrice = styled.span`
 `;
 
 export const LastList = styled.div`
-	width: 90%;
+  width: 100%;
+  margin-top: 16px;
 
-	display: flex;
-	gap: 20px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  gap: 16px 20px;
 `;
 
 export const LastItem = styled.div`
-	width: 165px;
-	margin: 8px auto;
+  width: 165px;
 
-	background-color: aliceblue;
+  background-color: aliceblue;
 
-	img {
-		width: 100%;
-		height: 120px;
-		margin-bottom: 10px;
-		border-radius: 8px;
-	}
+  img {
+    width: 100%;
+    height: 120px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
+`;
+
+export const AddAuction = styled.img`
+  width: 60px;
+  height: 60px;
+
+	border-radius: 30px;
+
+  position: absolute;
+  bottom: 102px;
+  right: 20px;
 `;

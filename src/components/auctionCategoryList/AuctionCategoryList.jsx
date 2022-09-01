@@ -1,11 +1,14 @@
 // React import
 import React from "react";
+
+// Component import
 import AuctionCategory from "../auctionCategory/AuctionCategory";
 
 // Style import
 import {
   CategoryHeader,
   CategoryList,
+  CategoryListContainer,
   CategoryMore,
   CategoryNum,
   CategoryTitle,
@@ -34,7 +37,7 @@ const AuctionCategoryList = ({ isCategory }) => {
   const title = isCategory ? "카테고리" : "직거래 지역";
 
   return (
-    <>
+    <CategoryListContainer>
       <CategoryHeader>
         <CategoryTitle>
           <span>인기 {title} </span>
@@ -50,7 +53,7 @@ const AuctionCategoryList = ({ isCategory }) => {
           <AuctionCategory auction={item} key={idx} />
         ))}
       </CategoryList>
-    </>
+    </CategoryListContainer>
   );
 };
 
