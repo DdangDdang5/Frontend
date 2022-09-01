@@ -7,7 +7,7 @@ const MyPage = () => {
   const Img = (
     <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
   );
-
+  
   return (
     <MyPageLayout>
       <Header />
