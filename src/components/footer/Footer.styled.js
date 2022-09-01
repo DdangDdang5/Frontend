@@ -5,8 +5,9 @@ export const FooterContainer = styled.div`
   width: 100vw;
   height: 70px;
   border-top: 1px solid gray;
-
+  z-index: 1;
   position: absolute;
+  background-color: white;
   bottom: 0;
 `;
 
