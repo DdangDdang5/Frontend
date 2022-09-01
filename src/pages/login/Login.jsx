@@ -1,17 +1,26 @@
 // React import
-import { Fragment, useRef, useState } from "react";
+import { Fragment, useState } from "react";
+
+// Redux import
+import { useSelector } from "react-redux";
 
 // Component & Element import
 import Button from "../../elements/button/Button";
+
+// Package import
+// import { getCookie } from "../../shared/Cookie";
 
 // Style import
 import styled from "styled-components";
 
 const Login = () => {
-  const [email, SetEmail] = useState("");
-  const [password, SetPassword] = useState("");
-  const emailRegExp =
-    /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+  // const [email, SetEmail] = useState("");
+  // const [password, SetPassword] = useState("");
+  // const emailRegExp =
+  //   /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+
+  // const isLogin = useSelector((state) => state.member.isLogin);
+  // const token = getCookie("accessToken")
 
   return (
     <Fragment>

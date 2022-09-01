@@ -1,18 +1,33 @@
 // Redux import
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 
 //package import
-// import { apis } from "../../shared/api";
+import { Api } from "../../shared/Api";
 
-export const signMemberThunk = createAsyncThunk(
-  "member/signMember",
+export const loginMemberThunk = createAsyncThunk(
+  "member/loginMember",
   async (payload, thunkAPI) => {
-    const resData = await axios
+    const resData = await Api
       .post(`${URL}/member/login`, payload)
       .then((res) => res)
       .catch((err) => console.err(err));
+    window.localStorage.setItem(
+      "authorization",
+      resData.headers["authorization"]
+    );
+
     return thunkAPI.fulfillWithValue(resData.data.success);
+  }
+);
+
+export const signUpMemberThunk = createAsyncThunk(
+  "member/signUpMember",
+  async (payload, thunkAPI) => {
+    const resData = await Api.
+    post(`${URL}/member/signUp`, payload).
+    then((res) => res);
+
+    return thunkAPI.fulfillWithValue(resData);
   }
 );
 
@@ -20,18 +35,18 @@ const URL = process.env.REACT_APP_URL;
 
 const initialState = {
   member: [],
+  loginStatus: false,
 };
 
-const memberSlice = createSlice({
+export const memberSlice = createSlice({
   name: "member",
   initialState,
   extraReducers: {
     loginAction: (state, action) => {
-      state.member = action.payload.data;
+      state.email = action.payload.email;
+      state.loginStatus = action.payload.loginStatus;
     },
   },
 });
-
-console.log("bumsu", memberSlice);
 
 export default memberSlice.reducer;

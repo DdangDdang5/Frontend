@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //components
 import Footer from "../../components/footer/Footer";
@@ -7,13 +8,21 @@ import Header from "../../components/header/Header";
 //reducer
 import { useDispatch, useSelector } from "react-redux";
 import Auction from "../../components/auction/Auction";
+import { auctionItemList } from "../../redux/modules/AuctionListSlice";
 
 //styled
 import styled from "styled-components";
 
 const AuctionList = () => {
+  // const token = localStorage.
+
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
+
+  useEffect(() => {
+    dispatch(auctionItemList());
+  }, []);
 
   const [category, setCategory] = useState(true);
 
@@ -26,14 +35,16 @@ const AuctionList = () => {
           category={category}
           onClick={() => {
             setCategory(true);
-          }}>
+          }}
+        >
           <CategoryBtnText>카테고리</CategoryBtnText>
         </CategoryBtn>
         <CategoryBtn
           category={!category}
           onClick={() => {
             setCategory(false);
-          }}>
+          }}
+        >
           <CategoryBtnText>지역</CategoryBtnText>
         </CategoryBtn>
       </AuctionListNav>
@@ -48,20 +59,22 @@ const AuctionList = () => {
         <Auction />
         <Auction />
         <Auction />
+        <Auction />
+        <Auction />
+        <Auction />
+        <Auction />
+        <Auction />
       </AuctionListContents>
+      <PlusBtn>+</PlusBtn>
 
-      <FooterContainer>
-        <Footer />
-      </FooterContainer>
+      <Footer />
     </AuctionListLayout>
   );
 };
 
 const AuctionListLayout = styled.div`
-  border: 1px solid yellow;
   display: flex;
   flex-direction: column;
-  height: 100%;
 `;
 
 const AuctionListNav = styled.div`
@@ -84,10 +97,26 @@ const AuctionListContents = styled.div`
   justify-content: flex-start;
   align-items: center;
   flex-direction: column;
-  height: 665px;
+  height: 100%;
   margin: 10px;
-  overflow: auto;
+  overflow-y: scroll;
 `;
-const FooterContainer = styled.div``;
+const PlusBtn = styled.button`
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  bottom: 90px;
+  right: 20px;
+  border: none;
+  border-radius: 500px;
+  font-size: 50px;
+  color: white;
+  padding: 0px 15px;
+  background-color: orange;
+  :hover {
+    background-color: #de5539;
+  }
+`;
 
 export default AuctionList;

@@ -1,5 +1,5 @@
 // React import
-import { Fragment } from "react";
+import { Fragment, useState, useEffect, useSelector } from "react";
 
 // Component & Element import
 import Button from "../../elements/button/Button";
@@ -8,6 +8,113 @@ import Button from "../../elements/button/Button";
 import styled from "styled-components";
 
 const SignUp = () => {
+  // const [email, setEmail] = useState("");
+  // const [password, setPassword] = useState("");
+  // const is_signUp = useSelector(is_SignUp);
+  // const [email_double, setEmail_Double] = useState("");
+  // const [signup_info, setSignUp_Info] = useState({
+  //   email: "",
+  //   nickname: "",
+  //   password: "",
+  //   confirmPassword: "",
+  // });
+
+  // const { email, nickname, password, confirmPassword } = signup_info;
+
+  // useEffect(() => {
+  //   if (is_signUp === "success") {
+  //     alert("땅땅 회원이 되신 것을 축하합니다!");
+  //     window.location.href = "/";
+  //     return;
+  //   }
+  // }, [is_signUp]);
+
+  // useEffect(() => {
+  //   if (email === "") {
+  //     setEamil_Check_Text("");
+  //     return;
+  //   }
+  //   if (emailCheck(email) === false) {
+  //     setEmail_Double(false);
+  //     setEamil_Check_Text("올바른 이메일 형식이 아닙니다.");
+  //   } else if (is_email === "fail") {
+  //     setEmail_Double(false);
+  //     setEamil_Check_Text("사용중인 이메일입니다.");
+  //   } else if (emailCheck(email) === true && is_email === "success") {
+  //     setEmail_Double(true);
+  //     setEamil_Check_Text("사용 가능한 이메일입니다.");
+  //   }
+  //   return () => {};
+  // }, [email, is_email]);
+
+  // useEffect(() => {
+  //   if (nickname === "") {
+  //     setNickname_Check_Text("");
+  //     return;
+  //   }
+  //   if (
+  //     is_nickname?.message === "fail" &&
+  //     is_nickname?.error === "exist nickname"
+  //   ) {
+  //     setNickName_Double(false);
+  //     setNickname_Check_Text("사용중인 닉네임입니다.");
+  //   } else if (
+  //     is_nickname?.message === "fail" &&
+  //     is_nickname?.error === "wrong nickname"
+  //   ) {
+  //     setNickName_Double(false);
+  //     setNickname_Check_Text("사용할 수 없는 닉네임입니다.");
+  //   } else if (nickname.length >= 8) {
+  //     setNickname_Check_Text("닉네임 글자 수는 6자 미만이어야합니다.");
+  //   } else {
+  //     setNickName_Double(true);
+  //     setNickname_Check_Text("사용 가능한 닉네임입니다.");
+  //   }
+  // }, [nickname, is_nickname]);
+
+  // const submitSignUp = () => {
+  //   if (
+  //     email === "" ||
+  //     nickname === "" ||
+  //     password === "" ||
+  //     confirmPassword === ""
+  //   ) {
+  //     alert("아이디, 닉네임, 비밀번호를 다시 확인 해주세요!");
+  //     return;
+  //   }
+
+  //   if (!pwdReg(password)) {
+  //     alert("비밀번호를 4자 이상 입력해주세요!");
+  //     return;
+  //   }
+
+  //   if (password !== confirmPassword) {
+  //     alert("비밀번호 및 비밀번호확인이 다릅니다!");
+  //     return;
+  //   }
+
+  //   dispatch(signUp(signup_info));
+
+  //   setSignUp_Info({
+  //     email: "",
+  //     nickname: "",
+  //     password: "",
+  //     confirmPassword: "",
+  //   });
+  // };
+  // const submitEnterSignUp = (e) => {
+  //   if (e.key === "Enter") {
+  //     submitSignUp();
+  //   }
+  // };
+  // const doubleCheckEmail = useCallback(() => {
+  //   dispatch(checkEmail(email));
+  // }, [email]);
+
+  // const doubleCheckNickname = useCallback(() => {
+  //   dispatch(checkNickname(nickname));
+  // }, [nickname]);
+
   return (
     <Fragment>
       <SignUpBox>
@@ -31,6 +138,17 @@ const SignUp = () => {
                 placeholder="닉네임을 입력하세요(4 ~ 6 글자)"
                 minLength="4"
                 maxLength="6"
+                required
+              />
+            </SignUpBoxInputWrap>
+          </SignUpBoxInputGroup>
+          <SignUpBoxInputGroup>
+            <SignUpBoxInputWrap>
+              <SignUpBoxInput
+                type="text"
+                placeholder="휴대폰 번호를 입력하세요"
+                minLength="4"
+                maxLength="11"
                 required
               />
             </SignUpBoxInputWrap>

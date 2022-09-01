@@ -6,16 +6,15 @@ export const FooterContainer = styled.div`
   height: 70px;
   border-top: 1px solid gray;
   z-index: 1;
-  position: absolute;
   background-color: white;
   bottom: 0;
+  position: fixed;
 `;
 
 export const FooterItemContainer = styled.div`
   width: 90vw;
   height: 100%;
   margin: auto;
-
   display: flex;
 `;
 
