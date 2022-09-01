@@ -12,7 +12,7 @@ import { ChatListContainer, ChatRoomList } from "./ChatList.styled";
 const ChatList = () => {
   return (
     <ChatListContainer>
-      <Header borderBottom="1px solid gray" />
+      <Header borderBottom="1px solid gray" logo={true}/>
       <ChatRoomList>
         {Array.from({ length: 4 }, () => (
           <ChatRoom />
