@@ -10,9 +10,11 @@ import Auction from "../../components/auction/Auction";
 
 //styled
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const AuctionList = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
 
   const [category, setCategory] = useState(true);
