@@ -2,7 +2,7 @@
 import styled from "styled-components";
 
 export const ChatRoomContainer = styled.div`
-  width: 100%;
+  /* width: 100vw; */
   padding: 20px 10px;
   border-bottom: 1px solid gray;
 

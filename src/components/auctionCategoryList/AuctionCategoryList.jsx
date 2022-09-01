@@ -1,9 +1,11 @@
 // React import
 import React from "react";
+import AuctionCategory from "../auctionCategory/AuctionCategory";
 
 // Style import
 import {
   CategoryHeader,
+  CategoryList,
   CategoryMore,
   CategoryNum,
   CategoryTitle,
@@ -28,26 +30,27 @@ const AuctionCategoryList = ({ isCategory }) => {
     "용산구",
   ];
 
-	const list6 = isCategory ? categoryList : placeList;
+  const list6 = isCategory ? categoryList : placeList;
+  const title = isCategory ? "카테고리" : "직거래 지역";
 
   return (
-    <div>
+    <>
       <CategoryHeader>
         <CategoryTitle>
-          <span>인기 카테고리 </span>
+          <span>인기 {title} </span>
           <CategoryNum>TOP 6</CategoryNum>
         </CategoryTitle>
         <CategoryMore>
           <span>전체보기</span>
-          <img src="maskable.png" alt="search" />
+          <img src="maskable.png" alt="all" />
         </CategoryMore>
       </CategoryHeader>
-			{list6.map((item, idx) => (
-				<div>
-          <img src="maskable.png" alt="search" />
-				</div>
-			))}
-    </div>
+      <CategoryList>
+        {list6.map((item, idx) => (
+          <AuctionCategory auction={item} key={idx} />
+        ))}
+      </CategoryList>
+    </>
   );
 };
 
