@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Main from "../src/pages/main/Main";
 import Login from "../src/pages/login/Login";
 import SignUp from "../src/pages/signUp/SignUp";
-import MyPage from "../src/pages/myPage/MyPage";
+import MyPage from "./pages/myPage/MyPage";
 import ProfileEdit from "../src/pages/profileEdit/ProfileEdit";
 import Search from "../src/pages/search/Search";
 import Chat from "../src/pages/chat/Chat";
