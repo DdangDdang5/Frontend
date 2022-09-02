@@ -13,12 +13,15 @@ const MyPage = () => {
       <Header />
 
       <MyProfile>
-        <div>Img</div>
+        <div>
+          <div></div>
+        </div>
         <div>
           <div>닉네임</div>
           <div>정보</div>
         </div>
       </MyProfile>
+
       <div>
         <div>매너온도</div>
         <div>매너온도 점수</div>

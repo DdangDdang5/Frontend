@@ -9,7 +9,7 @@ const Auction = () => {
   );
 
   return (
-    <AuctionItemWrap>
+    <AuctionItemWrap onClick={() => navigate("/AuctionDetail")}>
       <AuctionItemContainer>
         <ItemPicture>{Img}</ItemPicture>
         <ItemContentWrap>
