@@ -1,8 +1,12 @@
 // Package import
 import styled from "styled-components";
 
+export const CategoryListContainer = styled.div`
+	margin-top: 32px;
+`;
+
 export const CategoryHeader = styled.div`
-  margin: 20px;
+  margin: 16px 20px;
 
   display: flex;
   justify-content: space-between;
@@ -18,14 +22,12 @@ export const CategoryNum = styled.span`
 `;
 
 export const CategoryMore = styled.div`
-	font-size: 14px;
-	
   display: flex;
   align-items: center;
 
   img {
-    width: 30px;
-    height: 30px;
+    width: 23px;
+    height: 23px;
   }
 `;
 
@@ -35,4 +37,8 @@ export const CategoryList = styled.div`
   display: flex;
   gap: 12px;
   overflow-x: scroll;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
 `;

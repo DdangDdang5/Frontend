@@ -5,54 +5,64 @@ import React from "react";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import AuctionCategoryList from "../../components/auctionCategoryList/AuctionCategoryList";
+import SwipeImage from "../../components/swipeImage/SwipeImage";
 
 // Style import
 import {
-  MainContainer,
-  MainContent,
-  Banner,
-  BannerTitle,
-  BannerContent,
-  BannerPriceWrap,
-  BannerPrice,
+  AddAuction,
+  BannerContainer,
+  LastItem,
+  LastList,
   ListContainer,
-  PopularItem,
-  TagWrap,
-  PopularList,
-  PopularTitle,
-  PopularPriceWrap,
-  PopularPrice,
-  NewItem,
-  NewItemContent,
-  NewItemTitle,
-  NewItemPriceWrap,
-  NewItemPrice,
-  NewList,
   ListHeader,
   ListHeaderMore,
-  LastList,
-  LastItem,
+  MainContainer,
+  MainContent,
+  NewItem,
+  NewItemContent,
+  NewItemPrice,
+  NewItemPriceWrap,
+  NewItemTitle,
+  NewList,
+  PopularItem,
+  PopularList,
+  PopularPrice,
+  PopularPriceWrap,
+  PopularTitle,
+  TagWrap,
 } from "./Main.styled";
 
 const Main = () => {
+  const data = [
+    {
+			imgUrl: "maskable.png",
+      time: "6일 12:36:01",
+      title: "폰트사이즈가 고민입니다.. 최대길이는 이 정도입니다.",
+      price: 598000,
+    },
+    {
+			imgUrl: "logo512.png",
+      time: "4일 11:59:59",
+      title: "Banner Title!!!",
+      price: 398000,
+    },
+    {
+			imgUrl: "logo192.png",
+      time: "1일 02:30:27",
+      title: "Banner Title!!!",
+      price: 198000,
+    },
+  ];
+
   return (
     <MainContainer>
       <Header logo={true} />
 
       <MainContent>
         {/* 배너 */}
-        <Banner>
-          <BannerContent>
-            <span>6일 12:36:01</span>
-            <BannerTitle>
-              폰트사이즈가 고민입니다.. 최대길이는 이 정도입니다.
-            </BannerTitle>
-          </BannerContent>
-          <BannerPriceWrap>
-            <span>최고입찰가</span>
-            <BannerPrice>{598000}원</BannerPrice>
-          </BannerPriceWrap>
-        </Banner>
+        <BannerContainer>
+					<SwipeImage isMain={true} data={data} height="100%" />
+        </BannerContainer>
 
         {/* 카테고리별, 지역별 TOP 6 */}
         <AuctionCategoryList isCategory={true} />
@@ -143,6 +153,8 @@ const Main = () => {
           </LastList>
         </ListContainer>
       </MainContent>
+
+      <AddAuction src="maskable.png" alt="auction-img" />
 
       <Footer />
     </MainContainer>
