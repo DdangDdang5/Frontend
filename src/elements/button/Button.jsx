@@ -22,7 +22,7 @@ export default Button;
 export const StyledButton = styled.button`
   width: ${(props) => (props.width ? props.width : '100px')};
   height: ${(props) => (props.height ? props.height : '50px')};
-  font-size: ${(props) => (props.ft_size ? props.ft_size : '15px')};
+  font-size: ${(props) => (props.ft_size ? props.ft_size : '16px')};
   background-color: ${(props) => (props.bg_color ? props.bg_color : '#54AEFF')};
   color: ${(props) => (props.color ? props.color : '#000000')};
   border-radius: 10px;

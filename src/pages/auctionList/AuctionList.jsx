@@ -27,7 +27,7 @@ const AuctionList = () => {
   return (
     <AuctionListLayout>
       <Header />
-
+      
       <ListCategoryWrap>
         <CategoryBtn>
           <CategoryBtnText>전체품목</CategoryBtnText>
@@ -55,7 +55,6 @@ const AuctionList = () => {
         <Auction />
       </ListContents>
       {/* <PlusBtn>+</PlusBtn> */}
-
       <Footer />
     </AuctionListLayout>
   );

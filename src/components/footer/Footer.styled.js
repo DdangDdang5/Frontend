@@ -9,13 +9,13 @@ export const FooterContainer = styled.div`
   position: absolute;
   background-color: white;
   bottom: 0;
+  position: fixed;
 `;
 
 export const FooterItemContainer = styled.div`
   width: 90%;
   height: 100%;
   margin: auto;
-
   display: flex;
 `;
 

@@ -9,3 +9,4 @@ const token = localStorage.getItem("token");
 api.defaults.headers.common["authorization"] = token ? `${token}` : null;
 
 export default api;
+
