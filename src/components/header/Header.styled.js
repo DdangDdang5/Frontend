@@ -15,7 +15,7 @@ export const HeaderContainer = styled.div`
 `;
 
 export const HeaderContent = styled.div`
-  width: 90vw;
+  width: 90%;
 
   display: flex;
   justify-content: space-between;

@@ -2,7 +2,6 @@
 import styled from "styled-components";
 
 export const FooterContainer = styled.div`
-  display: flex;
   width: 100%;
   height: 70px;
   border-top: 1px solid gray;
@@ -13,7 +12,7 @@ export const FooterContainer = styled.div`
 `;
 
 export const FooterItemContainer = styled.div`
-  width: 90vw;
+  width: 90%;
   height: 100%;
   margin: auto;
 

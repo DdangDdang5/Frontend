@@ -1,40 +1,35 @@
 // React import
 import React from "react";
+
+// Package import
+import { useSelector } from "react-redux";
+
+// Component import
 import AuctionCategory from "../auctionCategory/AuctionCategory";
 
 // Style import
 import {
   CategoryHeader,
   CategoryList,
+  CategoryListContainer,
   CategoryMore,
   CategoryNum,
   CategoryTitle,
 } from "./AuctionCategoryList.styled";
 
 const AuctionCategoryList = ({ isCategory }) => {
-  const categoryList = [
-    "취미",
-    "스포츠/레저",
-    "남성 패션",
-    "여성 잡화",
-    "여성 의류",
-    "취미/게임/음반",
-  ];
 
-  const placeList = [
-    "서울 전체",
-    "마포구",
-    "중구",
-    "종로구",
-    "강동구",
-    "용산구",
-  ];
+	// 카테고리 목록, 지역 목록
+  const { categoryList, placeList } = useSelector(
+    (state) => state.auctionDivision,
+  );
 
-  const list6 = isCategory ? categoryList : placeList;
+	// isCategory === true -> category / false -> place
+  const list6 = isCategory ? categoryList.slice(0, 6) : placeList.slice(0, 6);
   const title = isCategory ? "카테고리" : "직거래 지역";
 
   return (
-    <>
+    <CategoryListContainer>
       <CategoryHeader>
         <CategoryTitle>
           <span>인기 {title} </span>
@@ -50,7 +45,7 @@ const AuctionCategoryList = ({ isCategory }) => {
           <AuctionCategory auction={item} key={idx} />
         ))}
       </CategoryList>
-    </>
+    </CategoryListContainer>
   );
 };
 
