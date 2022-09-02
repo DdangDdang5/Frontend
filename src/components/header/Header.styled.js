@@ -2,7 +2,7 @@
 import styled from "styled-components";
 
 export const HeaderContainer = styled.div`
-  width: 100vw;
+  width: 100%;
   height: 70px;
   border-bottom: ${(props) => props.borderBottom};
 
@@ -20,7 +20,7 @@ export const HeaderContent = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-	
+
   img {
     width: 40px;
     height: 40px;

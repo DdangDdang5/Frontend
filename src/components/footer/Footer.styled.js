@@ -2,11 +2,15 @@
 import styled from "styled-components";
 
 export const FooterContainer = styled.div`
-  width: 100vw;
+<<<<<<< Updated upstream
+  display: flex;
+=======
+>>>>>>> Stashed changes
+  width: 100%;
   height: 70px;
   border-top: 1px solid gray;
   z-index: 1;
-  position: fixed;
+  position: absolute;
   background-color: white;
   bottom: 0;
 `;
