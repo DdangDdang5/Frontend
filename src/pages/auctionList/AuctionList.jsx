@@ -65,8 +65,7 @@ const AuctionList = () => {
         <Auction />
         <Auction />
       </AuctionListContents>
-      <PlusBtn>+</PlusBtn>
-
+      {/* <PlusBtn>+</PlusBtn> */}
       <Footer />
     </AuctionListLayout>
   );
@@ -94,20 +93,16 @@ const CategoryBtnText = styled.h3`
 `;
 const AuctionListContents = styled.div`
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-direction: column;
-  height: 100%;
-  margin: 10px;
-  overflow-y: scroll;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-content: flex-start;
+  overflow-y: auto;
 `;
 const PlusBtn = styled.button`
   display: flex;
   position: absolute;
   justify-content: center;
   align-items: center;
-  bottom: 90px;
-  right: 20px;
   border: none;
   border-radius: 500px;
   font-size: 50px;

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { axios } from "axios";
+import api from "../../shared/Api";
 
 const initialState = {
   auctionList: [],
@@ -8,10 +8,10 @@ const initialState = {
 export const auctionItemList = createAsyncThunk(
   "getAuctionItemList",
   async (payload, thunkAPI) => {
-    // payload = auctionId
     try {
-      const response = await axios.get(`auction/${payload}`);
-      return thunkAPI.fulfillWithValue(response.data.data);
+      const response = await api.get(`/auction`);
+      // return thunkAPI.fulfillWithValue(response.data.data);
+      return console.log("드가자아아아아", response);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -23,7 +23,7 @@ export const addAuctionItem = createAsyncThunk(
   async (payload, thunkAPI) => {
     // console.log('12321321312321123', payload);
     try {
-      const response = await axios.post("posts", payload, {
+      const response = await api.post("posts", payload, {
         "Content-Type": "multipart/form-data",
       });
       return thunkAPI.fulfillWithValue(response);
@@ -37,7 +37,7 @@ export const editAuctionItem = createAsyncThunk(
   "editAuctionItem",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios.put(
+      const response = await api.put(
         `auction/${payload.actionId}`,
         payload.formData,
         {
@@ -56,7 +56,7 @@ export const deleteAuctionItem = createAsyncThunk(
   "deleteAuctionItem",
   async (payload, thunkAPI) => {
     try {
-      const response = await axios.delete(`auction/${payload}`);
+      const response = await api.delete(`auction/${payload}`);
       return thunkAPI.fulfillWithValue(payload);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

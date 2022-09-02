@@ -1,5 +1,21 @@
 // React import
-import { Fragment, useState, useEffect, useSelector } from "react";
+import {
+  Fragment,
+  useState,
+  useEffect,
+  useSelector,
+  useRef,
+  useCallback,
+} from "react";
+
+// Redux import
+import { useDispatch } from "react-redux";
+import { signUpMemberThunk } from "../../redux/modules/MemberSlice";
+
+// Package import
+import { BsFillCheckCircleFill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+import { MdOutlineArrowBackIos } from "react-icons/md";
 
 // Component & Element import
 import Button from "../../elements/button/Button";
@@ -8,18 +24,25 @@ import Button from "../../elements/button/Button";
 import styled from "styled-components";
 
 const SignUp = () => {
-  // const [email, setEmail] = useState("");
-  // const [password, setPassword] = useState("");
-  // const is_signUp = useSelector(is_SignUp);
-  // const [email_double, setEmail_Double] = useState("");
-  // const [signup_info, setSignUp_Info] = useState({
-  //   email: "",
-  //   nickname: "",
-  //   password: "",
-  //   confirmPassword: "",
-  // });
+  const [email, setEmail] = useState("");
+  const [emailCheck, setEmailCheck] = useState(false);
+  const [password, setPassword] = useState("");
+  const [repassword, setRePassword] = useState("");
+  const [nickname, setNickName] = useState("");
+  const [nicknameCheck, setNickNameCheck] = useState(false);
+  const [signup_info, setSignUp_Info] = useState({
+    email: "",
+    password: "",
+    confirmPassword: "",
+    nickname: "",
+  });
 
-  // const { email, nickname, password, confirmPassword } = signup_info;
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  // const [query, setQuery] = useState('');
+  // const [tmpQuery, setTmpQuery] = useState(query);
+  // const handleChange = (e: ChangeEvent<HTMLInputElement>) => setTmpQuery(e.target.value);
+  // const { email, password, confirmPassword, nickname} = signup_info;
 
   // useEffect(() => {
   //   if (is_signUp === "success") {
@@ -29,168 +52,199 @@ const SignUp = () => {
   //   }
   // }, [is_signUp]);
 
+  const emailRef = useRef();
+  const emailIconRef = useRef();
+  const passwordRef = useRef();
+  const passwordSpanRef = useRef();
+  const passwordIconRef = useRef();
+  const rePasswordRef = useRef();
+  const rePasswordSpanRef = useRef();
+  const rePasswordIconRef = useRef();
+  const nickNameRef = useRef();
+  const nickNameIconRef = useRef();
+
+  const emailRegExp =
+    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+  const newMember = {
+    email,
+    password,
+    nickname,
+  };
   // useEffect(() => {
-  //   if (email === "") {
-  //     setEamil_Check_Text("");
-  //     return;
-  //   }
-  //   if (emailCheck(email) === false) {
-  //     setEmail_Double(false);
-  //     setEamil_Check_Text("올바른 이메일 형식이 아닙니다.");
-  //   } else if (is_email === "fail") {
-  //     setEmail_Double(false);
-  //     setEamil_Check_Text("사용중인 이메일입니다.");
-  //   } else if (emailCheck(email) === true && is_email === "success") {
-  //     setEmail_Double(true);
-  //     setEamil_Check_Text("사용 가능한 이메일입니다.");
-  //   }
-  //   return () => {};
-  // }, [email, is_email]);
+  //   const debounce = setTimeout(() => {
+  //     return setQuery(tmpQuery);
+  //   }, 500); 				//->setTimeout 설정
+  //   return () => clearTimeout(debounce); //->clearTimeout 바로 타이머 제거
+  // }, [tmpQuery]);			//->결국 마지막 이벤트에만 setTimeout이 실행됨
 
-  // useEffect(() => {
-  //   if (nickname === "") {
-  //     setNickname_Check_Text("");
-  //     return;
-  //   }
-  //   if (
-  //     is_nickname?.message === "fail" &&
-  //     is_nickname?.error === "exist nickname"
-  //   ) {
-  //     setNickName_Double(false);
-  //     setNickname_Check_Text("사용중인 닉네임입니다.");
-  //   } else if (
-  //     is_nickname?.message === "fail" &&
-  //     is_nickname?.error === "wrong nickname"
-  //   ) {
-  //     setNickName_Double(false);
-  //     setNickname_Check_Text("사용할 수 없는 닉네임입니다.");
-  //   } else if (nickname.length >= 8) {
-  //     setNickname_Check_Text("닉네임 글자 수는 6자 미만이어야합니다.");
-  //   } else {
-  //     setNickName_Double(true);
-  //     setNickname_Check_Text("사용 가능한 닉네임입니다.");
-  //   }
-  // }, [nickname, is_nickname]);
+  // const checkLoginId = useCallback(
+  //   debounce((email) => {
+  //     if (emailRegExp.test(email) === false) {
+  //       emailRef.current.innerText = '이메일 형식에 맞지 않습니다';
+  //       emailRef.current.style.color = '#f2153e';
+  //       setEmailCheck(false);
+  //     } else {
+  //       dispatch(emailDupCheckThunk({ loginId: email })).then((res) => {
+  //         if (res.payload) {
+  //           emailRef.current.innerText = '사용가능한 이메일입니다';
+  //           emailRef.current.style.color = '#0fe05f';
+  //           setEmailCheck(true);
+  //         } else {
+  //           emailRef.current.innerText = '중복되는 이메일입니다';
+  //           emailRef.current.style.color = '#f2153e';
+  //           setEmailCheck(false);
+  //         }
+  //       });
+  //     }
+  //   }, 500),
+  //   [email]
+  // );
 
-  // const submitSignUp = () => {
-  //   if (
-  //     email === "" ||
-  //     nickname === "" ||
-  //     password === "" ||
-  //     confirmPassword === ""
-  //   ) {
-  //     alert("아이디, 닉네임, 비밀번호를 다시 확인 해주세요!");
-  //     return;
-  //   }
+  useEffect(() => {
+    if (password === "" && repassword === "") {
+      passwordSpanRef.current.innerText = "";
+    } else if (password === "") {
+      rePasswordSpanRef.current.style.color = "";
+      rePasswordSpanRef.current.innerText = "";
+      passwordSpanRef.current.style.color = "#f2153e";
+      passwordSpanRef.current.innerText = "비밀번호를 입력해주세요";
+    } else if (repassword === "") {
+      rePasswordSpanRef.current.style.color = "";
+      passwordSpanRef.current.style.color = "";
+    } else {
+      if (password !== repassword) {
+        rePasswordSpanRef.current.style.color = "#f2153e";
+        rePasswordSpanRef.current.innerText = "입력한 비밀번호와 다릅니다";
+        passwordSpanRef.current.style.color = "";
+      } else {
+        passwordSpanRef.current.style.color = "";
+        rePasswordSpanRef.current.innerText = "비밀번호가 일치합니다";
+        rePasswordSpanRef.current.style.color = "#0fe05f";
+      }
+    }
+  }, [password, repassword]);
 
-  //   if (!pwdReg(password)) {
-  //     alert("비밀번호를 4자 이상 입력해주세요!");
-  //     return;
-  //   }
 
-  //   if (password !== confirmPassword) {
-  //     alert("비밀번호 및 비밀번호확인이 다릅니다!");
-  //     return;
-  //   }
-
-  //   dispatch(signUp(signup_info));
-
-  //   setSignUp_Info({
-  //     email: "",
-  //     nickname: "",
-  //     password: "",
-  //     confirmPassword: "",
-  //   });
-  // };
-  // const submitEnterSignUp = (e) => {
-  //   if (e.key === "Enter") {
-  //     submitSignUp();
-  //   }
-  // };
-  // const doubleCheckEmail = useCallback(() => {
-  //   dispatch(checkEmail(email));
-  // }, [email]);
-
-  // const doubleCheckNickname = useCallback(() => {
-  //   dispatch(checkNickname(nickname));
-  // }, [nickname]);
+  const signUpAccount = useCallback(
+    (event) => {
+      event.preventDefault();
+      console.log(emailCheck, nicknameCheck);
+      if (emailCheck === false) {
+        emailRef.current.focus();
+        emailRef.current.style.color = "#f2153e";
+        emailRef.current.innerText =
+          "사용할 수 없는 이메일입니다";
+      } else if (nicknameCheck === false) {
+        nickNameRef.current.focus();
+        nickNameRef.current.style.color = "#f2153e";
+        nickNameRef.current.innerText = "사용할 수 없는 닉네임입니다";
+      } else {
+        if (password !== repassword) {
+          passwordRef.current.style.innerText = "";
+          rePasswordSpanRef.current.focus();
+          rePasswordSpanRef.current.innerText = "입력한 비밀번호와 다릅니다";
+        } else {
+          dispatch(signUpMemberThunk(newMember));
+          alert("땅땅에 성공적으로 가입하셨습니다!");
+          navigate("/login");
+        }
+      }
+    },
+    [email, nickname, password, repassword]
+  );
 
   return (
     <Fragment>
       <SignUpBox>
         <SignUpBoxTitle>
-          <SignUpBoxTitleSpan>Sign Up</SignUpBoxTitleSpan>
+          <SignUpBoxTitleSpan>
+            <MdOutlineArrowBackIos
+              onClick={() => navigate(-1)}
+              className="icon-cancel"
+            />
+            회원가입
+          </SignUpBoxTitleSpan>
         </SignUpBoxTitle>
-        <SignUpBoxForm>
+        <SignUpBoxForm onSubmit={(event) => signUpAccount(event)}>
           <SignUpBoxInputGroup>
+            이메일
             <SignUpBoxInputWrap>
               <SignUpBoxInput
                 type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="이메일 주소를 입력하세요"
                 required
               ></SignUpBoxInput>
+              <SignUpBoxInputIcon ref={emailIconRef}>
+                <BsFillCheckCircleFill className="icon" />
+              </SignUpBoxInputIcon>
             </SignUpBoxInputWrap>
+            <SignUpBoxSpan ref={emailRef}></SignUpBoxSpan>
+          </SignUpBoxInputGroup>
+          <SignUpBoxInputGroup>
+            비밀번호
+            <SignUpBoxInputWrap>
+              <SignUpBoxInput
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="비밀번호를 입력하세요"
+                ref={passwordRef}
+                required
+              ></SignUpBoxInput>
+              <SignUpBoxInputIcon ref={passwordIconRef}>
+                <BsFillCheckCircleFill className="icon" />
+              </SignUpBoxInputIcon>
+            </SignUpBoxInputWrap>
+            <SignUpBoxSpan ref={passwordSpanRef}></SignUpBoxSpan>
           </SignUpBoxInputGroup>
           <SignUpBoxInputGroup>
             <SignUpBoxInputWrap>
               <SignUpBoxInput
+                type="password"
+                value={repassword}
+                onChange={(e) => setRePassword(e.target.value)}
+                placeholder="비밀번호를 다시 입력하세요"
+                ref={rePasswordRef}
+                required
+              ></SignUpBoxInput>
+              <SignUpBoxInputIcon ref={rePasswordIconRef}>
+                <BsFillCheckCircleFill className="icon" />
+              </SignUpBoxInputIcon>
+            </SignUpBoxInputWrap>
+            <SignUpBoxSpan ref={rePasswordSpanRef}></SignUpBoxSpan>
+          </SignUpBoxInputGroup>
+          <SignUpBoxInputGroup>
+            닉네임
+            <SignUpBoxInputWrap>
+              <SignUpBoxInput
                 type="text"
+                value={nickname}
+                onChange={(e) => setNickName(e.target.value)}
                 placeholder="닉네임을 입력하세요(4 ~ 6 글자)"
                 minLength="4"
                 maxLength="6"
                 required
               />
+              <SignUpBoxInputIcon ref={nickNameIconRef}>
+                <BsFillCheckCircleFill className="icon" />
+              </SignUpBoxInputIcon>
             </SignUpBoxInputWrap>
-          </SignUpBoxInputGroup>
-          <SignUpBoxInputGroup>
-            <SignUpBoxInputWrap>
-              <SignUpBoxInput
-                type="text"
-                placeholder="휴대폰 번호를 입력하세요"
-                minLength="4"
-                maxLength="11"
-                required
-              />
-            </SignUpBoxInputWrap>
-          </SignUpBoxInputGroup>
-          <SignUpBoxInputGroup>
-            <SignUpBoxInputWrap>
-              <SignUpBoxInput
-                type="password"
-                placeholder="비밀번호를 입력하세요"
-                required
-              ></SignUpBoxInput>
-            </SignUpBoxInputWrap>
-          </SignUpBoxInputGroup>
-          <SignUpBoxInputGroup>
-            <SignUpBoxInputWrap>
-              <SignUpBoxInput
-                type="password"
-                placeholder="비밀번호를 다시 입력하세요"
-                required
-              ></SignUpBoxInput>
-            </SignUpBoxInputWrap>
+            <SignUpBoxSpan ref={nickNameRef}></SignUpBoxSpan>
           </SignUpBoxInputGroup>
           <SignUpButtonGroup>
             <Button
-              type={"submit"}
-              text={"Submit"}
-              style={{
-                width: "170px",
-                height: "50px",
-                ft_size: "15px",
-                color: "#202020",
-              }}
-            />
-            <Button
               type={"button"}
-              text={"Back"}
+              _onClick={() => navigate("/login")}
+              text={"회원가입"}
               style={{
-                width: "170px",
-                height: "50px",
-                ft_size: "15px",
-                color: "#202020",
-                bg_color: "#727272",
+                width: "100%",
+                height: "56px",
+                ft_size: "18px",
+                color: "#6D6D6D",
+                bg_color: "#DEDEDE",
               }}
             />
           </SignUpButtonGroup>
@@ -204,14 +258,11 @@ export default SignUp;
 
 export const SignUpBox = styled.div`
   position: absolute;
-  border-radius: 5%;
   width: 100%;
-  height: 650px;
-  box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.37);
+  margin-top: 18%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10%;
 `;
 
 export const SignUpBoxTitle = styled.div`
@@ -226,75 +277,78 @@ export const SignUpBoxTitleSpan = styled.span`
   transform: translateY(-25px);
   position: absolute;
   width: 200px;
-  height: 50px;
-  left: 30px;
-  color: #cecece;
-  font-size: 40px;
+  left: 20px;
+  color: #3a3a3a;
+  font-size: 20px;
 `;
 
 export const SignUpBoxForm = styled.form`
   box-sizing: border-box;
   width: 100%;
-  height: 80%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 10px;
+  margin-top: 10%;
+  gap: 16px;
 `;
 
 export const SignUpBoxInputGroup = styled.div`
   box-sizing: border-box;
-  width: 80%;
+  width: 90%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 `;
 
 export const SignUpBoxInputWrap = styled.div`
   position: relative;
   box-sizing: border-box;
   width: 100%;
-  height: 50px;
+  height: 56px;
   display: flex;
   flex-direction: column;
-  .icon-password {
-    position: absolute;
-    top: 50%;
-    right: 4px;
-    transform: translateY(-20px);
-    font-size: 40px;
-    color: #202020;
-    &:hover {
-      cursor: pointer;
-    }
-  }
 `;
 
 export const SignUpBoxInput = styled.input`
   position: absolute;
   box-sizing: border-box;
+  justify-content: center;
   padding-left: 10px;
-  padding-right: 50px;
-  font-size: 15px;
-  background-color: #cecece;
+  font-size: 18px;
+  background-color: #ffffff;
   color: black;
   width: 100%;
-  height: 50px;
-  border: none;
-  border-radius: 10px;
+  height: 56px;
+  border: 1px solid #dedede;
+  border-radius: 8px;
   &:focus {
     outline: none;
+    border-color: #6d6d6d;
   }
 `;
 
+export const SignUpBoxInputIcon = styled.div`
+  .icon {
+    position: absolute;
+    right: 10px;
+    color: #6d6d6d;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+`;
+
+export const SignUpBoxSpan = styled.span`
+  height: 20px;
+  color: transparent;
+  font-size: 13px;
+`;
+
 export const SignUpButtonGroup = styled.div`
-  margin-top: 5%;
-  width: 80%;
-  height: 100px;
+  width: 90%;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 25px;
+  padding-top: 28%;
 `;

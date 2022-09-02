@@ -2,12 +2,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 //package import
-import { Api } from "../../shared/Api";
+import api from "../../shared/Api";
 
 export const loginMemberThunk = createAsyncThunk(
   "member/loginMember",
   async (payload, thunkAPI) => {
-    const resData = await Api
+    const resData = await api
       .post(`${URL}/member/login`, payload)
       .then((res) => res)
       .catch((err) => console.err(err));
@@ -23,11 +23,26 @@ export const loginMemberThunk = createAsyncThunk(
 export const signUpMemberThunk = createAsyncThunk(
   "member/signUpMember",
   async (payload, thunkAPI) => {
-    const resData = await Api.
-    post(`${URL}/member/signUp`, payload).
-    then((res) => res);
+    const resData = await api
+      .post(`${URL}/member/signUp`, payload)
+      .then((res) => res);
 
     return thunkAPI.fulfillWithValue(resData);
+  }
+);
+
+export const kakaoAuthThunk = createAsyncThunk(
+  "member/kakaoLogin",
+  async (payload, thunkAPI) => {
+    const resData = await api
+      .get(`/oauth/kakao/callback?code=${payload.code}`)
+      .then((res) => res);
+    window.localStorage.setItem(
+      "authorization",
+      resData.headers["authorization"].split(" ")[1]
+    );
+
+    return thunkAPI.fulfillWithValue(resData.data.success);
   }
 );
 
@@ -49,4 +64,5 @@ export const memberSlice = createSlice({
   },
 });
 
+export const { loginAction } = memberSlice.actions;
 export default memberSlice.reducer;

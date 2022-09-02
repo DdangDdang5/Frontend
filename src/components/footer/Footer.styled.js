@@ -6,6 +6,7 @@ export const FooterContainer = styled.div`
   height: 70px;
   border-top: 1px solid gray;
   z-index: 1;
+  position: fixed;
   background-color: white;
   bottom: 0;
   position: fixed;

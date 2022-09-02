@@ -1,9 +1,16 @@
-import React from 'react'
+// React import
+import React from "react";
 
-const AuctionCategory = () => {
-	return (
-		<div>AuctionCategory</div>
-	)
-}
+// Style import
+import { CategoryItem } from './AuctionCategory.styled';
 
-export default AuctionCategory
+const AuctionCategory = ({ auction }) => {
+  return (
+    <CategoryItem>
+      <img src="maskable.png" alt="search" />
+      <span>{auction}</span>
+    </CategoryItem>
+  );
+};
+
+export default AuctionCategory;
