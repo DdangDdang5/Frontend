@@ -18,17 +18,25 @@ export const MainContent = styled.div`
   overflow-y: scroll;
 `;
 
+export const BannerContainer = styled.div`
+	width: 100%;
+	height: fit-content;
+`;
+
 export const Banner = styled.div`
   height: 20%;
   min-height: 140px;
   padding: 20px;
 
-  background-color: #dedede;
+  /* background-color: #dedede; */
   font-size: 14px;
+
+  position: relative;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: hidden;
 `;
 
 export const BannerContent = styled.div`
@@ -44,7 +52,7 @@ export const BannerTime = styled.span`
 
 export const BannerTitle = styled.span`
   margin-top: 4px;
-  font-size: 22px;
+  font-size: 20px;
 `;
 
 export const BannerPriceWrap = styled.div`
@@ -55,6 +63,18 @@ export const BannerPrice = styled.span`
   margin-left: 4px;
   font-size: 24px;
   font-weight: bold;
+`;
+
+export const BannerCircle = styled.div`
+  width: 214px;
+  height: 214px;
+  background-color: blue;
+  border-radius: 200px;
+  opacity: 0.4;
+
+  position: absolute;
+  bottom: -100px;
+  right: -50px;
 `;
 
 export const ListContainer = styled.div`
@@ -209,7 +229,7 @@ export const AddAuction = styled.img`
   width: 60px;
   height: 60px;
 
-	border-radius: 30px;
+  border-radius: 30px;
 
   position: absolute;
   bottom: 102px;
