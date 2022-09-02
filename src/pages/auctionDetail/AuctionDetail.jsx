@@ -64,13 +64,12 @@ const AuctionDetailLayout = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  background-color: beige;
 `;
 const DetailBodyWrap = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 70px;
-  height: calc(100vh - 140px);
+  height: calc(100vh - 160px);
   overflow: scroll;
 `;
 const ItemImg = styled.div`
@@ -142,6 +141,7 @@ const DetailBodyContent = styled.div`
   word-break: break-all;
   font-size: 20px;
   height: 100%;
+  background-color: beige;
 `;
 
 const DetailFooter = styled.div`
@@ -152,7 +152,7 @@ const DetailFooter = styled.div`
   flex-direction: row;
   position: absolute;
   bottom: 0;
-  background-color: beige;
+  background-color: skyblue;
 `;
 
 const FooterLeftWrap = styled.div`
