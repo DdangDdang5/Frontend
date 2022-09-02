@@ -5,12 +5,16 @@ import React from "react";
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import AuctionCategoryList from "../../components/auctionCategoryList/AuctionCategoryList";
+import SwipeImage from "../../components/swipeImage/SwipeImage";
 
 // Style import
 import {
-	AddAuction,
+  AddAuction,
   Banner,
+  BannerCircle,
+  BannerContainer,
   BannerContent,
+  BannerItem,
   BannerPrice,
   BannerPriceWrap,
   BannerTime,
@@ -37,24 +41,44 @@ import {
 } from "./Main.styled";
 
 const Main = () => {
+  const data = [
+    {
+			imgUrl: "maskable.png",
+      time: "6일 12:36:01",
+      title: "폰트사이즈가 고민입니다.. 최대길이는 이 정도입니다.",
+      price: 598000,
+    },
+    {
+			imgUrl: "logo512.png",
+      time: "4일 11:59:59",
+      title: "Banner Title!!!",
+      price: 398000,
+    },
+  ];
+
   return (
     <MainContainer>
       <Header logo={true} />
 
       <MainContent>
         {/* 배너 */}
-        <Banner>
-          <BannerContent>
-            <BannerTime>6일 12:36:01</BannerTime>
-            <BannerTitle>
-              폰트사이즈가 고민입니다.. 최대길이는 이 정도입니다.
-            </BannerTitle>
-          </BannerContent>
-          <BannerPriceWrap>
-            <span>최고입찰가</span>
-            <BannerPrice>{598000}원</BannerPrice>
-          </BannerPriceWrap>
-        </Banner>
+        <BannerContainer>
+					<SwipeImage data={data} height="100%">
+	          <Banner>
+	            <BannerContent>
+	              <BannerTime>6일 12:36:01</BannerTime>
+	              <BannerTitle>
+	                폰트사이즈가 고민입니다.. 최대길이는 이 정도입니다.
+	              </BannerTitle>
+	            </BannerContent>
+	            <BannerPriceWrap>
+	              <span>최고입찰가</span>
+	              <BannerPrice>{598000}원</BannerPrice>
+	            </BannerPriceWrap>
+	            <BannerCircle></BannerCircle>
+	          </Banner>
+					</SwipeImage>
+        </BannerContainer>
 
         {/* 카테고리별, 지역별 TOP 6 */}
         <AuctionCategoryList isCategory={true} />
@@ -146,7 +170,7 @@ const Main = () => {
         </ListContainer>
       </MainContent>
 
-			<AddAuction src="maskable.png" alt="auction-img" />
+      <AddAuction src="maskable.png" alt="auction-img" />
 
       <Footer />
     </MainContainer>
