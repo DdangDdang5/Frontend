@@ -10,15 +10,7 @@ import SwipeImage from "../../components/swipeImage/SwipeImage";
 // Style import
 import {
   AddAuction,
-  Banner,
-  BannerCircle,
   BannerContainer,
-  BannerContent,
-  BannerItem,
-  BannerPrice,
-  BannerPriceWrap,
-  BannerTime,
-  BannerTitle,
   LastItem,
   LastList,
   ListContainer,
@@ -54,6 +46,12 @@ const Main = () => {
       title: "Banner Title!!!",
       price: 398000,
     },
+    {
+			imgUrl: "logo192.png",
+      time: "1일 02:30:27",
+      title: "Banner Title!!!",
+      price: 198000,
+    },
   ];
 
   return (
@@ -63,21 +61,7 @@ const Main = () => {
       <MainContent>
         {/* 배너 */}
         <BannerContainer>
-					<SwipeImage data={data} height="100%">
-	          <Banner>
-	            <BannerContent>
-	              <BannerTime>6일 12:36:01</BannerTime>
-	              <BannerTitle>
-	                폰트사이즈가 고민입니다.. 최대길이는 이 정도입니다.
-	              </BannerTitle>
-	            </BannerContent>
-	            <BannerPriceWrap>
-	              <span>최고입찰가</span>
-	              <BannerPrice>{598000}원</BannerPrice>
-	            </BannerPriceWrap>
-	            <BannerCircle></BannerCircle>
-	          </Banner>
-					</SwipeImage>
+					<SwipeImage isMain={true} data={data} height="100%" />
         </BannerContainer>
 
         {/* 카테고리별, 지역별 TOP 6 */}
