@@ -13,12 +13,19 @@ const MyPage = () => {
       <Header />
 
       <MyProfile>
-        <div>Img</div>
+        <MyImgWrap>
+          <MyImgBox>
+            {Img}
+            <div>사진</div>
+          </MyImgBox>
+        </MyImgWrap>
+
         <div>
           <div>닉네임</div>
           <div>정보</div>
         </div>
       </MyProfile>
+
       <div>
         <div>매너온도</div>
         <div>매너온도 점수</div>
@@ -42,11 +49,52 @@ const MyPage = () => {
 
 const MyPageLayout = styled.div`
   display: flex;
+  width: 100%;
+  height: 100vh;
   flex-direction: column;
+  background-color: beige;
 `;
 const MyProfile = styled.div`
   display: flex;
+  flex-direction: column;
+
   margin: 70px 10px 10px 10px;
+  background-color: skyblue;
+  margin-top: 70px;
+`;
+const MyImgWrap = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 120px;
+  margin-top: 32px;
+
+  background-color: aqua;
+`;
+const MyImgBox = styled.div`
+  display: flex;
+  width: 120px;
+  height: 100%;
+
+  img {
+    display: flex;
+    width: 120px;
+    height: 120px;
+    border-radius: 120px;
+  }
+  div {
+    display: flex;
+    position: absolute;
+    top: 186px;
+    left: 219px;
+    width: 36px;
+    height: 36px;
+    border-radius: 36px;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+  }
 `;
 const MyStateContainer = styled.div`
   display: flex;

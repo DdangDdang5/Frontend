@@ -9,84 +9,96 @@ const Auction = () => {
   );
 
   return (
-    <AuctionItemWrap onClick={() => navigate("/auctionDetail")}>
-      <ItemPicture>{Img}</ItemPicture>
+    <AuctionItemWrap onClick={() => navigate("/AuctionDetail")}>
+      <AuctionItemContainer>
+        <ItemPicture>{Img}</ItemPicture>
+        <ItemContentWrap>
+          <ItemContentHeader>
+            <div>택배</div>
+          </ItemContentHeader>
 
-      <ItemContentWrap>
-        <ItemContentHeader>
-          <div>택배</div>
-          <div>동대문구</div>
-        </ItemContentHeader>
+          {/* 줄에 표시되는 글자수 제한 */}
+          <ItemContentBody>두줄은 나와야 할 것 같습니다</ItemContentBody>
 
-        {/* 줄에 표시되는 글자수 제한 */}
-        <ItemContentBody>제목은 한줄만 노출</ItemContentBody>
-
-        <ItemContentFooter>
-          <StartPrice>입찰시작가</StartPrice>
-          <PresentPrice>100000원</PresentPrice>
-        </ItemContentFooter>
-      </ItemContentWrap>
+          <ItemContentFooter>
+            <StartPrice>최고입찰가</StartPrice>
+            <PresentPrice>100000원</PresentPrice>
+          </ItemContentFooter>
+        </ItemContentWrap>
+      </AuctionItemContainer>
     </AuctionItemWrap>
   );
 };
 
 const AuctionItemWrap = styled.div`
   display: flex;
+  width: 50%;
+  height: 277px;
+`;
+const AuctionItemContainer = styled.div`
+  display: flex;
   flex-direction: column;
-  width: 165px;
-  height: 240px;
+  margin: 12px 10px;
 `;
 const ItemPicture = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-bottom: 8px;
   img {
-    height: 120px;
+    height: 160px;
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 10px;
+    border-radius: 8px;
   }
 `;
 const ItemContentWrap = styled.div`
   display: flex;
-  flex: 1;
+  border-radius: 10px;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
-  height: 120px;
+  height: 117px;
 `;
 const ItemContentHeader = styled.div`
   display: flex;
   width: 100%;
-  height: ;
+  height: 20px;
+  margin-bottom: 8px;
+
   div {
-    font-size: 10px;
+    align-items: center;
+    font-size: 14px;
     margin-right: 5px;
-    padding: 2px;
-    border: 1px solid red;
-    border-radius: 30px;
+    padding: 1px 6px;
+    border-radius: 100px;
+    background-color: #dedede;
   }
 `;
 const ItemContentBody = styled.div`
   display: flex;
-  margin-bottom: 5px;
-  width: 390px;
-  font-size: 13px;
+  width: 100%;
+  word-break: break-all;
+  font-size: 18px;
+  margin-bottom: 8px;
 `;
 const ItemContentFooter = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 const StartPrice = styled.div`
   display: flex;
-  font-size: 13px;
-  margin-right: 5px;
+  font-size: 14px;
+  margin-right: 4px;
+  color: #9b9b9b;
 `;
 const PresentPrice = styled.div`
   display: flex;
-  font-size: 13px;
+  font-size: 18px;
 `;
 
 export default Auction;
