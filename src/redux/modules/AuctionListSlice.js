@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../shared/Api";
+import { axios } from "axios";
 
 const initialState = {
   auctionList: [],
@@ -10,8 +11,8 @@ export const auctionItemList = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get(`/auction`);
-      // return thunkAPI.fulfillWithValue(response.data.data);
-      return console.log("드가자아아아아", response);
+      return thunkAPI.fulfillWithValue(response.data.data);
+      // return console.log("드가자아아아아", response);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -67,6 +68,15 @@ export const deleteAuctionItem = createAsyncThunk(
 const auctionListSlice = createSlice({
   name: "auctionList",
   initialState,
+  // reducers: {
+  //   onModalHandler: (state, action)=>{
+  //     state.auctionList.map((post)=>{
+  //       if(post)
+  //       (post.isModalMode = !post.isModalMode)
+  //     })
+  //   }
+  //   ,
+  // },
   extraReducers: {
     [auctionItemList.fulfilled]: (state, action) => {
       state.auctionList = action.payload;

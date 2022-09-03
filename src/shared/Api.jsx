@@ -1,5 +1,4 @@
 import axios from "axios";
-import { createDispatchHook } from "react-redux";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_URL,

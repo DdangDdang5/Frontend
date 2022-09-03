@@ -2,8 +2,10 @@ import React from "react";
 import Header from "../../components/header/Header";
 import styled from "styled-components";
 import Footer from "../../components/footer/Footer";
+import { useNavigate } from "react-router-dom";
 
 const MyPage = () => {
+  const navigate = useNavigate();
   const Img = (
     <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
   );
@@ -37,7 +39,12 @@ const MyPage = () => {
         <button>관심목록</button>
       </MyStateContainer>
       <div>
-        <div>프로필 수정</div>
+        <button
+          onClick={() => {
+            navigate("/profileEdit");
+          }}>
+          프로필 수정
+        </button>
         <div>키워드 알림</div>
         <div></div>
         <div></div>

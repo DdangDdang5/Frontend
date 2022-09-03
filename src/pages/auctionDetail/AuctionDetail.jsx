@@ -1,56 +1,64 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../components/header/Header";
 import styled from "styled-components";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux/es/exports";
+import { auctionDetail } from "../../redux/modules/AuctionSlice";
 
 const AuctionDetail = () => {
-  const Img = (
-    <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
-  );
+  const dispatch = useDispatch();
+  const params = useParams();
+  const data = useSelector((state) => state.auction.auction);
+
+  console.log(params.auctionId);
+  useEffect(() => {
+    if (!params?.auctionId) {
+      return;
+    } else {
+      dispatch(auctionDetail(params?.auctionId));
+    }
+  }, [params?.auctionId]);
+
+  if (!data) {
+    return <></>;
+  }
 
   return (
     <AuctionDetailLayout>
       <Header />
 
       <DetailBodyWrap>
-        <ItemImg>{Img}</ItemImg>
+        <ItemImg>
+          <img src={data.multiImages[0].imgUrl} alt="" />
+        </ItemImg>
 
         <DetailBodyContainer>
           <DetailBodyProfile>
-            <DetailBodyProfileImg>{Img}</DetailBodyProfileImg>
+            <DetailBodyProfileImg>
+              <img src={data.profileImgUrl} alt="" />
+            </DetailBodyProfileImg>
             <DetailBodyProfileContent>
-              <div className="nickName">아이유</div>
+              <div className="nickName">{}</div>
               <div className="trustCount">신뢰도</div>
             </DetailBodyProfileContent>
           </DetailBodyProfile>
 
-          <DetailBodyTitle>
-            게시글 제목이 들어가야 될 것 같습니다.
-          </DetailBodyTitle>
+          <DetailBodyTitle>{}</DetailBodyTitle>
 
           <DetailBodyTag>
-            <div>택배</div>
-            <div>서대문구</div>
+            {/* {data.direct ? <div>택배</div> : ""}
+            {data.delivery ? <div>직거래</div> : ""} */}
           </DetailBodyTag>
 
-          <DetailBodyContent>
-            경매 내용입니다. 글자수 제한이 필요할까요?또 모르지 내 마음이 저
-            날씨처럼 바뀔지 날 나조차 다 알 수 없으니 그게 뭐가 중요하니 지금
-            네게 완전히 푹 빠졌단 게 중요한 거지 아마 꿈만 같겠지만 분명 꿈이
-            아니야 달리 설명할 수 없는 이건 사랑일 거야 방금 내가 말한 감정 감히
-            의심하지 마 그냥 좋다는 게 아냐 What's after 'LIKE'? 경매
-            내용입니다. 글자수 제한이 필요할까요?또 모르지 내 마음이 저 날씨처럼
-            바뀔지 날 나조차 다 알 수 없으니 그게 뭐가 중요하니 지금 네게 완전히
-            푹 빠졌단 게 중요한 거지 아마 꿈만 같겠지만 분명 꿈이 아니야 달리
-            설명할 수 없는 이건 사랑일 거야 방금 내가 말한 감정 감히 의심하지 마
-            그냥 좋다는 게 아냐 What's after 'LIKE'?
-          </DetailBodyContent>
+          {/* <DetailBodyContent>{data.content}</DetailBodyContent> */}
         </DetailBodyContainer>
       </DetailBodyWrap>
 
       <DetailFooter>
         <FooterLeftWrap>
           <div className="presentPrice">최근 입찰가</div>
-          <div className="price">1000원</div>
+          {/* <div className="price">{data.nowPrice}원</div> */}
         </FooterLeftWrap>
         <FooterRightWrap>
           <button>입찰하기</button>
@@ -107,7 +115,7 @@ const DetailBodyProfileContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   .nickName {
     font-size: 16px;
     font-weight: 700;
@@ -147,6 +155,7 @@ const DetailBodyContent = styled.div`
 const DetailFooter = styled.div`
   display: flex;
   justify-content: space-between;
+
   width: 100%;
   height: 74px;
   flex-direction: row;

@@ -29,7 +29,7 @@ function App() {
         <Route path="/chatList" element={<ChatList />} />
         <Route path="/auctionList" element={<AuctionList />} />
         <Route path="/auctionWrite" element={<AuctionWrite />} />
-        <Route path="/auctionDetail" element={<AuctionDetail />} />
+        <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
       </Routes>
     </div>

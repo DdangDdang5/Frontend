@@ -17,9 +17,7 @@ const AuctionList = () => {
   // const token = localStorage.
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
-
   useEffect(() => {
     dispatch(auctionItemList());
   }, []);
@@ -27,7 +25,7 @@ const AuctionList = () => {
   return (
     <AuctionListLayout>
       <Header />
-      
+
       <ListCategoryWrap>
         <CategoryBtn>
           <CategoryBtnText>전체품목</CategoryBtnText>
@@ -43,16 +41,9 @@ const AuctionList = () => {
       </ListCategoryWrap>
 
       <ListContents>
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
+        {AuctionListData.map((index, item) => {
+          return <Auction key={index.auctionId} data={index} />;
+        })}
       </ListContents>
       {/* <PlusBtn>+</PlusBtn> */}
       <Footer />
@@ -103,7 +94,7 @@ const ListContents = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   align-content: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   height: calc(100vh - 200px);
   overflow: auto;
   padding: 0px 10px;
