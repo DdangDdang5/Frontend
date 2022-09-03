@@ -3,10 +3,13 @@ import React from "react";
 
 // Style import
 import {
+	ChatRoomAlarm,
   ChatRoomContainer,
   ChatRoomContent,
   ChatRoomInfo,
   ChatRoomMessage,
+  ChatRoomMessageWrap,
+  ChatRoomNickname,
   ChatRoomProfile,
 } from "./ChatRoom.styled";
 
@@ -16,13 +19,15 @@ const ChatRoom = () => {
       <ChatRoomProfile src="maskable.png" alt="profile" />
       <ChatRoomContent>
         <ChatRoomInfo>
-          <span>username</span>
-          <span>place</span>
-          <span>time</span>
+          <ChatRoomNickname>nickname</ChatRoomNickname>
+          <span>오후 2:30</span>
         </ChatRoomInfo>
-        <ChatRoomMessage>
-          message message message message message message
-        </ChatRoomMessage>
+				<ChatRoomMessageWrap>
+	        <ChatRoomMessage>
+	          채팅방 메세지 내용입니다. 두 줄까지 확인 가능합니다.
+	        </ChatRoomMessage>
+					<ChatRoomAlarm>1</ChatRoomAlarm>
+				</ChatRoomMessageWrap>
       </ChatRoomContent>
     </ChatRoomContainer>
   );

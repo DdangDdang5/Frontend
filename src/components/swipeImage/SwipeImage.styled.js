@@ -85,7 +85,7 @@ export const BannerPrice = styled.span`
 export const BannerCircle = styled.div`
   width: 214px;
   height: 214px;
-  background-color: blue;
+  background-color: gray;
   border-radius: 200px;
   opacity: 0.4;
 
