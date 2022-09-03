@@ -43,7 +43,6 @@ const Main = () => {
   const dispatch = useDispatch();
 
   const auctionAllList = useSelector((state) => state.auctionList.auctionList);
-	console.log(auctionAllList);
 
 	// 판매중인 경매 목록
   const auctionSaleList = auctionAllList.filter(
