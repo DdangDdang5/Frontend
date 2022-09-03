@@ -2,13 +2,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../shared/Api";
 
-export const emailDupCheckThunk = createAsyncThunk(
-  "member/emailDupCheck",
+export const emailCheckThunk = createAsyncThunk(
+  "member/emailCheck",
   async (payload, thunkAPI) => {
     const resData = await api
-      .post(`/member/signup`, payload)
-      .then((res) => res.data.success)
-      .catch((err) => console.err(err));
+      .post(`/member/emailcheck`, payload)
+      .then((res) => res.data.success);
     return thunkAPI.fulfillWithValue(resData.data.data);
   }
 );
