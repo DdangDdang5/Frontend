@@ -62,13 +62,29 @@ export const PopularList = styled.div`
 `;
 
 export const PopularItem = styled.div`
+  /* background-color: gray; */
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+
+    border-radius: 8px;
+
+    position: absolute;
+    opacity: 0.4;
+
+    object-fit: cover;
+  }
+`;
+
+export const PopularItemContent = styled.div`
   width: 185px;
   min-width: 185px;
   height: 250px;
   padding: 16px;
 
-  background-color: gray;
-  border-radius: 8px;
+  z-index: 1;
 
   display: flex;
   flex-direction: column;
