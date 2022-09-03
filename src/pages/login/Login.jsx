@@ -2,24 +2,23 @@
 import { Fragment, useRef, useState, useCallback, useEffect } from "react";
 
 // Redux import
-// import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux/es/exports";
-import { loginAction, loginMemberThunk } from "../../redux/modules/MemberSlice";
+import { useDispatch, useSelector } from "react-redux/es/exports";
+import { loginMemberThunk } from "../../redux/modules/MemberSlice";
 
 // Component & Element import
 import Button from "../../elements/button/Button";
 
 // Package import
 import { MdCancel } from "react-icons/md";
-// import { getCookie } from "../../shared/Cookie";
 import { useNavigate } from "react-router-dom";
-
-// Style import
 import styled from "styled-components";
+// import { getCookie } from "../../shared/Cookie";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
+  const REDIRECT_URI = "http://54.180.89.34:8080/oauth/kakao/callback";
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -46,30 +45,21 @@ const Login = () => {
     setPassword("");
   }, [password]);
 
-  // const isLogin = useSelector((state) => state.member.isLogin);
+  const isLogin = useSelector((state) => state.member.isLogin);
+  const member = useSelector((state) => state.member.member);
   // const token = getCookie("accessToken")
+  useEffect(() => {}, [dispatch]);
 
-  const loginAccount = useCallback(
+  const onsubmitHandler = useCallback(
     async (event) => {
       event.preventDefault();
-      dispatch(loginMemberThunk({ loginId: email, password })).then((res) => {
-        if (email === "") {
-          emailRef.current.innerText = "계정을 입력해주세요";
-          emailRef.current.style.color = "#f2153e";
-          passwordRef.current.innerText = "";
-        } else if (emailRegExp.test(email) === false) {
-          emailRef.current.innerText = "이메일 형식에 맞지 않습니다";
-          emailRef.current.style.color = "#f2153e";
-          passwordRef.current.innerText = "";
-        } else {
-          if (res.payload) {
-            dispatch(loginAction({ nickname: email, loginStatus: true }));
-            navigate("/");
-          } else {
-            alert("로그인 실패하였습니다.");
-          }
-        }
-      });
+      if (email === "") {
+        alert("이메일을 입력해주세요");
+      } else if (emailRegExp.test(email) === false) {
+        alert("이메일 형식에 맞지 않습니다");
+      } else {
+        dispatch(loginMemberThunk({ email, password }));
+      }
     },
     [email, password]
   );
@@ -80,12 +70,14 @@ const Login = () => {
         <LoginBoxTitle>
           <LoginBoxTitleSpan>땅땅</LoginBoxTitleSpan>
         </LoginBoxTitle>
-        <LoginBoxForm onSubmit={(event) => loginAccount(event)}>
+        <LoginBoxForm onSubmit={(event) => onsubmitHandler(event)}>
           <LoginBoxInputGroup>
             <LoginBoxInputWrap>
               <LoginBoxInput
-                type="text"
-                placeholder="이메일 주소를 입력하세요"
+                type={"text"}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="이메일을 입력하세요."
                 required
               />
               <LoginBoxInputIcon ref={emailIconRef}>
@@ -96,8 +88,10 @@ const Login = () => {
           <LoginBoxInputGroup>
             <LoginBoxInputWrap>
               <LoginBoxInput
-                type="password"
-                placeholder="패스워드를 입력하세요"
+                type={"password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="비밀번호를 입력하세요."
               />
               <LoginBoxInputIcon ref={emailIconRef}>
                 <MdCancel onClick={deletePasswordText} className="icon" />
@@ -121,14 +115,18 @@ const Login = () => {
         <LoginBoxSignUp>
           <LoginBoxSignUpText>
             계정정보를 잊으셨나요?
-            <LoginBoxSignUpLink>회원가입하기</LoginBoxSignUpLink>
+            <LoginBoxSignUpLink onClick={() => navigate("/signup")}>
+              회원가입하기
+            </LoginBoxSignUpLink>
           </LoginBoxSignUpText>
         </LoginBoxSignUp>
         <LoginBoxkakaoButton>
           <Button
             type={"button"}
             text={"카카오 로그인"}
-            _onClick={() => {}}
+            onClick={() => {
+              window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+            }}
             style={{
               width: "100%",
               height: "56px",

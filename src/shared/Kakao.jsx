@@ -9,7 +9,7 @@ const Kakao = () => {
   const authorization_code = new URL(window.location.href).searchParams.get(
     "code"
   );
-
+  
   useEffect(() => {
     const fetchCode = (code) => {
       dispatch(kakaoAuthThunk({ code })).then((res) => {
