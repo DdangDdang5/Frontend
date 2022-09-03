@@ -68,6 +68,15 @@ export const deleteAuctionItem = createAsyncThunk(
 const auctionListSlice = createSlice({
   name: "auctionList",
   initialState,
+  // reducers: {
+  //   onModalHandler: (state, action)=>{
+  //     state.auctionList.map((post)=>{
+  //       if(post)
+  //       (post.isModalMode = !post.isModalMode)
+  //     })
+  //   }
+  //   ,
+  // },
   extraReducers: {
     [auctionItemList.fulfilled]: (state, action) => {
       state.auctionList = action.payload;

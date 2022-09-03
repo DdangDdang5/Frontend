@@ -28,7 +28,9 @@ const ProfileEdit = () => {
           <div className="MyTextCheck">사용할 수 없는 닉네임입니다.</div>
         </MyTextWrap>
       </MyProfile>
-      <MyDoneBtn>완료</MyDoneBtn>
+      <MyDoneBtnWrap>
+        <MyDoneBtn>완료</MyDoneBtn>
+      </MyDoneBtnWrap>
     </ProfileEditLayout>
   );
 };
@@ -123,6 +125,11 @@ const MyTextWrap = styled.div`
     color: #bcbcbc;
   }
 `;
+const MyDoneBtnWrap = styled.div`
+  display: flex;
+  width: 100%;
+  height: 56px;
+`;
 const MyDoneBtn = styled.button`
   display: flex;
   width: 350px;
@@ -135,6 +142,7 @@ const MyDoneBtn = styled.button`
   border-radius: 8px;
   position: fixed;
   bottom: 26px;
-  left: 20px;
+  left: 50%;
+  transform: translate(-50%);
 `;
 export default ProfileEdit;

@@ -1,23 +1,23 @@
 import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 const Auction = ({ data }) => {
   const navigate = useNavigate();
-  console.log("드가자아아!!!!", data);
-
-  const [deliveryStatus, setDeliveryStatus] = useState(false);
 
   return (
-    <AuctionItemWrap onClick={() => navigate("/AuctionDetail")}>
+    <AuctionItemWrap
+      onClick={() => {
+        navigate(`/auctionDetail/${data.auctionId}`);
+      }}>
       <AuctionItemContainer>
         <ItemPicture>
           <img src={data.multiImages[0].imgUrl} alt="" />
         </ItemPicture>
         <ItemContentWrap>
           <ItemContentHeader>
-            <div>택배</div>
-            <div>직거래</div>
+            {data.direct ? <div>택배</div> : ""}
+            {data.delivery ? <div>직거래</div> : ""}
           </ItemContentHeader>
 
           {/* 줄에 표시되는 글자수 제한 */}

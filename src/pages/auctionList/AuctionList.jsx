@@ -17,10 +17,7 @@ const AuctionList = () => {
   // const token = localStorage.
 
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
-  // console.log("드가자아아!!!!", AuctionListData);
-
   useEffect(() => {
     dispatch(auctionItemList());
   }, []);
@@ -45,7 +42,7 @@ const AuctionList = () => {
 
       <ListContents>
         {AuctionListData.map((index, item) => {
-          return <Auction key={index.id} data={index} />;
+          return <Auction key={index.auctionId} data={index} />;
         })}
       </ListContents>
       {/* <PlusBtn>+</PlusBtn> */}
