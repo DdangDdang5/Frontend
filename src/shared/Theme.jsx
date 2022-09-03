@@ -1,23 +1,38 @@
-// const fonts = {
-//   Price : {family: {
-//     bannerTitle: 'Spoqa Han Sans Neo',
-//     price:,
-//     title,
-//     price2,
-//     subtitle,
-//     textBoxTitle,
-//     textBoxInput
-//     content
-//     tag
-//   },
-//   size: {},
-// };
+const fontSizes = {
+  xl: "22px",
+  lg: "20px",
+  md: "18px",
+  ms: "16px",
+  sm: "14px",
+};
 
-// const colors = {};
+const fontWeight = {
+  normal: 400,
+  medium: 500,
+  bold: 700,
+};
 
-// const Theme = {
-//   fonts,
-//   colors,
-// };
+const lineHeight = {};
 
-// export default Theme;
+const colors = {
+  primary: "",
+  secondary: "",
+  background: "#1e1e1e",
+  black: "#3a3a3a",
+  gray5: "#353535",
+  gray4: "#6d6d6d",
+  gray3: "#9b9b9b",
+  gray2: "#bcbcbc",
+  gray1: "#dedede",
+  gray0: "#ededed",
+  white: "#ffffff",
+};
+
+export const Theme = {
+  fontSizes,
+  fontWeight,
+  colors,
+  lineHeight,
+};
+
+export default Theme;
