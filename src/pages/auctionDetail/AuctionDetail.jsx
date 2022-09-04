@@ -36,17 +36,17 @@ const AuctionDetail = () => {
 
       <DetailBodyWrap>
         <ItemImg>
-          <img src="" alt="" />
+          <img src={data.multiImages[0].imgUrl} alt="" />
           {/* {data.multiImages[0].imgUrl} */}
         </ItemImg>
 
         <DetailBodyContainer>
           <DetailBodyProfile>
             <DetailBodyProfileImg>
-              <img src="" alt="" />
+              <img src={data.profileImgUrl} alt="" />
             </DetailBodyProfileImg>
             <DetailBodyProfileContent>
-              <div className="nickName">{}</div>
+              <div className="nickName">{data.member.nickName}</div>
               <div className="trustCount">신뢰도</div>
             </DetailBodyProfileContent>
           </DetailBodyProfile>
@@ -58,14 +58,14 @@ const AuctionDetail = () => {
             {data.delivery ? <div>직거래</div> : ""}
           </DetailBodyTag>
 
-          {/* <DetailBodyContent>{data.content}</DetailBodyContent> */}
+          <DetailBodyContent>{data.content}</DetailBodyContent>
         </DetailBodyContainer>
       </DetailBodyWrap>
 
       <DetailFooter>
         <FooterLeftWrap>
           <div className="presentPrice">최근 입찰가</div>
-          {/* <div className="price">{data.nowPrice}원</div> */}
+          <div className="price">{data.nowPrice}원</div>
         </FooterLeftWrap>
         <FooterRightWrap>
           <button>입찰하기</button>
@@ -168,7 +168,6 @@ const DetailFooter = styled.div`
   flex-direction: row;
   position: absolute;
   bottom: 0;
-  background-color: skyblue;
 `;
 
 const FooterLeftWrap = styled.div`
