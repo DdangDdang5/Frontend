@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 
 //components
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
+import Auction from "../../components/auction/Auction";
 
 //reducer
 import { useDispatch, useSelector } from "react-redux";
-import Auction from "../../components/auction/Auction";
 import { auctionItemList } from "../../redux/modules/AuctionListSlice";
 
 //styled
 import styled from "styled-components";
 
 const AuctionList = () => {
-  // const token = localStorage.
-
   const dispatch = useDispatch();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
   useEffect(() => {
     dispatch(auctionItemList());
-  }, []);
+  }, [dispatch]);
 
+  if (!AuctionListData) {
+    return <></>;
+  }
   return (
     <AuctionListLayout>
       <Header />

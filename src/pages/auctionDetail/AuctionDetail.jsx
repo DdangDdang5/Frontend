@@ -1,22 +1,28 @@
 import React, { useEffect } from "react";
-import Header from "../../components/header/Header";
-import styled from "styled-components";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux/es/exports";
-import { auctionDetail } from "../../redux/modules/AuctionSlice";
+
+//components
+import Header from "../../components/header/Header";
+
+//reducer
+import { useSelector, useDispatch } from "react-redux";
+import { auctionDetailData } from "../../redux/modules/AuctionSlice";
+
+//styled
+import styled from "styled-components";
 
 const AuctionDetail = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const data = useSelector((state) => state.auction.auction);
 
-  console.log(params.auctionId);
+  console.log("드가자아아아", data);
+
   useEffect(() => {
     if (!params?.auctionId) {
-      return;
+      return <></>;
     } else {
-      dispatch(auctionDetail(params?.auctionId));
+      dispatch(auctionDetailData(params?.auctionId));
     }
   }, [params?.auctionId]);
 
@@ -30,13 +36,14 @@ const AuctionDetail = () => {
 
       <DetailBodyWrap>
         <ItemImg>
-          <img src={data.multiImages[0].imgUrl} alt="" />
+          <img src="" alt="" />
+          {/* {data.multiImages[0].imgUrl} */}
         </ItemImg>
 
         <DetailBodyContainer>
           <DetailBodyProfile>
             <DetailBodyProfileImg>
-              <img src={data.profileImgUrl} alt="" />
+              <img src="" alt="" />
             </DetailBodyProfileImg>
             <DetailBodyProfileContent>
               <div className="nickName">{}</div>
@@ -44,11 +51,11 @@ const AuctionDetail = () => {
             </DetailBodyProfileContent>
           </DetailBodyProfile>
 
-          <DetailBodyTitle>{}</DetailBodyTitle>
+          <DetailBodyTitle>{data.title}</DetailBodyTitle>
 
           <DetailBodyTag>
-            {/* {data.direct ? <div>택배</div> : ""}
-            {data.delivery ? <div>직거래</div> : ""} */}
+            {data.direct ? <div>택배</div> : ""}
+            {data.delivery ? <div>직거래</div> : ""}
           </DetailBodyTag>
 
           {/* <DetailBodyContent>{data.content}</DetailBodyContent> */}
