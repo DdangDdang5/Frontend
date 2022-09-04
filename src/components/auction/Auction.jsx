@@ -6,11 +6,11 @@ const Auction = ({ data }) => {
   const navigate = useNavigate();
 
   return (
-    <AuctionItemWrap
-      onClick={() => {
-        navigate(`/auctionDetail/${data.auctionId}`);
-      }}>
-      <AuctionItemContainer>
+    <AuctionItemWrap>
+      <AuctionItemContainer
+        onClick={() => {
+          navigate(`/auctionDetail/${data.auctionId}`);
+        }}>
         <ItemPicture>
           <img src={data.multiImages[0].imgUrl} alt="" />
         </ItemPicture>

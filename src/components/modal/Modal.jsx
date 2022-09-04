@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
+import { hideModal } from "../../redux/modules/ModalSlice";
 
 const Modal = () => {
+  const dispatch = useDispatch();
+  const outSection = useRef();
+
   const regionList = [
     "서울 전체",
     "강남구",
@@ -32,7 +37,13 @@ const Modal = () => {
   ];
 
   return (
-    <ModalLayout>
+    <ModalLayout
+      ref={outSection}
+      onClick={(e) => {
+        if (outSection.current === e.target) {
+          dispatch(hideModal());
+        }
+      }}>
       <CategoryModalWrap>
         <CategoryModalHead>지역선택</CategoryModalHead>
         <CategoryModalBodyContainer>
@@ -46,16 +57,19 @@ const Modal = () => {
             );
           })}
         </CategoryModalBodyContainer>
-        <CategoryModalFooter>닫기</CategoryModalFooter>
+
+        <CategoryModalFooter onClick={() => dispatch(hideModal())}>
+          닫기
+        </CategoryModalFooter>
       </CategoryModalWrap>
     </ModalLayout>
   );
 };
 const ModalLayout = styled.div`
   display: flex;
-  position: fixed;
+  position: absolute;
   z-index: 2;
-  top: 0;
+  bottom: 0;
   left: 0;
   width: 100%;
   height: 100%;
@@ -67,11 +81,12 @@ const CategoryModalWrap = styled.div`
   height: 520px;
   width: 100%;
   flex-direction: column;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  position: relative;
+  top: calc(100% - 520px);
+  bottom: 0px;
 
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translate(-50%);
   background-color: white;
 `;
 const CategoryModalHead = styled.div`
@@ -82,13 +97,17 @@ const CategoryModalHead = styled.div`
   width: 100%;
   font-size: 18px;
   font-weight: 400;
-  border-radius: 20px;
 `;
 const CategoryModalBodyContainer = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   overflow: auto;
+  ::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+  }
+
   align-content: flex-start;
   justify-content: flex-start;
   height: 400px;
@@ -103,15 +122,21 @@ const CategoryModalBodyItem = styled.div`
   width: 165px;
 `;
 
-const CategoryModalBodyItemIn = styled.div`
+const CategoryModalBodyItemIn = styled.button`
   display: flex;
   flex-direction: column;
   width: 100%;
   height: 100%;
   justify-content: center;
   align-items: center;
+  font-size: 20px;
+  font-weight: 500;
+  border: none;
+  outline: none;
   border-radius: 100px;
-  background-color: tan;
+  :hover {
+    background-color: #dedede;
+  }
 `;
 const CategoryModalFooter = styled.div`
   display: flex;
