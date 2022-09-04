@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 //components
 import Footer from "../../components/footer/Footer";
@@ -11,10 +11,16 @@ import { auctionItemList } from "../../redux/modules/AuctionListSlice";
 
 //styled
 import styled from "styled-components";
+import { modalSlice } from "../../redux/modules/ModalSlice";
+import Modal from "../../components/modal/Modal";
 
 const AuctionList = () => {
   const dispatch = useDispatch();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
+  const [onModalHandler, setOnModalHandler] = useState(false);
+
+  const modal = useSelector((state) => state.modal.show);
+  console.log(modal);
   useEffect(() => {
     dispatch(auctionItemList());
   }, [dispatch]);
@@ -27,7 +33,8 @@ const AuctionList = () => {
       <Header />
 
       <ListCategoryWrap>
-        <CategoryBtn>
+        <CategoryBtn onClick={() => setOnModalHandler(!onModalHandler)}>
+          {onModalHandler ? <Modal /> : ""}
           <CategoryBtnText>전체품목</CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
         </CategoryBtn>

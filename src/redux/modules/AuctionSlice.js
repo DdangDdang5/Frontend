@@ -2,7 +2,10 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../shared/Api";
 
 const initialState = {
-  auction: [],
+  auction: {
+    member: {},
+    multiImages: [{}],
+  },
 };
 
 export const auctionDetailData = createAsyncThunk(
