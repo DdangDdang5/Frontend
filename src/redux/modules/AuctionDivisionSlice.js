@@ -13,7 +13,7 @@ const initialState = {
     // "스포츠/레저",
   ],
   regionList: [
-		// "서울 전체",
+    // "서울 전체",
     // "강남구",
     // "강동구",
     // "강북구",
@@ -43,29 +43,28 @@ const initialState = {
 };
 
 export const categoryHitList = createAsyncThunk(
-	"getCategoryHitList",
-	async (payload, thunkAPI) => {
-		try {
-			const response = await api.get('/category/hit');
-			return response.data.data;
-		} catch (err) {
-			console.log(err);
-		}
-	}
-)
+  "getCategoryHitList",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get("/category/hit");
+      return response.data.data;
+    } catch (err) {
+      console.log(err);
+    }
+  },
+);
 
 export const regionHitList = createAsyncThunk(
-	"getRegionHitList",
-	async (payload, thunkAPI) => {
-		try {
-			const response = await api.get('/region/hit');
-			return response.data.data;
-		} catch (err) {
-			console.log(err);
-		}
-	}
-)
-
+  "getRegionHitList",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get("/region/hit");
+      return response.data.data;
+    } catch (err) {
+      console.log(err);
+    }
+  },
+);
 
 const actionDivisionSlice = createSlice({
   name: "actionDivision",
@@ -73,18 +72,19 @@ const actionDivisionSlice = createSlice({
   reducers: {
     getCategoryList(state, action) {},
 
-    getPlaceList(state, action) {},
+    getRegionList(state, action) {},
   },
 
-	extraReducers: {
-		[categoryHitList.fulfilled]: (state, action) => {
-			state.categoryList = action.payload;
-		},
+  extraReducers: {
+    [categoryHitList.fulfilled]: (state, action) => {
+      state.categoryList = action.payload;
+    },
 
-		[regionHitList.fulfilled]: (state, action) => {
-			state.regionList = action.payload;
-		},
-	}
+    [regionHitList.fulfilled]: (state, action) => {
+      state.regionList = action.payload;
+    },
+  },
 });
 
+export const { getCategoryList, getRegionList } = actionDivisionSlice.actions;
 export default actionDivisionSlice.reducer;
