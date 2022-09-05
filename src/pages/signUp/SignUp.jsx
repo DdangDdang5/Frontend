@@ -85,7 +85,6 @@ const SignUp = () => {
         setEmailCheck(false);
       } else {
         dispatch(emailCheckThunk({ email })).then((res) => {
-          console.log(res.payload);
           if (res.payload) {
             emailSpanRef.current.innerText = "중복되는 이메일입니다.";
             emailSpanRef.current.style.color = "#BCBCBC";

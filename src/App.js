@@ -14,6 +14,7 @@ import AuctionList from "../src/pages/auctionList/AuctionList";
 import AuctionWrite from "../src/pages/auctionWrite/AuctionWrite";
 import AuctionDetail from "../src/pages/auctionDetail/AuctionDetail";
 import AuctionDone from "../src/pages/auctionDone/AuctionDone";
+import Kakao from "./shared/Kakao";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/auctionWrite" element={<AuctionWrite />} />
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
+        <Route path="/kakao/callback" element={<Kakao />} />
       </Routes>
     </div>
   );

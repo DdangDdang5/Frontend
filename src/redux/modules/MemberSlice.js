@@ -46,15 +46,19 @@ export const loginMemberThunk = createAsyncThunk(
   }
 );
 
-export const kakaoAuthThunk = createAsyncThunk(
+export const kakaoOauthThunk = createAsyncThunk(
   "member/kakaoLogin",
   async (payload, thunkAPI) => {
     const resData = await api
-      .get(`/oauth/kakao/callback?code=${payload.code}`)
+      .get(`/member/kakao/callback?code=${payload.code}`)
       .then((res) => res);
     window.localStorage.setItem(
       "authorization",
       resData.headers["authorization"].split(" ")[1]
+    );
+    window.localStorage.setItem(
+      "refresh-token",
+      resData.headers["refresh-token"]
     );
 
     return thunkAPI.fulfillWithValue(resData.data.success);
