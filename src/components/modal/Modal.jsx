@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { hideModal } from "../../redux/modules/ModalSlice";
 
 const Modal = () => {
@@ -35,6 +35,17 @@ const Modal = () => {
     "중구",
     "중랑구",
   ];
+  const categoryList = [
+    "가구/인테리어",
+    "가전",
+    "남성 패션",
+    "여성 패션",
+    "악세서리",
+    "스포츠/레저",
+    "취미/게임/악기",
+    "디지털",
+    "뷰티/미용",
+  ];
 
   return (
     <ModalLayout
@@ -58,13 +69,14 @@ const Modal = () => {
           })}
         </CategoryModalBodyContainer>
 
-        <CategoryModalFooter onClick={() => dispatch(hideModal())}>
+        {/* <CategoryModalFooter onClick={() => dispatch(hideModal())}>
           닫기
-        </CategoryModalFooter>
+        </CategoryModalFooter> */}
       </CategoryModalWrap>
     </ModalLayout>
   );
 };
+
 const ModalLayout = styled.div`
   display: flex;
   position: absolute;
@@ -89,6 +101,7 @@ const CategoryModalWrap = styled.div`
 
   background-color: white;
 `;
+
 const CategoryModalHead = styled.div`
   display: flex;
   justify-content: center;
@@ -110,7 +123,7 @@ const CategoryModalBodyContainer = styled.div`
 
   align-content: flex-start;
   justify-content: flex-start;
-  height: 400px;
+  height: 460px;
   padding: 0px 20px;
   gap: 26px 20px;
 `;
@@ -138,13 +151,14 @@ const CategoryModalBodyItemIn = styled.button`
     background-color: #dedede;
   }
 `;
-const CategoryModalFooter = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 60px;
-  font-size: 20px;
-  font-weight: 500;
-`;
+// const CategoryModalFooter = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   width: 100%;
+//   height: 60px;
+//   font-size: 20px;
+//   font-weight: 500;
+// `;
+
 export default Modal;

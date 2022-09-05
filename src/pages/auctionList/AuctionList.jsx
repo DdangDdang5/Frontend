@@ -39,7 +39,9 @@ const AuctionList = () => {
           <CategoryBtnIcon>v</CategoryBtnIcon>
         </CategoryBtn>
         <CategoryBtn>
-          <CategoryBtnText>전체지역</CategoryBtnText>
+          <CategoryBtnText onClick={() => dispatch(showModal())}>
+            전체지역
+          </CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
         </CategoryBtn>
         <CategoryBtn>
