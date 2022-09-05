@@ -83,9 +83,8 @@ const SwipeImage = ({
 					`;
 
           return (
-            <SwipeItem>
+            <SwipeItem key={item.auctionId}>
               <SwipeImg
-                key={idx}
                 src={item.multiImages[0].imgUrl}
                 minHeight={minHeight}
               />
@@ -110,11 +109,11 @@ const SwipeImage = ({
               )}
 
               <SwipeIdx>
-                {Array.from({ length: data.length }, (_, idx_i) =>
-                  idx === idx_i ? (
-                    <SwipeIdxItem color="black" />
+                {Array.from({ length: data.length }, (_, idxI) =>
+                  idx === idxI ? (
+                    <SwipeIdxItem key={idxI} color="black" />
                   ) : (
-                    <SwipeIdxItem color="white" />
+                    <SwipeIdxItem key={idxI} color="white" />
                   ),
                 )}
               </SwipeIdx>

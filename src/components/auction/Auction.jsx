@@ -1,16 +1,16 @@
 import React from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Auction = ({ data }) => {
   const navigate = useNavigate();
 
   return (
-    <AuctionItemWrap
-      onClick={() => {
-        navigate(`/auctionDetail/${data.auctionId}`);
-      }}>
-      <AuctionItemContainer>
+    <AuctionItemWrap>
+      <AuctionItemContainer
+        onClick={() => {
+          navigate(`/auctionDetail/${data.auctionId}`);
+        }}>
         <ItemPicture>
           <img src={data.multiImages[0].imgUrl} alt="" />
         </ItemPicture>

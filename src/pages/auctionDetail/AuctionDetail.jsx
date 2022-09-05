@@ -1,22 +1,28 @@
 import React, { useEffect } from "react";
-import Header from "../../components/header/Header";
-import styled from "styled-components";
-import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { useDispatch } from "react-redux/es/exports";
-import { auctionDetail } from "../../redux/modules/AuctionSlice";
+
+//components
+import Header from "../../components/header/Header";
+
+//reducer
+import { useSelector, useDispatch } from "react-redux";
+import { auctionDetailData } from "../../redux/modules/AuctionSlice";
+
+//styled
+import styled from "styled-components";
 
 const AuctionDetail = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const data = useSelector((state) => state.auction.auction);
 
-  console.log(params.auctionId);
+  console.log("배돌이", data);
+
   useEffect(() => {
     if (!params?.auctionId) {
-      return;
+      return <></>;
     } else {
-      dispatch(auctionDetail(params?.auctionId));
+      dispatch(auctionDetailData(params?.auctionId));
     }
   }, [params?.auctionId]);
 
@@ -31,6 +37,7 @@ const AuctionDetail = () => {
       <DetailBodyWrap>
         <ItemImg>
           <img src={data.multiImages[0].imgUrl} alt="" />
+          {/* {data.multiImages[0].imgUrl} */}
         </ItemImg>
 
         <DetailBodyContainer>
@@ -39,26 +46,26 @@ const AuctionDetail = () => {
               <img src={data.profileImgUrl} alt="" />
             </DetailBodyProfileImg>
             <DetailBodyProfileContent>
-              <div className="nickName">{}</div>
+              <div className="nickName">{data.member.nickName}</div>
               <div className="trustCount">신뢰도</div>
             </DetailBodyProfileContent>
           </DetailBodyProfile>
 
-          <DetailBodyTitle>{}</DetailBodyTitle>
+          <DetailBodyTitle>{data.title}</DetailBodyTitle>
 
           <DetailBodyTag>
-            {/* {data.direct ? <div>택배</div> : ""}
-            {data.delivery ? <div>직거래</div> : ""} */}
+            {data.direct ? <div>택배</div> : ""}
+            {data.delivery ? <div>직거래</div> : ""}
           </DetailBodyTag>
 
-          {/* <DetailBodyContent>{data.content}</DetailBodyContent> */}
+          <DetailBodyContent>{data.content}</DetailBodyContent>
         </DetailBodyContainer>
       </DetailBodyWrap>
 
       <DetailFooter>
         <FooterLeftWrap>
           <div className="presentPrice">최근 입찰가</div>
-          {/* <div className="price">{data.nowPrice}원</div> */}
+          <div className="price">{data.nowPrice}원</div>
         </FooterLeftWrap>
         <FooterRightWrap>
           <button>입찰하기</button>
@@ -161,7 +168,6 @@ const DetailFooter = styled.div`
   flex-direction: row;
   position: absolute;
   bottom: 0;
-  background-color: skyblue;
 `;
 
 const FooterLeftWrap = styled.div`
