@@ -16,7 +16,7 @@ const AuctionDetail = () => {
   const params = useParams();
   const data = useSelector((state) => state.auction.auction);
 
-  console.log("드가자아아아", data);
+  console.log("배돌이", data);
 
   useEffect(() => {
     if (!params?.auctionId) {
