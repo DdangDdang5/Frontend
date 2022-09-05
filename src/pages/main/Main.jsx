@@ -100,7 +100,7 @@ const Main = () => {
 
           <PopularList>
             {auctionPopularList.map((item) => (
-              <PopularItem key={item.id}>
+              <PopularItem key={item.auctionId}>
                 <img
                   src={item.multiImages[0].imgUrl}
                   alt="auction-popular-img"
@@ -136,7 +136,7 @@ const Main = () => {
 
           <NewList>
             {auctionNewList.map((item) => (
-              <NewItem key={item.id}>
+              <NewItem key={item.auctionId}>
                 <img src={item.multiImages[0].imgUrl} alt="auction-new-img" />
                 <NewItemContent>
                   <TagWrap backgroundColor="gray">
@@ -167,7 +167,7 @@ const Main = () => {
 
           <LastList>
             {auctionLastList.map((item) => (
-              <LastItem key={item.id}>
+              <LastItem key={item.auctionId}>
                 <img src={item.multiImages[0].imgUrl} alt="auction-last-img" />
                 <TagWrap backgroundColor="gray">
                   {item.delivery ? <span>택배</span> : null}

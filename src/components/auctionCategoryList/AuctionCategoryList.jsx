@@ -30,7 +30,7 @@ const AuctionCategoryList = ({ isCategory }) => {
   );
 
 	// isCategory === true -> category / false -> place
-  const list6 = isCategory ? categoryList.slice(0, 6) : regionList.slice(0, 6);
+  const list6 = isCategory ? categoryList?.slice(0, 6) : regionList?.slice(0, 6);
   const title = isCategory ? "카테고리" : "직거래 지역";
 
 	useEffect(() => {
@@ -51,7 +51,7 @@ const AuctionCategoryList = ({ isCategory }) => {
         </CategoryMore>
       </CategoryHeader>
       <CategoryList>
-        {list6.map((item, idx) => (
+        {list6?.map((item, idx) => (
           <AuctionCategory auction={isCategory? item.categoryName : item.regionName} key={idx} />
         ))}
       </CategoryList>

@@ -8,7 +8,6 @@ export const MainContainer = styled.div`
 
 export const MainContent = styled.div`
   width: 100%;
-  background-color: aliceblue;
   font-size: 14px;
 
   position: absolute;
@@ -177,7 +176,7 @@ export const LastList = styled.div`
 export const LastItem = styled.div`
   width: 165px;
 
-  background-color: aliceblue;
+  /* background-color: aliceblue; */
 
   img {
     width: 100%;
