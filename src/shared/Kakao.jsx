@@ -1,5 +1,5 @@
 import { useEffect, Fragment } from "react";
-import { kakaoAuthThunk } from "../redux/modules/member";
+import { kakaoOauthThunk } from "../redux/modules/MemberSlice";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
@@ -9,10 +9,10 @@ const Kakao = () => {
   const authorization_code = new URL(window.location.href).searchParams.get(
     "code"
   );
-  
+
   useEffect(() => {
     const fetchCode = (code) => {
-      dispatch(kakaoAuthThunk({ code })).then((res) => {
+      dispatch(kakaoOauthThunk({ code })).then((res) => {
         if (res.payload) {
           navigate("/");
         }

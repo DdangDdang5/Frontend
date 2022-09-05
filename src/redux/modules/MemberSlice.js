@@ -2,13 +2,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../shared/Api";
 
-export const emailDupCheckThunk = createAsyncThunk(
-  "member/emailDupCheck",
+export const emailCheckThunk = createAsyncThunk(
+  "member/emailCheck",
   async (payload, thunkAPI) => {
     const resData = await api
-      .post(`/member/signup`, payload)
-      .then((res) => res.data.success)
-      .catch((err) => console.err(err));
+      .post(`/member/emailcheck`, payload)
+      .then((res) => res.data.success);
     return thunkAPI.fulfillWithValue(resData.data.data);
   }
 );
@@ -47,15 +46,19 @@ export const loginMemberThunk = createAsyncThunk(
   }
 );
 
-export const kakaoAuthThunk = createAsyncThunk(
+export const kakaoOauthThunk = createAsyncThunk(
   "member/kakaoLogin",
   async (payload, thunkAPI) => {
     const resData = await api
-      .get(`/oauth/kakao/callback?code=${payload.code}`)
+      .get(`/member/kakao/callback?code=${payload.code}`)
       .then((res) => res);
     window.localStorage.setItem(
       "authorization",
       resData.headers["authorization"].split(" ")[1]
+    );
+    window.localStorage.setItem(
+      "refresh-token",
+      resData.headers["refresh-token"]
     );
 
     return thunkAPI.fulfillWithValue(resData.data.success);

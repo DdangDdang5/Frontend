@@ -4,7 +4,7 @@ import { Fragment, useState, useEffect, useRef, useCallback } from "react";
 // Redux import
 import { useDispatch } from "react-redux";
 import {
-  emailDupCheckThunk,
+  emailCheckThunk,
   signUpMemberThunk,
 } from "../../redux/modules/MemberSlice";
 
@@ -77,52 +77,51 @@ const SignUp = () => {
     }
   }, [password, repassword]);
 
-  // const checkLoginEmail = useCallback(
-  //   debounce((email) => {
-  //     if (emailRegExp.test(email) === false) {
-  //       emailSpanRef.current.innerText = "이메일 형식에 맞지 않습니다.";
-  //       emailSpanRef.current.style.color = "#BCBCBC";
-  //       setEmailCheck(false);
-  //     } else {
-  //       dispatch(emailDupCheckThunk({ email })).then((res) => {
-  //         console.log(res.payload);
-  //         if (res.payload) {
-  //           emailSpanRef.current.innerText = "사용가능한 이메일입니다.";
-  //           emailSpanRef.current.style.color = "#BCBCBC";
-  //           setEmailCheck(true);
-  //         } else {
-  //           emailSpanRef.current.innerText = "중복되는 이메일입니다.";
-  //           emailSpanRef.current.style.color = "#BCBCBC";
-  //           setEmailCheck(false);
-  //         }
-  //       });
-  //     }
-  //   }, 800),
-  //   [email]
-  // );
+  const checkLoginEmail = useCallback(
+    debounce((email) => {
+      if (emailRegExp.test(email) === false) {
+        emailSpanRef.current.innerText = "이메일 형식에 맞지 않습니다.";
+        emailSpanRef.current.style.color = "#BCBCBC";
+        setEmailCheck(false);
+      } else {
+        dispatch(emailCheckThunk({ email })).then((res) => {
+          if (res.payload) {
+            emailSpanRef.current.innerText = "중복되는 이메일입니다.";
+            emailSpanRef.current.style.color = "#BCBCBC";
+            setEmailCheck(false);
+          } else {
+            emailSpanRef.current.innerText = "사용가능한 이메일입니다.";
+            emailSpanRef.current.style.color = "#BCBCBC";
+            setEmailCheck(true);
+          }
+        });
+      }
+    }, 800),
+    [email]
+  );
 
-  // useEffect(() => {
-  //   if (email !== "") {
-  //     checkLoginEmail(email);
-  //   } else {
-  //     emailSpanRef.current.innerText = "";
-  //     emailSpanRef.current.style.color = "";
-  //   }
-  // }, [checkLoginEmail, email]);
+  useEffect(() => {
+    if (email !== "") {
+      checkLoginEmail(email);
+    } else {
+      emailSpanRef.current.innerText = "";
+      emailSpanRef.current.style.color = "";
+    }
+  }, [checkLoginEmail, email]);
 
   const onsubmitHandler = useCallback(
     (event) => {
       event.preventDefault();
-      // if (emailCheck === false) {
-      //   emailRef.current.focus();
-      //   emailRef.current.style.color = "#BCBCBC";
-      //   emailRef.current.innerText = "중복되는 이메일입니다.";
-      // } else {
-      //   if (nickNameCheck === false) {
-      //     nickNameRef.current.focus();
-      //     nickNameRef.current.style.color = "#BCBCBC";
-      //     nickNameRef.current.innerText = "사용할 수 없는 닉네임입니다.";
-      //   } else {
+      if (emailCheck === false) {
+        emailRef.current.focus();
+        emailRef.current.style.color = "#BCBCBC";
+        emailRef.current.innerText = "중복되는 이메일입니다.";
+      } else {
+        if (nickNameCheck === true) {
+          nickNameRef.current.focus();
+          nickNameRef.current.style.color = "#BCBCBC";
+          nickNameRef.current.innerText = "중복되는 닉네임입니다.";
+        } else {
           if (password !== repassword) {
             passwordRef.current.style.innerText = "";
             rePasswordSpanRef.current.focus();
@@ -132,9 +131,9 @@ const SignUp = () => {
           } else {
             dispatch(signUpMemberThunk(newMember));
           }
-        },
-      // }
-    // },
+        }
+      }
+    },
     [email, password, repassword, nickName]
   );
 

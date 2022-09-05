@@ -14,6 +14,9 @@ import AuctionList from "../src/pages/auctionList/AuctionList";
 import AuctionWrite from "../src/pages/auctionWrite/AuctionWrite";
 import AuctionDetail from "../src/pages/auctionDetail/AuctionDetail";
 import AuctionDone from "../src/pages/auctionDone/AuctionDone";
+
+// Component & Shared import
+import Kakao from "./shared/Kakao";
 import Modal from "./components/modal/Modal";
 
 function App() {
@@ -32,6 +35,7 @@ function App() {
         <Route path="/auctionWrite" element={<AuctionWrite />} />
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
+        <Route path="/kakao/callback" element={<Kakao />} />
         <Route path="/modal" element={<Modal />} />
       </Routes>
     </div>
