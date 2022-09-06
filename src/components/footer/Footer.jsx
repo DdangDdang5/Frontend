@@ -18,7 +18,7 @@ const Footer = () => {
     ["홈", "/"],
     ["검색", "/search"],
     ["채팅", "/chatList"],
-    ["마이페이지", "mypage"],
+    ["마이페이지", "/mypage"],
   ];
 
   return (

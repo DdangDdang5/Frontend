@@ -19,14 +19,19 @@ import AuctionDone from "../src/pages/auctionDone/AuctionDone";
 import Kakao from "./shared/Kakao";
 import Modal from "./components/modal/Modal";
 
+// redux import
+import { useSelector } from "react-redux";
+
 function App() {
+  const modal = useSelector((state) => state.modal.show);
+
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<SignUp />} />
-        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/myPage" element={<MyPage />} />
         <Route path="/profileEdit" element={<ProfileEdit />} />
         <Route path="/search" element={<Search />} />
         <Route path="/chat" element={<Chat />} />
@@ -38,6 +43,7 @@ function App() {
         <Route path="/kakao/callback" element={<Kakao />} />
         <Route path="/modal" element={<Modal />} />
       </Routes>
+      {modal && <Modal />}
     </div>
   );
 }
