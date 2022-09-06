@@ -5,7 +5,6 @@ import React from "react";
 import { CategoryItem } from './AuctionCategory.styled';
 
 const AuctionCategory = ({ division }) => {
-	// console.log(division);
   return (
     <CategoryItem>
       <img src="maskable.png" alt="auction-division" />
