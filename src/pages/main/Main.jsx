@@ -116,7 +116,7 @@ const Main = () => {
                 />
                 <PopularItemContent>
                   <div>
-                    <TagWrap backgroundColor="white">
+                    <TagWrap backgroundColor="white" color="#4d71ff">
                       {item.delivery ? <span>택배</span> : null}
                       {item.direct ? <span>직거래</span> : null}
                       <span>{item.region}</span>
