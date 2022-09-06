@@ -40,7 +40,7 @@ function App() {
         <Route path="/auctionWrite" element={<AuctionWrite />} />
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
-        <Route path="/kakao/callback" element={<Kakao />} />
+        <Route path="/member/kakao/callback" element={<Kakao />} />
         <Route path="/modal" element={<Modal />} />
       </Routes>
       {modal && <Modal />}

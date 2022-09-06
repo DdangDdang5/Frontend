@@ -15,17 +15,22 @@ const fontWeight = {
 const lineHeight = {};
 
 const colors = {
-  primary: "",
-  secondary: "",
-  background: "#1e1e1e",
-  black: "#3a3a3a",
-  gray5: "#353535",
-  gray4: "#6d6d6d",
-  gray3: "#9b9b9b",
-  gray2: "#bcbcbc",
-  gray1: "#dedede",
-  gray0: "#ededed",
-  white: "#ffffff",
+  Primary: "",
+  Secondary: "",
+  Background: "#1e1e1e",
+  Black: "#3a3a3a",
+  Gray5: "#353535",
+  Gray4: "#6d6d6d",
+  Gray3: "#9b9b9b",
+  Gray2: "#bcbcbc",
+  Gray1: "#dedede",
+  Gray0: "#ededed",
+  White: "#ffffff",
+  Blue1: "#4D71FF",
+  Blue2: "#4D8CF6",
+  Green1: "#1DC79A",
+  Yellow: "#FDB024",
+  Red: "#FF664D",
 };
 
 export const Theme = {
