@@ -47,7 +47,7 @@ export const categoryHitList = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get("/category/hit");
-      return response.data.data;
+      return thunkAPI.fulfillWithValue(response.data.data);
     } catch (err) {
       console.log(err);
     }
@@ -59,7 +59,7 @@ export const regionHitList = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get("/region/hit");
-      return response.data.data;
+      return thunkAPI.fulfillWithValue(response.data.data);
     } catch (err) {
       console.log(err);
     }
@@ -79,9 +79,15 @@ const actionDivisionSlice = createSlice({
     [categoryHitList.fulfilled]: (state, action) => {
       state.categoryList = action.payload;
     },
+    [categoryHitList.rejected]: (state, action) => {
+      console.log('Rang rejected get category hit list');
+    },
 
     [regionHitList.fulfilled]: (state, action) => {
       state.regionList = action.payload;
+    },
+    [regionHitList.rejected]: (state, action) => {
+      console.log('Rang rejected get region hit list');
     },
   },
 });

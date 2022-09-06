@@ -17,6 +17,7 @@ import {
   SwipeIdx,
   SwipeIdxItem,
   SwipeImg,
+	SwipeImgLayer,
   SwipeItem,
   SwipeShowContainer,
 } from "./SwipeImage.styled";
@@ -88,6 +89,7 @@ const SwipeImage = ({
                 src={item.multiImages[0].imgUrl}
                 minHeight={minHeight}
               />
+							{/* <SwipeImgLayer /> */}
 
               {/* 메인화면 배너 */}
               {isMain ? (

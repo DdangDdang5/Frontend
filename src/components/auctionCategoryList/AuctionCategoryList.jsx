@@ -21,7 +21,6 @@ import {
 } from "./AuctionCategoryList.styled";
 
 const AuctionCategoryList = ({ isCategory }) => {
-
 	const dispatch = useDispatch();
 
 	// 카테고리 목록, 지역 목록
@@ -43,7 +42,7 @@ const AuctionCategoryList = ({ isCategory }) => {
       <CategoryHeader>
         <CategoryTitle>
           <span>인기 {title} </span>
-          <CategoryNum>TOP 6</CategoryNum>
+          <CategoryNum>TOP {list6?.length}</CategoryNum>
         </CategoryTitle>
         <CategoryMore>
           <span>전체보기</span>
@@ -52,7 +51,7 @@ const AuctionCategoryList = ({ isCategory }) => {
       </CategoryHeader>
       <CategoryList>
         {list6?.map((item, idx) => (
-          <AuctionCategory auction={isCategory? item.categoryName : item.regionName} key={idx} />
+          <AuctionCategory division={isCategory? item.categoryName : item.regionName} key={idx} />
         ))}
       </CategoryList>
     </CategoryListContainer>

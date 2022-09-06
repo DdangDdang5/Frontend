@@ -6,6 +6,7 @@ export const SwipeContainer = styled.div`
   max-width: ${(props) => props.maxWidth};
   height: ${(props) => props.height};
 
+  color: white;
   position: relative;
 
   display: flex;
@@ -26,6 +27,7 @@ export const SwipeItem = styled.div`
   min-width: 100%;
   height: auto;
   min-height: ${(props) => props.minHeight};
+	
 
   position: relative;
 `;
@@ -34,10 +36,16 @@ export const SwipeImg = styled.img`
   width: 100%;
 
   position: absolute;
-  opacity: 0.6;
+	z-index: -5;
 
-  background-color: black;
   object-fit: cover;
+	`;
+
+export const SwipeImgLayer = styled.div`
+	height: 140px;
+	background-color: #dedede;
+	
+	position: absolute;
 `;
 
 export const SwipeContent = styled.div`
@@ -45,7 +53,11 @@ export const SwipeContent = styled.div`
   min-height: 140px;
   padding: 20px;
 
-  /* background-color: #dedede; */
+  background-color: rgba(222, 222, 222, 0.1);
+	/* background: linear-gradient(
+		180deg, #4d71ff 22.5%, 
+		rgba(0, 0, 0, 0.4) 91.9%
+	); */
   font-size: 14px;
 
   position: relative;
@@ -85,9 +97,14 @@ export const BannerPrice = styled.span`
 export const BannerCircle = styled.div`
   width: 214px;
   height: 214px;
-  background-color: gray;
+
+  background: linear-gradient(
+    140.57deg,
+    rgba(253, 176, 36, 0.7) 17.63%,
+    rgba(253, 176, 36, 0) 63.63%
+  );
   border-radius: 200px;
-  opacity: 0.4;
+	z-index: -5;
 
   position: absolute;
   bottom: -100px;
@@ -98,17 +115,17 @@ export const SwipeIdx = styled.div`
   width: fit-content;
 
   position: absolute;
-	top: 20px;
-	right: 20px;
+  top: 20px;
+  right: 20px;
 
-	display: flex;
-	gap: 4px;
+  display: flex;
+  gap: 4px;
 `;
 
 export const SwipeIdxItem = styled.span`
   width: 8px;
   height: 8px;
-	
+
   border-radius: 10px;
   background-color: ${(props) => props.color};
 `;
