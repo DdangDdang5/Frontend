@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import Auction from "../../components/auction/Auction";
+import PlusButton from "../../components/button/PlusButton";
 
 //reducer
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +18,7 @@ const AuctionList = () => {
   const dispatch = useDispatch();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
 
+  console.log(AuctionListData);
   useEffect(() => {
     dispatch(auctionItemList());
   }, [dispatch]);
@@ -48,7 +50,8 @@ const AuctionList = () => {
           return <Auction key={index.auctionId} data={index} />;
         })}
       </ListContents>
-      {/* <PlusBtn>+</PlusBtn> */}
+
+      <PlusButton />
       <Footer />
     </AuctionListLayout>
   );
@@ -102,22 +105,6 @@ const ListContents = styled.div`
   overflow: auto;
   padding: 0px 10px;
   /* border-bottom: ${({ category }) => (category ? "solid 2px blue;" : "")}; */
-`;
-
-const PlusBtn = styled.button`
-  /* display: flex;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  border-radius: 500px;
-  font-size: 50px;
-  color: white;
-  padding: 0px 15px;
-  background-color: orange;
-  :hover {
-    background-color: #de5539;
-  } */
 `;
 
 export default AuctionList;
