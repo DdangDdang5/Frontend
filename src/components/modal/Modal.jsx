@@ -1,11 +1,19 @@
-import React, { useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
-import styled, { keyframes } from "styled-components";
+import React, { useEffect, useRef, useState } from "react";
+
+// redux import
+import { useDispatch, useSelector } from "react-redux";
 import { hideModal } from "../../redux/modules/ModalSlice";
+
+// styled import
+import styled, { keyframes } from "styled-components";
 
 const Modal = () => {
   const dispatch = useDispatch();
-  const outSection = useRef();
+  const modalRef = useRef();
+
+  const category = useSelector((state) => state.modal.category);
+  const [modalList, setModalList] = useState([]);
+  const [title, setTitle] = useState("");
 
   const regionList = [
     "서울 전체",
@@ -47,18 +55,32 @@ const Modal = () => {
     "뷰티/미용",
   ];
 
+  useEffect(() => {
+    if (category === "regionList") {
+      setModalList(regionList);
+      setTitle("지역 선택");
+    } else if (category === "categoryList") {
+      setModalList(categoryList);
+      setTitle("품목 선택");
+    } else {
+    }
+    return () => {
+      setModalList([]);
+    };
+  }, [category]);
+
   return (
     <ModalLayout
-      ref={outSection}
+      ref={modalRef}
       onClick={(e) => {
-        if (outSection.current === e.target) {
+        if (modalRef.current === e.target) {
           dispatch(hideModal());
         }
       }}>
       <CategoryModalWrap>
-        <CategoryModalHead>지역선택</CategoryModalHead>
+        <CategoryModalHead>{title}</CategoryModalHead>
         <CategoryModalBodyContainer>
-          {regionList.map((index, item) => {
+          {modalList.map((index, item) => {
             return (
               <CategoryModalBodyItem>
                 <CategoryModalBodyItemIn key={item}>

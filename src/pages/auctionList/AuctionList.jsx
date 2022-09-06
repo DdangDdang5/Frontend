@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 //components
 import Footer from "../../components/footer/Footer";
@@ -8,19 +8,14 @@ import Auction from "../../components/auction/Auction";
 //reducer
 import { useDispatch, useSelector } from "react-redux";
 import { auctionItemList } from "../../redux/modules/AuctionListSlice";
+import { showModal } from "../../redux/modules/ModalSlice";
 
 //styled
 import styled from "styled-components";
-import { modalSlice, showModal } from "../../redux/modules/ModalSlice";
-import Modal from "../../components/modal/Modal";
 
 const AuctionList = () => {
   const dispatch = useDispatch();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
-
-  const modal = useSelector((state) => state.modal.show);
-
-  console.log(modal);
 
   useEffect(() => {
     dispatch(auctionItemList());
@@ -32,14 +27,13 @@ const AuctionList = () => {
   return (
     <AuctionListLayout>
       <Header />
-      {modal ? <Modal /> : ""}
       <ListCategoryWrap>
-        <CategoryBtn onClick={() => dispatch(showModal())}>
+        <CategoryBtn onClick={() => dispatch(showModal("categoryList"))}>
           <CategoryBtnText>전체품목</CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
         </CategoryBtn>
         <CategoryBtn>
-          <CategoryBtnText onClick={() => dispatch(showModal())}>
+          <CategoryBtnText onClick={() => dispatch(showModal("regionList"))}>
             전체지역
           </CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
