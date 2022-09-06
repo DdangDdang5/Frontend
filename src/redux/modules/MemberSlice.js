@@ -1,5 +1,6 @@
 //Redux import
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
 import api from "../../shared/Api";
 
 export const emailCheckThunk = createAsyncThunk(

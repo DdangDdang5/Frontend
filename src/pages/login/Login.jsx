@@ -5,13 +5,13 @@ import { Fragment, useRef, useState, useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import { loginMemberThunk } from "../../redux/modules/MemberSlice";
 
-// Component & Element import
-import Button from "../../elements/button/Button";
-
 // Package import
 import { MdCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 // import { getCookie } from "../../shared/Cookie";
+
+// Component & Element import
+import Button from "../../elements/button/Button";
 
 // Style import
 import {
@@ -34,8 +34,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
-  const REDIRECT_URI = "http://54.180.89.34:8080/member/kakao/callback";
-
+  const REDIRECT_URI = "http://localhost:3000/member/kakao/callback";
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -129,8 +128,7 @@ const Login = () => {
             </LoginBoxSignUpLink>
           </LoginBoxSignUpText>
         </LoginBoxSignUp>
-        <LoginBoxkakaoButton>
-          <Button
+        <LoginBoxkakaoButton
             type={"button"}
             text={"카카오로 로그인하기"}
             onClick={() => {
@@ -144,7 +142,6 @@ const Login = () => {
               color: "#6D6D6D",
             }}
           />
-        </LoginBoxkakaoButton>
       </LoginBox>
     </Fragment>
   );

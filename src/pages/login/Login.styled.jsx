@@ -96,6 +96,7 @@ export const LoginBoxButtonGroup = styled.div`
 export const LoginBoxkakaoButton = styled.div`
   width: 90%;
   display: flex;
+  border: 1px solid blue;
   flex-direction: column;
   justify-content: center;
   align-items: center;
