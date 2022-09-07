@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 //components
 import Header from "../../components/header/Header";
@@ -13,6 +13,8 @@ import styled from "styled-components";
 
 const AuctionDetail = () => {
   const dispatch = useDispatch();
+	const navigate = useNavigate();
+
   const params = useParams();
   const data = useSelector((state) => state.auction.auction);
 
@@ -20,7 +22,7 @@ const AuctionDetail = () => {
     if (!params?.auctionId) {
       return <></>;
     } else {
-      dispatch(auctionDetailData(params?.auctionId));
+      dispatch(auctionDetailData(+params?.auctionId));
     }
   }, [params?.auctionId]);
 
@@ -56,6 +58,7 @@ const AuctionDetail = () => {
           <DetailBodySelectTag>
             {data.direct ? <div>택배</div> : ""}
             {data.delivery ? <div>직거래</div> : ""}
+            {data.region ? <div>{data.region}</div> : ""}
           </DetailBodySelectTag>
 
           <DetailBodyContent>
@@ -89,18 +92,21 @@ const AuctionDetail = () => {
         </DetailBodyContainer>
 
         <CommentCountContainer>
-          <h3>댓글</h3>
-          <p>5개</p>
+					<CommentCountWrap>
+	          <CommentCountTitle>실시간 채팅방</CommentCountTitle>
+	          <p>5명 참여중</p>
+					</CommentCountWrap>
+					<img src="/maskable.png" alt="moveChat" onClick={() => navigate('/chat')}/>
         </CommentCountContainer>
 
-        <DetailCommentContainer>
+        {/* <DetailCommentContainer>
           <CommentFormBox>
             <div className="inputBox">
               <textarea placeholder="댓글을 입력해주세요." rows="" cols="" />
               <button>댓글 작성</button>
             </div>
           </CommentFormBox>
-        </DetailCommentContainer>
+        </DetailCommentContainer> */}
       </DetailBodyWrap>
 
       <DetailFooterWrap>
@@ -242,7 +248,7 @@ const DetailBodyItemTag = styled.div`
 const CommentCountContainer = styled.div`
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: space-between;
   align-items: center;
   height: 57px;
   padding: 0px 20px;
@@ -257,7 +263,23 @@ const CommentCountContainer = styled.div`
     font-weight: 400;
     color: #9b9b9b;
   }
+
+	img {
+		width: 16px;
+		height: 16px;
+	}
 `;
+
+const CommentCountWrap = styled.div`
+	display: flex;
+	gap: 12px;
+`;
+
+const CommentCountTitle = styled.p`
+	font-weight: 700 !important;
+	color: black !important;
+`;
+
 const DetailCommentContainer = styled.div`
   display: flex;
   flex-direction: column;

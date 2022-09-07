@@ -1,5 +1,6 @@
 // Package import
 import { Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 // Page import
 import Main from "../src/pages/main/Main";
@@ -14,13 +15,11 @@ import AuctionList from "../src/pages/auctionList/AuctionList";
 import AuctionWrite from "../src/pages/auctionWrite/AuctionWrite";
 import AuctionDetail from "../src/pages/auctionDetail/AuctionDetail";
 import AuctionDone from "../src/pages/auctionDone/AuctionDone";
+import MyGrade from "./pages/myGrade/MyGrade";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
 import CategoryModal from "./components/modal/CategoryModal";
-
-// redux import
-import { useSelector } from "react-redux";
 
 function App() {
   const modal = useSelector((state) => state.modal.show);
@@ -41,7 +40,7 @@ function App() {
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
         <Route path="/kakao/callback" element={<Kakao />} />
-
+        <Route path="/mygrade" element={<MyGrade />} />
       </Routes>
       {modal && <CategoryModal />}
     </div>

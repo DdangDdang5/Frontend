@@ -27,7 +27,6 @@ export const SwipeItem = styled.div`
   min-width: 100%;
   height: auto;
   min-height: ${(props) => props.minHeight};
-	
 
   position: relative;
 `;
@@ -39,7 +38,7 @@ export const SwipeImg = styled.img`
 	z-index: -5;
 
   object-fit: cover;
-	`;
+`;
 
 export const SwipeImgLayer = styled.div`
 	height: 140px;
@@ -53,11 +52,11 @@ export const SwipeContent = styled.div`
   min-height: 140px;
   padding: 20px;
 
-  background-color: rgba(222, 222, 222, 0.1);
-	/* background: linear-gradient(
-		180deg, #4d71ff 22.5%, 
-		rgba(0, 0, 0, 0.4) 91.9%
-	); */
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
   font-size: 14px;
 
   position: relative;
