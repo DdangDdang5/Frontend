@@ -40,7 +40,7 @@ const MyPage = () => {
       </MyProfileWrap>
 
       <MyStateWrap>
-        <div className="stateBox">
+        <div className="stateBox" onClick={() => navigate("/myPageMyAuction")}>
           <div className="title">나의 경매</div>
           <div className="count">12</div>
         </div>
