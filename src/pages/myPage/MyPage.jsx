@@ -45,10 +45,16 @@ const MyPage = () => {
           <div className="count">12</div>
         </div>
         <StateBox>
-          <div className="title">참여 경매</div>
+          <div
+            className="title"
+            onClick={() => navigate("/myPageParticipationAuction")}>
+            참여 경매
+          </div>
           <div className="count">36</div>
         </StateBox>
-        <div className="stateBox">
+        <div
+          className="stateBox"
+          onClick={() => navigate("/MyPageInterestAuction")}>
           <div className="title">관심 경매</div>
           <div className="count">50</div>
         </div>
