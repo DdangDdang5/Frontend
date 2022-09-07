@@ -3,9 +3,13 @@ import React from "react";
 
 // Import styled
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { showModal } from "../../redux/modules/ModalSlice";
 
 const PlusButton = () => {
-  return <PlusBtn>+</PlusBtn>;
+  const dispatch = useDispatch();
+
+  return <PlusBtn onClick={() => dispatch(showModal())}>+</PlusBtn>;
 };
 
 const PlusBtn = styled.button`

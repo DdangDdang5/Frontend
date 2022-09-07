@@ -18,7 +18,6 @@ const AuctionList = () => {
   const dispatch = useDispatch();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
 
-  console.log(AuctionListData);
   useEffect(() => {
     dispatch(auctionItemList());
   }, [dispatch]);
