@@ -17,7 +17,7 @@ import AuctionDone from "../src/pages/auctionDone/AuctionDone";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
-import Modal from "./components/modal/Modal";
+import CategoryModal from "./components/modal/CategoryModal";
 
 // redux import
 import { useSelector } from "react-redux";
@@ -41,9 +41,8 @@ function App() {
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
         <Route path="/kakao/callback" element={<Kakao />} />
-        <Route path="/modal" element={<Modal />} />
       </Routes>
-      {modal && <Modal />}
+      {modal && <CategoryModal />}
     </div>
   );
 }
