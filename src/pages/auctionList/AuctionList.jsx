@@ -13,10 +13,12 @@ import { showModal } from "../../redux/modules/ModalSlice";
 
 //styled
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const AuctionList = () => {
   const dispatch = useDispatch();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(auctionItemList());
@@ -43,13 +45,11 @@ const AuctionList = () => {
           <CategoryBtnTimeText>마감임박</CategoryBtnTimeText>
         </CategoryBtn>
       </ListCategoryWrap>
-
       <ListContents>
         {AuctionListData.map((index, item) => {
           return <Auction key={index.auctionId} data={index} />;
         })}
       </ListContents>
-
       <PlusButton />
       <Footer />
     </AuctionListLayout>

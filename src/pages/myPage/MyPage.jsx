@@ -58,19 +58,19 @@ const MyPage = () => {
           <div className="listIcon">
             <div></div>
           </div>
-          <div className="listTilte">이벤트</div>
+          <div className="listTitle">이벤트</div>
         </ListContainer>
         <ListContainer>
           <div className="listIcon">
             <div></div>
           </div>
-          <div className="listTilte">공지사항</div>
+          <div className="listTitle">공지사항</div>
         </ListContainer>
         <ListContainer>
           <div className="listIcon">
             <div></div>
           </div>
-          <div className="listTilte">자주 묻는 질문</div>
+          <div className="listTitle">자주 묻는 질문</div>
         </ListContainer>
       </MyProfileListWrap>
       <Footer />
@@ -242,7 +242,7 @@ const ListContainer = styled.div`
       background-color: #d9d9d9;
     }
   }
-  .listTilte {
+  .listTitle {
     display: flex;
     font-size: 16px;
     font-weight: 400;

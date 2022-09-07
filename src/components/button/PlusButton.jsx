@@ -5,11 +5,14 @@ import React from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { showModal } from "../../redux/modules/ModalSlice";
+import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const PlusButton = () => {
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  return <PlusBtn onClick={() => dispatch(showModal())}>+</PlusBtn>;
+  return <PlusBtn onClick={() => navigate("/auctionWrite")}>+</PlusBtn>;
 };
 
 const PlusBtn = styled.button`
