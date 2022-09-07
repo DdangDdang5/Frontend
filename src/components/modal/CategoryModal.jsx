@@ -7,7 +7,7 @@ import { hideModal } from "../../redux/modules/ModalSlice";
 // styled import
 import styled, { keyframes } from "styled-components";
 
-const Modal = () => {
+const CategoryModal = () => {
   const dispatch = useDispatch();
   const modalRef = useRef();
 
@@ -102,7 +102,7 @@ const Modal = () => {
 const ModalLayout = styled.div`
   display: flex;
   position: absolute;
-  z-index: 2;
+  z-index: 20;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -183,4 +183,4 @@ const CategoryModalBodyItemIn = styled.button`
 //   font-weight: 500;
 // `;
 
-export default Modal;
+export default CategoryModal;
