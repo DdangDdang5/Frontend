@@ -6,6 +6,7 @@ import { auctionItemList } from "../../redux/modules/AuctionListSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -41,26 +42,27 @@ import {
 
 const Main = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const auctionAllList = useSelector((state) => state.auctionList.auctionList);
 
-	// 판매중인 경매 목록
-  const auctionSaleList = auctionAllList.filter(
+  // 판매중인 경매 목록
+  const auctionSaleList = auctionAllList?.filter(
     (item) => item.auctionStatus === true,
   );
 
-	// 인기 경매 목록 3개
+  // 인기 경매 목록 3개
   const auctionPopularList = auctionSaleList
-    .slice()
+    ?.slice()
     .sort((a, b) => b.viewerCnt - a.viewerCnt)
     .slice(0, 3);
-	
-	// 새로운 경매 목록 3개
-  const auctionNewList = auctionSaleList.slice(0, 3);
 
-	// 마감임박 경매 목록 4개
+  // 새로운 경매 목록 3개
+  const auctionNewList = auctionSaleList?.slice(0, 3);
+
+  // 마감임박 경매 목록 4개
   const auctionLastList = auctionSaleList
-    .map((item) => {
+    ?.map((item) => {
       const date = new Date(item.createdAt);
       return {
         ...item,
@@ -79,6 +81,10 @@ const Main = () => {
   useEffect(() => {
     dispatch(auctionItemList());
   }, [dispatch]);
+
+  const moveAuctionDetail = (auctionId) => {
+    navigate(`/auctionDetail/${auctionId}`);
+  };
 
   return (
     <MainContainer>
@@ -100,14 +106,17 @@ const Main = () => {
 
           <PopularList>
             {auctionPopularList.map((item) => (
-              <PopularItem key={item.auctionId}>
+              <PopularItem
+                key={item.auctionId}
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
                 <img
                   src={item.multiImages[0].imgUrl}
                   alt="auction-popular-img"
                 />
                 <PopularItemContent>
                   <div>
-                    <TagWrap backgroundColor="white">
+                    <TagWrap backgroundColor="white" color="#4d71ff">
                       {item.delivery ? <span>택배</span> : null}
                       {item.direct ? <span>직거래</span> : null}
                       <span>{item.region}</span>
@@ -136,7 +145,10 @@ const Main = () => {
 
           <NewList>
             {auctionNewList.map((item) => (
-              <NewItem key={item.auctionId}>
+              <NewItem
+                key={item.auctionId}
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
                 <img src={item.multiImages[0].imgUrl} alt="auction-new-img" />
                 <NewItemContent>
                   <TagWrap backgroundColor="gray">
@@ -167,7 +179,10 @@ const Main = () => {
 
           <LastList>
             {auctionLastList.map((item) => (
-              <LastItem key={item.auctionId}>
+              <LastItem
+                key={item.auctionId}
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
                 <img src={item.multiImages[0].imgUrl} alt="auction-last-img" />
                 <TagWrap backgroundColor="gray">
                   {item.delivery ? <span>택배</span> : null}

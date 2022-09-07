@@ -41,6 +41,7 @@ function App() {
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
         <Route path="/kakao/callback" element={<Kakao />} />
+
       </Routes>
       {modal && <CategoryModal />}
     </div>
