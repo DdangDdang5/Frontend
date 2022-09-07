@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 export const MainContainer = styled.div`
   width: 100%;
-  height: 100vh;
 `;
 
 export const MainContent = styled.div`
@@ -27,7 +26,7 @@ export const ListContainer = styled.div`
 `;
 
 export const ListHeader = styled.span`
-  font-size: ${(props) => (props.fontSize ? props.fontSize : "20px")};
+  font-size: ${(props) => (props.fontSizes ? props.fontSizes : "20px")};
   font-weight: bold;
 
   display: flex;

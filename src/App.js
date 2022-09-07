@@ -15,6 +15,7 @@ import AuctionList from "../src/pages/auctionList/AuctionList";
 import AuctionWrite from "../src/pages/auctionWrite/AuctionWrite";
 import AuctionDetail from "../src/pages/auctionDetail/AuctionDetail";
 import AuctionDone from "../src/pages/auctionDone/AuctionDone";
+import AuctionReview from "./pages/auctionReview/AuctionReview";
 import MyGrade from "./pages/myGrade/MyGrade";
 
 // Component & Shared import
@@ -39,6 +40,7 @@ function App() {
         <Route path="/auctionWrite" element={<AuctionWrite />} />
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
+        <Route path="/auctionReview" element={<AuctionReview />} />
         <Route path="/kakao/callback" element={<Kakao />} />
         <Route path="/mygrade" element={<MyGrade />} />
       </Routes>

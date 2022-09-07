@@ -6,7 +6,7 @@ const fontSizes = {
   sm: "14px",
 };
 
-const fontWeight = {
+const fontWeights = {
   normal: 400,
   medium: 500,
   bold: 700,
@@ -17,25 +17,26 @@ const lineHeight = {};
 const colors = {
   Primary: "",
   Secondary: "",
-  Background: "#1e1e1e",
-  Black: "#3a3a3a",
+  Background: "#1E1E1E",
+  Black: "#3A3A3A",
   Gray5: "#353535",
-  Gray4: "#6d6d6d",
-  Gray3: "#9b9b9b",
-  Gray2: "#bcbcbc",
-  Gray1: "#dedede",
-  Gray0: "#ededed",
-  White: "#ffffff",
+  Gray4: "#646778",
+  Gray3: "#A5A9B6",
+  Gray2: "#C5D0E1",
+  Gray1: "#EBEEF3",
+  Gray0: "#EDEDED",
+  White: "#FFFFFF",
   Blue1: "#4D71FF",
   Blue2: "#4D8CF6",
   Green1: "#1DC79A",
   Yellow: "#FDB024",
   Red: "#FF664D",
+  SkyBlue: "#E9F3FF",
 };
 
 export const Theme = {
   fontSizes,
-  fontWeight,
+  fontWeights,
   colors,
   lineHeight,
 };

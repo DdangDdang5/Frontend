@@ -39,17 +39,18 @@ export const MyGradeInfo = styled.div`
 
 export const MyGradeNickname = styled.span`
   font-size: ${(props) => props.theme.fontSizes.lg} !important;
-  font-weight: ${(props) => props.theme.fontWeight.bold};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
 `;
 
 export const MyGradeGrade = styled.div`
   width: calc(100% - 40px);
+	max-width: 90%;
   margin: 16px auto;
   text-align: left;
 
   p {
     font-size: ${(props) => props.theme.fontSizes.sm};
-    font-weight: ${(props) => props.theme.fontWeight.medium};
+    font-weight: ${(props) => props.theme.fontWeights.medium};
   }
 `;
 
@@ -85,5 +86,5 @@ export const MyGradeBar = styled.div`
 export const MyGradeText = styled.div`
   color: ${(props) => props.theme.colors.Gray3};
 	font-size: ${(props) => props.theme.fontSizes.sm};
-	font-weight: ${(props) => props.theme.fontWeight.normal};
+	font-weight: ${(props) => props.theme.fontWeights.normal};
 `;
