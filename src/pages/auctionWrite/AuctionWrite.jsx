@@ -14,6 +14,25 @@ const AuctionWrite = () => {
             <div>+</div>
             <div>1/10</div>
           </ImgBoxBtn>
+
+          <ImgBox>
+            <img src="" alt="" />
+            <div className="deleteBox">
+              <div>x</div>
+            </div>
+          </ImgBox>
+          <ImgBox>
+            <img src="" alt="" />
+            <div className="deleteBox">
+              <div>x</div>
+            </div>
+          </ImgBox>
+          <ImgBox>
+            <img src="" alt="" />
+            <div className="deleteBox">
+              <div>x</div>
+            </div>
+          </ImgBox>
           <ImgBox>
             <img src="" alt="" />
             <div className="deleteBox">
@@ -31,10 +50,11 @@ const AuctionWrite = () => {
           <div>V</div>
         </WriteBtnBox>
         <WriteTitleContainer>경매 시작가</WriteTitleContainer>
-        <WriteInputBox
-          placeholder="원"
-          styled={{ display: "flex", justifyContent: "flex-end" }}
-        />
+
+        {/* placeHoder 위치 조정이 안됨 ㅡㅡ  */}
+
+        <WriteInputBox placeholder="원" />
+        {/* <input className="inputTag" type="text" placeholder="원" /> */}
 
         <WriteTitleContainer>
           배송 방법
@@ -51,8 +71,10 @@ const AuctionWrite = () => {
           <div>V</div>
         </WriteBtnBox>
         <WriteTitleContainer>상세 설명</WriteTitleContainer>
+        <WriteTextArea placeholder="경매 물품에 대한 상세한 설명을 적어주세요." />
+        <WriteTitleContainer>해시태그</WriteTitleContainer>
+        <WriteInputBox placeholder="최대 6개까지 입력할 수 있습니다." />
       </AuctionWriteWrap>
-
       <Footer />
     </AuctionWriteLayout>
   );
@@ -62,24 +84,30 @@ const AuctionWriteLayout = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
 `;
 const AuctionWriteWrap = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  margin: 70px 20px;
 
-  height: calc(100vh - 200px);
+  margin-top: 70px;
+  padding: 0px 20px;
+
+  height: calc(100vh - 140px);
   overflow: scroll;
+  /* background-color: yellow; */
 `;
 const WriteImgContainer = styled.div`
   display: flex;
-  height: 93px;
-  width: 100%;
+  flex-direction: row;
+  /* height: 93px; */
+  min-height: 93px;
   gap: 12px;
-  background-color: yellow;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
 `;
 const ImgBoxBtn = styled.button`
   display: flex;
@@ -87,23 +115,18 @@ const ImgBoxBtn = styled.button`
   align-items: center;
   justify-content: center;
   height: 100%;
-  width: 93px;
+  min-width: 93px;
   border: none;
   div {
     font-size: 12px;
     font-weight: 400;
   }
-
-  background-color: skyblue;
 `;
 const ImgBox = styled.div`
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   height: 100%;
-  width: 93px;
-  background-color: skyblue;
+  min-width: 93px;
+  background-color: yellow;
   position: relative;
   .deleteBox {
     position: absolute;
@@ -119,14 +142,13 @@ const ImgBox = styled.div`
       right: -3px;
       color: white;
       display: flex;
-      /* justify-content: center;
-      align-items: center; */
     }
   }
 `;
 const WriteTitleContainer = styled.div`
   display: flex;
   margin: 32px 0px 16px 0px;
+  min-height: 24px;
   font-size: 16px;
   font-weight: 700;
   div {
@@ -138,7 +160,7 @@ const WriteTitleContainer = styled.div`
 const WriteInputBox = styled.input`
   display: flex;
   width: 100%;
-  height: 56px;
+  min-height: 56px;
   /* 인풋태그 디브 박스 안벗어나게 */
   box-sizing: border-box;
   border: 1px solid #dedede;
@@ -152,7 +174,7 @@ const WriteInputBox = styled.input`
 const WriteBtnBox = styled.button`
   display: flex;
   width: 100%;
-  height: 48px;
+  min-height: 48px;
   align-items: center;
   justify-content: space-between;
 
@@ -168,7 +190,7 @@ const WriteBtnBox = styled.button`
 const WriteDeliveryStateContainer = styled.div`
   display: flex;
   width: 100%;
-  height: 48px;
+  min-height: 48px;
   gap: 20px;
 
   button {
@@ -185,4 +207,13 @@ const WriteDeliveryStateContainer = styled.div`
     background-color: white;
   }
 `;
+const WriteTextArea = styled.textarea`
+  display: flex;
+  width: 100%;
+  min-height: 192px;
+  box-sizing: border-box;
+  resize: none;
+  border: 1px solid #c5d0e1;
+`;
+
 export default AuctionWrite;
