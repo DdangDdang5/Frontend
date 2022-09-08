@@ -9,10 +9,12 @@ import {
   HeaderContainer,
   HeaderContent,
   HeaderIconContainer,
+  HeaderTitle,
   Logo,
+  PageTitle,
 } from "./Header.styled";
 
-const Header = ({ borderBottom, logo }) => {
+const Header = ({ borderBottom, logo, page, write }) => {
   const navigate = useNavigate();
 
   return (
@@ -21,15 +23,24 @@ const Header = ({ borderBottom, logo }) => {
         {logo ? (
           <Logo onClick={() => navigate("/")}>땅땅</Logo>
         ) : (
-          <img src="maskable.png" alt="back" onClick={() => navigate(-1)} />
+          <HeaderTitle>
+            <img src="maskable.png" alt="back" onClick={() => navigate(-1)} />
+            <PageTitle>{page}</PageTitle>
+          </HeaderTitle>
         )}
         <HeaderIconContainer>
-          <img
-            src="maskable.png"
-            alt="search"
-            onClick={() => navigate("/search")}
-          />
-          <img src="maskable.png" alt="alarm" />
+          {write ? (
+            <span>완료</span>
+          ) : (
+            <>
+              <img
+                src="maskable.png"
+                alt="search"
+                onClick={() => navigate("/search")}
+              />
+              <img src="maskable.png" alt="alarm" />
+            </>
+          )}
         </HeaderIconContainer>
       </HeaderContent>
     </HeaderContainer>
