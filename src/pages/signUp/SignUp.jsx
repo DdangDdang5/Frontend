@@ -32,6 +32,7 @@ import {
   SignUpBoxSpan,
   SignUpButtonGroup,
 } from "./SignUp.styled";
+import Header from "../../components/header/Header";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -98,7 +99,7 @@ const SignUp = () => {
         });
       }
     }, 500),
-    [email]
+    [email],
   );
 
   useEffect(() => {
@@ -153,7 +154,7 @@ const SignUp = () => {
         }
       });
     }, 500),
-    [nickName]
+    [nickName],
   );
 
   useEffect(() => {
@@ -190,7 +191,7 @@ const SignUp = () => {
         }
       }
     },
-    [email, password, repassword, nickName]
+    [email, password, repassword, nickName],
   );
 
   return (

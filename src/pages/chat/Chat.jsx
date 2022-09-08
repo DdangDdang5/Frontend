@@ -36,6 +36,13 @@ const Chat = () => {
     connected: false,
     message: "",
   });
+	
+	// {
+	// 	"type":"ENTER",
+	// 	"roomId":"49056a03-4dd6-42f8-97e8-4bcc6915eb81",
+	// 	"sender":"rang",
+	// 	"message":""
+	// }
 
   const handleValue = (event) => {
     const { value, name } = event.target;

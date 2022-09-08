@@ -11,9 +11,6 @@ const api = axios.create({
 // const token = getCookie("accessToken");
 const token = localStorage.getItem("accessToken");
 api.defaults.headers.common["authorization"] = token ? `${token}` : null;
-
-export default api;
-
 // api.interceptors.request.use((config) => {
 //   const token = getCookie("accessToken");
 
@@ -83,3 +80,5 @@ export default api;
 //     return Promise.reject(error);
 //   }
 // );
+
+export default api;

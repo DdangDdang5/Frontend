@@ -56,8 +56,8 @@ const Search = () => {
             {/* <div className="SearchResultHeader">
               <p className="SearchResultHeaderTitle">{search}</p>
             </div> */}
-            <div className="SearchResultCardWrap">
-              {searchList ? (
+            <div className="SearchResultCardWrap">      
+              {/* {searchList ? (
                   searchList?.map((item, index) => {
                     return <SearchCard searchList={item} />;
                   })
@@ -65,7 +65,7 @@ const Search = () => {
                   <LoadingWrap>
                     <Loadingtext>검색 결과가 없습니다.</Loadingtext>
                   </LoadingWrap>
-                )}
+                )} */}
             </div>
           </SearchBoxFilterWrap>
         </SearchBoxFilterGroup>
