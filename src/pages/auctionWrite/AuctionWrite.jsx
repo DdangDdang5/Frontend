@@ -7,8 +7,6 @@ import { addAuctionItem } from "../../redux/modules/AuctionListSlice";
 
 const AuctionWrite = () => {
   const dispatch = useDispatch();
-  const [filed, setFiled] = useState("");
-  const img_ref = useRef(null);
 
   const auctionRequestDto = {
     title: "",
@@ -20,21 +18,33 @@ const AuctionWrite = () => {
     delivery: false,
     auctionPeriod: 1,
   };
-  const initalTags = {
-    tag1: "",
+  const initialTags = {
+    tag1: "아이폰",
     tag2: "",
     tag3: "",
     tag4: "",
     tag5: "",
     tag6: "",
   };
-  const onLoadFile = (e) => {
-    setFiled(...filed, URL.createObjectURL(e.target.files[0]));
-    console.log("배돌배돌배돌필드", filed);
-  };
+
+  const [imgFile, setImgFile] = useState([]);
+  const [imagePreview, setImagePreview] = useState([]);
+  const img_ref = useRef();
   const [inputForm, setInputForm] = useState(auctionRequestDto);
-  const [tags, setTags] = useState(initalTags);
-  console.log("배돌배돌배돌인풋폼", inputForm);
+  const [tags, setTags] = useState(initialTags);
+
+  // 이미지 업로드
+  const onLoadFile = (e) => {
+    const reader = new FileReader();
+    setImgFile(...imgFile, URL.createObjectURL(e.target.files[0]));
+
+    const prevImg = e.target.files[0];
+    reader.readAsDataURL(prevImg);
+    reader.onloadend = () => {
+      setImagePreview([...imagePreview, reader.result]);
+    };
+    console.log("배돌배돌배돌필드", tags);
+  };
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -64,31 +74,33 @@ const AuctionWrite = () => {
       <AuctionWriteWrap>
         <WriteImgContainer>
           <ImgBoxBtn>
-            <div>+</div>
-            <div>파일을 입력</div>
+            <label className="inBoxBtnContainer" htmlFor="img_UpFile">
+              <div>+</div>
+              <div>파일을 입력</div>
+            </label>
             <input
               ref={img_ref}
               type="file"
               accept="image/*"
-              id="img_upFile"
+              id="img_UpFile"
               onChange={onLoadFile}
-              style={{ display: "none" }}
+              style={{ display: "none", width: "93px", height: "93px" }}
             />
           </ImgBoxBtn>
 
-          {/* {filed.map((index, item) => {
+          {imagePreview.map((item, index) => {
             return (
-              <ImgBox key={item}>
-                <img src={index} alt="" />
+              <ImgBox key={index}>
+                <img src={item} alt="" />
                 <div className="deleteBox">
                   <div>x</div>
                 </div>
               </ImgBox>
             );
-          })} */}
+          })}
 
-          <ImgBox>
-            <img src={filed} alt="" />
+          {/* <ImgBox>
+            <img src={imgFile} alt="" />
             <div className="deleteBox">
               <div>x</div>
             </div>
@@ -104,7 +116,7 @@ const AuctionWrite = () => {
             <div className="deleteBox">
               <div>x</div>
             </div>
-          </ImgBox>
+          </ImgBox> */}
         </WriteImgContainer>
 
         <WriteTitleContainer>제목</WriteTitleContainer>
@@ -225,6 +237,10 @@ const ImgBoxBtn = styled.button`
   height: 100%;
   min-width: 93px;
   border: none;
+  .inBoxBtnContainer {
+    display: flex;
+    flex-direction: column;
+  }
   div {
     font-size: 12px;
     font-weight: 400;
@@ -234,6 +250,8 @@ const ImgBox = styled.div`
   display: flex;
   height: 100%;
   min-width: 93px;
+  width: 93px;
+  gap: 16px;
   background-color: yellow;
   position: relative;
   .deleteBox {

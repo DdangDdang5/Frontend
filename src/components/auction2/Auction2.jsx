@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Auction2 = () => {
+const Auction2 = ({ bae }) => {
   const Img = (
     <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
   );
