@@ -1,26 +1,31 @@
 import { useEffect, Fragment } from "react";
-import { kakaoAuthThunk } from "../redux/modules/member";
+// import { kakaoOauthThunk } from "../redux/modules/MemberSlice";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { Cookies } from "react-cookie";
+import api from "./Api";
 
 const Kakao = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const authorization_code = new URL(window.location.href).searchParams.get(
-    "code"
-  );
-
+  const cookies = new Cookies();
+  const code = new URL(window.location.href).searchParams.get("code");
   useEffect(() => {
-    const fetchCode = (code) => {
-      dispatch(kakaoAuthThunk({ code })).then((res) => {
-        if (res.payload) {
-          navigate("/");
-        }
-      });
-    };
-    fetchCode(authorization_code);
-  }, []);
-
+    if (!!code) {
+      api
+        .get(`/member/kakao/callback?code=${code}`)
+        .then((res) => {
+          if (res.data.success === true) {
+            return (
+              localStorage.setItem("memberId", res.data.result.memberId),
+              localStorage.setItem("accessToken", res.headers.authorization),
+              cookies.set("refreshToken", res.headers["refresh-token"]),
+              navigate("/")
+            );
+          }
+        })
+        .catch((err) => {
+        });
+    }
+  }, [code]);
   return <Fragment></Fragment>;
 };
 export default Kakao;

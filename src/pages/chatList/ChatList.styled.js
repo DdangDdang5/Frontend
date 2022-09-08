@@ -8,6 +8,7 @@ export const ChatListContainer = styled.div`
 
 export const ChatRoomList = styled.div`
   width: 100%;
+	margin-top: 10px;
 
   position: absolute;
   top: 70px;

@@ -3,12 +3,10 @@ import styled from "styled-components";
 
 export const MainContainer = styled.div`
   width: 100%;
-  height: 100vh;
 `;
 
 export const MainContent = styled.div`
   width: 100%;
-  background-color: aliceblue;
   font-size: 14px;
 
   position: absolute;
@@ -19,8 +17,8 @@ export const MainContent = styled.div`
 `;
 
 export const BannerContainer = styled.div`
-	width: 100%;
-	height: fit-content;
+  width: 100%;
+  height: fit-content;
 `;
 
 export const ListContainer = styled.div`
@@ -28,7 +26,7 @@ export const ListContainer = styled.div`
 `;
 
 export const ListHeader = styled.span`
-  font-size: ${(props) => (props.fontSize ? props.fontSize : "20px")};
+  font-size: ${(props) => (props.fontSizes ? props.fontSizes : "20px")};
   font-weight: bold;
 
   display: flex;
@@ -62,13 +60,33 @@ export const PopularList = styled.div`
 `;
 
 export const PopularItem = styled.div`
+  position: relative;
+
+  img {
+    width: 100%;
+    height: 100%;
+
+    border-radius: 8px;
+		z-index: -5;
+
+    position: absolute;
+
+    object-fit: cover;
+  }
+`;
+
+export const PopularItemContent = styled.div`
   width: 185px;
   min-width: 185px;
   height: 250px;
   padding: 16px;
 
-  background-color: gray;
-  border-radius: 8px;
+	color: white;
+	border-radius: 8px;
+  background: linear-gradient(
+		180deg, #4d71ff 22.5%, 
+		rgba(0, 0, 0, 0.4) 91.9%
+	);
 
   display: flex;
   flex-direction: column;
@@ -82,8 +100,10 @@ export const TagWrap = styled.div`
   gap: 4px;
 
   span {
-    padding: 1px 6px;
+    padding: 2px 6px;
+    font-weight: bold;
 
+		color: ${(props) => props.color};
     background-color: ${(props) => props.backgroundColor};
     border-radius: 100px;
   }
@@ -114,8 +134,8 @@ export const NewItem = styled.div`
   display: flex;
 
   img {
-    width: 73px;
-    height: 73px;
+    width: 75px;
+    height: 75px;
     border-radius: 8px;
   }
 `;
@@ -161,7 +181,7 @@ export const LastList = styled.div`
 export const LastItem = styled.div`
   width: 165px;
 
-  background-color: aliceblue;
+  /* background-color: aliceblue; */
 
   img {
     width: 100%;

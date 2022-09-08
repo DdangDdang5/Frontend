@@ -17,6 +17,7 @@ import {
   SwipeIdx,
   SwipeIdxItem,
   SwipeImg,
+	SwipeImgLayer,
   SwipeItem,
   SwipeShowContainer,
 } from "./SwipeImage.styled";
@@ -75,20 +76,33 @@ const SwipeImage = ({
     <SwipeContainer maxWidth={maxWidth} height={height}>
       <SwipeShowContainer ref={ref} style={style}>
         {data?.map((item, idx) => {
+          const diff = new Date(new Date(item.auctionPeriod) - Date.now());
+          const auctionPeriodDiff = `
+						${diff.getDate()}일 
+						${diff.getHours().toString().padStart(2, "0")}:
+						${diff.getMinutes().toString().padStart(2, "0")}
+					`;
+
           return (
-            <SwipeItem>
-              <SwipeImg key={idx} src={item.imgUrl} minHeight={minHeight} />
+            <SwipeItem key={item.auctionId}>
+              <SwipeImg
+                src={item.multiImages[0].imgUrl}
+                minHeight={minHeight}
+              />
+							{/* <SwipeImgLayer /> */}
 
               {/* 메인화면 배너 */}
               {isMain ? (
                 <SwipeContent>
                   <BannerContent>
-                    <BannerTime>{item.time}</BannerTime>
+                    <BannerTime>{auctionPeriodDiff}</BannerTime>
                     <BannerTitle>{item.title}</BannerTitle>
                   </BannerContent>
                   <BannerPriceWrap>
                     <span>최고입찰가</span>
-                    <BannerPrice>{item.price}원</BannerPrice>
+                    <BannerPrice>
+                      {item.nowPrice !== 0 ? item.nowPrice : item.startPrice}원
+                    </BannerPrice>
                   </BannerPriceWrap>
                   <BannerCircle></BannerCircle>
                 </SwipeContent>
@@ -97,11 +111,11 @@ const SwipeImage = ({
               )}
 
               <SwipeIdx>
-                {Array.from({ length: data.length }, (_, idx_i) =>
-                  idx === idx_i ? (
-                    <SwipeIdxItem color="black" />
+                {Array.from({ length: data.length }, (_, idxI) =>
+                  idx === idxI ? (
+                    <SwipeIdxItem key={idxI} color="black" />
                   ) : (
-                    <SwipeIdxItem color="white" />
+                    <SwipeIdxItem key={idxI} color="white" />
                   ),
                 )}
               </SwipeIdx>

@@ -1,61 +1,129 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+
+//components
 import Header from "../../components/header/Header";
+
+//reducer
+import { useSelector, useDispatch } from "react-redux";
+import { auctionDetailData } from "../../redux/modules/AuctionSlice";
+
+//styled
 import styled from "styled-components";
 
 const AuctionDetail = () => {
-  const Img = (
-    <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
-  );
+  const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+  const params = useParams();
+  const data = useSelector((state) => state.auction.auction);
+
+  useEffect(() => {
+    if (!params?.auctionId) {
+      return <></>;
+    } else {
+      dispatch(auctionDetailData(+params?.auctionId));
+    }
+  }, [params?.auctionId]);
+
+  if (!data) {
+    return <></>;
+  }
 
   return (
     <AuctionDetailLayout>
       <Header />
 
       <DetailBodyWrap>
-        <ItemImg>{Img}</ItemImg>
+        <ItemImgContainer>
+          {data?.multiImages?.[0]?.imgUrl && (
+            <img src={data.multiImages[0].imgUrl} alt="" />
+          )}
+        </ItemImgContainer>
 
         <DetailBodyContainer>
-          <DetailBodyProfile>
-            <DetailBodyProfileImg>{Img}</DetailBodyProfileImg>
+          <DetailBodyProfileBox>
+            <DetailBodyProfileImg>
+              <img src={data.profileImgUrl} alt="" />
+            </DetailBodyProfileImg>
             <DetailBodyProfileContent>
-              <div className="nickName">아이유</div>
+              <div className="nickName">{data.member.nickName}</div>
               <div className="trustCount">신뢰도</div>
             </DetailBodyProfileContent>
-          </DetailBodyProfile>
+            <div>신고</div>
+          </DetailBodyProfileBox>
 
-          <DetailBodyTitle>
-            게시글 제목이 들어가야 될 것 같습니다.
-          </DetailBodyTitle>
+          <DetailBodyTitle>{data.title}</DetailBodyTitle>
 
-          <DetailBodyTag>
-            <div>택배</div>
-            <div>서대문구</div>
-          </DetailBodyTag>
+          <DetailBodySelectTag>
+            {data.direct ? <div>택배</div> : ""}
+            {data.delivery ? <div>직거래</div> : ""}
+            {data.region ? <div>{data.region}</div> : ""}
+          </DetailBodySelectTag>
 
           <DetailBodyContent>
-            경매 내용입니다. 글자수 제한이 필요할까요?또 모르지 내 마음이 저
-            날씨처럼 바뀔지 날 나조차 다 알 수 없으니 그게 뭐가 중요하니 지금
-            네게 완전히 푹 빠졌단 게 중요한 거지 아마 꿈만 같겠지만 분명 꿈이
-            아니야 달리 설명할 수 없는 이건 사랑일 거야 방금 내가 말한 감정 감히
-            의심하지 마 그냥 좋다는 게 아냐 What's after 'LIKE'? 경매
-            내용입니다. 글자수 제한이 필요할까요?또 모르지 내 마음이 저 날씨처럼
-            바뀔지 날 나조차 다 알 수 없으니 그게 뭐가 중요하니 지금 네게 완전히
-            푹 빠졌단 게 중요한 거지 아마 꿈만 같겠지만 분명 꿈이 아니야 달리
-            설명할 수 없는 이건 사랑일 거야 방금 내가 말한 감정 감히 의심하지 마
-            그냥 좋다는 게 아냐 What's after 'LIKE'?
+            {/* {data.content} */}
+            일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은
+            바보가 된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지
+            않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은 바보가
+            된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은
+            바보가 된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지
+            않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은 바보가
+            된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은
+            바보가 된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지
+            않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은 바보가
+            된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은
+            바보가 된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지
+            않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은 바보가
+            된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은
+            바보가 된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지
+            않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은 바보가
+            된다.일만하고 놀지 않으면 잭은 바보가 된다.
           </DetailBodyContent>
+          <DetailBodyViewTag>
+            <div>관심 10</div>
+            <div>조회 {data.viewerCnt}</div>
+          </DetailBodyViewTag>
+          <DetailBodyItemTag>
+            <div>#글자</div>
+            <div>#태그검색</div>
+            <div>#0000</div>
+          </DetailBodyItemTag>
         </DetailBodyContainer>
+
+        <CommentCountContainer>
+					<CommentCountWrap>
+	          <CommentCountTitle>실시간 채팅방</CommentCountTitle>
+	          <p>5명 참여중</p>
+					</CommentCountWrap>
+					<img src="/maskable.png" alt="moveChat" onClick={() => navigate('/chat')}/>
+        </CommentCountContainer>
+
+        {/* <DetailCommentContainer>
+          <CommentFormBox>
+            <div className="inputBox">
+              <textarea placeholder="댓글을 입력해주세요." rows="" cols="" />
+              <button>댓글 작성</button>
+            </div>
+          </CommentFormBox>
+        </DetailCommentContainer> */}
       </DetailBodyWrap>
 
-      <DetailFooter>
-        <FooterLeftWrap>
-          <div className="presentPrice">최근 입찰가</div>
-          <div className="price">1000원</div>
-        </FooterLeftWrap>
-        <FooterRightWrap>
-          <button>입찰하기</button>
-        </FooterRightWrap>
-      </DetailFooter>
+      <DetailFooterWrap>
+        <DetailFooterTimeContainer>
+          <p>남은 시간</p>
+          <h3>{data.createdAt}</h3>
+        </DetailFooterTimeContainer>
+        <DetailFooterContainer>
+          <FooterLeftBox>
+            <div className="presentPrice">최근 입찰가</div>
+            <div className="price">{data.nowPrice}원</div>
+          </FooterLeftBox>
+          <FooterRightBox>
+            <button>입찰하기</button>
+          </FooterRightBox>
+        </DetailFooterContainer>
+      </DetailFooterWrap>
     </AuctionDetailLayout>
   );
 };
@@ -69,10 +137,10 @@ const DetailBodyWrap = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 70px;
-  height: calc(100vh - 160px);
+  height: calc(100vh - 185px);
   overflow: scroll;
 `;
-const ItemImg = styled.div`
+const ItemImgContainer = styled.div`
   display: flex;
   margin-bottom: 20px;
   img {
@@ -85,7 +153,7 @@ const DetailBodyContainer = styled.div`
   flex-direction: column;
   padding: 0px 20px;
 `;
-const DetailBodyProfile = styled.div`
+const DetailBodyProfileBox = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
@@ -107,7 +175,7 @@ const DetailBodyProfileContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   .nickName {
     font-size: 16px;
     font-weight: 700;
@@ -125,7 +193,7 @@ const DetailBodyTitle = styled.div`
   word-break: break-all;
   margin-bottom: 16px;
 `;
-const DetailBodyTag = styled.div`
+const DetailBodySelectTag = styled.div`
   display: flex;
   margin-bottom: 16px;
   div {
@@ -143,19 +211,157 @@ const DetailBodyContent = styled.div`
   height: 100%;
   background-color: beige;
 `;
-
-const DetailFooter = styled.div`
+const DetailBodyViewTag = styled.div`
   display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 74px;
   flex-direction: row;
-  position: absolute;
-  bottom: 0;
-  background-color: skyblue;
+  align-items: center;
+  height: 49px;
+  gap: 0 9px;
+
+  div {
+    font-size: 16px;
+    font-weight: 400;
+    color: #9b9b9b;
+  }
 `;
 
-const FooterLeftWrap = styled.div`
+const DetailBodyItemTag = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0 8px;
+  height: 22px;
+  margin-bottom: 40px;
+  div {
+    display: flex;
+    font-size: 14px;
+    font-weight: 500;
+    justify-content: center;
+
+    padding: 2px 6px;
+    border-radius: 100px;
+    background-color: #9b9b9b;
+    color: white;
+  }
+`;
+
+const CommentCountContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 57px;
+  padding: 0px 20px;
+  border-top: 1px solid #dedede;
+  gap: 8px;
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  p {
+    font-size: 20px;
+    font-weight: 400;
+    color: #9b9b9b;
+  }
+
+	img {
+		width: 16px;
+		height: 16px;
+	}
+`;
+
+const CommentCountWrap = styled.div`
+	display: flex;
+	gap: 12px;
+`;
+
+const CommentCountTitle = styled.p`
+	font-weight: 700 !important;
+	color: black !important;
+`;
+
+const DetailCommentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const CommentFormBox = styled.form`
+  display: flex;
+  justify-content: center;
+  height: 180px;
+  background-color: #dedede;
+  .inputBox {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    gap: 16px;
+    textarea {
+      display: flex;
+      border-radius: 8px;
+      border: 1px solid #bcbcbc;
+      margin-top: 20px;
+      width: 100%;
+      height: 68px;
+      resize: none;
+
+      box-sizing: border-box;
+      padding: 13px 16px;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: -0.05em;
+    }
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: none;
+      background-color: #bcbcbc;
+      width: 100%;
+      height: 56px;
+
+      font-size: 18px;
+      font-weight: 400;
+      color: #6d6d6d;
+    }
+  }
+`;
+
+const DetailFooterWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+
+  width: 100%;
+  height: 116px;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+`;
+const DetailFooterTimeContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 42px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  gap: 0 8px;
+  p {
+    font-size: 14px;
+    font-weight: 400;
+  }
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+`;
+const DetailFooterContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+`;
+
+const FooterLeftBox = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -171,7 +377,7 @@ const FooterLeftWrap = styled.div`
     font-weight: 700;
   }
 `;
-const FooterRightWrap = styled.div`
+const FooterRightBox = styled.div`
   display: flex;
   margin: 13px 20px 14px 0px;
   button {

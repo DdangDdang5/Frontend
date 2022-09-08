@@ -1,5 +1,12 @@
 // React import
-import React from "react";
+import React, { useEffect } from "react";
+
+// Redux import
+import { auctionItemList } from "../../redux/modules/AuctionListSlice";
+
+// Package import
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -25,6 +32,7 @@ import {
   NewItemTitle,
   NewList,
   PopularItem,
+  PopularItemContent,
   PopularList,
   PopularPrice,
   PopularPriceWrap,
@@ -33,26 +41,50 @@ import {
 } from "./Main.styled";
 
 const Main = () => {
-  const data = [
-    {
-			imgUrl: "maskable.png",
-      time: "6일 12:36:01",
-      title: "폰트사이즈가 고민입니다.. 최대길이는 이 정도입니다.",
-      price: 598000,
-    },
-    {
-			imgUrl: "logo512.png",
-      time: "4일 11:59:59",
-      title: "Banner Title!!!",
-      price: 398000,
-    },
-    {
-			imgUrl: "logo192.png",
-      time: "1일 02:30:27",
-      title: "Banner Title!!!",
-      price: 198000,
-    },
-  ];
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const auctionAllList = useSelector((state) => state.auctionList.auctionList);
+
+  // 판매중인 경매 목록
+  const auctionSaleList = auctionAllList?.filter(
+    (item) => item.auctionStatus === true,
+  );
+
+  // 인기 경매 목록 3개
+  const auctionPopularList = auctionSaleList
+    ?.slice()
+    .sort((a, b) => b.viewerCnt - a.viewerCnt)
+    .slice(0, 3);
+
+  // 새로운 경매 목록 3개
+  const auctionNewList = auctionSaleList?.slice(0, 3);
+
+  // 마감임박 경매 목록 4개
+  const auctionLastList = auctionSaleList
+    ?.map((item) => {
+      const date = new Date(item.createdAt);
+      return {
+        ...item,
+        auctionPeriod: new Date(
+          date.setDate(date.getDate() + item.auctionPeriod),
+        ),
+      };
+    })
+    .sort(
+      (a, b) =>
+        new Date(a.auctionPeriod).valueOf() -
+        new Date(b.auctionPeriod).valueOf(),
+    )
+    .slice(0, 4);
+
+  useEffect(() => {
+    dispatch(auctionItemList());
+  }, [dispatch]);
+
+  const moveAuctionDetail = (auctionId) => {
+    navigate(`/auctionDetail/${auctionId}`);
+  };
 
   return (
     <MainContainer>
@@ -61,7 +93,7 @@ const Main = () => {
       <MainContent>
         {/* 배너 */}
         <BannerContainer>
-					<SwipeImage isMain={true} data={data} height="100%" />
+          <SwipeImage isMain={true} data={auctionLastList} height="100%" />
         </BannerContainer>
 
         {/* 카테고리별, 지역별 TOP 6 */}
@@ -73,19 +105,29 @@ const Main = () => {
           <ListHeader>지금 관심 폭발 중!</ListHeader>
 
           <PopularList>
-            {Array.from({ length: 3 }, () => (
-              <PopularItem>
-                <div>
-                  <TagWrap backgroundColor="white">
-                    <span>택배</span>
-                    <span>마포구</span>
-                  </TagWrap>
-                  <PopularTitle>예시 텍스트입니다. 최대 두줄</PopularTitle>
-                </div>
-                <PopularPriceWrap>
-                  <span>현재 입찰가</span>
-                  <PopularPrice>{18000}원</PopularPrice>
-                </PopularPriceWrap>
+            {auctionPopularList.map((item) => (
+              <PopularItem
+                key={item.auctionId}
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
+                <img
+                  src={item.multiImages[0].imgUrl}
+                  alt="auction-popular-img"
+                />
+                <PopularItemContent>
+                  <div>
+                    <TagWrap backgroundColor="white" color="#4d71ff">
+                      {item.delivery ? <span>택배</span> : null}
+                      {item.direct ? <span>직거래</span> : null}
+                      <span>{item.region}</span>
+                    </TagWrap>
+                    <PopularTitle>{item.title}</PopularTitle>
+                  </div>
+                  <PopularPriceWrap>
+                    <span>현재 입찰가</span>
+                    <PopularPrice>{item.startPrice}원</PopularPrice>
+                  </PopularPriceWrap>
+                </PopularItemContent>
               </PopularItem>
             ))}
           </PopularList>
@@ -102,20 +144,22 @@ const Main = () => {
           </ListHeader>
 
           <NewList>
-            {Array.from({ length: 3 }, () => (
-              <NewItem>
-                <img src="maskable.png" alt="auction-img" />
+            {auctionNewList.map((item) => (
+              <NewItem
+                key={item.auctionId}
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
+                <img src={item.multiImages[0].imgUrl} alt="auction-new-img" />
                 <NewItemContent>
                   <TagWrap backgroundColor="gray">
-                    <span>택배</span>
-                    <span>성산구</span>
+                    {item.delivery ? <span>택배</span> : null}
+                    {item.direct ? <span>직거래</span> : null}
+                    <span>{item.region}</span>
                   </TagWrap>
-                  <NewItemTitle>
-                    제목은 한 줄만 노출됩니다. 길어진 길이는 안보입니다.
-                  </NewItemTitle>
+                  <NewItemTitle>{item.title}</NewItemTitle>
                   <NewItemPriceWrap>
                     <span>입찰시작가</span>
-                    <NewItemPrice>{5000}원</NewItemPrice>
+                    <NewItemPrice>{item.startPrice}원</NewItemPrice>
                   </NewItemPriceWrap>
                 </NewItemContent>
               </NewItem>
@@ -134,19 +178,21 @@ const Main = () => {
           </ListHeader>
 
           <LastList>
-            {Array.from({ length: 4 }, () => (
-              <LastItem>
-                <img src="maskable.png" alt="auction-img" />
+            {auctionLastList.map((item) => (
+              <LastItem
+                key={item.auctionId}
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
+                <img src={item.multiImages[0].imgUrl} alt="auction-last-img" />
                 <TagWrap backgroundColor="gray">
-                  <span>택배</span>
-                  <span>성산구</span>
+                  {item.delivery ? <span>택배</span> : null}
+                  {item.direct ? <span>직거래</span> : null}
+                  <span>{item.region}</span>
                 </TagWrap>
-                <NewItemTitle>
-                  제목은 한 줄만 노출됩니다. 길어진 길이는 안보입니다.
-                </NewItemTitle>
+                <NewItemTitle>{item.title}</NewItemTitle>
                 <NewItemPriceWrap>
                   <span>최고입찰가</span>
-                  <NewItemPrice>{5000}원</NewItemPrice>
+                  <NewItemPrice>{item.startPrice}원</NewItemPrice>
                 </NewItemPriceWrap>
               </LastItem>
             ))}

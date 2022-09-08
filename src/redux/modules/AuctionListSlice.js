@@ -10,8 +10,7 @@ export const auctionItemList = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get(`/auction`);
-      // return thunkAPI.fulfillWithValue(response.data.data);
-      return console.log("드가자아아아아", response);
+      return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -21,11 +20,11 @@ export const auctionItemList = createAsyncThunk(
 export const addAuctionItem = createAsyncThunk(
   "addAuctionItem",
   async (payload, thunkAPI) => {
-    // console.log('12321321312321123', payload);
     try {
-      const response = await api.post("posts", payload, {
+      const response = await api.post("/auction", payload, {
         "Content-Type": "multipart/form-data",
       });
+      console.log("배돌배돌배돌이add응답", response);
       return thunkAPI.fulfillWithValue(response);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -67,6 +66,15 @@ export const deleteAuctionItem = createAsyncThunk(
 const auctionListSlice = createSlice({
   name: "auctionList",
   initialState,
+  // reducers: {
+  //   onModalHandler: (state, action)=>{
+  //     state.auctionList.map((post)=>{
+  //       if(post)
+  //       (post.isModalMode = !post.isModalMode)
+  //     })
+  //   }
+  //   ,
+  // },
   extraReducers: {
     [auctionItemList.fulfilled]: (state, action) => {
       state.auctionList = action.payload;

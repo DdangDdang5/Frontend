@@ -1,16 +1,36 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { apis } from "../../shared/api";
+import api from "../../shared/Api";
 
 const initialState = {
-	auction: []
-}
+  auction: {
+    member: {},
+    multiImages: [{}],
+  },
+};
+
+export const auctionDetailData = createAsyncThunk(
+  "auctionDetailData",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get(`/auction/${payload}`);
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 const auctionSlice = createSlice({
-	name: "auction",
-	initialState,
-	extraReducers: {
-
-	}
-})
+  name: "auction_",
+  initialState,
+  extraReducers: {
+    [auctionDetailData.fulfilled]: (state, action) => {
+      state.auction = action.payload;
+    },
+    [auctionDetailData.rejected]: (state, action) => {
+      console.log(action);
+    },
+  },
+});
 
 export default auctionSlice.reducer;

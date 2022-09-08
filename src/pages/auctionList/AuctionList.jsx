@@ -1,60 +1,56 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 
 //components
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
+import Auction from "../../components/auction/Auction";
+import PlusButton from "../../components/button/PlusButton";
 
 //reducer
 import { useDispatch, useSelector } from "react-redux";
-import Auction from "../../components/auction/Auction";
 import { auctionItemList } from "../../redux/modules/AuctionListSlice";
+import { showModal } from "../../redux/modules/ModalSlice";
 
 //styled
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const AuctionList = () => {
-  // const token = localStorage.
-
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(auctionItemList());
-  }, []);
+  }, [dispatch]);
 
+  if (!AuctionListData) {
+    return <></>;
+  }
   return (
     <AuctionListLayout>
       <Header />
-      
       <ListCategoryWrap>
-        <CategoryBtn>
+        <CategoryBtn onClick={() => dispatch(showModal("categoryList"))}>
           <CategoryBtnText>전체품목</CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
         </CategoryBtn>
         <CategoryBtn>
-          <CategoryBtnText>전체지역</CategoryBtnText>
+          <CategoryBtnText onClick={() => dispatch(showModal("regionList"))}>
+            전체지역
+          </CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
         </CategoryBtn>
         <CategoryBtn>
           <CategoryBtnTimeText>마감임박</CategoryBtnTimeText>
         </CategoryBtn>
       </ListCategoryWrap>
-
       <ListContents>
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
-        <Auction />
+        {AuctionListData.map((index, item) => {
+          return <Auction key={index.auctionId} data={index} />;
+        })}
       </ListContents>
-      {/* <PlusBtn>+</PlusBtn> */}
+      <PlusButton />
       <Footer />
     </AuctionListLayout>
   );
@@ -103,27 +99,11 @@ const ListContents = styled.div`
   flex-direction: row;
   flex-wrap: wrap;
   align-content: flex-start;
-  justify-content: center;
+  justify-content: flex-start;
   height: calc(100vh - 200px);
   overflow: auto;
   padding: 0px 10px;
   /* border-bottom: ${({ category }) => (category ? "solid 2px blue;" : "")}; */
-`;
-
-const PlusBtn = styled.button`
-  /* display: flex;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  border-radius: 500px;
-  font-size: 50px;
-  color: white;
-  padding: 0px 15px;
-  background-color: orange;
-  :hover {
-    background-color: #de5539;
-  } */
 `;
 
 export default AuctionList;

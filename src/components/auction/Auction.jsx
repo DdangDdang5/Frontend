@@ -1,28 +1,31 @@
 import React from "react";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
-const Auction = () => {
+const Auction = ({ data }) => {
   const navigate = useNavigate();
-  const Img = (
-    <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
-  );
 
   return (
-    <AuctionItemWrap onClick={() => navigate("/AuctionDetail")}>
-      <AuctionItemContainer>
-        <ItemPicture>{Img}</ItemPicture>
+    <AuctionItemWrap>
+      <AuctionItemContainer
+        onClick={() => {
+          navigate(`/auctionDetail/${data.auctionId}`);
+        }}>
+        <ItemPicture>
+          <img src={data.multiImages[0].imgUrl} alt="" />
+        </ItemPicture>
         <ItemContentWrap>
           <ItemContentHeader>
-            <div>택배</div>
+            {data.direct ? <div>택배</div> : ""}
+            {data.delivery ? <div>직거래</div> : ""}
           </ItemContentHeader>
 
           {/* 줄에 표시되는 글자수 제한 */}
-          <ItemContentBody>두줄은 나와야 할 것 같습니다</ItemContentBody>
+          <ItemContentBody>{data.title}</ItemContentBody>
 
           <ItemContentFooter>
             <StartPrice>최고입찰가</StartPrice>
-            <PresentPrice>100000원</PresentPrice>
+            <PresentPrice>{data.nowPrice}원</PresentPrice>
           </ItemContentFooter>
         </ItemContentWrap>
       </AuctionItemContainer>
@@ -38,6 +41,7 @@ const AuctionItemWrap = styled.div`
 const AuctionItemContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   margin: 12px 10px;
 `;
 const ItemPicture = styled.div`
