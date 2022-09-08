@@ -93,14 +93,13 @@ export const LoginBoxButtonGroup = styled.div`
   margin-top: 2%;
 `;
 
-export const LoginBoxkakaoButton = styled.div`
+export const LoginBoxkakaoButtonGroup = styled.div`
   width: 90%;
   display: flex;
-  border: 1px solid blue;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 8%;
+  margin-top: 5%;
 `;
 
 export const LoginBoxSignUp = styled.div`
@@ -115,6 +114,9 @@ export const LoginBoxSignUp = styled.div`
 export const LoginBoxSignUpText = styled.span`
   width: 100%;
   text-align: center;
+  display: flex;
+  gap: 22%;
+  margin-left: 20px;
   color: #6d6d6d;
   font-size: 16px;
   font-weight: 400;

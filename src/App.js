@@ -1,3 +1,9 @@
+// React import
+import { useEffect } from "react";
+
+// Redux import
+import { useDispatch } from "react-redux";
+
 // Package import
 import { Route, Routes } from "react-router-dom";
 
@@ -17,9 +23,19 @@ import AuctionDone from "../src/pages/auctionDone/AuctionDone";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
+import { getCookie } from "./shared/Cookie";
 import Modal from "./components/modal/Modal";
 
 function App() {
+  const dispatch = useDispatch();
+  const token = getCookie("accessToken");
+  
+  useEffect(() => {
+    if (token) {
+      dispatch();
+    }
+  }, []);
+
   return (
     <div className="App">
       <Routes>
@@ -35,7 +51,7 @@ function App() {
         <Route path="/auctionWrite" element={<AuctionWrite />} />
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
-        <Route path="/member/kakao/callback" element={<Kakao />} />
+        <Route path="/kakao/callback" element={<Kakao />} />
         <Route path="/modal" element={<Modal />} />
       </Routes>
     </div>

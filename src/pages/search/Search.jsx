@@ -1,34 +1,44 @@
 // React import
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 
 // Redux import
 import { useDispatch, useSelector } from "react-redux";
+import { auctionSearchThunk } from "../../redux/modules/SearchSlice";
+import { auctionItemList } from "../../redux/modules/AuctionListSlice";
 
 // Package import
 import styled from "styled-components";
 import { IoSearchOutline } from "react-icons/io5";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getCookie } from "../../shared/Cookie";
 
 // Component import
 import Footer from "../../components/footer/Footer";
-
+import SearchCard from "./SearchCard";
 
 const Search = () => {
   const dispatch = useDispatch();
-  const [searchWord, setSearchWord] = useState("");
-  const title = useSelector((state) => state.item.title);
-  const {item} = useParams();
-  const searchWordChange = (e) => {
-	setSearchWord(e.target.value);
-  }
+  const { search } = useParams();
+  const searchList = useSelector((state) => state.auctionList);
+  const navigate = useNavigate();
+  const userLocation = useSelector((state) => state.userLocation);
+  const token = getCookie("accessToken");
 
-  // const search = () => {
-  //   if (searchWord === "") {
-  //     window.alert("검색어를 입력해주세요.");
-  //     return;
-  //   }
-	// dispatch(.getSearch(searchWord, title))
-  // };
+  useEffect(() => {
+    dispatch(auctionSearchThunk());
+  }, [dispatch]);
+
+  const onKeyDown = (e) => {
+    if (e.target.value.length !== 0 && e.key === "Enter" && userLocation) {
+      dispatch(
+        auctionItemList({
+          auctio: e.target.value,
+          navigate,
+          location: userLocation,
+        })
+      );
+    }
+  };
 
   return (
     <Fragment>
@@ -36,8 +46,10 @@ const Search = () => {
         <SearchBoxInputGroup>
           <SearchBoxInputWrap>
             <SearchBoxInput
-			placeholder="검색어를 입력해주세요."
-			onChange={searchWordChange} />
+              type="text"
+              placeholder="검색어를 입력해주세요."
+              onKeyDown={onKeyDown}
+            />
             <SearchBoxInputIcon>
               <IoSearchOutline className="icon" />
             </SearchBoxInputIcon>
@@ -45,6 +57,22 @@ const Search = () => {
         </SearchBoxInputGroup>
         <SearchBoxFilterGroup>
           <SearchBoxFilterTitleSpan>최근 검색어</SearchBoxFilterTitleSpan>
+          <SearchBoxFilterWrap>
+              <div className="SearchResultHeader">
+                <p className="SearchResultHeaderTitle">{search}</p>
+              </div>
+              <div className="SearchResultCardWrap">
+              {searchList ? (
+                  searchList.map((item, index) => {
+                    return <SearchCard searchList={item} />;
+                  })
+                ) : (
+                  <LoadingWrap>
+                    <Loadingtext>검색 결과가 없습니다.</Loadingtext>
+                  </LoadingWrap>
+                )}
+              </div>
+          </SearchBoxFilterWrap>
         </SearchBoxFilterGroup>
       </SearchBox>
       <Footer />
@@ -87,7 +115,7 @@ export const SearchBoxInput = styled.input`
   border-radius: 8px;
   font-size: 16px;
   padding-left: 35px;
-  border: none;
+  border: 1px solid red;
   &:focus {
     outline: none;
     border-color: #6d6d6d;
@@ -109,6 +137,7 @@ export const SearchBoxFilterGroup = styled.div`
   width: 100%;
   height: 20%;
   display: flex;
+  flex-direction: column;
   border: 1px solid green;
   margin-top: 7%;
 `;
@@ -119,3 +148,14 @@ export const SearchBoxFilterTitleSpan = styled.span`
   font-weight: 400;
   line-height: 140%;
 `;
+
+export const SearchBoxFilterWrap = styled.div`
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border: 1px solid blue;
+`;
+
+export const LoadingWrap = styled.div``;
+
+export const Loadingtext = styled.div``;

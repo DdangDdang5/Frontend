@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import {
   emailCheckThunk,
   signUpMemberThunk,
+  nickNameCheckThunk,
 } from "../../redux/modules/MemberSlice";
 
 // Package import
@@ -35,9 +36,11 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [emailCheck, setEmailCheck] = useState(false);
   const [password, setPassword] = useState("");
+  const [passwordCheck, setPasswordCheck] = useState(false);
   const [repassword, setRePassword] = useState("");
-  const [nickName, setnickName] = useState("");
-  const [nickNameCheck, setnickNameCheck] = useState(false);
+  const [nickName, setNickName] = useState("");
+  const [nickNameCheck, setNickNameCheck] = useState(false);
+  const [passwordMessage, setPasswordMessage] = useState("");
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -53,9 +56,15 @@ const SignUp = () => {
   const rePasswordIconRef = useRef();
   const nickNameRef = useRef();
   const nickNameIconRef = useRef();
+  const NickNameCheckef = useEffect;
 
-  const emailRegExp =
-    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+  const [color, setColor] = useState({
+    email: "#dedede",
+    id: "#dedede",
+    nickName: "#dedede",
+    password: "#dedede",
+    repassword: "#dedede",
+  });
 
   const newMember = {
     email,
@@ -63,15 +72,47 @@ const SignUp = () => {
     nickName,
   };
 
+  const passwordRegExp =
+    /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+
+  const checkLoginEmail = useCallback(
+    debounce((email) => {
+      const emailRegExp =
+        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+      if (!emailRegExp.test(email)) {
+        emailSpanRef.current.innerText = "이메일 형식에 맞지 않습니다.";
+        emailSpanRef.current.style.color = "#BCBCBC";
+        setEmailCheck(false);
+      } else {
+        dispatch(emailCheckThunk({ email })).then((res) => {
+          if (res.payload) {
+            emailSpanRef.current.innerText = "중복되는(1) 이메일입니다.";
+            emailSpanRef.current.style.color = "#BCBCBC";
+            setEmailCheck(true);
+          } else {
+            emailSpanRef.current.innerText = "사용가능한(1) 이메일입니다.";
+            emailSpanRef.current.style.color = "#BCBCBC";
+            setEmailCheck(false);
+          }
+        });
+      }
+    }, 500),
+    [email]
+  );
+
   useEffect(() => {
     if (password === "" && repassword === "") {
       passwordSpanRef.current.innerText = "";
+    } else if (passwordRegExp.test(password) === false) {
+      passwordSpanRef.current.innerText =
+        "비밀번호는 영문 대소문자, 숫자, 특수문자(`!@#$%)를 혼합하여 8~20자로 입력해주세요.";
+      passwordSpanRef.current.style.color = "#BCBCBC";
     } else if (password === "") {
       rePasswordSpanRef.current.style.color = "";
       rePasswordSpanRef.current.innerText = "";
       passwordSpanRef.current.style.color = "#BCBCBC";
       passwordSpanRef.current.innerText =
-        "비밀번호는 영문 대소문자, 숫자, 특수문자(`!@#$%)를 혼합하여 8~20자로 입력해주세요";
+        "비밀번호는 영문 대소문자, 숫자, 특수문자(`!@#$%)를 혼합하여 8~20자로 입력해주세요.";
     } else if (repassword === "") {
       rePasswordSpanRef.current.style.color = "";
       passwordSpanRef.current.style.color = "";
@@ -88,27 +129,32 @@ const SignUp = () => {
     }
   }, [password, repassword]);
 
-  const checkLoginEmail = useCallback(
-    debounce((email) => {
-      if (emailRegExp.test(email) === false) {
-        emailSpanRef.current.innerText = "이메일 형식에 맞지 않습니다.";
-        emailSpanRef.current.style.color = "#BCBCBC";
-        setEmailCheck(false);
-      } else {
-        dispatch(emailCheckThunk({ email })).then((res) => {
-          if (res.payload) {
-            emailSpanRef.current.innerText = "중복되는 이메일입니다.";
-            emailSpanRef.current.style.color = "#BCBCBC";
-            setEmailCheck(false);
-          } else {
-            emailSpanRef.current.innerText = "사용가능한 이메일입니다.";
-            emailSpanRef.current.style.color = "#BCBCBC";
-            setEmailCheck(true);
-          }
-        });
-      }
-    }, 800),
-    [email]
+  useEffect(() => {
+    if (nickName !== "") {
+      checkNickName(nickName);
+    } else {
+      nickNameRef.current.innerText = "";
+      nickNameRef.current.style.color = "";
+    }
+  }, [nickName]);
+
+  const checkNickName = useCallback(
+    debounce((nickName) => {
+      dispatch(nickNameCheckThunk({ nickName })).then((res) => {
+        if (res.payload) {
+          nickNameRef.current.innerText = "중복되는(4) 닉네임입니다";
+          nickNameRef.current.style.color = "#BCBCBC";
+          setNickNameCheck(true);
+          console.log(nickNameCheck);
+        } else {
+          nickNameRef.current.innerText = "사용가능한(4) 닉네임입니다";
+          nickNameRef.current.style.color = "#BCBCBC";
+          setNickNameCheck(false);
+          console.log(nickNameCheck);
+        }
+      });
+    }, 500),
+    [nickName]
   );
 
   useEffect(() => {
@@ -123,15 +169,16 @@ const SignUp = () => {
   const onsubmitHandler = useCallback(
     (event) => {
       event.preventDefault();
-      if (emailCheck === false) {
+      console.log(emailCheck, nickNameCheck);
+      if (emailCheck === true) {
         emailRef.current.focus();
         emailRef.current.style.color = "#BCBCBC";
-        emailRef.current.innerText = "중복되는 이메일입니다.";
+        emailRef.current.innerText = "중복(22)되는 이메일입니다.";
       } else {
         if (nickNameCheck === true) {
           nickNameRef.current.focus();
           nickNameRef.current.style.color = "#BCBCBC";
-          nickNameRef.current.innerText = "중복되는 닉네임입니다.";
+          nickNameRef.current.innerText = "중복(22)되는 닉네임입니다.";
         } else {
           if (password !== repassword) {
             passwordRef.current.style.innerText = "";
@@ -214,9 +261,10 @@ const SignUp = () => {
             닉네임
             <SignUpBoxInputWrap>
               <SignUpBoxInput
+                setColor="green"
                 type="text"
                 value={nickName}
-                onChange={(e) => setnickName(e.target.value)}
+                onChange={(e) => setNickName(e.target.value)}
                 placeholder="닉네임을 입력하세요.(최대 6글자)"
                 minLength="4"
                 maxLength="6"
