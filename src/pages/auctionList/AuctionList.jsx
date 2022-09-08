@@ -1,26 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 //components
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import Auction from "../../components/auction/Auction";
+import PlusButton from "../../components/button/PlusButton";
 
 //reducer
 import { useDispatch, useSelector } from "react-redux";
 import { auctionItemList } from "../../redux/modules/AuctionListSlice";
+import { showModal } from "../../redux/modules/ModalSlice";
 
 //styled
 import styled from "styled-components";
-import { modalSlice, showModal } from "../../redux/modules/ModalSlice";
-import Modal from "../../components/modal/Modal";
+import { useNavigate } from "react-router-dom";
 
 const AuctionList = () => {
   const dispatch = useDispatch();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
-
-  const modal = useSelector((state) => state.modal.show);
-
-  console.log(modal);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(auctionItemList());
@@ -32,14 +30,13 @@ const AuctionList = () => {
   return (
     <AuctionListLayout>
       <Header />
-      {modal ? <Modal /> : ""}
       <ListCategoryWrap>
-        <CategoryBtn onClick={() => dispatch(showModal())}>
+        <CategoryBtn onClick={() => dispatch(showModal("categoryList"))}>
           <CategoryBtnText>전체품목</CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
         </CategoryBtn>
         <CategoryBtn>
-          <CategoryBtnText onClick={() => dispatch(showModal())}>
+          <CategoryBtnText onClick={() => dispatch(showModal("regionList"))}>
             전체지역
           </CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
@@ -48,13 +45,12 @@ const AuctionList = () => {
           <CategoryBtnTimeText>마감임박</CategoryBtnTimeText>
         </CategoryBtn>
       </ListCategoryWrap>
-
       <ListContents>
         {AuctionListData.map((index, item) => {
           return <Auction key={index.auctionId} data={index} />;
         })}
       </ListContents>
-      {/* <PlusBtn>+</PlusBtn> */}
+      <PlusButton />
       <Footer />
     </AuctionListLayout>
   );
@@ -108,22 +104,6 @@ const ListContents = styled.div`
   overflow: auto;
   padding: 0px 10px;
   /* border-bottom: ${({ category }) => (category ? "solid 2px blue;" : "")}; */
-`;
-
-const PlusBtn = styled.button`
-  /* display: flex;
-  position: absolute;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  border-radius: 500px;
-  font-size: 50px;
-  color: white;
-  padding: 0px 15px;
-  background-color: orange;
-  :hover {
-    background-color: #de5539;
-  } */
 `;
 
 export default AuctionList;

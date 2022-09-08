@@ -9,36 +9,41 @@ import {
   HeaderContainer,
   HeaderContent,
   HeaderIconContainer,
+  HeaderTitle,
   Logo,
+  PageTitle,
 } from "./Header.styled";
 
-const Header = ({ borderBottom, logo }) => {
-	const navigate = useNavigate();
+const Header = ({ borderBottom, logo, page, write }) => {
+  const navigate = useNavigate();
 
   return (
-    <>
-      {logo ? (
-        <HeaderContainer borderBottom={borderBottom}>
-          <HeaderContent>
-            <Logo onClick={() => navigate('/')}>땅땅</Logo>
-            <HeaderIconContainer>
-              <img src="maskable.png" alt="search" onClick={() => navigate('/search')}/>
+    <HeaderContainer borderBottom={borderBottom}>
+      <HeaderContent>
+        {logo ? (
+          <Logo onClick={() => navigate("/")}>땅땅</Logo>
+        ) : (
+          <HeaderTitle>
+            <img src="maskable.png" alt="back" onClick={() => navigate(-1)} />
+            <PageTitle>{page}</PageTitle>
+          </HeaderTitle>
+        )}
+        <HeaderIconContainer>
+          {write ? (
+            <span>완료</span>
+          ) : (
+            <>
+              <img
+                src="maskable.png"
+                alt="search"
+                onClick={() => navigate("/search")}
+              />
               <img src="maskable.png" alt="alarm" />
-            </HeaderIconContainer>
-          </HeaderContent>
-        </HeaderContainer>
-      ) : (
-        <HeaderContainer borderBottom={borderBottom}>
-          <HeaderContent>
-            <img src="maskable.png" alt="back" onClick={() => navigate(-1)}/>
-            <HeaderIconContainer>
-              <img src="maskable.png" alt="search" onClick={() => navigate('/search')}/>
-              <img src="maskable.png" alt="alarm" />
-            </HeaderIconContainer>
-          </HeaderContent>
-        </HeaderContainer>
-      )}
-    </>
+            </>
+          )}
+        </HeaderIconContainer>
+      </HeaderContent>
+    </HeaderContainer>
   );
 };
 
