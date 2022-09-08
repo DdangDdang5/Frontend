@@ -2,6 +2,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Cookies } from "react-cookie";
 
+// Shared import
 import api from "../../shared/Api";
 import { getCookie, setCookie } from "../../shared/Cookie";
 
@@ -46,21 +47,24 @@ export const loginMemberThunk = createAsyncThunk(
         return window.alert(res.data.err.message);
       } else {
         console.log(res);
-				
-				localStorage.setItem("memberId", res.data.data.memberId);
-				localStorage.setItem("accessToken", res.headers.authorization);
-				// console.log(localStorage.getItem("accessToken"));
+        
+        localStorage.setItem("memberId", res.data.data.memberId);
+        localStorage.setItem("accessToken", res.headers.authorization);
+        console.log(localStorage.getItem("accessToken"));
 
-				console.log(res.headers.authorization);
-				console.log(res.headers.expires);
-        setCookie("accessToken", res.headers.authorization, res.headers.expires);
-				const cookie = getCookie("accessToken");
-				console.log(cookie);
+        console.log(res.headers);
+        setCookie(
+          "accessToken",
+          res.headers.authorization,
+          +res.headers.expires
+        );
+        const cookie = getCookie("accessToken");
+        console.log(cookie);
 
-        // return (
-        //   window.alert(`${res.data.data.nickName}님 안녕하세요!`),
-        //   window.location.replace("/")
-        // );
+        return (
+          window.alert(`${res.data.data.nickName}님 안녕하세요!`),
+          window.location.replace("/")
+        );
       }
     });
     return thunkAPI.fulfillWithValue(resData.data.data);
@@ -146,7 +150,6 @@ export const memberSlice = createSlice({
       state.isLogin = true;
     });
     builder.addCase(kakaoOauthThunk.fulfilled, (state, action) => {
-      console.log("reducer kakao");
       console.log(state, action);
     });
   },

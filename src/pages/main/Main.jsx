@@ -48,7 +48,7 @@ const Main = () => {
 
   // 판매중인 경매 목록
   const auctionSaleList = auctionAllList?.filter(
-    (item) => item.auctionStatus === true,
+    (item) => item.auctionStatus === true
   );
 
   // 인기 경매 목록 3개
@@ -67,14 +67,14 @@ const Main = () => {
       return {
         ...item,
         auctionPeriod: new Date(
-          date.setDate(date.getDate() + item.auctionPeriod),
+          date.setDate(date.getDate() + item.auctionPeriod)
         ),
       };
     })
     .sort(
       (a, b) =>
         new Date(a.auctionPeriod).valueOf() -
-        new Date(b.auctionPeriod).valueOf(),
+        new Date(b.auctionPeriod).valueOf()
     )
     .slice(0, 4);
 
@@ -97,8 +97,8 @@ const Main = () => {
         </BannerContainer>
 
         {/* 카테고리별, 지역별 TOP 6 */}
-        <AuctionCategoryList isCategory={true} />
-        <AuctionCategoryList isCategory={false} />
+        {/* <AuctionCategoryList isCategory={true} />
+        <AuctionCategoryList isCategory={false} /> */}
 
         {/* 인기 경매 */}
         <ListContainer>
@@ -108,8 +108,7 @@ const Main = () => {
             {auctionPopularList?.map((item) => (
               <PopularItem
                 key={item.auctionId}
-                onClick={() => moveAuctionDetail(item.auctionId)}
-              >
+                onClick={() => moveAuctionDetail(item.auctionId)}>
                 <img
                   src={item.multiImages[0].imgUrl}
                   alt="auction-popular-img"
@@ -147,8 +146,7 @@ const Main = () => {
             {auctionNewList?.map((item) => (
               <NewItem
                 key={item.auctionId}
-                onClick={() => moveAuctionDetail(item.auctionId)}
-              >
+                onClick={() => moveAuctionDetail(item.auctionId)}>
                 <img src={item.multiImages[0].imgUrl} alt="auction-new-img" />
                 <NewItemContent>
                   <TagWrap backgroundColor="gray">
@@ -181,8 +179,7 @@ const Main = () => {
             {auctionLastList?.map((item) => (
               <LastItem
                 key={item.auctionId}
-                onClick={() => moveAuctionDetail(item.auctionId)}
-              >
+                onClick={() => moveAuctionDetail(item.auctionId)}>
                 <img src={item.multiImages[0].imgUrl} alt="auction-last-img" />
                 <TagWrap backgroundColor="gray">
                   {item.delivery ? <span>택배</span> : null}

@@ -1,6 +1,4 @@
-import axios, { Axios } from "axios";
-import { history } from "../redux/config/ConfigStore";
-import { deleteCookie, getCookie, setCookie } from "./Cookie";
+import axios from "axios";
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_URL,
@@ -13,7 +11,6 @@ const api = axios.create({
 // const token = getCookie("accessToken");
 const token = localStorage.getItem("accessToken");
 api.defaults.headers.common["authorization"] = token ? `${token}` : null;
-
 
 // api.interceptors.request.use((config) => {
 //   const token = getCookie("accessToken");
@@ -84,4 +81,5 @@ api.defaults.headers.common["authorization"] = token ? `${token}` : null;
 //     return Promise.reject(error);
 //   }
 // );
+
 export default api;

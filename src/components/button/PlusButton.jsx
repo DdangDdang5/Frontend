@@ -3,9 +3,6 @@ import React from "react";
 
 // Import styled
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { showModal } from "../../redux/modules/ModalSlice";
-import { Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
 const PlusButton = () => {
@@ -17,9 +14,9 @@ const PlusButton = () => {
 
 const PlusBtn = styled.button`
   display: flex;
-  position: fixed;
+  position: absolute;
   z-index: 10;
-  bottom: 90px;
+  bottom: 102px;
   right: 20px;
 
   justify-content: center;
