@@ -3,9 +3,15 @@ import Header from "../../components/header/Header";
 import styled from "styled-components";
 import Footer from "../../components/footer/Footer";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux/es/exports";
 
 const MyPage = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const myPageData = useSelector((state) => state.myPage.myPage);
+
   const Img = (
     <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
   );

@@ -1,14 +1,33 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { apis } from "../../shared/api";
+import api from "../../shared/Api";
 
 const initialState = {
-  mypage: [],
+  myPage: [],
 };
 
-const mypageSlice = createSlice({
-  name: "mypage",
+export const myPageData = createAsyncThunk(
+  "getMyPageData",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get(`/member/${payload}/mypage`);
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+const myPageSlice = createSlice({
+  name: "myPage",
   initialState,
-  extraReducers: {},
+  extraReducers: {
+    [myPageData.fulfilled]: (state, action) => {
+      state.myPage = action.payload;
+    },
+    [myPageData.rejected]: (state, action) => {
+      console.log(action);
+    },
+  },
 });
 
-export default mypageSlice.reducer;
+export default myPageSlice.reducer;
