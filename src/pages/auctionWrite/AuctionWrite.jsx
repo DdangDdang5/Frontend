@@ -1,9 +1,62 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
+import { useDispatch } from "react-redux";
+import { addAuctionItem } from "../../redux/modules/AuctionListSlice";
 
 const AuctionWrite = () => {
+  const dispatch = useDispatch();
+  const [filed, setFiled] = useState("");
+  const img_ref = useRef(null);
+
+  const auctionRequestDto = {
+    title: "",
+    content: "",
+    startPrice: "",
+    category: "가전",
+    region: "동대문구",
+    direct: true,
+    delivery: true,
+    auctionPeriod: 1,
+  };
+  const initalTags = {
+    tag1: "",
+    tag2: "",
+    tag3: "",
+    tag4: "",
+    tag5: "",
+    tag6: "",
+  };
+  const onLoadFile = (e) => {
+    setFiled(URL.createObjectURL(e.target.files[0]));
+    console.log(filed);
+  };
+  const [inputForm, setInputForm] = useState(auctionRequestDto);
+  const [tags, setTags] = useState(initalTags);
+  console.log("배돌배돌배돌", inputForm);
+
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+    setInputForm({ ...inputForm, [name]: value });
+  };
+
+  const onTransmitHandler = () => {
+    let uploadImg = img_ref.current;
+    console.log(uploadImg.files[0]);
+    let formData = new FormData();
+    formData.append(
+      "auctionRequestDto",
+      new Blob([JSON.stringify(inputForm)], { type: "application/json" })
+    );
+    formData.append(
+      "tags",
+      new Blob([JSON.stringify(tags)], { type: "application/json" })
+    );
+    formData.append("images", uploadImg.files[0]);
+    dispatch(addAuctionItem(formData));
+  };
+
   return (
     <AuctionWriteLayout>
       <Header />
@@ -12,7 +65,13 @@ const AuctionWrite = () => {
         <WriteImgContainer>
           <ImgBoxBtn>
             <div>+</div>
-            <div>1/10</div>
+            <input
+              ref={img_ref}
+              type="file"
+              accept="image/*"
+              id="img_upFile"
+              onChange={onLoadFile}
+            />
           </ImgBoxBtn>
 
           <ImgBox>
@@ -40,10 +99,23 @@ const AuctionWrite = () => {
             </div>
           </ImgBox>
         </WriteImgContainer>
+
         <WriteTitleContainer>제목</WriteTitleContainer>
-        <WriteInputBox placeholder="제목을 입력해주세요." />
+        <WriteInputBox
+          type="text"
+          value={inputForm.title}
+          name="title"
+          onChange={onChangeHandler}
+          placeholder="제목을 입력해주세요."
+        />
         <WriteTitleContainer>상품명</WriteTitleContainer>
-        <WriteInputBox placeholder="정확한 상품명을 입력해주세요." />
+        <WriteInputBox
+          type="text"
+          value={inputForm.content}
+          name="content"
+          onChange={onChangeHandler}
+          placeholder="정확한 상품명을 입력해주세요."
+        />
         <WriteTitleContainer>카테고리 선택</WriteTitleContainer>
         <WriteBtnBox>
           <div>미선택</div>
@@ -53,7 +125,13 @@ const AuctionWrite = () => {
 
         {/* placeHoder 위치 조정이 안됨 ㅡㅡ  */}
 
-        <WriteInputBox placeholder="원" />
+        <WriteInputBox
+          placeholder="시작가를 입력해주세요."
+          type="number"
+          value={inputForm.startPrice}
+          name="startPrice"
+          onChange={onChangeHandler}
+        />
         {/* <input className="inputTag" type="text" placeholder="원" /> */}
 
         <WriteTitleContainer>
@@ -62,8 +140,18 @@ const AuctionWrite = () => {
         </WriteTitleContainer>
 
         <WriteDeliveryStateContainer>
-          <button>택배</button>
-          <button>직거래</button>
+          <button
+            onClick={() =>
+              setInputForm({ ...inputForm, delivery: !inputForm.delivery })
+            }>
+            택배
+          </button>
+          <button
+            onClick={() =>
+              setInputForm({ ...inputForm, direct: !inputForm.direct })
+            }>
+            직거래
+          </button>
         </WriteDeliveryStateContainer>
         <WriteTitleContainer>지역 선택</WriteTitleContainer>
         <WriteBtnBox>
@@ -71,9 +159,18 @@ const AuctionWrite = () => {
           <div>V</div>
         </WriteBtnBox>
         <WriteTitleContainer>상세 설명</WriteTitleContainer>
-        <WriteTextArea placeholder="경매 물품에 대한 상세한 설명을 적어주세요." />
+        <WriteTextArea
+          type="text"
+          value={inputForm.content}
+          name="content"
+          onChange={onChangeHandler}
+          placeholder="경매 물품에 대한 상세한 설명을 적어주세요."
+        />
         <WriteTitleContainer>해시태그</WriteTitleContainer>
         <WriteInputBox placeholder="최대 6개까지 입력할 수 있습니다." />
+        <WritePostBtn type="button" onClick={onTransmitHandler}>
+          버튼
+        </WritePostBtn>
       </AuctionWriteWrap>
       <Footer />
     </AuctionWriteLayout>
@@ -94,6 +191,10 @@ const AuctionWriteWrap = styled.div`
 
   height: calc(100vh - 140px);
   overflow: scroll;
+  .form {
+    display: flex;
+    flex-direction: column;
+  }
   /* background-color: yellow; */
 `;
 const WriteImgContainer = styled.div`
@@ -214,6 +315,13 @@ const WriteTextArea = styled.textarea`
   box-sizing: border-box;
   resize: none;
   border: 1px solid #c5d0e1;
+`;
+
+const WritePostBtn = styled.button`
+  display: flex;
+  width: 40px;
+  height: 30px;
+  background-color: red;
 `;
 
 export default AuctionWrite;

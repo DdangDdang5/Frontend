@@ -31,6 +31,7 @@ import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
 import Kakao from "./shared/Kakao";
 import { getCookie } from "./shared/Cookie";
 import CategoryModal from "./components/modal/CategoryModal";
+
 function App() {
   const dispatch = useDispatch();
   const token = getCookie("accessToken");
