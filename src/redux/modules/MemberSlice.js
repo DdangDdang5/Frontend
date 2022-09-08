@@ -1,5 +1,6 @@
 //Redux import
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { Cookies } from "react-cookie";
 
 // Shared import
 import api from "../../shared/Api";
@@ -10,7 +11,7 @@ export const emailCheckThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/emailcheck`, payload);
     return thunkAPI.fulfillWithValue(resData.data.data);
-  }
+  },
 );
 
 export const nickNameCheckThunk = createAsyncThunk(
@@ -18,7 +19,7 @@ export const nickNameCheckThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/nicknamecheck`, payload);
     return thunkAPI.fulfillWithValue(resData.data.data);
-  }
+  },
 );
 
 export const signUpMemberThunk = createAsyncThunk(
@@ -35,7 +36,7 @@ export const signUpMemberThunk = createAsyncThunk(
       }
     });
     return thunkAPI.fulfillWithValue(resData.data.data);
-  }
+  },
 );
 
 export const loginMemberThunk = createAsyncThunk(
@@ -46,7 +47,7 @@ export const loginMemberThunk = createAsyncThunk(
         return window.alert(res.data.err.message);
       } else {
         console.log(res);
-
+        
         localStorage.setItem("memberId", res.data.data.memberId);
         localStorage.setItem("accessToken", res.headers.authorization);
         console.log(localStorage.getItem("accessToken"));
@@ -67,7 +68,7 @@ export const loginMemberThunk = createAsyncThunk(
       }
     });
     return thunkAPI.fulfillWithValue(resData.data.data);
-  }
+  },
 );
 
 export const kakaoOauthThunk = createAsyncThunk(
@@ -84,23 +85,34 @@ export const kakaoOauthThunk = createAsyncThunk(
         console.log(res);
         if (res.data.statusCode) {
           localStorage.setItem("memberId", res.data.data.email);
-          console.log(res.data.data.tokenDto.accessTokenExpiresIn);
           localStorage.setItem("accessToken", res.headers.authorization);
+          console.log(res.data.data);
+
           setCookie(
             "accessToken",
             res.headers["authorization"],
-            res.data.data.tokenDto.accessTokenExpiresIn
+            +res.headers.expires,
           );
+
           const cookie = getCookie("accessToken");
-          // console.log(cookie);
-          window.location.replace("/");
+          console.log(cookie);
+          //  window.location.replace('/');
           return res;
         }
       })
-      .catch((err) => err);
+      .catch((err) => console.log(err));
+
+    // window.localStorage.setItem(
+    //   "authorization",
+    //   resData.headers["authorization"].split(" ")[1]
+    // );
+    // window.localStorage.setItem(
+    //   "refresh-token",
+    //   resData.headers["refresh-token"]
+    // );
 
     return thunkAPI.fulfillWithValue(resData.data.data);
-  }
+  },
 );
 
 // export const loginCheckDB = () => {
