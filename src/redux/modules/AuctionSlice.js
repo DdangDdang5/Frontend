@@ -14,7 +14,6 @@ export const auctionDetailData = createAsyncThunk(
     try {
       const response = await api.get(`/auction/${payload}`);
       return thunkAPI.fulfillWithValue(response.data.data);
-      // return console.log("드가자자아아아!!!", response);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

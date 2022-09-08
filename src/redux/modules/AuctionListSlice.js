@@ -20,11 +20,11 @@ export const auctionItemList = createAsyncThunk(
 export const addAuctionItem = createAsyncThunk(
   "addAuctionItem",
   async (payload, thunkAPI) => {
-    // console.log('12321321312321123', payload);
     try {
-      const response = await api.post("posts", payload, {
+      const response = await api.post("/auction", payload, {
         "Content-Type": "multipart/form-data",
       });
+      console.log("배돌배돌배돌이add응답", response);
       return thunkAPI.fulfillWithValue(response);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
