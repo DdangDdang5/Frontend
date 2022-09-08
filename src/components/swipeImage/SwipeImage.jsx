@@ -79,8 +79,8 @@ const SwipeImage = ({
           const diff = new Date(new Date(item.auctionPeriod) - Date.now());
           const auctionPeriodDiff = `
 						${diff.getDate()}일 
-						${diff.getHours().toString().padStart(2, "0")}:
-						${diff.getMinutes().toString().padStart(2, "0")}
+						${diff.getHours().toString().padStart(2, "0")}시간
+						${diff.getMinutes().toString().padStart(2, "0")}분
 					`;
 
           return (

@@ -34,7 +34,7 @@ const MyPage = () => {
             </div>
           </NickBox>
           <LevelBox>
-            <div className="levelIcon">등급</div>
+            <div className="levelIcon" onClick={() => navigate("/myGrade")}>등급</div>
           </LevelBox>
         </MyNickContainer>
       </MyProfileWrap>

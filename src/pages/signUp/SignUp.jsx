@@ -32,7 +32,6 @@ import {
   SignUpBoxSpan,
   SignUpButtonGroup,
 } from "./SignUp.styled";
-import Header from "../../components/header/Header";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");

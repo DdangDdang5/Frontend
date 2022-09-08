@@ -1,4 +1,4 @@
-//Redux import
+// Redux import
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Cookies } from "react-cookie";
 
@@ -95,7 +95,7 @@ export const kakaoOauthThunk = createAsyncThunk(
 
           const cookie = getCookie("accessToken");
           console.log(cookie);
-          //  window.location.replace('/');
+           window.location.replace('/');
           return res;
         }
       })

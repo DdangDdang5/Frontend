@@ -14,7 +14,7 @@ import {
   PageTitle,
 } from "./Header.styled";
 
-const Header = ({ borderBottom, logo, page, write }) => {
+const Header = ({ borderBottom, logo, page, write, movePage }) => {
   const navigate = useNavigate();
 
   return (
@@ -30,7 +30,7 @@ const Header = ({ borderBottom, logo, page, write }) => {
         )}
         <HeaderIconContainer>
           {write ? (
-            <span>완료</span>
+            <span onClick={movePage}>완료</span>
           ) : (
             <>
               <img
