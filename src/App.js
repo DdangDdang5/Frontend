@@ -14,6 +14,8 @@ import AuctionList from "../src/pages/auctionList/AuctionList";
 import AuctionWrite from "../src/pages/auctionWrite/AuctionWrite";
 import AuctionDetail from "../src/pages/auctionDetail/AuctionDetail";
 import AuctionDone from "../src/pages/auctionDone/AuctionDone";
+import MyPageParticipationAuction from "./pages/myPage/MyPageParticipationAuction";
+import MyPageInterestAuction from "./pages/myPage/MyPageInterestAuction";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
@@ -21,6 +23,7 @@ import CategoryModal from "./components/modal/CategoryModal";
 
 // redux import
 import { useSelector } from "react-redux";
+import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
 
 function App() {
   const modal = useSelector((state) => state.modal.show);
@@ -41,7 +44,15 @@ function App() {
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
         <Route path="/kakao/callback" element={<Kakao />} />
-
+        <Route path="/myPageMyAuction" element={<MyPageMyAuction />} />
+        <Route
+          path="/myPageParticipationAuction"
+          element={<MyPageParticipationAuction />}
+        />
+        <Route
+          path="/myPageInterestAuction"
+          element={<MyPageInterestAuction />}
+        />
       </Routes>
       {modal && <CategoryModal />}
     </div>
