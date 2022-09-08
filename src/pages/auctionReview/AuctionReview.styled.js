@@ -1,4 +1,5 @@
 // Package import
+import { type } from "@testing-library/user-event/dist/type";
 import styled from "styled-components";
 
 export const AuctionReviewContainer = styled.div`
@@ -48,6 +49,8 @@ export const ReviewItemContent = styled.div`
 `;
 
 export const TagWrap = styled.div`
+  margin-bottom: 10px;
+
   display: flex;
   gap: 4px;
 
@@ -58,7 +61,6 @@ export const TagWrap = styled.div`
     border-radius: 100px;
 
     color: ${(props) => props.color};
-		font-size: ${(props) => props.theme.fontSizes.sm};
     font-weight: ${(props) => props.theme.fontWeights.medium};
   }
 `;

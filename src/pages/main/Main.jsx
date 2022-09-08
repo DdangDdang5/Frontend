@@ -105,7 +105,7 @@ const Main = () => {
           <ListHeader>지금 관심 폭발 중!</ListHeader>
 
           <PopularList>
-            {auctionPopularList?.map((item) => (
+            {auctionPopularList.map((item) => (
               <PopularItem
                 key={item.auctionId}
                 onClick={() => moveAuctionDetail(item.auctionId)}
@@ -144,7 +144,7 @@ const Main = () => {
           </ListHeader>
 
           <NewList>
-            {auctionNewList?.map((item) => (
+            {auctionNewList.map((item) => (
               <NewItem
                 key={item.auctionId}
                 onClick={() => moveAuctionDetail(item.auctionId)}
@@ -178,7 +178,7 @@ const Main = () => {
           </ListHeader>
 
           <LastList>
-            {auctionLastList?.map((item) => (
+            {auctionLastList.map((item) => (
               <LastItem
                 key={item.auctionId}
                 onClick={() => moveAuctionDetail(item.auctionId)}
