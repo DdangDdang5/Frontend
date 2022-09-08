@@ -4,11 +4,12 @@ import { Fragment, useRef, useState, useCallback, useEffect } from "react";
 // Redux import
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import { loginMemberThunk } from "../../redux/modules/MemberSlice";
+import { history } from "../../redux/config/ConfigStore";
 
 // Package import
 import { MdCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
-// import { getCookie } from "../../shared/Cookie";
+import { getCookie, setCookie } from "../../shared/Cookie";
 
 // Component & Element import
 import Button from "../../elements/button/Button";
@@ -24,19 +25,32 @@ import {
   LoginBoxInput,
   LoginBoxInputIcon,
   LoginBoxButtonGroup,
-  LoginBoxkakaoButton,
+  LoginBoxkakaoButtonGroup,
   LoginBoxSignUp,
   LoginBoxSignUpText,
   LoginBoxSignUpLink,
 } from "./Login.styled";
 
-const Login = () => {
+const Login = ({ location }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
   const REDIRECT_URI = "http://localhost:3000/member/kakao/callback";
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const token = getCookie("accessToken");
+
+  const isLogin = useSelector((state) => state.member.isLogin);
+  const member = useSelector((state) => state.member.member);
+
+  if (location?.state) {
+    localStorage.setItem("from", location?.state?.from);
+  }
+
+  useEffect(() => {
+    if (token) history.push("/");
+  }, [isLogin]);
 
   const emailRef = useRef();
   const emailIconRef = useRef();
@@ -53,9 +67,6 @@ const Login = () => {
     setPassword("");
   }, [password]);
 
-  const isLogin = useSelector((state) => state.member.isLogin);
-  const member = useSelector((state) => state.member.member);
-  // const token = getCookie("accessToken")
   useEffect(() => {}, [dispatch]);
 
   const onsubmitHandler = useCallback(
@@ -114,8 +125,8 @@ const Login = () => {
                 width: "100%",
                 height: "56px",
                 ft_size: "18px",
-                color: "#6D6D6D",
-                bg_color: "#DEDEDE",
+                color: "#FFFFFF",
+                bg_color: "#4D71FF",
               }}
             />
           </LoginBoxButtonGroup>
@@ -128,20 +139,22 @@ const Login = () => {
             </LoginBoxSignUpLink>
           </LoginBoxSignUpText>
         </LoginBoxSignUp>
-        <LoginBoxkakaoButton
+        <LoginBoxkakaoButtonGroup>
+          <Button
             type={"button"}
             text={"카카오로 로그인하기"}
-            onClick={() => {
+            _onClick={() => {
               window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
             }}
             style={{
               width: "100%",
               height: "56px",
               ft_size: "18px",
-              bg_color: "#f7e111",
               color: "#6D6D6D",
+              bg_color: "#F7E111",
             }}
           />
+        </LoginBoxkakaoButtonGroup>
       </LoginBox>
     </Fragment>
   );

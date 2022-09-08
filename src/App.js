@@ -1,3 +1,9 @@
+// React import
+import { useEffect } from "react";
+
+// Redux import
+import { useDispatch } from "react-redux";
+
 // Package import
 import { Route, Routes } from "react-router-dom";
 import { useSelector } from "react-redux";
@@ -23,10 +29,19 @@ import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
+import { getCookie } from "./shared/Cookie";
+import Modal from "./components/modal/Modal";
 import CategoryModal from "./components/modal/CategoryModal";
-
 function App() {
+  const dispatch = useDispatch();
+  const token = getCookie("accessToken");
   const modal = useSelector((state) => state.modal.show);
+
+  useEffect(() => {
+    if (token) {
+      dispatch();
+    }
+  }, []);
 
   return (
     <div className="App">
