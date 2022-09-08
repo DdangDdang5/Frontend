@@ -17,6 +17,9 @@ import AuctionDetail from "../src/pages/auctionDetail/AuctionDetail";
 import AuctionDone from "../src/pages/auctionDone/AuctionDone";
 import AuctionReview from "./pages/auctionReview/AuctionReview";
 import MyGrade from "./pages/myGrade/MyGrade";
+import MyPageParticipationAuction from "./pages/myPage/MyPageParticipationAuction";
+import MyPageInterestAuction from "./pages/myPage/MyPageInterestAuction";
+import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
@@ -43,6 +46,9 @@ function App() {
         <Route path="/auctionReview" element={<AuctionReview />} />
         <Route path="/kakao/callback" element={<Kakao />} />
         <Route path="/mygrade" element={<MyGrade />} />
+        <Route path="/myPageMyAuction" element={<MyPageMyAuction />} />
+        <Route path="/myPageParticipationAuction" element={<MyPageParticipationAuction />} />
+        <Route path="/myPageInterestAuction" element={<MyPageInterestAuction />} />
       </Routes>
       {modal && <CategoryModal />}
     </div>
