@@ -17,9 +17,9 @@ const PlusButton = () => {
 
 const PlusBtn = styled.button`
   display: flex;
-  position: fixed;
+  position: absolute;
   z-index: 10;
-  bottom: 90px;
+  bottom: 102px;
   right: 20px;
 
   justify-content: center;
