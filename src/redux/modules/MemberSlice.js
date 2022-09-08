@@ -45,8 +45,21 @@ export const loginMemberThunk = createAsyncThunk(
       if (res.data.success === false) {
         return window.alert(res.data.err.message);
       } else {
+        console.log(res);
+
         localStorage.setItem("memberId", res.data.data.memberId);
         localStorage.setItem("accessToken", res.headers.authorization);
+        console.log(localStorage.getItem("accessToken"));
+
+        console.log(res.headers);
+        setCookie(
+          "accessToken",
+          res.headers.authorization,
+          +res.headers.expires
+        );
+        const cookie = getCookie("accessToken");
+        console.log(cookie);
+
         return (
           window.alert(`${res.data.data.nickName}님 안녕하세요!`),
           window.location.replace("/")
@@ -84,7 +97,7 @@ export const kakaoOauthThunk = createAsyncThunk(
           return res;
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => err);
 
     return thunkAPI.fulfillWithValue(resData.data.data);
   }
