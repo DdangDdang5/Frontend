@@ -16,8 +16,8 @@ const AuctionWrite = () => {
     startPrice: "",
     category: "가전",
     region: "동대문구",
-    direct: true,
-    delivery: true,
+    direct: false,
+    delivery: false,
     auctionPeriod: 1,
   };
   const initalTags = {
@@ -29,12 +29,12 @@ const AuctionWrite = () => {
     tag6: "",
   };
   const onLoadFile = (e) => {
-    setFiled(URL.createObjectURL(e.target.files[0]));
-    console.log(filed);
+    setFiled(...filed, URL.createObjectURL(e.target.files[0]));
+    console.log("배돌배돌배돌필드", filed);
   };
   const [inputForm, setInputForm] = useState(auctionRequestDto);
   const [tags, setTags] = useState(initalTags);
-  console.log("배돌배돌배돌", inputForm);
+  console.log("배돌배돌배돌인풋폼", inputForm);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -65,23 +65,30 @@ const AuctionWrite = () => {
         <WriteImgContainer>
           <ImgBoxBtn>
             <div>+</div>
+            <div>파일을 입력</div>
             <input
               ref={img_ref}
               type="file"
               accept="image/*"
               id="img_upFile"
               onChange={onLoadFile}
+              style={{ display: "none" }}
             />
           </ImgBoxBtn>
 
+          {/* {filed.map((index, item) => {
+            return (
+              <ImgBox key={item}>
+                <img src={index} alt="" />
+                <div className="deleteBox">
+                  <div>x</div>
+                </div>
+              </ImgBox>
+            );
+          })} */}
+
           <ImgBox>
-            <img src="" alt="" />
-            <div className="deleteBox">
-              <div>x</div>
-            </div>
-          </ImgBox>
-          <ImgBox>
-            <img src="" alt="" />
+            <img src={filed} alt="" />
             <div className="deleteBox">
               <div>x</div>
             </div>

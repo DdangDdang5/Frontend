@@ -2,7 +2,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import api from "../../shared/Api";
-import { getCookie } from "../../shared/Cookie";
 
 export const emailCheckThunk = createAsyncThunk(
   "member/emailCheck",
@@ -27,9 +26,7 @@ export const nickNameCheckThunk = createAsyncThunk(
 export const signUpMemberThunk = createAsyncThunk(
   "member/signUpMember",
   async (payload, thunkAPI) => {
-    const resData = await api
-    .post(`/member/signup`, payload)
-    .then((res) => {
+    const resData = await api.post(`/member/signup`, payload).then((res) => {
       if (res.data.success === false) {
         return window.alert(res.data.err.message);
       } else {
@@ -50,6 +47,12 @@ export const loginMemberThunk = createAsyncThunk(
       if (res.data.success === false) {
         return window.alert(res.data.err.message);
       } else {
+        console.log(res);
+
+        localStorage.setItem("memberId", res.data.data.memberId);
+        localStorage.setItem("accessToken", res.headers.authorization);
+        console.log(localStorage.getItem("accessToken"));
+
         return (
           window.alert(`${res.data.data.nickName}님 안녕하세요!`),
           window.location.replace("/")
