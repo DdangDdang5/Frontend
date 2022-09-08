@@ -24,6 +24,8 @@ const AuctionList = () => {
     dispatch(auctionItemList());
   }, [dispatch]);
 
+  console.log("배돌리스트데이터", AuctionListData);
+
   if (!AuctionListData) {
     return <></>;
   }
@@ -46,8 +48,8 @@ const AuctionList = () => {
         </CategoryBtn>
       </ListCategoryWrap>
       <ListContents>
-        {AuctionListData.map((index, item) => {
-          return <Auction key={index.auctionId} data={index} />;
+        {AuctionListData.map((item, index) => {
+          return <Auction key={item.auctionId} data={item} />;
         })}
       </ListContents>
       <PlusButton />

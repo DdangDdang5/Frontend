@@ -4,9 +4,11 @@ import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import { useDispatch } from "react-redux";
 import { addAuctionItem } from "../../redux/modules/AuctionListSlice";
-
+import { useNavigate } from "react-router-dom";
+import { showModal } from "../../redux/modules/ModalSlice";
 const AuctionWrite = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const auctionRequestDto = {
     title: "",
@@ -18,8 +20,8 @@ const AuctionWrite = () => {
     delivery: false,
     auctionPeriod: 1,
   };
-  const initialTags = {
-    tag1: "아이폰",
+  const initialTag = {
+    tag1: "",
     tag2: "",
     tag3: "",
     tag4: "",
@@ -31,19 +33,29 @@ const AuctionWrite = () => {
   const [imagePreview, setImagePreview] = useState([]);
   const img_ref = useRef();
   const [inputForm, setInputForm] = useState(auctionRequestDto);
-  const [tags, setTags] = useState(initialTags);
+  const [tags, setTags] = useState([]);
 
+  console.log("배돌배돌데이터", inputForm);
   // 이미지 업로드
   const onLoadFile = (e) => {
+    // 미리보기에선 삭제가 됬는데 업로드 올린건 삭제가 됬나?
     const reader = new FileReader();
     setImgFile(...imgFile, URL.createObjectURL(e.target.files[0]));
 
     const prevImg = e.target.files[0];
     reader.readAsDataURL(prevImg);
     reader.onloadend = () => {
-      setImagePreview([...imagePreview, reader.result]);
+      setImagePreview([
+        ...imagePreview,
+        { id: imagePreview.length, img: reader.result },
+      ]);
     };
-    console.log("배돌배돌배돌필드", tags);
+  };
+
+  const onRemove = (id) => {
+    return setImagePreview(
+      imagePreview.filter((imagePreview) => imagePreview.id !== id)
+    );
   };
 
   const onChangeHandler = (e) => {
@@ -52,8 +64,20 @@ const AuctionWrite = () => {
   };
 
   const onTransmitHandler = () => {
+    // 태그 추가
+    let tagList = tags.split("#");
+    tagList = tagList.slice(1, tagList.length);
+
+    for (let i = 0; i < 6; i++) {
+      const tmp = "tag" + (i + 1);
+      if (tagList[i]) {
+        initialTag[tmp] = tagList[i];
+      } else {
+        delete initialTag[tmp];
+      }
+    }
+    // 이미지 업로드
     let uploadImg = img_ref.current;
-    console.log(uploadImg.files[0]);
     let formData = new FormData();
     formData.append(
       "auctionRequestDto",
@@ -61,15 +85,20 @@ const AuctionWrite = () => {
     );
     formData.append(
       "tags",
-      new Blob([JSON.stringify(tags)], { type: "application/json" })
+      new Blob([JSON.stringify(initialTag)], { type: "application/json" })
     );
     formData.append("images", uploadImg.files[0]);
     dispatch(addAuctionItem(formData));
+    window.alert("새 게시물 만들기 완료");
+    // 포스팅 완료후 새로고침
+
+    navigate(-1);
+    // window.location.reload();
   };
 
   return (
     <AuctionWriteLayout>
-      <Header />
+      <Header page="경매 글쓰기" write={true} movePage={onTransmitHandler} />
 
       <AuctionWriteWrap>
         <WriteImgContainer>
@@ -84,39 +113,20 @@ const AuctionWrite = () => {
               accept="image/*"
               id="img_UpFile"
               onChange={onLoadFile}
-              style={{ display: "none", width: "93px", height: "93px" }}
+              style={{ display: "none" }}
             />
           </ImgBoxBtn>
 
           {imagePreview.map((item, index) => {
             return (
               <ImgBox key={index}>
-                <img src={item} alt="" />
-                <div className="deleteBox">
+                <img src={item.img} alt="" />
+                <div className="deleteBox" onClick={() => onRemove(item.id)}>
                   <div>x</div>
                 </div>
               </ImgBox>
             );
           })}
-
-          {/* <ImgBox>
-            <img src={imgFile} alt="" />
-            <div className="deleteBox">
-              <div>x</div>
-            </div>
-          </ImgBox>
-          <ImgBox>
-            <img src="" alt="" />
-            <div className="deleteBox">
-              <div>x</div>
-            </div>
-          </ImgBox>
-          <ImgBox>
-            <img src="" alt="" />
-            <div className="deleteBox">
-              <div>x</div>
-            </div>
-          </ImgBox> */}
         </WriteImgContainer>
 
         <WriteTitleContainer>제목</WriteTitleContainer>
@@ -136,7 +146,7 @@ const AuctionWrite = () => {
           placeholder="정확한 상품명을 입력해주세요."
         />
         <WriteTitleContainer>카테고리 선택</WriteTitleContainer>
-        <WriteBtnBox>
+        <WriteBtnBox onClick={() => dispatch(showModal("categoryList"))}>
           <div>미선택</div>
           <div>V</div>
         </WriteBtnBox>
@@ -159,21 +169,23 @@ const AuctionWrite = () => {
         </WriteTitleContainer>
 
         <WriteDeliveryStateContainer>
-          <button
+          <DeliveryBtn
+            state={inputForm.delivery}
             onClick={() =>
               setInputForm({ ...inputForm, delivery: !inputForm.delivery })
             }>
             택배
-          </button>
-          <button
+          </DeliveryBtn>
+          <DirectBtn
+            state={inputForm.direct}
             onClick={() =>
               setInputForm({ ...inputForm, direct: !inputForm.direct })
             }>
             직거래
-          </button>
+          </DirectBtn>
         </WriteDeliveryStateContainer>
         <WriteTitleContainer>지역 선택</WriteTitleContainer>
-        <WriteBtnBox>
+        <WriteBtnBox onClick={() => dispatch(showModal("regionList"))}>
           <div>미선택</div>
           <div>V</div>
         </WriteBtnBox>
@@ -186,10 +198,14 @@ const AuctionWrite = () => {
           placeholder="경매 물품에 대한 상세한 설명을 적어주세요."
         />
         <WriteTitleContainer>해시태그</WriteTitleContainer>
-        <WriteInputBox placeholder="최대 6개까지 입력할 수 있습니다." />
-        <WritePostBtn type="button" onClick={onTransmitHandler}>
+        <WriteInputBox
+          placeholder="최대 6개까지 입력할 수 있습니다."
+          value={tags}
+          onChange={(e) => setTags(e.target.value)}
+        />
+        {/* <WritePostBtn type="button" onClick={onTransmitHandler}>
           버튼
-        </WritePostBtn>
+        </WritePostBtn> */}
       </AuctionWriteWrap>
       <Footer />
     </AuctionWriteLayout>
@@ -252,8 +268,15 @@ const ImgBox = styled.div`
   min-width: 93px;
   width: 93px;
   gap: 16px;
-  background-color: yellow;
   position: relative;
+  img {
+    display: flex;
+    object-fit: cover;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+  }
   .deleteBox {
     position: absolute;
     top: 3px;
@@ -318,20 +341,36 @@ const WriteDeliveryStateContainer = styled.div`
   width: 100%;
   min-height: 48px;
   gap: 20px;
-
-  button {
-    display: flex;
-    width: 165px;
-    height: 100%;
-    box-sizing: border-box;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    font-weight: 500;
-    border-radius: 100px;
-    border: 1px solid #9b9b9b;
-    background-color: white;
-  }
+`;
+const DirectBtn = styled.button`
+  display: flex;
+  width: 165px;
+  height: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 100px;
+  border: ${(props) =>
+    props.state ? "1px solid #4D71FF" : "1px solid #a5a9b6"};
+  background-color: ${(props) => (props.state ? "#E9F3FF" : "white")};
+  color: ${(props) => (props.state ? "#4D71FF" : "#a5a9b6")};
+`;
+const DeliveryBtn = styled.button`
+  display: flex;
+  width: 165px;
+  height: 100%;
+  box-sizing: border-box;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 100px;
+  border: ${(props) =>
+    props.state ? "1px solid #4D71FF" : "1px solid #a5a9b6"};
+  background-color: ${(props) => (props.state ? "#E9F3FF" : "white")};
+  color: ${(props) => (props.state ? "#4D71FF" : "#a5a9b6")};
 `;
 const WriteTextArea = styled.textarea`
   display: flex;

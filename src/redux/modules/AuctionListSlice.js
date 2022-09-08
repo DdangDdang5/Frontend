@@ -107,7 +107,7 @@ const auctionListSlice = createSlice({
     },
     [deleteAuctionItem.fulfilled]: (state, action) => {
       state.auctionList = state.auctionList.filter(
-        (post) => post.auctionId != action.payload
+        (post) => post.id !== action.payload
       );
     },
     [deleteAuctionItem.rejected]: (state, action) => {
