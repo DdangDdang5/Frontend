@@ -1,15 +1,23 @@
-export const setCookie = (name, value, exp = 1) => {
-  let date = new Date();
-  date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
-  document.cookie = `${name}=${value}; expires=${date.toUTCString()}`;
+export const setCookie = (name, value, exp) => {
+  // let date = new Date();
+  // date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
+   let date = Date(exp);
+  document.cookie = `${name}=${value}; expires=${date}`;
 };
 
 export const getCookie = (name) => {
-  let value = "; " + document.cookie;
-  let parts = value.split("; " + name + "=");
-  if (parts.length === 2) {
-    return parts.pop().split(";").shift();
-  }
+   // console.log(document.cookie);
+  // let value = "; " + document.cookie;
+   // console.log(value);
+  // let parts = value.split("; " + name + "=");
+   // console.log(parts);
+  // if (parts.length === 2) {
+  //   return parts.pop().split(";").shift();
+  // }
+   
+   let value = document.cookie.split(';');
+   let parts = value[0].split(name + '=');
+   return parts[parts.length - 1];
 };
 
 export const deleteCookie = (name) => {

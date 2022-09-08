@@ -30,7 +30,6 @@ import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
 // Component & Shared import
 import Kakao from "./shared/Kakao";
 import { getCookie } from "./shared/Cookie";
-import Modal from "./components/modal/Modal";
 import CategoryModal from "./components/modal/CategoryModal";
 function App() {
   const dispatch = useDispatch();
@@ -59,7 +58,7 @@ function App() {
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
         <Route path="/auctionReview" element={<AuctionReview />} />
-        <Route path="/kakao/callback" element={<Kakao />} />
+        <Route path="/member/kakao/callback" element={<Kakao />} />
         <Route path="/mygrade" element={<MyGrade />} />
         <Route path="/myPageMyAuction" element={<MyPageMyAuction />} />
         <Route path="/myPageParticipationAuction" element={<MyPageParticipationAuction />} />

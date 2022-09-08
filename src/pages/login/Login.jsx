@@ -13,6 +13,7 @@ import { getCookie, setCookie } from "../../shared/Cookie";
 
 // Component & Element import
 import Button from "../../elements/button/Button";
+import Header from "../../components/header/Header";
 
 // Style import
 import {
@@ -85,6 +86,7 @@ const Login = ({ location }) => {
 
   return (
     <Fragment>
+      <Header page="로그인"/>
       <LoginBox>
         <LoginBoxTitle>
           <LoginBoxTitleSpan>땅땅</LoginBoxTitleSpan>

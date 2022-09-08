@@ -17,6 +17,7 @@ import { debounce } from "lodash";
 
 // Component & Element import
 import Button from "../../elements/button/Button";
+import Header from "../../components/header/Header";
 
 //Style import
 import {
@@ -85,12 +86,12 @@ const SignUp = () => {
         setEmailCheck(false);
       } else {
         dispatch(emailCheckThunk({ email })).then((res) => {
-          if (res.payload) {
-            emailSpanRef.current.innerText = "중복되는(1) 이메일입니다.";
+          if (!res.payload) {
+            emailSpanRef.current.innerText = "중복되는 이메일입니다.";
             emailSpanRef.current.style.color = "#BCBCBC";
             setEmailCheck(true);
           } else {
-            emailSpanRef.current.innerText = "사용가능한(1) 이메일입니다.";
+            emailSpanRef.current.innerText = "사용가능한 이메일입니다.";
             emailSpanRef.current.style.color = "#BCBCBC";
             setEmailCheck(false);
           }
@@ -141,16 +142,14 @@ const SignUp = () => {
   const checkNickName = useCallback(
     debounce((nickName) => {
       dispatch(nickNameCheckThunk({ nickName })).then((res) => {
-        if (res.payload) {
-          nickNameRef.current.innerText = "중복되는(4) 닉네임입니다";
+        if (!res.payload) {
+          nickNameRef.current.innerText = "중복되는 닉네임입니다";
           nickNameRef.current.style.color = "#BCBCBC";
           setNickNameCheck(true);
-          console.log(nickNameCheck);
         } else {
-          nickNameRef.current.innerText = "사용가능한(4) 닉네임입니다";
+          nickNameRef.current.innerText = "사용가능한 닉네임입니다";
           nickNameRef.current.style.color = "#BCBCBC";
           setNickNameCheck(false);
-          console.log(nickNameCheck);
         }
       });
     }, 500),
@@ -169,16 +168,15 @@ const SignUp = () => {
   const onsubmitHandler = useCallback(
     (event) => {
       event.preventDefault();
-      console.log(emailCheck, nickNameCheck);
       if (emailCheck === true) {
         emailRef.current.focus();
         emailRef.current.style.color = "#BCBCBC";
-        emailRef.current.innerText = "중복(22)되는 이메일입니다.";
+        emailRef.current.innerText = "중복되는 이메일입니다.";
       } else {
         if (nickNameCheck === true) {
           nickNameRef.current.focus();
           nickNameRef.current.style.color = "#BCBCBC";
-          nickNameRef.current.innerText = "중복(22)되는 닉네임입니다.";
+          nickNameRef.current.innerText = "중복되는 닉네임입니다.";
         } else {
           if (password !== repassword) {
             passwordRef.current.style.innerText = "";
@@ -197,8 +195,9 @@ const SignUp = () => {
 
   return (
     <Fragment>
+      <Header page="회원가입" />
       <SignUpBox>
-        <SignUpBoxTitle>
+        {/* <SignUpBoxTitle>
           <SignUpBoxTitleSpan>
             <MdOutlineArrowBackIos
               onClick={() => navigate(-1)}
@@ -206,7 +205,7 @@ const SignUp = () => {
             />
             회원가입
           </SignUpBoxTitleSpan>
-        </SignUpBoxTitle>
+        </SignUpBoxTitle> */}
         <SignUpBoxForm onSubmit={(event) => onsubmitHandler(event)}>
           <SignUpBoxInputGroup>
             이메일

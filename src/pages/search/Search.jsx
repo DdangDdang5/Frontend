@@ -4,41 +4,34 @@ import React, { Fragment, useState, useEffect } from "react";
 // Redux import
 import { useDispatch, useSelector } from "react-redux";
 import { auctionSearchThunk } from "../../redux/modules/SearchSlice";
-import { auctionItemList } from "../../redux/modules/AuctionListSlice";
+import SearchCard from "./SearchCard";
 
 // Package import
 import styled from "styled-components";
 import { IoSearchOutline } from "react-icons/io5";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../shared/Cookie";
 
 // Component import
 import Footer from "../../components/footer/Footer";
-import SearchCard from "./SearchCard";
 
 const Search = () => {
   const dispatch = useDispatch();
-  const { search } = useParams();
-  const searchList = useSelector((state) => state.auctionList);
+  const searchList = useSelector((state) => state.search.data);
   const navigate = useNavigate();
-  const userLocation = useSelector((state) => state.userLocation);
   const token = getCookie("accessToken");
 
-  useEffect(() => {
-    dispatch(auctionSearchThunk());
-  }, [dispatch]);
+  console.log(searchList);
 
-  const onKeyDown = (e) => {
-    if (e.target.value.length !== 0 && e.key === "Enter" && userLocation) {
-      dispatch(
-        auctionItemList({
-          auctio: e.target.value,
-          navigate,
-          location: userLocation,
-        })
-      );
+  const [keyword, setKeyword] = useState("");
+
+  const onKeyPress = (e) => {
+    if (e.key === "Enter") {
+      dispatch(auctionSearchThunk(keyword));
     }
   };
+
+  useEffect(() => {}, [dispatch]);
 
   return (
     <Fragment>
@@ -47,8 +40,10 @@ const Search = () => {
           <SearchBoxInputWrap>
             <SearchBoxInput
               type="text"
+              // value={keyword}
+              onChange={(e) => setKeyword(e.target.value)}
               placeholder="검색어를 입력해주세요."
-              onKeyDown={onKeyDown}
+              onKeyDown={(e) => onKeyPress(e)}
             />
             <SearchBoxInputIcon>
               <IoSearchOutline className="icon" />
@@ -58,12 +53,12 @@ const Search = () => {
         <SearchBoxFilterGroup>
           <SearchBoxFilterTitleSpan>최근 검색어</SearchBoxFilterTitleSpan>
           <SearchBoxFilterWrap>
-              <div className="SearchResultHeader">
-                <p className="SearchResultHeaderTitle">{search}</p>
-              </div>
-              <div className="SearchResultCardWrap">
+            {/* <div className="SearchResultHeader">
+              <p className="SearchResultHeaderTitle">{search}</p>
+            </div> */}
+            <div className="SearchResultCardWrap">
               {searchList ? (
-                  searchList.map((item, index) => {
+                  searchList?.map((item, index) => {
                     return <SearchCard searchList={item} />;
                   })
                 ) : (
@@ -71,7 +66,7 @@ const Search = () => {
                     <Loadingtext>검색 결과가 없습니다.</Loadingtext>
                   </LoadingWrap>
                 )}
-              </div>
+            </div>
           </SearchBoxFilterWrap>
         </SearchBoxFilterGroup>
       </SearchBox>
