@@ -25,7 +25,8 @@ export const addAuctionItem = createAsyncThunk(
         "Content-Type": "multipart/form-data",
       });
       console.log("배돌배돌배돌이add응답", response);
-      return thunkAPI.fulfillWithValue(response);
+
+      // return thunkAPI.fulfillWithValue(response);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
