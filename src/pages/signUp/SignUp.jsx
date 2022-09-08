@@ -31,6 +31,7 @@ import {
   SignUpBoxSpan,
   SignUpButtonGroup,
 } from "./SignUp.styled";
+import Header from "../../components/header/Header";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -85,7 +86,7 @@ const SignUp = () => {
         setEmailCheck(false);
       } else {
         dispatch(emailCheckThunk({ email })).then((res) => {
-          if (res.payload) {
+          if (!res.payload) {
             emailSpanRef.current.innerText = "중복되는(1) 이메일입니다.";
             emailSpanRef.current.style.color = "#BCBCBC";
             setEmailCheck(true);
@@ -97,7 +98,7 @@ const SignUp = () => {
         });
       }
     }, 500),
-    [email]
+    [email],
   );
 
   useEffect(() => {
@@ -141,20 +142,20 @@ const SignUp = () => {
   const checkNickName = useCallback(
     debounce((nickName) => {
       dispatch(nickNameCheckThunk({ nickName })).then((res) => {
-        if (res.payload) {
+        if (!res.payload) {
           nickNameRef.current.innerText = "중복되는(4) 닉네임입니다";
           nickNameRef.current.style.color = "#BCBCBC";
           setNickNameCheck(true);
-          console.log(nickNameCheck);
+          // console.log(nickNameCheck);
         } else {
           nickNameRef.current.innerText = "사용가능한(4) 닉네임입니다";
           nickNameRef.current.style.color = "#BCBCBC";
           setNickNameCheck(false);
-          console.log(nickNameCheck);
+          // console.log(nickNameCheck);
         }
       });
     }, 500),
-    [nickName]
+    [nickName],
   );
 
   useEffect(() => {
@@ -192,13 +193,14 @@ const SignUp = () => {
         }
       }
     },
-    [email, password, repassword, nickName]
+    [email, password, repassword, nickName],
   );
 
   return (
     <Fragment>
+      <Header page="회원가입" />
       <SignUpBox>
-        <SignUpBoxTitle>
+        {/* <SignUpBoxTitle>
           <SignUpBoxTitleSpan>
             <MdOutlineArrowBackIos
               onClick={() => navigate(-1)}
@@ -206,7 +208,7 @@ const SignUp = () => {
             />
             회원가입
           </SignUpBoxTitleSpan>
-        </SignUpBoxTitle>
+        </SignUpBoxTitle> */}
         <SignUpBoxForm onSubmit={(event) => onsubmitHandler(event)}>
           <SignUpBoxInputGroup>
             이메일

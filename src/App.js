@@ -30,18 +30,19 @@ import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
 // Component & Shared import
 import Kakao from "./shared/Kakao";
 import { getCookie } from "./shared/Cookie";
-import Modal from "./components/modal/Modal";
 import CategoryModal from "./components/modal/CategoryModal";
+import UserProfile from "./pages/userProfile/UserProfile";
+
 function App() {
   const dispatch = useDispatch();
-  const token = getCookie("accessToken");
+  // const token = getCookie("accessToken");
   const modal = useSelector((state) => state.modal.show);
 
-  useEffect(() => {
-    if (token) {
-      dispatch();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (token) {
+  //     dispatch();
+  //   }
+  // }, []);
 
   return (
     <div className="App">
@@ -59,11 +60,12 @@ function App() {
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
         <Route path="/auctionReview" element={<AuctionReview />} />
-        <Route path="/kakao/callback" element={<Kakao />} />
-        <Route path="/mygrade" element={<MyGrade />} />
+        <Route path="/member/kakao/callback" element={<Kakao />} />
+        <Route path="/myGrade" element={<MyGrade />} />
         <Route path="/myPageMyAuction" element={<MyPageMyAuction />} />
         <Route path="/myPageParticipationAuction" element={<MyPageParticipationAuction />} />
         <Route path="/myPageInterestAuction" element={<MyPageInterestAuction />} />
+        <Route path="/userProfile" element={<UserProfile />} />
       </Routes>
       {modal && <CategoryModal />}
     </div>

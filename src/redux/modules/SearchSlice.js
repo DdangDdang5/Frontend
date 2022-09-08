@@ -4,12 +4,12 @@ import api from "../../shared/Api";
 export const auctionSearchThunk = createAsyncThunk(
   "auction/auctionSearch",
   async (payload, thunkAPI) => {
-    const resData = await api
-      .get(`/auction/search/${payload}`, payload)
-      .then((res) => console.log(res));
+    const resData = await api.get(`/auction/search/${payload}`);
+    // .then((res) => console.log(res.data));
     return thunkAPI.fulfillWithValue(resData.data.data);
   }
 );
+
 const initialState = {
   data: "",
 };
@@ -17,12 +17,13 @@ const initialState = {
 export const searchSlice = createSlice({
   name: "search",
   initialState,
-  reducers: {
-    searchAction: (state, action) => {
-      state.data = action.payload.data;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(auctionSearchThunk.fulfilled, (state, action) => {
+      state.data = action.payload;
+      // console.log(action);
+    });
   },
-  extraReducers: (builder) => {},
 });
 
 export const { searchAction } = searchSlice.actions;
