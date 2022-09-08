@@ -47,7 +47,6 @@ export const loginMemberThunk = createAsyncThunk(
         return window.alert(res.data.err.message);
       } else {
         console.log(res);
-        
         localStorage.setItem("memberId", res.data.data.memberId);
         localStorage.setItem("accessToken", res.headers.authorization);
         console.log(localStorage.getItem("accessToken"));

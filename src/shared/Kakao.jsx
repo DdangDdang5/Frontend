@@ -1,5 +1,4 @@
 import { useEffect, Fragment } from "react";
-import { kakaoOauthThunk } from "../redux/modules/MemberSlice";
 import { useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import api from "./Api";

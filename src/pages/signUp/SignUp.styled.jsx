@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 export const SignUpBox = styled.div`
   position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow-y: scroll;
   width: 100%;
   margin-top: 18%;
   display: flex;

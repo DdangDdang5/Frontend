@@ -11,7 +11,6 @@ const api = axios.create({
 // const token = getCookie("accessToken");
 const token = localStorage.getItem("accessToken");
 api.defaults.headers.common["authorization"] = token ? `${token}` : null;
-
 // api.interceptors.request.use((config) => {
 //   const token = getCookie("accessToken");
 

@@ -4,6 +4,7 @@ import React, { Fragment, useState, useEffect } from "react";
 // Redux import
 import { useDispatch, useSelector } from "react-redux";
 import { auctionSearchThunk } from "../../redux/modules/SearchSlice";
+import SearchCard from "./SearchCard";
 
 // Package import
 import styled from "styled-components";
@@ -55,7 +56,7 @@ const Search = () => {
             {/* <div className="SearchResultHeader">
               <p className="SearchResultHeaderTitle">{search}</p>
             </div> */}
-            <div className="SearchResultCardWrap">
+            <div className="SearchResultCardWrap">      
               {/* {searchList ? (
                   searchList?.map((item, index) => {
                     return <SearchCard searchList={item} />;
