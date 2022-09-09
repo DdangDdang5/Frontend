@@ -1,20 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../components/header/Header";
 import styled from "styled-components";
 import Footer from "../../components/footer/Footer";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/exports";
+import { myPageData } from "../../redux/modules/MyPageSlice";
 
 const MyPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const data = useSelector((state) => state.myPage.myPage);
+  console.log("12312312321321", data);
 
-  const myPageData = useSelector((state) => state.myPage.myPage);
+  const memberId = localStorage.getItem("memberId");
 
-  const Img = (
-    <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
-  );
+  useEffect(() => {
+    dispatch(myPageData(memberId));
+  }, [dispatch]);
+
+  const Img = <img src={data.profileImgUrl} alt="" />;
 
   return (
     <MyPageLayout>
@@ -30,7 +35,7 @@ const MyPage = () => {
 
         <MyNickContainer>
           <NickBox>
-            <div className="nickName">닉네임</div>
+            <div className="nickName">{data.nickname}</div>
             <div
               className="profileEdit"
               onClick={() => {
@@ -145,7 +150,7 @@ const MyNickContainer = styled.div`
 const NickBox = styled.div`
   display: flex;
   flex-direction: column;
-  width: 88px;
+  width: 100%;
   height: 100%;
   justify-content: center;
   align-items: flex-start;
