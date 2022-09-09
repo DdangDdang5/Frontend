@@ -22,9 +22,10 @@ export const MyPageInterestAuction = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get(`/member/mypage/myauction`);
-      console.log(response);
-      // return thunkAPI.fulfillWithValue(response.data.data);
+      return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
+      console.log("에러다");
+      console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
   }

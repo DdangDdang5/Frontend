@@ -22,7 +22,7 @@ const AuctionList = () => {
 
   useEffect(() => {
     dispatch(auctionItemList());
-  }, [dispatch]);
+  }, []);
 
   console.log("배돌리스트데이터", AuctionListData);
 

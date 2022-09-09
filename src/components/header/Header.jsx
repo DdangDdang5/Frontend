@@ -31,9 +31,10 @@ const Header = ({
   const dispatch = useDispatch();
   console.log("헤더", detailData);
 
-  // useEffect(() => {
-  //   dispatch(deleteAuctionItem());
-  // }, [dispatch(deleteAuctionItem)]);
+  const handleDelete = () => {
+    dispatch(deleteAuctionItem(detailData.id));
+    navigate(-1, { replace: true });
+  };
 
   return (
     <HeaderContainer borderBottom={borderBottom}>
@@ -52,9 +53,7 @@ const Header = ({
               완료
             </div>
           ) : deleteBtn ? (
-            <div
-              type="button"
-              onClick={() => dispatch(deleteAuctionItem(detailData.id))}>
+            <div type="button" onClick={handleDelete}>
               삭제
             </div>
           ) : (

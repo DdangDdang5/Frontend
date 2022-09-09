@@ -88,11 +88,12 @@ const AuctionWrite = () => {
       new Blob([JSON.stringify(initialTag)], { type: "application/json" })
     );
     formData.append("images", uploadImg.files[0]);
-    dispatch(addAuctionItem(formData));
     window.alert("새 게시물 만들기 완료");
+
+    dispatch(addAuctionItem(formData));
     // 포스팅 완료후 새로고침
 
-    navigate(-1);
+    navigate(-1, { replace: true });
     // window.location.reload();
   };
 

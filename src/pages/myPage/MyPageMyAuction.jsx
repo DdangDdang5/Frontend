@@ -6,14 +6,14 @@ import Auction2 from "../../components/auction2/Auction2";
 import Footer from "../../components/footer/Footer";
 
 function MyPageMyAuction() {
-  const [onSelect, setOnSelect] = useState(false);
+  const [isAuction, setIsAuction] = useState(true);
 
   return (
     <MyAuctionLayout>
       <Header />
-      <AuctionStateNav onSelect={onSelect} setOnSelect={setOnSelect} />
+      <AuctionStateNav isAuction={isAuction} setIsAuction={setIsAuction} />
       <MyAuctionBody>
-        <Auction2 onSelect={onSelect} />
+        <Auction2 isAuction={isAuction} />
       </MyAuctionBody>
       <Footer />
     </MyAuctionLayout>

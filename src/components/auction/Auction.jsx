@@ -5,27 +5,32 @@ import styled from "styled-components";
 const Auction = ({ data }) => {
   const navigate = useNavigate();
 
+  if (!data || !data?.auctionId) {
+    return <></>;
+  }
   return (
     <AuctionItemWrap>
       <AuctionItemContainer
         onClick={() => {
-          navigate(`/auctionDetail/${data.auctionId}`);
+          navigate(`/auctionDetail/${data?.auctionId}`);
         }}>
-        <ItemPicture>
-          <img src={data.multiImages[0].imgUrl} alt="" />
-        </ItemPicture>
+        {data?.multiImages[0]?.imgUrl && (
+          <ItemPicture>
+            <img src={data.multiImages[0].imgUrl} alt="" />
+          </ItemPicture>
+        )}
         <ItemContentWrap>
           <ItemContentHeader>
-            {data.direct ? <div>택배</div> : ""}
-            {data.delivery ? <div>직거래</div> : ""}
+            {data?.direct ? <div>택배</div> : ""}
+            {data?.delivery ? <div>직거래</div> : ""}
           </ItemContentHeader>
 
           {/* 줄에 표시되는 글자수 제한 */}
-          <ItemContentBody>{data.title}</ItemContentBody>
+          <ItemContentBody>{data?.title}</ItemContentBody>
 
           <ItemContentFooter>
             <StartPrice>최고입찰가</StartPrice>
-            <PresentPrice>{data.nowPrice}원</PresentPrice>
+            <PresentPrice>{data?.nowPrice ? data?.nowPrice : 0}원</PresentPrice>
           </ItemContentFooter>
         </ItemContentWrap>
       </AuctionItemContainer>
