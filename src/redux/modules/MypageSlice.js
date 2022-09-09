@@ -17,9 +17,22 @@ export const myPageData = createAsyncThunk(
   }
 );
 
+export const MyPageInterestAuction = createAsyncThunk(
+  "GetMyPageInterestAuction",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get(`/member/mypage/myauction`);
+      console.log(response);
+      // return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const editMyPage = createAsyncThunk(
   "editAuctionItem",
-  async (payload, thunkAPI) => {
+  async (payload, id, thunkAPI) => {
     try {
       const response = await api.patch(`/member/${payload}/mypage`);
       // return thunkAPI.fulfillWithValue(response.data);
@@ -38,6 +51,12 @@ const myPageSlice = createSlice({
       state.myPage = action.payload;
     },
     [myPageData.rejected]: (state, action) => {
+      console.log(action);
+    },
+    [MyPageInterestAuction.fulfilled]: (state, action) => {
+      state.myPage = action.payload;
+    },
+    [MyPageInterestAuction.rejected]: (state, action) => {
       console.log(action);
     },
     [editMyPage.fulfilled]: (state, action) => {

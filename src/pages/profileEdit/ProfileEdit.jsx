@@ -9,8 +9,11 @@ import { useNavigate } from "react-router-dom";
 const ProfileEdit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [myprofile, setMyprofile] = useState("");
-  const [filed, setFiled] = useState("");
+  const Img = (
+    <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
+  );
+  const [imgFile, setImgFile] = useState("");
+  const [imagePreview, setImagePreview] = useState(Img);
   const img_ref = useRef(null);
   const data = useSelector((state) => state.myPage.myPage);
   const memberId = localStorage.getItem("memberId");
@@ -26,33 +29,36 @@ const ProfileEdit = () => {
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     setInputForm({ ...inputForm, [name]: value });
-
-    const onLoadFile = (e) => {
-      setFiled(URL.createObjectURL(e.target.files[0]));
-    };
-
-    const onSubmitHandler = () => {
-      e.preventDefault();
-      let formData = new FormData();
-      let uploadImg = img_ref.current;
-
-      formData.append(
-        "data",
-        new Blob([JSON.stringify(inputForm)], { type: "application/json" })
-      );
-
-      formData.append("profileImg", uploadImg.files[0]);
-
-      dispatch(editMyPage(formData));
-      window.alert("새 게시물 만들기 완료");
-      // 포스팅 완료후 새로고침
-      navigate("/");
-    };
   };
 
-  const Img = (
-    <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
-  );
+  const onLoadFile = (e) => {
+    // 미리보기에선 삭제가 됬는데 업로드 올린건 삭제가 됬나?
+    const reader = new FileReader();
+    setImgFile(...imgFile, URL.createObjectURL(e.target.files[0]));
+
+    const prevImg = e.target.files[0];
+    reader.readAsDataURL(prevImg);
+    reader.onloadend = () => {
+      setImagePreview({ img: reader.result });
+    };
+  };
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    let formData = new FormData();
+    let uploadImg = img_ref.current;
+
+    formData.append(
+      "data",
+      new Blob([JSON.stringify(inputForm)], { type: "application/json" })
+    );
+
+    formData.append("profileImg", uploadImg.files[0]);
+
+    dispatch(editMyPage(formData));
+    window.alert("새 게시물 만들기 완료");
+    // 포스팅 완료후 새로고침
+    navigate("/");
+  };
 
   return (
     <ProfileEditLayout>
@@ -61,14 +67,14 @@ const ProfileEdit = () => {
       <MyProfile>
         <MyImgWrap>
           <MyImgBox>
-            {Img}
+            {imagePreview}
             <label htmlFor="img_UpFile">사진</label>
             <input
               ref={img_ref}
               type="file"
               accept="image/*"
               id="img_UpFile"
-              onChange={filed}
+              onChange={onLoadFile}
               style={{ display: "none" }}
             />
           </MyImgBox>
@@ -90,7 +96,9 @@ const ProfileEdit = () => {
         </MyTextWrap>
       </MyProfile>
       <MyDoneBtnWrap>
-        <MyDoneBtn onClick={onSubmitHandler}>완료</MyDoneBtn>
+        <MyDoneBtn type="button" onClick={onSubmitHandler}>
+          완료
+        </MyDoneBtn>
       </MyDoneBtnWrap>
     </ProfileEditLayout>
   );

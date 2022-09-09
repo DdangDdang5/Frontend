@@ -1,15 +1,19 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-const AuctionStateNav = () => {
-  const [onSelect, setOnSelect] = useState(false);
+const AuctionStateNav = ({ onSelect, setOnSelect }) => {
   return (
     <AuctionStateNavLayout>
-      <StateNavContainer>
+      <StateNavContainer
+        type="button"
+        state={!onSelect}
+        onClick={() => setOnSelect(!onSelect)}>
         <div>경매중</div>
         <div>10</div>
       </StateNavContainer>
-      <StateNavContainer>
+      <StateNavContainer
+        state={onSelect}
+        onClick={() => setOnSelect(!onSelect)}>
         <div>경매완료</div>
         <div>20</div>
       </StateNavContainer>
@@ -29,7 +33,7 @@ const AuctionStateNavLayout = styled.div`
 const StateNavContainer = styled.div`
   display: flex;
   flex-direction: row;
-  border-bottom: 1px solid black;
+  border-bottom: ${(props) => (props.state ? "1px solid black " : "none")};
   div {
     font-size: 16px;
     font-weight: 700;

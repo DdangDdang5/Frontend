@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux/es/exports";
+import MyPageInterestAuction from "../../pages/myPage/MyPageInterestAuction";
 
-const Auction2 = ({ bae }) => {
+const Auction2 = () => {
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("accessToken");
+  const data = useSelector((state) => state.myPage.myPage);
+
+  console.log("내경매", token);
+
+  // useEffect(() => {
+  //   dispatch(MyPageInterestAuction());
+  // }, [dispatch]);
+
   const Img = (
     <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
   );
