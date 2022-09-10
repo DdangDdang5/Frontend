@@ -86,7 +86,6 @@ const Main = () => {
   const moveAuctionDetail = (auctionId) => {
     navigate(`/auctionDetail/${auctionId}`);
   };
-  console.log("hi");
 
   return (
     <MainContainer>

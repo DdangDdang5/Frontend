@@ -3,8 +3,8 @@ import React, { useEffect } from "react";
 //components
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
-import Auction from "../../components/auction/Auction";
 import PlusButton from "../../components/button/PlusButton";
+import AuctionColumn from "../../components/auction/AuctionColumn";
 
 //reducer
 import { useDispatch, useSelector } from "react-redux";
@@ -13,18 +13,14 @@ import { showModal } from "../../redux/modules/ModalSlice";
 
 //styled
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
 const AuctionList = () => {
   const dispatch = useDispatch();
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(auctionItemList());
   }, []);
-
-  console.log("배돌리스트데이터", AuctionListData);
 
   if (!AuctionListData) {
     return <></>;
@@ -49,7 +45,7 @@ const AuctionList = () => {
       </ListCategoryWrap>
       <ListContents>
         {AuctionListData.map((item, index) => {
-          return <Auction key={item.auctionId} data={item} />;
+          return <AuctionColumn key={item.auctionId} data={item} />;
         })}
       </ListContents>
       <PlusButton />

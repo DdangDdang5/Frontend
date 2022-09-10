@@ -17,7 +17,6 @@ const AuctionDetail = () => {
 
   const params = useParams();
   const data = useSelector((state) => state.auction.auction);
-  console.log("배돌배돌데이터", data);
 
   useEffect(() => {
     if (!params?.auctionId) {

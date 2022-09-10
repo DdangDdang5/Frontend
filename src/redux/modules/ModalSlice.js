@@ -12,11 +12,11 @@ export const modalSlice = createSlice({
   reducers: {
     showModal: (state, action) => {
       state.show = true;
-      state.category = action.payload;
+      state.division = action.payload;
     },
     hideModal: (state) => {
       state.show = false;
-      state.category = "";
+      state.division = "";
     },
     changeMode: (state, action) => {
       state.mode = action.payload;

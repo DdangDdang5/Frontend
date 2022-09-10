@@ -11,13 +11,12 @@ const MyPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.myPage.myPage);
-  console.log("12312312321321", data);
 
   const memberId = localStorage.getItem("memberId");
 
   useEffect(() => {
     dispatch(myPageData(memberId));
-  }, [dispatch]);
+  }, [memberId]);
 
   const Img = <img src={data.profileImgUrl} alt="" />;
 

@@ -24,7 +24,6 @@ export const MyPageInterestAuction = createAsyncThunk(
       const response = await api.get(`/member/mypage/myauction`);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
-      console.log("에러다");
       console.log(error);
       return thunkAPI.rejectWithValue(error);
     }
@@ -37,7 +36,7 @@ export const editMyPage = createAsyncThunk(
     try {
       const response = await api.patch(`/member/${payload}/mypage`);
       // return thunkAPI.fulfillWithValue(response.data);
-      return console.log("3333333333", response);
+      return console.log("마이페이지 수정", response);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

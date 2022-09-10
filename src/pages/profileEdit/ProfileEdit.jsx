@@ -9,22 +9,19 @@ import { useNavigate } from "react-router-dom";
 const ProfileEdit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const Img = (
-    <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
-  );
-  const [imgFile, setImgFile] = useState("");
-  const [imagePreview, setImagePreview] = useState(Img);
+
   const img_ref = useRef(null);
   const data = useSelector((state) => state.myPage.myPage);
+
+  const [imgFile, setImgFile] = useState("");
+  const [imagePreview, setImagePreview] = useState(data.profileImgUrl);
   const memberId = localStorage.getItem("memberId");
 
   const initialState = {
-    nickName: "",
+    nickname: "",
   };
 
   const [inputForm, setInputForm] = useState(initialState);
-
-  console.log("프로필 수정", data);
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
@@ -39,7 +36,7 @@ const ProfileEdit = () => {
     const prevImg = e.target.files[0];
     reader.readAsDataURL(prevImg);
     reader.onloadend = () => {
-      setImagePreview({ img: reader.result });
+      setImagePreview(reader.result);
     };
   };
   const onSubmitHandler = (e) => {
@@ -57,8 +54,12 @@ const ProfileEdit = () => {
     dispatch(editMyPage(formData));
     window.alert("새 게시물 만들기 완료");
     // 포스팅 완료후 새로고침
-    navigate("/");
+    navigate(-1, { replace: true });
   };
+
+  useEffect(() => {
+    dispatch(myPageData(memberId));
+  }, []);
 
   return (
     <ProfileEditLayout>
@@ -67,7 +68,7 @@ const ProfileEdit = () => {
       <MyProfile>
         <MyImgWrap>
           <MyImgBox>
-            {imagePreview}
+            <img src={imagePreview} alt="" />
             <label htmlFor="img_UpFile">사진</label>
             <input
               ref={img_ref}
@@ -86,7 +87,7 @@ const ProfileEdit = () => {
             <input
               type="text"
               placeholder="닉네임을 입력해주세요."
-              value={inputForm.nickName}
+              value={inputForm.nickname}
               name="nickname"
               onChange={onChangeHandler}
             />

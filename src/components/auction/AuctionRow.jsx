@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/exports";
 import { MyPageInterestAuction } from "../../redux/modules/MyPageSlice";
 
-const Auction2 = ({ isAuction }) => {
+const AuctionRow = ({ isAuction }) => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.myPage.myPage);
   const [shouldShownData, setShouldShownData] = useState([]);
@@ -158,4 +158,4 @@ const Action2Btn = styled.button`
   border: 1px solid #a5a9b6;
   border-radius: 8px;
 `;
-export default Auction2;
+export default AuctionRow;
