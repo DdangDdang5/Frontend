@@ -1,17 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import Header from "../../components/header/Header";
 import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
-import Auction2 from "../../components/auction2/Auction2";
 import Footer from "../../components/footer/Footer";
+import AuctionRow from "../../components/auction/AuctionRow";
 
 function MyPageMyAuction() {
+  const [isAuction, setIsAuction] = useState(true);
+
   return (
     <MyAuctionLayout>
       <Header />
-      <AuctionStateNav />
+      <AuctionStateNav isAuction={isAuction} setIsAuction={setIsAuction} />
       <MyAuctionBody>
-        <Auction2 />
+        <AuctionRow isAuction={isAuction} />
       </MyAuctionBody>
       <Footer />
     </MyAuctionLayout>
