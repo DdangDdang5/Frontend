@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
 import api from "./Api";
 import { useDispatch } from "react-redux";
+import { kakaoOauthThunk } from "../redux/modules/MemberSlice";
 
 const Kakao = () => {
 	const dispatch = useDispatch();

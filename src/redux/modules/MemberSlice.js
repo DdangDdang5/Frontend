@@ -95,7 +95,7 @@ export const kakaoOauthThunk = createAsyncThunk(
 
           const cookie = getCookie("accessToken");
           console.log(cookie);
-          //  window.location.replace('/');
+           window.location.replace('/');
           return res;
         }
       })
