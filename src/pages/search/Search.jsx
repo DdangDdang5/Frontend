@@ -21,8 +21,6 @@ const Search = () => {
   const navigate = useNavigate();
   const token = getCookie("accessToken");
 
-  console.log(searchList);
-
   const [keyword, setKeyword] = useState("");
 
   const onKeyPress = (e) => {
@@ -56,7 +54,7 @@ const Search = () => {
             {/* <div className="SearchResultHeader">
               <p className="SearchResultHeaderTitle">{search}</p>
             </div> */}
-            <div className="SearchResultCardWrap">      
+            <div className="SearchResultCardWrap">
               {/* {searchList ? (
                   searchList?.map((item, index) => {
                     return <SearchCard searchList={item} />;
