@@ -6,6 +6,7 @@ import { categoryHitList, regionHitList } from "../../redux/modules/AuctionDivis
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 // Component import
 import AuctionCategory from "../auctionCategory/AuctionCategory";
@@ -22,6 +23,7 @@ import {
 
 const AuctionCategoryList = ({ isCategory }) => {
 	const dispatch = useDispatch();
+	const navigate = useNavigate();
 
 	// 카테고리 목록, 지역 목록
   const { categoryList, regionList } = useSelector(
@@ -44,7 +46,7 @@ const AuctionCategoryList = ({ isCategory }) => {
           <span>인기 {title} </span>
           <CategoryNum>TOP {list6?.length}</CategoryNum>
         </CategoryTitle>
-        <CategoryMore>
+        <CategoryMore onClick={() => navigate("/auctionList")}>
           <span>전체보기</span>
           <img src="maskable.png" alt="all" />
         </CategoryMore>

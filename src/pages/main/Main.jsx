@@ -98,8 +98,8 @@ const Main = () => {
         </BannerContainer>
 
         {/* 카테고리별, 지역별 TOP 6 */}
-        {/* <AuctionCategoryList isCategory={true} />
-        <AuctionCategoryList isCategory={false} /> */}
+        <AuctionCategoryList isCategory={true} />
+        <AuctionCategoryList isCategory={false} />
 
         {/* 인기 경매 */}
         <ListContainer>

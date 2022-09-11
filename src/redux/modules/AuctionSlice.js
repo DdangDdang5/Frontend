@@ -1,4 +1,7 @@
+// Package import
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+// Shared import
 import api from "../../shared/Api";
 
 const initialState = {

@@ -1,9 +1,17 @@
+// React import
 import { useEffect, Fragment } from "react";
+
+// Redux import
+import { kakaoOauthThunk } from "../redux/modules/MemberSlice";
+
+// Package import
 import { useNavigate } from "react-router-dom";
 import { Cookies } from "react-cookie";
-import api from "./Api";
 import { useDispatch } from "react-redux";
 import { kakaoOauthThunk } from "../redux/modules/MemberSlice";
+
+// Shared import
+import api from "./Api";
 
 const Kakao = () => {
   const dispatch = useDispatch();

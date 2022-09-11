@@ -1,26 +1,34 @@
+// React import
 import React, { useEffect } from "react";
 
-//components
+// Reducer import
+import { showModal } from "../../redux/modules/ModalSlice";
+import { auctionItemList } from "../../redux/modules/AuctionListSlice";
+
+// Package import
+import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+
+// Component import
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import PlusButton from "../../components/button/PlusButton";
 import AuctionColumn from "../../components/auction/AuctionColumn";
 
-//reducer
-import { useDispatch, useSelector } from "react-redux";
-import { auctionItemList } from "../../redux/modules/AuctionListSlice";
-import { showModal } from "../../redux/modules/ModalSlice";
-
-//styled
-import styled from "styled-components";
-
 const AuctionList = () => {
   const dispatch = useDispatch();
+
   const AuctionListData = useSelector((state) => state.auctionList.auctionList);
+  const categoryName = useSelector((state) => state.modal.categoryName);
+  const regionName = useSelector((state) => state.modal.regionName);
 
   useEffect(() => {
-    dispatch(auctionItemList());
-  }, []);
+    // console.log(AuctionListData);
+
+    if (categoryName === "전체품목" && regionName === "전체지역") {
+      dispatch(auctionItemList());
+    }
+  }, [JSON.stringify(AuctionListData), categoryName, regionName]);
 
   if (!AuctionListData) {
     return <></>;
@@ -30,12 +38,12 @@ const AuctionList = () => {
       <Header />
       <ListCategoryWrap>
         <CategoryBtn onClick={() => dispatch(showModal("categoryList"))}>
-          <CategoryBtnText>전체품목</CategoryBtnText>
+          <CategoryBtnText>{categoryName}</CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
         </CategoryBtn>
         <CategoryBtn>
           <CategoryBtnText onClick={() => dispatch(showModal("regionList"))}>
-            전체지역
+            {regionName}
           </CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
         </CategoryBtn>
@@ -44,8 +52,8 @@ const AuctionList = () => {
         </CategoryBtn>
       </ListCategoryWrap>
       <ListContents>
-        {AuctionListData.map((item, index) => {
-          return <AuctionColumn key={item.auctionId} data={item} />;
+        {AuctionListData?.map((item) => {
+          return <Auction key={item.auctionId} data={item} />;
         })}
       </ListContents>
       <PlusButton />

@@ -1,4 +1,7 @@
+// Package import
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+// Shared import
 import api from "../../shared/Api";
 
 const initialState = {
@@ -24,7 +27,6 @@ export const addAuctionItem = createAsyncThunk(
       const response = await api.post("/auction", payload, {
         "Content-Type": "multipart/form-data",
       });
-
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -64,6 +66,42 @@ export const deleteAuctionItem = createAsyncThunk(
   }
 );
 
+export const auctionCategoryList = createAsyncThunk(
+	"auctionCategoryList",
+	async (payload, thunkAPI) => {
+		try {
+			const response = await api.get(`/auction/category/${payload}`);
+			return thunkAPI.fulfillWithValue(response.data.data);
+		} catch (error) {
+			return thunkAPI.rejectWithValue(error)
+		}
+	}
+)
+
+export const auctionRegionList = createAsyncThunk(
+	"auctionRegionList",
+	async (payload, thunkAPI) => {
+		try {
+			const response = await api.get(`/auction/region/${payload}`);
+			return thunkAPI.fulfillWithValue(response.data.data);
+		} catch (error) {
+			return thunkAPI.rejectWithValue(error)
+		}
+	}
+)
+
+export const auctionCategoryRegionList = createAsyncThunk(
+	"auctionCategoryRegionList",
+	async (payload, thunkAPI) => {
+		try {
+			const response = await api.get(`/auction/category/${payload.categoryName}/region/${payload.regionName}`);
+			return thunkAPI.fulfillWithValue(response.data.data);
+		} catch (error) {
+			return thunkAPI.rejectWithValue(error)
+		}
+	}
+)
+
 const auctionListSlice = createSlice({
   name: "auctionList",
   initialState,
@@ -83,12 +121,14 @@ const auctionListSlice = createSlice({
     [auctionItemList.rejected]: (state, action) => {
       console.log(action);
     },
+
     [addAuctionItem.fulfilled]: (state, action) => {
       state.auctionList = [action.payload, ...state.auctionList];
     },
     [addAuctionItem.rejected]: (state, action) => {
       console.log(action);
     },
+
     [editAuctionItem.fulfilled]: (state, action) => {
       state.auctionList = state.auctionList.map((item, index) => {
         if (item.auctionId === action.payload.postId) {
@@ -105,12 +145,37 @@ const auctionListSlice = createSlice({
     [editAuctionItem.rejected]: (state, action) => {
       console.log(action);
     },
+
     [deleteAuctionItem.fulfilled]: (state, action) => {
       state.auctionList = state.auctionList.filter(
         (post) => post.id !== action.payload
       );
     },
     [deleteAuctionItem.rejected]: (state, action) => {
+      console.log(action);
+    },
+
+		// 경매 카테고리별 조회
+		[auctionCategoryList.fulfilled]: (state, action) => {
+			state.auctionList = action.payload;
+		},
+    [auctionCategoryList.rejected]: (state, action) => {
+      console.log(action);
+    },
+
+		// 경매 지역별 조회
+		[auctionRegionList.fulfilled]: (state, action) => {
+			state.auctionList = action.payload;
+		},
+    [auctionRegionList.rejected]: (state, action) => {
+      console.log(action);
+    },
+
+		// 경매 카테고리별 & 지역별 조회
+		[auctionCategoryRegionList.fulfilled]: (state, action) => {
+			state.auctionList = action.payload;
+		},
+    [auctionCategoryRegionList.rejected]: (state, action) => {
       console.log(action);
     },
   },

@@ -1,6 +1,9 @@
 // React import
 import React from "react";
 
+// Package improt
+import { useNavigate } from "react-router-dom";
+
 // Style import
 import {
 	ChatRoomAlarm,
@@ -13,9 +16,12 @@ import {
   ChatRoomProfile,
 } from "./ChatRoom.styled";
 
-const ChatRoom = () => {
+const ChatRoom = ({ roomId }) => {
+	const navigate = useNavigate();
+	console.log(roomId);
+
   return (
-    <ChatRoomContainer>
+    <ChatRoomContainer onClick={() => navigate(`/chat/${roomId}`)}>
       <ChatRoomProfile src="maskable.png" alt="profile" />
       <ChatRoomContent>
         <ChatRoomInfo>

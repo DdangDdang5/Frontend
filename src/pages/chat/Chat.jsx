@@ -1,5 +1,6 @@
 // React import
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 // Package import
 import SockJS from "sockjs-client";
@@ -19,76 +20,141 @@ import {
   MessageInput,
   SendBtn,
   SendMessage,
+  SendMessageWrap,
 } from "./Chat.styled";
 
 // 웹소켓 연결
-// let sockJS = new SockJS("http://localhost:3000/ws");
+// let sockJS = new SockJS("http://localhost:8080/ws/chat");
 // const stompClient = Stomp.over(sockJS);
-// var stompClient = null;
+var stompClient = null;
 
 const Chat = () => {
+  const { roomId } = useParams();
+
   const [publicChats, setpublicChats] = useState([]);
   const [privateChats, setPrivateChats] = useState(new Map());
-  const [tab, setTab] = useState("CHAT");
+  const [tab, setTab] = useState("TALK");
   const [userData, setUserData] = useState({
-    username: "hello",
-    receivername: "",
-    connected: false,
+    type: "",
+    roomId: roomId,
+    sender: "",
     message: "",
   });
-	
-	// {
-	// 	"type":"ENTER",
-	// 	"roomId":"49056a03-4dd6-42f8-97e8-4bcc6915eb81",
-	// 	"sender":"rang",
-	// 	"message":""
-	// }
+
+  console.log(roomId);
+  // const roomId = "9245f350-836b-4097-81b5-2611aa08fa9c";
+
+  useEffect(() => {
+    registerUser();
+		console.log('===========================================')
+		console.log(publicChats);
+  }, []);
 
   const handleValue = (event) => {
-    const { value, name } = event.target;
-    setUserData({ ...userData, [name]: value });
+    const { value } = event.target;
+    setUserData({ ...userData, message: value });
   };
 
-  // const registerUser = () => {
-  //   stompClient.connect({}, onConnected, onError);
-  // };
+  const registerUser = () => {
+    console.log("1111111111111111 register User");
+    var sockJS = new SockJS(process.env.REACT_APP_URL2 + "/ws/chat");
+    console.log(sockJS);
 
-  // const onConnected = () => {
-  //   setUserData({ ...userData, connected: true });
-  //   stompClient.subscribe("/chat/public", onPublicMessageReceived);
-  //   stompClient.subscribe(
-  //     "/user" + userData.username + "/private",
-  //     onPrivateMessageReceived,
-  //   );
-  // 	userJoin();
-  // };
+    stompClient = Stomp.over(sockJS);
+    console.log(stompClient);
 
-  // const userJoin = () => {
-  //   let chatMessage = {
-  //     senderName: userData.username,
-  //     message: userData.message,
-  //     status: "JOIN",
-  //   };
-  //   stompClient.send(`/app/message`, {}, JSON.stringify(chatMessage));
-  // }
+    stompClient.connect({}, onConnected, onError);
+    console.log("1111111111111111 register User finish");
+  };
 
-  // const onPublicMessageReceived = (payload) => {
-  //   let payloadData = JSON.parse(payload.body);
-  //   switch (payloadData.status) {
-  //     case "JOIN":
-  //       if (privateChats.get(payloadData.senderName)) {
-  //         privateChats.set(payloadData.senderName, []);
-  //         setPrivateChats(new Map(privateChats));
-  //       }
-  //       break;
-  //     case "MESSAGE":
-  //       publicChats.push(payloadData);
-  //       setpublicChats([...publicChats]);
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
+  const onConnected = () => {
+    console.log("2222222222222222 on connected");
+    // setUserData({ ...userData, type: "ENTER" });
+    // console.log(userData);
+
+    // 기존의 대화내용 가져옴
+    // stompClient.subscribe(`/sub/chat/room/${roomId}`, (body) => {
+		// 	console.log(body);
+    //   // setpublicChats((_chatMessages) => [..._chatMessages, JSON.parse(body)]);
+		// 	// console.log(publicChats);
+    // });
+		const a = stompClient.subscribe(`/sub/chat/room/${roomId}`, onPublicMessageReceived);
+		console.log(a);
+		
+    // stompClient.subscribe(
+    //   "/user" + userData.username + "/private",
+    //   onPrivateMessageReceived,
+    // );
+    // stompClient.send()
+
+    // 채팅방 들어감
+    userJoin();
+    console.log("2222222222222222 finish enter");
+  };
+
+  const onError = (err) => {
+    console.log("ffffffffffffffff error");
+    console.log(err);
+  };
+
+  const userJoin = () => {
+    console.log("444444444444444444 user enter");
+    let chatMessage = {
+      type: "ENTER",
+      roomId: roomId,
+      sender: "rang",
+      message: "",
+    };
+    console.log(chatMessage);
+    // sockjs.send(JSON.stringify(chatMessage));
+    const c = stompClient.send(`/pub/chat/message`, {}, JSON.stringify(chatMessage));
+		console.log(c);
+		// setpublicChats([...publicChats, {sender: "rang", message: ""}]);
+    console.log("444444444444444444 user enter finish");
+  };
+
+  const onPublicMessageReceived = (payload) => {
+    console.log("3333333333333333333 on public message received");
+    console.log("public message received", payload);
+    let payloadData = JSON.parse(payload.body);
+
+		if (payloadData.type === "ENTER" || payloadData.type === "TALK") {
+			publicChats.push(payloadData);
+			setpublicChats([...publicChats]);
+		}
+
+    // switch (payloadData.type) {
+    //   case "ENTER":
+    //     if (privateChats.get(payloadData.sender)) {
+    //       privateChats.set(payloadData.sender, []);
+    //       setPrivateChats(new Map(privateChats));
+    //     }
+    //     break;
+    //   case "TALK":
+    //     publicChats.push(payloadData);
+    //     setpublicChats([...publicChats]);
+    //     break;
+    //   default:
+    //     break;
+    // }
+    console.log("3333333333333333333 on public message received finish");
+  };
+
+  const sendPublicMessage = () => {
+    if (stompClient) {
+      let chatMessage = {
+        type: "TALK",
+        roomId: roomId,
+        sender: "rang",
+        message: userData.message,
+      };
+
+      // sockjs.send(JSON.stringify(chatMessage));
+      stompClient.send("/pub/chat/message", {}, JSON.stringify(chatMessage));
+			// setpublicChats([...publicChats, chatMessage]);
+      setUserData({ ...userData, message: "" });
+    }
+  };
 
   // const onPrivateMessageReceived = (payload) => {
   //   let payloadData = JSON.parse(payload);
@@ -104,29 +170,13 @@ const Chat = () => {
   //   }
   // };
 
-  // const onError = (err) => {
-  //   console.log(err);
-  // };
-
-  // const sendPublicMessage = () => {
-  //   if (stompClient) {
-  //     let chatMessage = {
-  //       senderName: userData.username,
-  //       message: userData.message,
-  //       status: "MESSAGE",
-  //     };
-  //     stompClient.send(`/app/message`, {}, JSON.stringify(chatMessage));
-  //     setUserData({ ...userData, message: "" });
-  //   }
-  // };
-
   // const sendPrivateMessage = () => {
   //   if (stompClient) {
   //     let chatMessage = {
-  //       senderName: userData.username,
+  //       sender: userData.username,
   // 			receivername: tab,
   //       message: userData.message,
-  //       status: "MESSAGE",
+  //       type: "TALK",
   //     };
   // 		if (userData.username !== tab) {
   // 			privateChats.set(tab).push(chatMessage);
@@ -139,13 +189,13 @@ const Chat = () => {
 
   return (
     <ChatContainer>
-			<Header borderBottom="1px solid gray" logo={false}/>
-      {/* {userData.connected ? (
-        <ChatBox>
-          <MemberList>
+      <Header borderBottom="1px solid gray" logo={false} />
+      {/* {userData.connected ? ( */}
+      <ChatBox>
+        {/* <MemberList>
             <ul>
-              {tab === "CHAT" && "active" ? (
-                <Member onClick={() => setTab("CHAT")}>Chatroom</Member>
+              {tab === "TALK" && "active" ? (
+                <Member onClick={() => setTab("TALK")}>Chatroom</Member>
               ) : null}
               {[...privateChats.keys()].map((name, idx) =>
                 tab === name && "active" ? (
@@ -153,35 +203,52 @@ const Chat = () => {
                 ) : null,
               )}
             </ul>
-          </MemberList>
-          {tab === "CHAT" && (
-            <ChatContent>
-              <ChatMessage>
-                {publicChats.map((chat, idx) => {
-                  <Message key={idx}>
-                    {chat.senderName !== userData.username && (
-                      <div>{chat.senderName}</div>
-                    )}
-                    <MessageData>{chat.message}</MessageData>
-                    {chat.senderName === userData.username && (
-                      <div>{chat.senderName}</div>
-                    )}
-                  </Message>;
-                })}
-              </ChatMessage>
+          </MemberList> */}
+				{/* {publicChats.map((item, idx) => (
+					<>
+					{item.type === "TALK" ? (
+						<>
 
-              <SendMessage>
+						</>
+					) : (
+          	<div>{item.message}</div>
+					)}
+					</>
+				))} */}
+        {tab === "TALK" && (
+          <ChatContent>
+						chat content
+            <ChatMessage>
+							{console.log('csssssssssssssssss', publicChats)}
+              {publicChats?.map((chat, idx) => (
+                <Message key={idx}>
+									<div>
+										{chat.sender}
+										{chat.message}
+									</div>
+                  {/* {chat.sender !== "rang" && (
+                    <div>{chat.sender}</div>
+                  )}
+                  <MessageData>{chat.message}</MessageData>
+                  {chat.sender === "rang" && (
+                    <div>{chat.sender}</div>
+                  )} */}
+                </Message>
+              ))}
+            </ChatMessage>
+
+            {/* <SendMessage>
                 <MessageInput
                   type="text"
                   placeholder="enter public message"
                   value={userData.message}
-                  onChange={handleValue}
+                  onChange={(event) => handleValue(event)}
                 />
                 <SendBtn type="button" onClick={sendPublicMessage}></SendBtn>
-              </SendMessage>
-            </ChatContent>
-          )}
-          {tab !== "CHAT" && (
+              </SendMessage> */}
+          </ChatContent>
+        )}
+        {/* {tab !== "TALK" && (
             <ChatContent>
               <ChatMessage>
                 {[...privateChats.get(tab)].map((chat, idx) => {
@@ -207,9 +274,9 @@ const Chat = () => {
                 <SendBtn type="button" onClick={sendPrivateMessage}></SendBtn>
               </SendMessage>
             </ChatContent>
-          )}
-        </ChatBox>
-      ) : (
+          )} */}
+      </ChatBox>
+      {/* ) : (
         <div>
           <input
             id="username"
@@ -223,6 +290,21 @@ const Chat = () => {
           </button>
         </div>
       )} */}
+
+      <SendMessageWrap>
+        <img src="/maskable.png" alt="add-chat" />
+
+        <SendMessage>
+          <MessageInput
+            type="text"
+            placeholder="enter public message"
+            value={userData.message}
+            onChange={(event) => handleValue(event)}
+          />
+          <SendBtn type="button" onClick={sendPublicMessage}></SendBtn>
+        </SendMessage>
+        <img src="/maskable.png" alt="push-chat" />
+      </SendMessageWrap>
     </ChatContainer>
   );
 };
