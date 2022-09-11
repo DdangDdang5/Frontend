@@ -35,7 +35,6 @@ const AuctionWrite = () => {
   const [inputForm, setInputForm] = useState(auctionRequestDto);
   const [tags, setTags] = useState([]);
 
-  console.log("배돌배돌데이터", inputForm);
   // 이미지 업로드
   const onLoadFile = (e) => {
     // 미리보기에선 삭제가 됬는데 업로드 올린건 삭제가 됬나?
@@ -231,7 +230,6 @@ const AuctionWriteWrap = styled.div`
     display: flex;
     flex-direction: column;
   }
-  /* background-color: yellow; */
 `;
 const WriteImgContainer = styled.div`
   display: flex;
@@ -336,6 +334,9 @@ const WriteBtnBox = styled.button`
   font-size: 18px;
   font-weight: 400;
   padding: 0px 10px;
+  div {
+    display: flex;
+  }
 `;
 const WriteDeliveryStateContainer = styled.div`
   display: flex;

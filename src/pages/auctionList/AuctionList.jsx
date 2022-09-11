@@ -18,7 +18,12 @@ import AuctionColumn from "../../components/auction/AuctionColumn";
 const AuctionList = () => {
   const dispatch = useDispatch();
 
-  const AuctionListData = useSelector((state) => state.auctionList.auctionList);
+  const {
+    auctionList: AuctionListData,
+    loading,
+    paging,
+    followingItem,
+  } = useSelector((state) => state.auctionList);
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
 
@@ -28,7 +33,20 @@ const AuctionList = () => {
     if (categoryName === "전체품목" && regionName === "전체지역") {
       dispatch(auctionItemList());
     }
-  }, [JSON.stringify(AuctionListData), categoryName, regionName]);
+  }, [categoryName, regionName]);
+
+  const handleScroll = (e) => {
+    let scrollTopHandler = e.target.scrollTop;
+    let clientHeightHandler = e.target.clientHeight;
+    let scrollHeightHandler = e.target.scrollHeight;
+    if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
+      if (!loading) {
+        if (followingItem) {
+          dispatch(auctionItemList());
+        }
+      }
+    }
+  };
 
   if (!AuctionListData) {
     return <></>;
@@ -51,9 +69,14 @@ const AuctionList = () => {
           <CategoryBtnTimeText>마감임박</CategoryBtnTimeText>
         </CategoryBtn>
       </ListCategoryWrap>
-      <ListContents>
-        {AuctionListData?.map((item) => {
-          return <Auction key={item.auctionId} data={item} />;
+      <ListContents onScroll={handleScroll}>
+        {AuctionListData?.map((item, index) => {
+          return (
+            <AuctionColumn
+              key={`${item.auctionId}-${index}-${item.title}`}
+              data={item}
+            />
+          );
         })}
       </ListContents>
       <PlusButton />

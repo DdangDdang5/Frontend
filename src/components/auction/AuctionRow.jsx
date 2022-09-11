@@ -11,7 +11,7 @@ const AuctionRow = ({ isAuction }) => {
 
   useEffect(() => {
     dispatch(MyPageInterestAuction());
-    if (data.length > 0) {
+    if (data && data.length > 0) {
       data?.map((item, index) => {
         if (isAuction) {
           if (item?.auctionStatus === true) {

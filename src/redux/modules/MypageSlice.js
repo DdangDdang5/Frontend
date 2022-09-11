@@ -35,8 +35,8 @@ export const editMyPage = createAsyncThunk(
   async (payload, id, thunkAPI) => {
     try {
       const response = await api.patch(`/member/${payload}/mypage`);
-      // return thunkAPI.fulfillWithValue(response.data);
-      return console.log("마이페이지 수정", response);
+      return thunkAPI.fulfillWithValue(response.data);
+      // return console.log("마이페이지 수정", response);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
