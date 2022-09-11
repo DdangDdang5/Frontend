@@ -21,14 +21,12 @@ export const auctionItemList = createAsyncThunk(
 );
 
 export const addAuctionItem = createAsyncThunk(
-  "addAuctionItem",
+  "sendAddAuctionItem",
   async (payload, thunkAPI) => {
     try {
       const response = await api.post("/auction", payload, {
         "Content-Type": "multipart/form-data",
       });
-      // console.log("배돌배돌배돌이add응답", response);
-
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -47,7 +45,7 @@ export const editAuctionItem = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         }
       );
-      return thunkAPI.fulfillWithValue(response.data);
+      return thunkAPI.fulfillWithValue(response.data.data);
       // return console.log("3333333333", response);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -58,6 +56,7 @@ export const editAuctionItem = createAsyncThunk(
 export const deleteAuctionItem = createAsyncThunk(
   "deleteAuctionItem",
   async (payload, thunkAPI) => {
+    console.log("삭제다리");
     try {
       const response = await api.delete(`auction/${payload}`);
       return thunkAPI.fulfillWithValue(payload);
@@ -124,7 +123,7 @@ const auctionListSlice = createSlice({
     },
 
     [addAuctionItem.fulfilled]: (state, action) => {
-      state.auctionList = [...state.auctionList, action.payload];
+      state.auctionList = [action.payload, ...state.auctionList];
     },
     [addAuctionItem.rejected]: (state, action) => {
       console.log(action);
@@ -149,7 +148,7 @@ const auctionListSlice = createSlice({
 
     [deleteAuctionItem.fulfilled]: (state, action) => {
       state.auctionList = state.auctionList.filter(
-        (post) => post.auctionId != action.payload
+        (post) => post.id !== action.payload
       );
     },
     [deleteAuctionItem.rejected]: (state, action) => {

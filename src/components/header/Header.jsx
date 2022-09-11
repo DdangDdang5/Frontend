@@ -1,5 +1,9 @@
 // React import
-import React from "react";
+import React, { useEffect } from "react";
+
+//redux import
+import { useDispatch } from "react-redux";
+import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
 
 // Package import
 import { useNavigate } from "react-router-dom";
@@ -14,8 +18,22 @@ import {
   PageTitle,
 } from "./Header.styled";
 
-const Header = ({ borderBottom, logo, page, write, movePage }) => {
+const Header = ({
+  borderBottom,
+  logo,
+  page,
+  write,
+  movePage,
+  deleteBtn,
+  detailData,
+}) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  console.log(detailData);
+  const handleDelete = () => {
+    dispatch(deleteAuctionItem(detailData.id));
+    navigate(-1, { replace: true });
+  };
 
   return (
     <HeaderContainer borderBottom={borderBottom}>
@@ -30,7 +48,13 @@ const Header = ({ borderBottom, logo, page, write, movePage }) => {
         )}
         <HeaderIconContainer>
           {write ? (
-            <span onClick={movePage}>완료</span>
+            <div type="button" onClick={movePage}>
+              완료
+            </div>
+          ) : deleteBtn ? (
+            <div type="button" onClick={handleDelete}>
+              삭제
+            </div>
           ) : (
             <>
               <img

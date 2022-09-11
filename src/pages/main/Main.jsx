@@ -39,6 +39,7 @@ import {
   PopularTitle,
   TagWrap,
 } from "./Main.styled";
+import PlusButton from "../../components/button/PlusButton";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -197,7 +198,7 @@ const Main = () => {
         </ListContainer>
       </MainContent>
 
-      <AddAuction src="maskable.png" alt="auction-img" />
+      <PlusButton />
 
       <Footer />
     </MainContainer>

@@ -56,6 +56,7 @@ const CategoryModal = () => {
     "중랑구",
   ];
   const categoryList = [
+    "전체 품목",
     "가구/인테리어",
     "가전",
     "남성 패션",

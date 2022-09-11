@@ -13,7 +13,7 @@ import styled from "styled-components";
 
 const AuctionDetail = () => {
   const dispatch = useDispatch();
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const params = useParams();
   const data = useSelector((state) => state.auction.auction);
@@ -27,12 +27,12 @@ const AuctionDetail = () => {
   }, [params?.auctionId]);
 
   if (!data) {
-    return <></>;
+    return navigate(-1);
   }
 
   return (
     <AuctionDetailLayout>
-      <Header />
+      <Header deleteBtn={true} logo={true} detailData={data} />
 
       <DetailBodyWrap>
         <ItemImgContainer>
@@ -61,42 +61,24 @@ const AuctionDetail = () => {
             {data.region ? <div>{data.region}</div> : ""}
           </DetailBodySelectTag>
 
-          <DetailBodyContent>
-            {/* {data.content} */}
-            일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은
-            바보가 된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지
-            않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은 바보가
-            된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은
-            바보가 된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지
-            않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은 바보가
-            된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은
-            바보가 된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지
-            않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은 바보가
-            된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은
-            바보가 된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지
-            않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은 바보가
-            된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은
-            바보가 된다.일만하고 놀지 않으면 잭은 바보가 된다.일만하고 놀지
-            않으면 잭은 바보가 된다.일만하고 놀지 않으면 잭은 바보가
-            된다.일만하고 놀지 않으면 잭은 바보가 된다.
-          </DetailBodyContent>
+          <DetailBodyContent>{data.content}</DetailBodyContent>
           <DetailBodyViewTag>
             <div>관심 10</div>
             <div>조회 {data.viewerCnt}</div>
           </DetailBodyViewTag>
-          <DetailBodyItemTag>
-            <div>#글자</div>
-            <div>#태그검색</div>
-            <div>#0000</div>
-          </DetailBodyItemTag>
+          <DetailBodyItemTag></DetailBodyItemTag>
         </DetailBodyContainer>
 
         <CommentCountContainer>
-					<CommentCountWrap>
-	          <CommentCountTitle>실시간 채팅방</CommentCountTitle>
-	          <p>5명 참여중</p>
-					</CommentCountWrap>
-					<img src="/maskable.png" alt="moveChat" onClick={() => navigate('/chat')}/>
+          <CommentCountWrap>
+            <CommentCountTitle>실시간 채팅방</CommentCountTitle>
+            <p>5명 참여중</p>
+          </CommentCountWrap>
+          <img
+            src="/maskable.png"
+            alt="moveChat"
+            onClick={() => navigate("/chat")}
+          />
         </CommentCountContainer>
 
         {/* <DetailCommentContainer>
@@ -116,8 +98,8 @@ const AuctionDetail = () => {
         </DetailFooterTimeContainer>
         <DetailFooterContainer>
           <FooterLeftBox>
-            <div className="presentPrice">최근 입찰가</div>
-            <div className="price">{data.nowPrice}원</div>
+            <div className="presentPrice">{`시작가 ${data.startPrice}원`}</div>
+            <div className="price">{`현재가 ${data.nowPrice}원`}</div>
           </FooterLeftBox>
           <FooterRightBox>
             <button>입찰하기</button>
@@ -264,20 +246,20 @@ const CommentCountContainer = styled.div`
     color: #9b9b9b;
   }
 
-	img {
-		width: 16px;
-		height: 16px;
-	}
+  img {
+    width: 16px;
+    height: 16px;
+  }
 `;
 
 const CommentCountWrap = styled.div`
-	display: flex;
-	gap: 12px;
+  display: flex;
+  gap: 12px;
 `;
 
 const CommentCountTitle = styled.p`
-	font-weight: 700 !important;
-	color: black !important;
+  font-weight: 700 !important;
+  color: black !important;
 `;
 
 const DetailCommentContainer = styled.div`

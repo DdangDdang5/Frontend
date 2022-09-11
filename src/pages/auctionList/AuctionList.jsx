@@ -12,8 +12,8 @@ import styled from "styled-components";
 // Component import
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
-import Auction from "../../components/auction/Auction";
 import PlusButton from "../../components/button/PlusButton";
+import AuctionColumn from "../../components/auction/AuctionColumn";
 
 const AuctionList = () => {
   const dispatch = useDispatch();

@@ -1,19 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
-import Auction2 from "../../components/auction2/Auction2";
 import Header from "../../components/header/Header";
-import Footer from "../../components/footer/Footer";
 import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
+import Footer from "../../components/footer/Footer";
+import AuctionRow from "../../components/auction/AuctionRow";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux/es/exports";
 
 const MyPageParticipationAuction = () => {
+  const dispatch = useDispatch();
+  const [isAuction, setIsAuction] = useState(true);
+  const data = useSelector((state) => state.myPage.myPage);
+
   return (
     <MyAuctionLayout>
       <Header />
-      <AuctionStateNav />
+      <AuctionStateNav isAuction={isAuction} setIsAuction={setIsAuction} />
       <MyAuctionBody>
-        <Auction2 />
+        <AuctionRow isAuction={isAuction} />
       </MyAuctionBody>
-
       <Footer />
     </MyAuctionLayout>
   );

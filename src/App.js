@@ -66,8 +66,14 @@ function App() {
         <Route path="/member/kakao/callback" element={<Kakao />} />
         <Route path="/myGrade" element={<MyGrade />} />
         <Route path="/myPageMyAuction" element={<MyPageMyAuction />} />
-        <Route path="/myPageParticipationAuction" element={<MyPageParticipationAuction />} />
-        <Route path="/myPageInterestAuction" element={<MyPageInterestAuction />} />
+        <Route
+          path="/myPageParticipationAuction"
+          element={<MyPageParticipationAuction />}
+        />
+        <Route
+          path="/myPageInterestAuction"
+          element={<MyPageInterestAuction />}
+        />
         <Route path="/userProfile" element={<UserProfile />} />
       </Routes>
       {modal && <CategoryModal />}

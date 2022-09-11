@@ -20,7 +20,8 @@ export const modalSlice = createSlice({
     hideModal: (state, action) => {
 			// action.paylod -> categoryName, regionName
       state.show = false;
-
+      state.division = "";
+      
 			if (action.payload?.categoryName) {
 				state.categoryName = action.payload.categoryName;
 			}
