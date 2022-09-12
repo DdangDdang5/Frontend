@@ -2,7 +2,11 @@
 import React, { useEffect } from "react";
 
 // Reducer import
-import { showModal } from "../../redux/modules/ModalSlice";
+import {
+  showModal,
+  _categoryList,
+  _regionList,
+} from "../../redux/modules/ModalSlice";
 import { auctionItemList } from "../../redux/modules/AuctionListSlice";
 
 // Package import
@@ -24,12 +28,18 @@ const AuctionList = () => {
     paging,
     followingItem,
   } = useSelector((state) => state.auctionList);
+
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
 
   useEffect(() => {
-    // console.log(AuctionListData);
+    dispatch(_categoryList());
+  }, []);
+  useEffect(() => {
+    dispatch(_regionList());
+  }, []);
 
+  useEffect(() => {
     if (categoryName === "전체품목" && regionName === "전체지역") {
       dispatch(auctionItemList());
     }
@@ -55,12 +65,14 @@ const AuctionList = () => {
     <AuctionListLayout>
       <Header />
       <ListCategoryWrap>
-        <CategoryBtn onClick={() => dispatch(showModal("categoryList"))}>
+        <CategoryBtn
+          onClick={() => dispatch(showModal("categoryList"), _categoryList())}>
           <CategoryBtnText>{categoryName}</CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
         </CategoryBtn>
         <CategoryBtn>
-          <CategoryBtnText onClick={() => dispatch(showModal("regionList"))}>
+          <CategoryBtnText
+            onClick={() => dispatch(showModal("regionList"), _regionList())}>
             {regionName}
           </CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>

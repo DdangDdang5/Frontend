@@ -15,6 +15,7 @@ export const auctionItemList = createAsyncThunk(
   "getAuctionItemList",
   async (payload, thunkAPI) => {
     try {
+      // auctionList는 스토어에 있는 리덕스
       const { paging } = thunkAPI.getState().auctionList;
       const response = await api.get(
         `/pagination/auction?page=${paging}&size=6&sortBy=id&isAsc=false`
@@ -65,7 +66,6 @@ export const editAuctionItem = createAsyncThunk(
 export const deleteAuctionItem = createAsyncThunk(
   "deleteAuctionItem",
   async (payload, thunkAPI) => {
-    console.log("삭제다리");
     try {
       const response = await api.delete(`auction/${payload}`);
       return thunkAPI.fulfillWithValue(payload);
@@ -132,7 +132,6 @@ const auctionListSlice = createSlice({
   },
   extraReducers: {
     [auctionItemList.fulfilled]: (state, action) => {
-      console.log("여긴 한번만 와야대여");
       state.auctionList = [...state.auctionList, ...action.payload];
       state.loading = false;
       state.paging = state.paging + 1;
