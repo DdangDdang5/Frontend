@@ -57,7 +57,7 @@ export const SwipeContent = styled.div`
     rgba(0, 0, 0, 0.8) 0%,
     rgba(0, 0, 0, 0.2) 100%
   );
-  font-size: 14px;
+  color: ${(props) => props.theme.colors.White};
 
   position: relative;
 
@@ -75,22 +75,29 @@ export const BannerContent = styled.div`
 `;
 
 export const BannerTime = styled.span`
-  font-size: 18px;
+  font-size: ${(props) => props.theme.fontSizes.md};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
 `;
 
 export const BannerTitle = styled.span`
   margin-top: 4px;
-  font-size: 20px;
+  font-size: ${(props) => props.theme.fontSizes.lg};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
 `;
 
 export const BannerPriceWrap = styled.div`
   text-align: end;
+
+  span {
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+  }
 `;
 
 export const BannerPrice = styled.span`
   margin-left: 4px;
-  font-size: 24px;
-  font-weight: bold;
+  font-size: ${(props) => props.theme.fontSizes.xxl} !important;
+  font-weight: ${(props) => props.theme.fontWeights.medium} !important;
 `;
 
 export const BannerCircle = styled.div`
@@ -103,7 +110,7 @@ export const BannerCircle = styled.div`
     rgba(253, 176, 36, 0) 63.63%
   );
   border-radius: 200px;
-	z-index: -5;
+  z-index: -5;
 
   position: absolute;
   bottom: -100px;
@@ -114,8 +121,9 @@ export const SwipeIdx = styled.div`
   width: fit-content;
 
   position: absolute;
-  top: 20px;
-  right: 20px;
+	top: ${(props) => (props.isMain ? "20px" : null)};
+	right: ${(props) => (props.isMain ? "20px" : "50%")};
+	bottom: ${(props) => (props.isMain ? null : "17px")};
 
   display: flex;
   gap: 4px;
@@ -126,7 +134,8 @@ export const SwipeIdxItem = styled.span`
   height: 8px;
 
   border-radius: 10px;
-  background-color: ${(props) => props.color};
+  background-color: ${(props) =>
+    props.idxNow ? props.theme.colors.White : "rgba(255, 255, 255, 0.5)"};
 `;
 
 export const SwipeBtn = styled.button`

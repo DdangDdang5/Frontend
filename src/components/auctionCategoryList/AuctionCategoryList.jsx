@@ -2,7 +2,10 @@
 import React, { useEffect } from "react";
 
 // Redux import
-import { categoryHitList, regionHitList } from "../../redux/modules/AuctionDivisionSlice";
+import {
+  categoryHitList,
+  regionHitList,
+} from "../../redux/modules/AuctionDivisionSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
@@ -47,14 +50,26 @@ const AuctionCategoryList = ({ isCategory }) => {
           <CategoryNum>TOP {list6?.length}</CategoryNum>
         </CategoryTitle>
         <CategoryMore onClick={() => navigate("/auctionList")}>
-          <span>전체보기</span>
+          <span>전체 보기</span>
           <img src="maskable.png" alt="all" />
         </CategoryMore>
       </CategoryHeader>
       <CategoryList>
-        {list6?.map((item, idx) => (
-          <AuctionCategory division={isCategory? item.categoryName : item.regionName} key={idx} />
-        ))}
+        {list6?.map((item, idx) =>
+          isCategory ? (
+            <AuctionCategory
+							division="categoryList"
+              divisionName={item.categoryName}
+              key={idx}
+            />
+          ) : (
+            <AuctionCategory
+							division="regionList"
+							divisionName={item.regionName}
+              key={idx}
+            />
+          ),
+        )}
       </CategoryList>
     </CategoryListContainer>
   );

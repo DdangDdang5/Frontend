@@ -26,7 +26,7 @@ const AuctionList = () => {
   useEffect(() => {
     // console.log(AuctionListData);
 
-    if (categoryName === "전체품목" && regionName === "서울전체") {
+    if (categoryName === "전체 품목" && regionName === "서울 전체") {
       dispatch(auctionItemList());
     }
   }, [JSON.stringify(AuctionListData), categoryName, regionName]);

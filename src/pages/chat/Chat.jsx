@@ -174,9 +174,9 @@ const Chat = () => {
       <ChatContent ref={chatRef}>
         <ChatMessageList>
           {chatList?.map((chat, idx) => (
-            <>
+            <div key={idx}>
               {chat.sender !== "rang" ? (
-                <ChatMessage key={idx}>
+                <ChatMessage>
                   <MessageProfile src="/maskable.png" alt="chat-profile" />
                   <MessageWrap>
                     <span>{chat.sender}</span>
@@ -190,7 +190,7 @@ const Chat = () => {
 									</MessageInfo>
                 </ChatMessage>
               ) : (
-                <ChatMessage key={idx} isMe={true}>
+                <ChatMessage isMe={true}>
 									<MessageInfo>
 										<MessageChecked>1</MessageChecked>
                   	<MessageTime>PM 09:15</MessageTime>
@@ -202,7 +202,7 @@ const Chat = () => {
                   </MessageWrap>
                 </ChatMessage>
               )}
-            </>
+            </div>
           ))}
         </ChatMessageList>
       </ChatContent>

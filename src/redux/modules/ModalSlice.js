@@ -4,8 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   show: false,
   division: "",
-	categoryName: "전체품목",
-	regionName: "서울전체",
+	categoryName: "전체 품목",
+	regionName: "서울 전체",
   mode: ""
 };
 

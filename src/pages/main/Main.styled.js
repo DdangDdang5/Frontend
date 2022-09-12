@@ -7,7 +7,6 @@ export const MainContainer = styled.div`
 
 export const MainContent = styled.div`
   width: 100%;
-  font-size: 14px;
 
   position: absolute;
   top: 70px;
@@ -26,8 +25,9 @@ export const ListContainer = styled.div`
 `;
 
 export const ListHeader = styled.span`
-  font-size: ${(props) => (props.fontSizes ? props.fontSizes : "20px")};
-  font-weight: bold;
+  font-size: ${(props) =>
+    props.isLast ? props.theme.fontSizes.md : props.theme.fontSizes.lg};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
 
   display: flex;
   justify-content: space-between;
@@ -35,8 +35,9 @@ export const ListHeader = styled.span`
 `;
 
 export const ListHeaderMore = styled.div`
-  font-size: 14px;
-  font-weight: normal;
+	color: ${(props) => props.theme.colors.Gray3};
+  font-size: ${(props) => props.theme.fontSizes.sm};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
 
   display: flex;
   align-items: center;
@@ -67,7 +68,7 @@ export const PopularItem = styled.div`
     height: 100%;
 
     border-radius: 8px;
-		z-index: -5;
+    z-index: -5;
 
     position: absolute;
 
@@ -76,17 +77,14 @@ export const PopularItem = styled.div`
 `;
 
 export const PopularItemContent = styled.div`
-  width: 185px;
+  width: 60%;
   min-width: 185px;
   height: 250px;
   padding: 16px;
 
-	color: white;
-	border-radius: 8px;
-  background: linear-gradient(
-		180deg, #4d71ff 22.5%, 
-		rgba(0, 0, 0, 0.4) 91.9%
-	);
+  color: ${(props) => props.theme.colors.White};
+  border-radius: 8px;
+  background: linear-gradient(180deg, #4d71ff 22.5%, rgba(0, 0, 0, 0.4) 91.9%);
 
   display: flex;
   flex-direction: column;
@@ -101,36 +99,54 @@ export const TagWrap = styled.div`
 
   span {
     padding: 2px 6px;
-    font-weight: bold;
 
-		color: ${(props) => props.color};
-    background-color: ${(props) => props.backgroundColor};
+    color: ${(props) => props.isPopular ? props.theme.colors.Blue1 : props.theme.colors.White};
+    background-color: ${(props) => props.isPopular ? props.theme.colors.White : props.theme.colors.Blue1};
     border-radius: 100px;
+		
+		font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.medium};
   }
+	`;
+
+export const TagRegion = styled.span`
+	color: ${(props) => props.theme.colors.Blue1} !important;
+	background-color: ${(props) => props.theme.colors.White} !important;
+	border: 1px solid ${(props) => props.theme.colors.Blue1};
 `;
 
 export const PopularTitle = styled.span`
-  font-size: 18px;
+  font-size: ${(props) => props.theme.fontSizes.md};
+	font-weight: ${(props) => props.theme.fontWeights.normal};
 `;
 
 export const PopularPriceWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+	gap: 4px;
+
+	span {
+		font-size: ${(props) => props.theme.fontSizes.sm};
+		font-weight: ${(props) => props.theme.fontWeights.normal};
+		text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+	}
 `;
 
 export const PopularPrice = styled.span`
-  font-size: 28px;
-  font-weight: bold;
+  font-size: ${(props) => props.theme.fontSizes.xl} !important;
+  font-weight: ${(props) => props.theme.fontWeights.medium} !important;
 `;
 
 export const NewList = styled.div`
-  margin: 10px auto;
+  margin: 16px auto;
+
+	display: flex;
+	flex-direction: column;
+	gap: 19px;
 `;
 
 export const NewItem = styled.div`
-  margin: 8px auto;
-
   display: flex;
 
   img {
@@ -141,12 +157,15 @@ export const NewItem = styled.div`
 `;
 
 export const NewItemContent = styled.div`
-  width: calc(100% - 93px);
-  margin-left: 20px;
+  width: calc(100% - 95px);
+  margin-left: 18px;
 `;
 
 export const NewItemTitle = styled.span`
   width: 100%;
+
+	font-size: ${(props) => props.theme.fontSizes.md};
+	font-weight: ${(props) => props.theme.fontWeights.normal};
 
   display: block;
   overflow: hidden;
@@ -155,15 +174,17 @@ export const NewItemTitle = styled.span`
 `;
 
 export const NewItemPriceWrap = styled.div`
-  font-size: 14px;
+  font-size: ${(props) => props.theme.fontSizes.sm};
+	font-weight: ${(props) => props.theme.fontWeights.normal};
 
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 4px;
 `;
 
 export const NewItemPrice = styled.span`
-  font-size: 18px;
+  font-size: ${(props) => props.theme.fontSizes.md};
+	font-weight: ${(props) => props.theme.fontWeights.medium};
 `;
 
 export const LastList = styled.div`
@@ -179,9 +200,8 @@ export const LastList = styled.div`
 `;
 
 export const LastItem = styled.div`
-  width: 165px;
-
-  /* background-color: aliceblue; */
+  width: 100%;
+	max-width: 165px;
 
   img {
     width: 100%;

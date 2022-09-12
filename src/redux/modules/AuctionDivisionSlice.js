@@ -1,45 +1,12 @@
+// Package import
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+// Shared import
 import api from "../../shared/Api";
 
 const initialState = {
-  categoryList: [
-    // "남성 패션",
-    // "남성 잡화",
-    // "남성 의류",
-    // "여성 패션",
-    // "여성 잡화",
-    // "여성 의류",
-    // "취미/게임/음반",
-    // "스포츠/레저",
-  ],
-  regionList: [
-    // "서울 전체",
-    // "강남구",
-    // "강동구",
-    // "강북구",
-    // "강서구",
-    // "관악구",
-    // "광진구",
-    // "구로구",
-    // "금천구",
-    // "노원구",
-    // "도봉구",
-    // "동대문구",
-    // "동작구",
-    // "마포구",
-    // "서대문구",
-    // "서초구",
-    // "성동구",
-    // "성북구",
-    // "송파구",
-    // "양천구",
-    // "영등포구",
-    // "용산구",
-    // "은평구",
-    // "종로구",
-    // "중구",
-    // "중랑구",
-  ],
+  categoryList: [],
+  regionList: [],
 };
 
 export const categoryHitList = createAsyncThunk(
@@ -49,7 +16,7 @@ export const categoryHitList = createAsyncThunk(
       const response = await api.get("/category/hit");
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (err) {
-      console.log(err);
+      return thunkAPI.rejectWithValue(err);
     }
   },
 );
@@ -61,7 +28,7 @@ export const regionHitList = createAsyncThunk(
       const response = await api.get("/region/hit");
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (err) {
-      console.log(err);
+      return thunkAPI.rejectWithValue(err);
     }
   },
 );
@@ -77,17 +44,38 @@ const actionDivisionSlice = createSlice({
 
   extraReducers: {
     [categoryHitList.fulfilled]: (state, action) => {
-      state.categoryList = action.payload;
+      state.categoryList = action.payload.map((item) => {
+        switch (item.categoryName) {
+					case "전체품목":
+						return {...item, categoryName: "전체 품목"};
+          case "가구인테리어":
+            return { ...item, categoryName: "가구/인테리어" };
+          case "남성패션":
+            return { ...item, categoryName: "남성 패션" };
+          case "여성패션":
+            return { ...item, categoryName: "여성 패션" };
+          case "스포츠레저":
+            return { ...item, categoryName: "스포츠/레저" };
+          case "취미게임악기":
+            return { ...item, categoryName: "취미/게임/악기" };
+          case "뷰티/미용":
+            return { ...item, categoryName: "뷰티/미용" };
+          default:
+            return item;
+        }
+      });
     },
     [categoryHitList.rejected]: (state, action) => {
-      console.log('Rang rejected get category hit list');
+			console.log(action);
     },
 
     [regionHitList.fulfilled]: (state, action) => {
-      state.regionList = action.payload;
+      state.regionList = action.payload.map((item) =>
+        item === "서울전체" ? { ...item, regionName: "서울 전체" } : item,
+      );
     },
     [regionHitList.rejected]: (state, action) => {
-      console.log('Rang rejected get region hit list');
+			console.log(action);
     },
   },
 });

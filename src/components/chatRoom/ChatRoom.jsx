@@ -18,7 +18,6 @@ import {
 
 const ChatRoom = ({ roomId }) => {
 	const navigate = useNavigate();
-	console.log(roomId);
 
   return (
     <ChatRoomContainer onClick={() => navigate(`/chat/${roomId}`)}>

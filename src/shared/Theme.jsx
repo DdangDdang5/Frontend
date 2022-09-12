@@ -1,4 +1,5 @@
 const fontSizes = {
+	xxl: "24px",
   xl: "22px",
   lg: "20px",
   md: "18px",

@@ -110,12 +110,12 @@ const SwipeImage = ({
                 <SwipeContent></SwipeContent>
               )}
 
-              <SwipeIdx>
+              <SwipeIdx isMain={isMain}>
                 {Array.from({ length: data.length }, (_, idxI) =>
                   idx === idxI ? (
-                    <SwipeIdxItem key={idxI} color="black" />
+                    <SwipeIdxItem key={idxI} idxNow={true} />
                   ) : (
-                    <SwipeIdxItem key={idxI} color="white" />
+                    <SwipeIdxItem key={idxI} idxNow={false} />
                   ),
                 )}
               </SwipeIdx>

@@ -37,6 +37,7 @@ import {
   PopularPrice,
   PopularPriceWrap,
   PopularTitle,
+  TagRegion,
   TagWrap,
 } from "./Main.styled";
 import PlusButton from "../../components/button/PlusButton";
@@ -116,7 +117,7 @@ const Main = () => {
                 />
                 <PopularItemContent>
                   <div>
-                    <TagWrap backgroundColor="white" color="#4d71ff">
+                    <TagWrap isPopular={true}>
                       {item.delivery ? <span>택배</span> : null}
                       {item.direct ? <span>직거래</span> : null}
                       <span>{item.region}</span>
@@ -138,7 +139,7 @@ const Main = () => {
           <ListHeader>
             <span>따끈따끈 새로 올라온 경매!</span>
             <ListHeaderMore>
-              <span>전체보기</span>
+              <span>전체 보기</span>
               <img src="maskable.png" alt="all" />
             </ListHeaderMore>
           </ListHeader>
@@ -150,10 +151,10 @@ const Main = () => {
                 onClick={() => moveAuctionDetail(item.auctionId)}>
                 <img src={item.multiImages[0].imgUrl} alt="auction-new-img" />
                 <NewItemContent>
-                  <TagWrap backgroundColor="gray">
+                  <TagWrap>
                     {item.delivery ? <span>택배</span> : null}
                     {item.direct ? <span>직거래</span> : null}
-                    <span>{item.region}</span>
+                    <TagRegion>{item.region}</TagRegion>
                   </TagWrap>
                   <NewItemTitle>{item.title}</NewItemTitle>
                   <NewItemPriceWrap>
@@ -168,10 +169,10 @@ const Main = () => {
 
         {/* 마감임박 경매 */}
         <ListContainer>
-          <ListHeader fontSize="18px">
+          <ListHeader isLast={true}>
             <span>서두르세요! 곧 경매가 끝나요</span>
             <ListHeaderMore>
-              <span>전체보기</span>
+              <span>전체 보기</span>
               <img src="maskable.png" alt="all" />
             </ListHeaderMore>
           </ListHeader>
@@ -182,10 +183,10 @@ const Main = () => {
                 key={item.auctionId}
                 onClick={() => moveAuctionDetail(item.auctionId)}>
                 <img src={item.multiImages[0].imgUrl} alt="auction-last-img" />
-                <TagWrap backgroundColor="gray">
+                <TagWrap>
                   {item.delivery ? <span>택배</span> : null}
                   {item.direct ? <span>직거래</span> : null}
-                  <span>{item.region}</span>
+                  <TagRegion>{item.region}</TagRegion>
                 </TagWrap>
                 <NewItemTitle>{item.title}</NewItemTitle>
                 <NewItemPriceWrap>
