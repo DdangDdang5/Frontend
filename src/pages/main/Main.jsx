@@ -49,7 +49,7 @@ const Main = () => {
 
   // 판매중인 경매 목록
   const auctionSaleList = auctionAllList?.filter(
-    (item) => item.auctionStatus === true
+    (item) => item?.auctionStatus === true
   );
 
   // 인기 경매 목록 3개

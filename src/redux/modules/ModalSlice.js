@@ -5,7 +5,7 @@ const initialState = {
   show: false,
   division: "",
 	categoryName: "전체품목",
-	regionName: "전체지역",
+	regionName: "서울전체",
   mode: ""
 };
 

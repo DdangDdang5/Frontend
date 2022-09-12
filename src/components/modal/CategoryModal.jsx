@@ -83,20 +83,22 @@ const CategoryModal = () => {
   }, [dispatch, division]);
 
   const onCheckCategoryRegion = (categoryName, regionName) => {
-    const categoryNameCheck = categoryName.split("/").join("");
+    const categoryNameCheck = categoryName.split(/\s|\//g).join("");		// 공백, / 제거
+		const regionNameCheck = regionName.split(" ").join("");							// 공백 제거
+		console.log(categoryNameCheck, regionNameCheck)
 
-    if (categoryName === "전체품목" && regionName === "전체지역") {
+    if (categoryNameCheck === "전체품목" && regionNameCheck === "서울전체") {
       dispatch(auctionItemList());
-    } else if (categoryName !== "전체품목" && regionName !== "전체지역") {
+    } else if (categoryNameCheck !== "전체품목" && regionNameCheck !== "서울전체") {
       dispatch(
         auctionCategoryRegionList({
           categoryName: categoryNameCheck,
-          regionName,
+          regionName: regionNameCheck,
         }),
       );
-    } else if (categoryName !== "전체품목") {
+    } else if (categoryNameCheck !== "전체품목") {
       dispatch(auctionCategoryList(categoryNameCheck));
-    } else if (regionName !== "전체지역") {
+    } else if (regionNameCheck !== "서울전체") {
       dispatch(auctionRegionList(regionName));
     }
   };
