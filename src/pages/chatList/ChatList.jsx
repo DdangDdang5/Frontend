@@ -47,7 +47,7 @@ const ChatList = () => {
       <Header logo={false} />
       <ChatRoomList>
         {Array.from({ length: 4 }, (_, idx) => (
-          <ChatRoom key={idx} roomId={chatRoomList[chatRoomList.length - 1]?.roomId} />
+          <ChatRoom key={idx} roomId={chatRoomList[0]?.roomId} />
         ))}
       </ChatRoomList>
       <Footer />

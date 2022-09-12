@@ -13,7 +13,7 @@ export const makeChatRoom = createAsyncThunk(
 		try {
 	    console.log("make chat room actions!!!!");
 
-	    const response = await axios.post(process.env.REACT_APP_URL2 + "/chat/room?name=채팅방999");
+	    const response = await axios.post(process.env.REACT_APP_URL + "/chat/room?name=채팅방777");
 	    // const response = await axios.post("http://localhost:8080/chat/room?name=채팅방999");
 	    console.log(response);
 	    return thunkAPI.fulfillWithValue(response.data);

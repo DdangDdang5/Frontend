@@ -32,8 +32,6 @@ import Kakao from "./shared/Kakao";
 import { getCookie } from "./shared/Cookie";
 import CategoryModal from "./components/modal/CategoryModal";
 import UserProfile from "./pages/userProfile/UserProfile";
-import ChatRoom from "./pages/chat/ChatRoom";
-import { ChatContainer } from "./pages/chat/ChatContainer";
 
 function App() {
   const dispatch = useDispatch();
@@ -56,7 +54,6 @@ function App() {
         <Route path="/profileEdit" element={<ProfileEdit />} />
         <Route path="/search" element={<Search />} />
         <Route path="/chat/:roomId" element={<Chat />} />
-        {/* <Route path="/chat/:roomId" element={<ChatContainer />} /> */}
         <Route path="/chatList" element={<ChatList />} />
         <Route path="/auctionList" element={<AuctionList />} />
         <Route path="/auctionWrite" element={<AuctionWrite />} />
