@@ -1,4 +1,4 @@
-//Redux import
+// Redux import
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Cookies } from "react-cookie";
 

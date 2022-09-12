@@ -20,7 +20,7 @@ const Search = () => {
   const searchList = useSelector((state) => state.search.data);
   const navigate = useNavigate();
   const token = getCookie("accessToken");
-
+  console.log(searchList);
   const [keyword, setKeyword] = useState("");
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
@@ -50,18 +50,28 @@ const Search = () => {
         <SearchBoxFilterGroup>
           <SearchBoxFilterTitleSpan>최근 검색어</SearchBoxFilterTitleSpan>
           <SearchBoxFilterWrap>
-            {/* <div className="SearchResultHeader">
-              <p className="SearchResultHeaderTitle">{search}</p>
-            </div> */}
             <div className="SearchResultCardWrap">
+              {searchList ? (searchList &&
+                searchList.map((item) => {
+                  return (
+                    <div>
+                      <div>{item.title}</div>
+                      <div>{item.startPrice}</div>
+                      <div>{item.viewerCnt}</div>
+                      {/* <div>{item.multiImages}</div> */}
+                    </div>
+                  );
+                })) : (
+                  <LoadingWrap>
+                  <Loadingtext>검색 결과가 없습니다.</Loadingtext>
+                </LoadingWrap>
+                )}
               {/* {searchList ? (
                   searchList?.map((item, index) => {
                     return <SearchCard searchList={item} />;
                   })
                 ) : (
-                  <LoadingWrap>
-                    <Loadingtext>검색 결과가 없습니다.</Loadingtext>
-                  </LoadingWrap>
+                 
                 )} */}
             </div>
           </SearchBoxFilterWrap>

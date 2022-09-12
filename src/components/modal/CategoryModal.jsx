@@ -1,17 +1,29 @@
+// React import
 import React, { useEffect, useRef, useState } from "react";
 
-// redux import
+// Package import
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
+
+// Redux import
 import { hideModal } from "../../redux/modules/ModalSlice";
 
-// styled import
-import styled, { keyframes } from "styled-components";
+// Style import
+import {
+  auctionCategoryList,
+  auctionCategoryRegionList,
+  auctionItemList,
+  auctionRegionList,
+} from "../../redux/modules/AuctionListSlice";
 
 const CategoryModal = () => {
   const dispatch = useDispatch();
   const modalRef = useRef();
 
-  const category = useSelector((state) => state.modal.category);
+  const division = useSelector((state) => state.modal.division);
+  const categoryName = useSelector((state) => state.modal.categoryName);
+  const regionName = useSelector((state) => state.modal.regionName);
+
   const [modalList, setModalList] = useState([]);
   const [title, setTitle] = useState("");
 
@@ -57,18 +69,47 @@ const CategoryModal = () => {
   ];
 
   useEffect(() => {
-    if (category === "regionList") {
+    if (division === "regionList") {
       setModalList(regionList);
       setTitle("지역 선택");
-    } else if (category === "categoryList") {
+    } else if (division === "categoryList") {
       setModalList(categoryList);
       setTitle("품목 선택");
-    } else {
     }
-    return () => {
-      setModalList([]);
-    };
-  }, [category]);
+		
+    // return () => {
+    //   setModalList([]);
+    // };
+  }, [dispatch, division]);
+
+  const onCheckCategoryRegion = (categoryName, regionName) => {
+    const categoryNameCheck = categoryName.split("/").join("");
+
+    if (categoryName === "전체품목" && regionName === "전체지역") {
+      dispatch(auctionItemList());
+    } else if (categoryName !== "전체품목" && regionName !== "전체지역") {
+      dispatch(
+        auctionCategoryRegionList({
+          categoryName: categoryNameCheck,
+          regionName,
+        }),
+      );
+    } else if (categoryName !== "전체품목") {
+      dispatch(auctionCategoryList(categoryNameCheck));
+    } else if (regionName !== "전체지역") {
+      dispatch(auctionRegionList(regionName));
+    }
+  };
+
+  const onClickModalItem = (item) => {
+    if (division === "categoryList") {
+      dispatch(hideModal({ categoryName: item }));
+      onCheckCategoryRegion(item, regionName);
+    } else {
+      dispatch(hideModal({ regionName: item }));
+      onCheckCategoryRegion(categoryName, item);
+    }
+  };
 
   return (
     <ModalLayout
@@ -77,15 +118,19 @@ const CategoryModal = () => {
         if (modalRef.current === e.target) {
           dispatch(hideModal());
         }
-      }}>
+      }}
+    >
       <CategoryModalWrap>
         <CategoryModalHead>{title}</CategoryModalHead>
         <CategoryModalBodyContainer>
-          {modalList.map((index, item) => {
+          {modalList.map((item, idx) => {
             return (
               <CategoryModalBodyItem>
-                <CategoryModalBodyItemIn key={item}>
-                  {index}
+                <CategoryModalBodyItemIn
+                  key={idx}
+                  onClick={() => onClickModalItem(item)}
+                >
+                  {item}
                 </CategoryModalBodyItemIn>
               </CategoryModalBodyItem>
             );

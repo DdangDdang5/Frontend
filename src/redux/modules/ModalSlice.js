@@ -1,9 +1,12 @@
+// Package import
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   show: false,
-  category: "",
-  mode: "",
+  division: "",
+	categoryName: "전체품목",
+	regionName: "전체지역",
+  mode: ""
 };
 
 export const modalSlice = createSlice({
@@ -14,9 +17,17 @@ export const modalSlice = createSlice({
       state.show = true;
       state.division = action.payload;
     },
-    hideModal: (state) => {
+    hideModal: (state, action) => {
+			// action.paylod -> categoryName, regionName
       state.show = false;
       state.division = "";
+      
+			if (action.payload?.categoryName) {
+				state.categoryName = action.payload.categoryName;
+			}
+			if (action.payload?.regionName) {
+				state.regionName = action.payload.regionName;
+			}
     },
     changeMode: (state, action) => {
       state.mode = action.payload;

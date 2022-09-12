@@ -21,7 +21,7 @@ export const searchSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(auctionSearchThunk.fulfilled, (state, action) => {
       state.data = action.payload;
-      // console.log(action);
+      console.log(action);
     });
   },
 });
