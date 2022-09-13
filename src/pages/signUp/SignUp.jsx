@@ -93,6 +93,7 @@ const SignUp = () => {
           } else {
             emailSpanRef.current.innerText = "사용가능한 이메일입니다.";
             emailSpanRef.current.style.color = "#BCBCBC";
+            emailIconRef.current.color = "blue";
             setEmailCheck(false);
           }
         });
@@ -215,7 +216,8 @@ const SignUp = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="이메일 주소를 입력하세요."
-                required></SignUpBoxInput>
+                required
+              ></SignUpBoxInput>
               <SignUpBoxInputIcon ref={emailIconRef}>
                 <BsFillCheckCircleFill className="icon" />
               </SignUpBoxInputIcon>
@@ -231,7 +233,8 @@ const SignUp = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="비밀번호를 입력하세요."
                 ref={passwordRef}
-                required></SignUpBoxInput>
+                required
+              ></SignUpBoxInput>
               <SignUpBoxInputIcon ref={passwordIconRef}>
                 <BsFillCheckCircleFill className="icon" />
               </SignUpBoxInputIcon>
@@ -246,7 +249,8 @@ const SignUp = () => {
                 onChange={(e) => setRePassword(e.target.value)}
                 placeholder="비밀번호를 재입력하세요."
                 ref={rePasswordRef}
-                required></SignUpBoxInput>
+                required
+              ></SignUpBoxInput>
               <SignUpBoxInputIcon ref={rePasswordIconRef}>
                 <BsFillCheckCircleFill className="icon" />
               </SignUpBoxInputIcon>
