@@ -12,7 +12,10 @@ import Header from "../../components/header/Header";
 //redux import
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/exports";
-import { addAuctionItem } from "../../redux/modules/AuctionListSlice";
+import {
+  addAuctionItem,
+  auctionItemList,
+} from "../../redux/modules/AuctionListSlice";
 import {
   showModal,
   _categoryList,
@@ -29,9 +32,9 @@ const AuctionWrite = () => {
   const auctionRequestDto = {
     title: "",
     content: "",
-    startPrice: "",
+    startPrice: 0,
     category: "가전",
-    region: "종로구",
+    region: "동대문구",
     direct: false,
     delivery: false,
     auctionPeriod: 1,
@@ -71,19 +74,23 @@ const AuctionWrite = () => {
   //   setInputForm({ ...inputForm, region: regionName });
   // }, [categoryName, regionName]);
 
-  // useEffect(() => {
-  //   if (categoryName === "전체품목") {
-  //     dispatch(auctionItemList());
-  //   }
-  //   setInputForm({ ...inputForm, category: categoryName });
-  // }, [categoryName]);
+  useEffect(() => {
+    // if (categoryName === "전체품목") {
+    //   dispatch(auctionItemList());
+    // }
+    setInputForm((prev) => {
+      return { ...prev, category: categoryName };
+    });
+  }, [categoryName]);
 
-  // useEffect(() => {
-  //   if (categoryName === "전체지역") {
-  //     dispatch(auctionItemList());
-  //   }
-  //   setInputForm({ ...inputForm, region: regionName });
-  // }, [regionName]);
+  useEffect(() => {
+    // if (categoryName === "전체지역") {
+    //   dispatch(auctionItemList());
+    // }
+    setInputForm((prev) => {
+      return { ...prev, region: regionName };
+    });
+  }, [regionName]);
 
   // 이미지 업로드
   const onLoadFile = (e) => {
@@ -110,7 +117,11 @@ const AuctionWrite = () => {
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
-    setInputForm({ ...inputForm, [name]: value });
+    if (name === "startPrice") {
+      setInputForm({ ...inputForm, [name]: Number(value) });
+    } else {
+      setInputForm({ ...inputForm, [name]: value });
+    }
   };
 
   const onTransmitHandler = () => {
@@ -167,7 +178,7 @@ const AuctionWrite = () => {
                   />
                 </svg>
               </div>
-              <div>사진을 추가</div>
+              <div>파일을 입력</div>
             </label>
             <input
               ref={img_ref}
@@ -178,7 +189,6 @@ const AuctionWrite = () => {
               style={{ display: "none" }}
             />
           </ImgBoxBtn>
-
           {imagePreview.map((item, index) => {
             return (
               <ImgBox key={index}>
@@ -238,7 +248,9 @@ const AuctionWrite = () => {
         <WriteInputBox
           placeholder="시작가를 입력해주세요."
           type="number"
-          value={inputForm.startPrice}
+          value={
+            inputForm.startPrice === 0 ? "" : inputForm.startPrice.toString()
+          }
           name="startPrice"
           onChange={onChangeHandler}
         />
@@ -355,7 +367,10 @@ const ImgBoxBtn = styled.button`
   .inBoxBtnContainer {
     display: flex;
     flex-direction: column;
+    justify-content: center;
     gap: 5px;
+    width: 100%;
+    height: 100%;
   }
   div {
     font-size: 12px;

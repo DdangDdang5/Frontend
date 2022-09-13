@@ -17,6 +17,7 @@ const AuctionDetail = () => {
 
   const params = useParams();
   const data = useSelector((state) => state.auction.auction);
+  console.log(data);
 
   useEffect(() => {
     if (!params?.auctionId) {
@@ -46,11 +47,13 @@ const AuctionDetail = () => {
             <DetailBodyProfileImg>
               <img src={data.profileImgUrl} alt="" />
             </DetailBodyProfileImg>
-            <DetailBodyProfileContent>
-              <div className="nickName">{data.member.nickName}</div>
-              <div className="trustCount">신뢰도</div>
-            </DetailBodyProfileContent>
-            <div>신고</div>
+            <div className="DetailBodyProfile">
+              <DetailBodyProfileContent>
+                <div className="nickName">{data.member.nickName}</div>
+                <div className="trustCount">신뢰도</div>
+              </DetailBodyProfileContent>
+              <div>신고</div>
+            </div>
           </DetailBodyProfileBox>
 
           <DetailBodyTitle>{data.title}</DetailBodyTitle>
@@ -72,7 +75,7 @@ const AuctionDetail = () => {
         <CommentCountContainer>
           <CommentCountWrap>
             <CommentCountTitle>실시간 채팅방</CommentCountTitle>
-            <p>5명 참여중</p>
+            <p>{data.participantCnt}명 참여중</p>
           </CommentCountWrap>
           <img
             src="/maskable.png"
@@ -141,6 +144,12 @@ const DetailBodyProfileBox = styled.div`
   width: 100%;
   height: 48px;
   margin-bottom: 24px;
+  .DetailBodyProfile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
 `;
 const DetailBodyProfileImg = styled.div`
   display: flex;

@@ -94,13 +94,15 @@ const CategoryModal = () => {
         <CategoryModalBodyContainer>
           {modalList.map((item, idx) => {
             return (
-              <CategoryModalBodyItem>
-                <CategoryModalBodyItemIn
-                  key={idx}
-                  onClick={() => onClickModalItem(item)}>
-                  {item}
-                </CategoryModalBodyItemIn>
-              </CategoryModalBodyItem>
+              <React.Fragment key={idx}>
+                <CategoryModalBodyItem>
+                  <CategoryModalBodyItemIn
+                    key={idx}
+                    onClick={() => onClickModalItem(item)}>
+                    {item}
+                  </CategoryModalBodyItemIn>
+                </CategoryModalBodyItem>
+              </React.Fragment>
             );
           })}
         </CategoryModalBodyContainer>
