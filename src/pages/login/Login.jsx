@@ -10,6 +10,7 @@ import { history } from "../../redux/config/ConfigStore";
 import { MdCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { getCookie, setCookie } from "../../shared/Cookie";
+import { Cookies } from "react-cookie";
 
 // Component & Element import
 import Button from "../../elements/button/Button";
@@ -40,6 +41,7 @@ const Login = ({ location }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const cookies = new Cookies();
   const token = getCookie("accessToken");
 
   const isLogin = useSelector((state) => state.member.isLogin);
@@ -77,7 +79,15 @@ const Login = ({ location }) => {
         alert("이메일을 입력해주세요");
       } else if (emailRegExp.test(email) === false) {
         alert("이메일 형식에 맞지 않습니다");
-      } else {
+      }
+      // else if (
+      //   emailRef.current.value === "" ||
+      //   passwordRef.current.value === ""
+      // ) {
+      //   event.preventDefault();
+      //   alert("이메일과 비밀번호를 입력해주세요");
+      // } 
+      else {
         dispatch(loginMemberThunk({ email, password }));
       }
     },
@@ -86,7 +96,7 @@ const Login = ({ location }) => {
 
   return (
     <Fragment>
-      <Header page="로그인"/>
+      <Header page="로그인" />
       <LoginBox>
         <LoginBoxTitle>
           <LoginBoxTitleSpan>땅땅</LoginBoxTitleSpan>

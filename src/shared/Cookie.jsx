@@ -21,6 +21,9 @@
 
 //   return parts[parts.length - 1];
 // };
+import { Cookies } from "react-cookie";
+
+const cookie = new Cookies();
 
 export const setCookie = function (name, value, exp) {
   var date = new Date();

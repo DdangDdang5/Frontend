@@ -6,12 +6,14 @@ import { Cookies } from "react-cookie";
 import api from "../../shared/Api";
 import { getCookie, setCookie } from "../../shared/Cookie";
 
+const cookies = new Cookies();
+
 export const emailCheckThunk = createAsyncThunk(
   "member/emailCheck",
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/emailcheck`, payload);
     return thunkAPI.fulfillWithValue(resData.data.data);
-  },
+  }
 );
 
 export const nickNameCheckThunk = createAsyncThunk(
@@ -19,7 +21,7 @@ export const nickNameCheckThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/nicknamecheck`, payload);
     return thunkAPI.fulfillWithValue(resData.data.data);
-  },
+  }
 );
 
 export const signUpMemberThunk = createAsyncThunk(
@@ -36,7 +38,7 @@ export const signUpMemberThunk = createAsyncThunk(
       }
     });
     return thunkAPI.fulfillWithValue(resData.data.data);
-  },
+  }
 );
 
 export const loginMemberThunk = createAsyncThunk(
@@ -44,30 +46,31 @@ export const loginMemberThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/login`, payload).then((res) => {
       if (res.data.success === false) {
-        return window.alert(res.data.err.message);
-      } else {
         console.log(res);
-        localStorage.setItem("memberId", res.data.data.memberId);
-        localStorage.setItem("accessToken", res.headers.authorization);
-        console.log(localStorage.getItem("accessToken"));
-
-        console.log(res.headers);
-        setCookie(
-          "accessToken",
-          res.headers.authorization,
-          +res.headers.expires
-        );
-        const cookie = getCookie("accessToken");
-        console.log(cookie);
-
         return (
-          window.alert(`${res.data.data.nickName}님 안녕하세요!`),
-          window.location.replace("/")
+          window.alert(`${res.data.data.msg}`),
+          window.location.replace("/login")
         );
+      } else {
+        // console.log(res);
+        // localStorage.setItem("memberId", res.data.data.memberId);
+        // localStorage.setItem("accessToken", res.headers.authorization);
+        // console.log(localStorage.getItem("accessToken"));
+        const token = getCookie("accessToken")
+        console.log(res.headers);
+        // setCookie("accessToken", res.headers.authorization, +res.headers.expires);
+        cookies.set("accessToken", res.headers.authorization, +res.headers.expires);
+        cookies.set("memberId", res.data.data.memberId);
+
+        // const cookie = getCookie("accessToken");
+        console.log(cookies);
+
+        return window.alert(`${res.data.data.nickName}님 안녕하세요!`);
+        // window.location.replace("/")
       }
     });
     return thunkAPI.fulfillWithValue(resData.data.data);
-  },
+  }
 );
 
 export const kakaoOauthThunk = createAsyncThunk(
@@ -85,17 +88,24 @@ export const kakaoOauthThunk = createAsyncThunk(
         if (res.data.statusCode) {
           localStorage.setItem("memberId", res.data.data.email);
           localStorage.setItem("accessToken", res.headers.authorization);
+
           console.log(res.data.data);
 
           setCookie(
             "accessToken",
             res.headers["authorization"],
-            +res.headers.expires,
+            +res.headers.expires
           );
+
+          // cookies.set(
+          //   "accessToken",
+          //   res.headers["authorization"],
+          //   +res.headers.expires
+          // );
 
           const cookie = getCookie("accessToken");
           console.log(cookie);
-           window.location.replace('/');
+          window.location.replace("/");
           return res;
         }
       })
@@ -111,7 +121,7 @@ export const kakaoOauthThunk = createAsyncThunk(
     // );
 
     return thunkAPI.fulfillWithValue(resData.data.data);
-  },
+  }
 );
 
 // export const loginCheckDB = () => {
