@@ -52,9 +52,9 @@ const AuctionList = () => {
         </CategoryBtn>
       </ListCategoryWrap>
       <ListContents>
-        {AuctionListData?.map((item) => {
+        {/* {AuctionListData?.map((item) => {
           return <Auction key={item.auctionId} data={item} />;
-        })}
+        })} */}
       </ListContents>
       <PlusButton />
       <Footer />
