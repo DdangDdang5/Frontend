@@ -35,10 +35,8 @@ const AuctionList = () => {
 
   useEffect(() => {
     dispatch(_categoryList());
-  }, []);
-  useEffect(() => {
+
     dispatch(_regionList());
-  }, []);
 
     if (categoryName === "전체 품목" && regionName === "서울 전체") {
       dispatch(auctionItemList());
