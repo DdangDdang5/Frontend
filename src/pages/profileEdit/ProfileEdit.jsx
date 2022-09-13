@@ -62,7 +62,7 @@ const ProfileEdit = () => {
 
   return (
     <ProfileEditLayout>
-      <Header />
+      <Header back={true} pageName="프로필 수정"/>
 
       <MyProfile>
         <MyImgWrap>

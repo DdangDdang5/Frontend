@@ -7,6 +7,7 @@ import Header from "../../components/header/Header";
 //reducer
 import { useSelector, useDispatch } from "react-redux";
 import { auctionDetailData } from "../../redux/modules/AuctionSlice";
+import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
 
 //styled
 import styled from "styled-components";
@@ -30,10 +31,15 @@ const AuctionDetail = () => {
   if (!data) {
     return navigate(-1);
   }
+	
+  const handleDelete = () => {
+    dispatch(deleteAuctionItem(data.id));
+    navigate(-1, { replace: true });
+  };
 
   return (
     <AuctionDetailLayout>
-      <Header deleteBtn={true} logo={true} detailData={data} />
+      <Header back={true} share={true} menu={true} onClickBtn={handleDelete} />
 
       <DetailBodyWrap>
         <ItemImgContainer>

@@ -159,7 +159,7 @@ const AuctionWrite = () => {
 
   return (
     <AuctionWriteLayout>
-      <Header page="경매 글쓰기" write={true} movePage={onTransmitHandler} />
+      <Header back={true} pageName="경매 글쓰기" save={{type: "완료"}} onClickSave={onTransmitHandler} />
 
       <AuctionWriteWrap>
         <WriteImgContainer>
