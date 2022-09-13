@@ -24,7 +24,7 @@ export default configureStore({
     modal,
     router: connectRouter(history),
     search,
-		chat,
+    chat,
     myPage,
   },
 });

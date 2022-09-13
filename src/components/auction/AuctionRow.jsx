@@ -2,16 +2,26 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/exports";
-import { MyPageInterestAuction } from "../../redux/modules/MyPageSlice";
+import { _MyPageInAuction } from "../../redux/modules/MyPageSlice";
+import { useNavigate } from "react-router-dom";
 
 const AuctionRow = ({ isAuction }) => {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.myPage.myPage);
+  const navigate = useNavigate();
+  const data = useSelector((state) => state.myPage.myPageIn);
   const [shouldShownData, setShouldShownData] = useState([]);
 
+  const {
+    auctionList: AuctionListData,
+    loading,
+    paging,
+    followingItem,
+  } = useSelector((state) => state.myPage);
+
   useEffect(() => {
-    dispatch(MyPageInterestAuction());
-    if (data.length > 0) {
+    dispatch(_MyPageInAuction());
+
+    if (data && data.length > 0) {
       data?.map((item, index) => {
         if (isAuction) {
           if (item?.auctionStatus === true) {
@@ -33,44 +43,62 @@ const AuctionRow = ({ isAuction }) => {
     };
   }, [isAuction, JSON.stringify(data)]);
 
+  const handleScroll = (e) => {
+    let scrollTopHandler = e.target.scrollTop;
+    let clientHeightHandler = e.target.clientHeight;
+    let scrollHeightHandler = e.target.scrollHeight;
+    if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
+      if (!loading) {
+        if (followingItem) {
+          dispatch(_MyPageInAuction());
+        }
+      }
+    }
+  };
+
   const Img = (
     <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
   );
 
   return (
-    <Auction2Layout>
+    <AuctionLayout>
       {shouldShownData.map((item, index) => {
         return (
           <React.Fragment key={`${index}_${item.id}`}>
-            <Auction2Container>
-              <ImgBox>{Img}</ImgBox>
-              <ContentBox>
-                <div className="contentNavBox">
-                  <div className="delivery">택배</div>
-                  <div className="region">성산구</div>
-                </div>
-                <div className="title">
-                  제목은 한 줄만 노출됩니다. 길어진다면 짤라야 겠죠
-                </div>
-                <div className="priceBox">
-                  <div>최근입찰가</div>
-                  <div className="price">5000원</div>
-                </div>
-              </ContentBox>
-            </Auction2Container>
-            {isAuction ? (
-              <Action2Btn>거래 진행중</Action2Btn>
-            ) : (
-              <Action2Btn>거래 진행중</Action2Btn>
-            )}
+            <div
+              onClick={() => {
+                navigate(`/auctionDetail/${item?.auctionId}`);
+              }}>
+              <Auction2Container>
+                <ImgBox>{Img}</ImgBox>
+                <ContentBox>
+                  <div className="contentNavBox">
+                    <div className="delivery">택배</div>
+                    <div className="region">성산구</div>
+                  </div>
+                  <div className="title">
+                    제목은 한 줄만 노출됩니다. 길어진다면 짤라야 겠죠
+                  </div>
+                  <div className="priceBox">
+                    <div>최근입찰가</div>
+                    <div className="price">5000원</div>
+                  </div>
+                </ContentBox>
+              </Auction2Container>
+              {isAuction ? (
+                <Action2Btn>거래 진행중</Action2Btn>
+              ) : (
+                <Action2Btn>거래 완료</Action2Btn>
+              )}
+            </div>
           </React.Fragment>
         );
       })}
-    </Auction2Layout>
+    </AuctionLayout>
   );
 };
 
-const Auction2Layout = styled.div`
+const AuctionLayout = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -150,6 +178,9 @@ const ContentBox = styled.div`
   }
 `;
 const Action2Btn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   box-sizing: border-box;
   height: 30px;
@@ -157,5 +188,6 @@ const Action2Btn = styled.button`
   background-color: white;
   border: 1px solid #a5a9b6;
   border-radius: 8px;
+  color: black;
 `;
 export default AuctionRow;

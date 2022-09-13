@@ -17,7 +17,7 @@ const Kakao = () => {
   const navigate = useNavigate();
   const cookies = new Cookies();
   const code = new URL(window.location.href).searchParams.get("code");
-  console.log(code);
+  // console.log(code);
 
   useEffect(() => {
     if (code) {

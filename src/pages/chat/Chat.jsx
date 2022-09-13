@@ -41,7 +41,7 @@ const Chat = () => {
   });
 
   const scrollToBottom = () => {
-    console.log("scroll to bottom!!!!!!!!!!!!");
+    // console.log("scroll to bottom!!!!!!!!!!!!");
     
 		if (chatRef.current) {
       chatRef.current.scrollTop = chatRef.current.scrollHeight;
@@ -131,7 +131,7 @@ const Chat = () => {
       sender: "rang",
       message: "",
     };
-
+    
     stompClient.send(`/app/chat/message`, {}, JSON.stringify(chatMessage));
   };
 

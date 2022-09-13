@@ -191,7 +191,6 @@ const DetailBodyContent = styled.div`
   word-break: break-all;
   font-size: 20px;
   height: 100%;
-  background-color: beige;
 `;
 const DetailBodyViewTag = styled.div`
   display: flex;

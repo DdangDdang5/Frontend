@@ -1,37 +1,37 @@
 import styled from "styled-components";
 
 export const SignUpBox = styled.div`
+  width: 100%;
   position: absolute;
   top: 0;
   bottom: 0;
   overflow-y: scroll;
-  width: 100%;
-  margin-top: 18%;
+  margin-top: 15%;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
 export const SignUpBoxTitle = styled.div`
-  position: relative;
-  box-sizing: border-box;
   width: 100%;
   height: 15%;
+  position: relative;
+  box-sizing: border-box;
 `;
 
 export const SignUpBoxTitleSpan = styled.span`
+  width: 200px;
+  position: absolute;
   top: 50%;
   transform: translateY(-25px);
-  position: absolute;
-  width: 200px;
   left: 20px;
-  color: #3a3a3a;
-  font-size: 20px;
+  color: ${(props) => props.theme.colors.Black};
+  font-size: ${(props) => props.theme.fontSizes.lg};
 `;
 
 export const SignUpBoxForm = styled.form`
-  box-sizing: border-box;
   width: 100%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -41,32 +41,32 @@ export const SignUpBoxForm = styled.form`
 `;
 
 export const SignUpBoxInputGroup = styled.div`
-  box-sizing: border-box;
   width: 90%;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   gap: 16px;
 `;
 
 export const SignUpBoxInputWrap = styled.div`
-  position: relative;
-  box-sizing: border-box;
   width: 100%;
   height: 56px;
+  position: relative;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
 `;
 
 export const SignUpBoxInput = styled.input`
+  width: 100%;
+  height: 56px;
   position: absolute;
   box-sizing: border-box;
   justify-content: center;
   padding-left: 10px;
-  font-size: 18px;
-  background-color: #ffffff;
-  color: black;
-  width: 100%;
-  height: 56px;
+  font-size: ${(props) => props.theme.fontSizes.md};
+  background-color: ${(props) => props.theme.colors.White};
+  color: ${(props) => props.theme.colors.Black};
   border: 1px solid #dedede;
   border-radius: 8px;
   &:focus {
@@ -88,7 +88,7 @@ export const SignUpBoxInputIcon = styled.div`
 export const SignUpBoxSpan = styled.span`
   height: 20px;
   color: transparent;
-  font-size: 13px;
+  font-size: ${(props) => props.theme.fontSizes.sm};
 `;
 
 export const SignUpButtonGroup = styled.div`
