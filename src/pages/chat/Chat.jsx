@@ -170,7 +170,7 @@ const Chat = () => {
 
   return (
     <ChatContainer>
-      <Header borderBottom="1px solid gray" logo={false} />
+      <Header back={true} pageName="채팅방 제목" menu={true} />
       <ChatContent ref={chatRef}>
         <ChatMessageList>
           {chatList?.map((chat, idx) => (

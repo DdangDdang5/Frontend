@@ -1,12 +1,11 @@
 // React import
-import React, { useEffect } from "react";
-
-//redux import
-import { useDispatch } from "react-redux";
-import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
+import React from "react";
 
 // Package import
 import { useNavigate } from "react-router-dom";
+
+// Shared import
+import { Alarm, Back, Close, Menu, Logo, Search, Share } from "../../shared/images";
 
 // Style import
 import {
@@ -14,57 +13,51 @@ import {
   HeaderContent,
   HeaderIconContainer,
   HeaderTitle,
-  Logo,
   PageTitle,
 } from "./Header.styled";
 
+// props 정리
+// 1. left
+// - logo, back(이전버튼), close(닫기 버튼), pageName(화면 이름) -> true/false
+// 2. right
+// - search(검색 버튼), alerm(알림 버튼), menu(메뉴 버튼), share(공유 버튼) -> true/false
+// - save(완료, 등록, 삭제 등 저장버튼) -> { type: "완료" }
+// 3. function
+// - onClickBtn(버튼 클릭 이벤트 함수), onClickSave(완료, 등록, 삭제 등 저장 버튼 이벤트 함수) -> function
+
 const Header = ({
-  borderBottom,
   logo,
-  page,
-  write,
-  movePage,
-  deleteBtn,
-  detailData,
+  back,
+  close,
+  pageName,
+  search,
+  alarm,
+  menu,
+  share,
+  save,
+  onClickBtn,
+  onClickSave,
 }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-
-  const handleDelete = () => {
-    dispatch(deleteAuctionItem(detailData.id));
-    navigate(-1, { replace: true });
-  };
 
   return (
-    <HeaderContainer borderBottom={borderBottom}>
+    <HeaderContainer>
       <HeaderContent>
-        {logo ? (
-          <Logo onClick={() => navigate("/")}>땅땅</Logo>
-        ) : (
-          <HeaderTitle>
-            <img src="maskable.png" alt="back" onClick={() => navigate(-1)} />
-            <PageTitle>{page}</PageTitle>
-          </HeaderTitle>
-        )}
+        {/* left */}
+        <HeaderTitle>
+          {back ? <Back onClick={() => navigate(-1)} /> : null}
+          {close ? <Close onClick={() => navigate(-1)} /> : null}
+          {pageName ? <PageTitle>{pageName}</PageTitle> : null}
+          {logo ? <Logo className="logo" onClick={() => navigate("/")}>땅땅</Logo> : null}
+        </HeaderTitle>
+
+        {/* right */}
         <HeaderIconContainer>
-          {write ? (
-            <div type="button" onClick={movePage}>
-              완료
-            </div>
-          ) : deleteBtn ? (
-            <div type="button" onClick={handleDelete}>
-              삭제
-            </div>
-          ) : (
-            <>
-              <img
-                src="maskable.png"
-                alt="search"
-                onClick={() => navigate("/search")}
-              />
-              <img src="maskable.png" alt="alarm" />
-            </>
-          )}
+          {search ? <Search onClick={() => navigate("/search")} /> : null}
+          {alarm ? <Alarm /> : null}
+          {share ? <Share /> : null}
+          {menu ? <Menu onClick={onClickBtn} /> : null}
+          {save ? <span onClick={onClickSave}>{save.type}</span> : null}
         </HeaderIconContainer>
       </HeaderContent>
     </HeaderContainer>

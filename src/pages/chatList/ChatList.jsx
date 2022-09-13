@@ -27,13 +27,13 @@ const ChatList = () => {
 
   return (
     <ChatListContainer>
-      <Header logo={false} />
+      <Header pageName="채팅" alarm={true} />
       <ChatRoomList>
         {Array.from({ length: 4 }, (_, idx) => (
           <ChatRoom key={idx} roomId={chatRoomList[0]?.roomId} />
         ))}
       </ChatRoomList>
-      <Footer />
+      <Footer chat={true} />
     </ChatListContainer>
   );
 };

@@ -21,7 +21,7 @@ import {
 const MyGrade = () => {
   return (
     <MyGradeContainer>
-      <Header page="신뢰도 안내"/>
+      <Header close={true} pageName="신뢰도 안내"/>
 
       <MyGradeContent>
         <MyGradeImgWrap>

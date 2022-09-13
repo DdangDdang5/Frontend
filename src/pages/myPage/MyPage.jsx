@@ -27,7 +27,7 @@ const MyPage = () => {
 
   return (
     <MyPageLayout>
-      <Header />
+      <Header pageName="마이페이지" alarm={true} />
 
       <MyProfileWrap>
         <MyImgContainer>
@@ -96,7 +96,7 @@ const MyPage = () => {
           <div className="listTitle">자주 묻는 질문</div>
         </ListContainer>
       </MyProfileListWrap>
-      <Footer />
+      <Footer myPage={true} />
     </MyPageLayout>
   );
 };

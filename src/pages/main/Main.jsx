@@ -90,7 +90,7 @@ const Main = () => {
 
   return (
     <MainContainer>
-      <Header logo={true} />
+      <Header logo={true} search={true} alarm={true}/>
 
       <MainContent>
         {/* 배너 */}
@@ -201,7 +201,7 @@ const Main = () => {
 
       <PlusButton />
 
-      <Footer />
+      <Footer home={true} />
     </MainContainer>
   );
 };

@@ -86,7 +86,7 @@ const Login = ({ location }) => {
 
   return (
     <Fragment>
-      <Header page="로그인"/>
+      <Header close={true}/>
       <LoginBox>
         <LoginBoxTitle>
           <LoginBoxTitleSpan>땅땅</LoginBoxTitleSpan>

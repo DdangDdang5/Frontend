@@ -29,7 +29,7 @@ const AuctionReview = () => {
 
   return (
     <AuctionReviewContainer>
-      <Header page="평가하기" write={true} />
+      <Header back={true} pageName="평가하기" save={{type: "완료"}} />
 
       <AuctionReviewContent>
         {/* 평가 경매 */}
