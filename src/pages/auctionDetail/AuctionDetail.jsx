@@ -11,6 +11,7 @@ import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
 
 //styled
 import styled from "styled-components";
+import { Next } from "../../shared/images";
 
 const AuctionDetail = () => {
   const dispatch = useDispatch();
@@ -78,16 +79,12 @@ const AuctionDetail = () => {
           <DetailBodyItemTag></DetailBodyItemTag>
         </DetailBodyContainer>
 
-        <CommentCountContainer>
+        <CommentCountContainer onClick={() => navigate("/chat/roomId", { state: { isDetail: true }})}>
           <CommentCountWrap>
             <CommentCountTitle>실시간 채팅방</CommentCountTitle>
             <p>{data.participantCnt}명 참여중</p>
           </CommentCountWrap>
-          <img
-            src="/maskable.png"
-            alt="moveChat"
-            onClick={() => navigate("/chat")}
-          />
+					<Next />
         </CommentCountContainer>
 
         {/* <DetailCommentContainer>
@@ -264,6 +261,14 @@ const CommentCountContainer = styled.div`
     width: 16px;
     height: 16px;
   }
+
+	svg {
+		width: 10px;
+		height: 18px;
+		path {
+			fill: ${(props) => props.theme.colors.Gray3};
+		}
+	}
 `;
 
 const CommentCountWrap = styled.div`

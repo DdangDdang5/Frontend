@@ -14,6 +14,26 @@ export const ChatContent = styled.div`
   overflow-y: scroll;
 `;
 
+export const AuctionTimeWrap = styled.div`
+  width: 100%;
+  height: 42px;
+
+  color: ${(props) => props.theme.colors.White};
+  background-color: ${(props) => props.theme.colors.Red};
+  font-size: ${(props) => props.theme.fontSizes.sm};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+	gap: 8px;
+`;
+
+export const AuctionTime = styled.span`
+  font-size: ${(props) => props.theme.fontSizes.lg} !important;
+  font-weight: ${(props) => props.theme.fontWeights.bold} !important;
+`;
+
 export const MemberList = styled.div``;
 
 export const ChatMessageList = styled.ul`
@@ -68,7 +88,7 @@ export const Message = styled.li`
   div {
     display: inline-block;
     overflow: auto;
-		word-break: break-all;
+    word-break: break-all;
     white-space: normal;
   }
 `;
@@ -79,8 +99,8 @@ export const MessageInfo = styled.div`
 
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-	justify-content: end;
+  align-items: ${(props) => props.isMe ? "flex-end" : "baseline"};
+  justify-content: end;
 `;
 
 export const MessageChecked = styled.span`
@@ -103,10 +123,20 @@ export const ChatFooter = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  img {
+  svg {
     width: 24px;
     height: 24px;
+
+		path {
+			fill: ${(props) => props.theme.colors.Gray3};
+		}
   }
+
+	.add:active {
+		path {
+			fill: ${(props) => props.theme.colors.Blue1};
+		}
+	}
 `;
 
 export const MessageInput = styled.input`
@@ -137,4 +167,23 @@ export const SendBtn = styled.button`
 
   background-color: transparent;
   border: none;
+	
+	&:active {
+		svg {
+			path {
+				fill: ${(props) => props.theme.colors.Blue1};
+			}
+		}
+	}
+`;
+
+export const MenuItemList = styled.div`
+	padding: 8px 0px;
+	color: ${(props) => props.theme.colors.Black};
+	font-size: ${(props) => props.theme.fontSizes.ms};
+	font-weight: ${(props) => props.theme.fontWeights.normal};
+`;
+
+export const MenuItem = styled.div`
+	padding: 12px 20px;
 `;
