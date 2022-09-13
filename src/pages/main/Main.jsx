@@ -201,7 +201,7 @@ const Main = () => {
 
       <PlusButton />
 
-      <Footer />
+      <Footer home={true} />
     </MainContainer>
   );
 };

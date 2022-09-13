@@ -110,7 +110,7 @@ const Search = () => {
           </SearchFilterWrap>
         </SearchFilterGroup>
       </SearchBox>
-      <Footer />
+      <Footer search={true} />
     </Fragment>
   );
 };

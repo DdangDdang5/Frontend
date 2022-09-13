@@ -33,7 +33,7 @@ const ChatList = () => {
           <ChatRoom key={idx} roomId={chatRoomList[0]?.roomId} />
         ))}
       </ChatRoomList>
-      <Footer />
+      <Footer chat={true} />
     </ChatListContainer>
   );
 };

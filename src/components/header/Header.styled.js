@@ -20,21 +20,25 @@ export const HeaderContent = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  img {
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-  }
-`;
-
-export const Logo = styled.span`
-  font-size: 28px;
+	svg {
+		width: 24px;
+		height: 24px;
+		
+		path {
+			fill: ${(props) => props.theme.colors.Black};
+		}
+	}
 `;
 
 export const HeaderTitle = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
+
+	.logo {
+		width: 56px;
+		height: 36px;
+	}
 `;
 
 export const PageTitle = styled.span`
@@ -49,6 +53,7 @@ export const HeaderIconContainer = styled.div`
   display: flex;
   gap: 20px;
   justify-content: end;
+	align-items: center;
 	
   span {
     color: ${(props) => props.theme.colors.Gray4};
