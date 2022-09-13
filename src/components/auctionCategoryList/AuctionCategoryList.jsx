@@ -2,7 +2,10 @@
 import React, { useEffect } from "react";
 
 // Redux import
-import { categoryHitList, regionHitList } from "../../redux/modules/AuctionDivisionSlice";
+import {
+  categoryHitList,
+  regionHitList,
+} from "../../redux/modules/AuctionDivisionSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
@@ -22,22 +25,24 @@ import {
 } from "./AuctionCategoryList.styled";
 
 const AuctionCategoryList = ({ isCategory }) => {
-	const dispatch = useDispatch();
-	const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-	// 카테고리 목록, 지역 목록
+  // 카테고리 목록, 지역 목록
   const { categoryList, regionList } = useSelector(
-    (state) => state.auctionDivision,
+    (state) => state.auctionDivision
   );
 
-	// isCategory === true -> category / false -> place
-  const list6 = isCategory ? categoryList?.slice(0, 6) : regionList?.slice(0, 6);
+  // isCategory === true -> category / false -> place
+  const list6 = isCategory
+    ? categoryList?.slice(0, 6)
+    : regionList?.slice(0, 6);
   const title = isCategory ? "카테고리" : "직거래 지역";
 
-	useEffect(() => {
-		dispatch(categoryHitList());
-		dispatch(regionHitList());
-	}, [dispatch]);
+  useEffect(() => {
+    dispatch(categoryHitList());
+    dispatch(regionHitList());
+  }, [dispatch]);
 
   return (
     <CategoryListContainer>
@@ -53,7 +58,10 @@ const AuctionCategoryList = ({ isCategory }) => {
       </CategoryHeader>
       <CategoryList>
         {list6?.map((item, idx) => (
-          <AuctionCategory division={isCategory? item.categoryName : item.regionName} key={idx} />
+          <AuctionCategory
+            division={isCategory ? item.categoryName : item.regionName}
+            key={idx}
+          />
         ))}
       </CategoryList>
     </CategoryListContainer>

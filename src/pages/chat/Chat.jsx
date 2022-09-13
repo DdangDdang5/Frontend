@@ -41,13 +41,10 @@ const Chat = () => {
     message: "",
   });
 
-  console.log(roomId);
   // const roomId = "9245f350-836b-4097-81b5-2611aa08fa9c";
 
   useEffect(() => {
     registerUser();
-		console.log('===========================================')
-		console.log(publicChats);
   }, []);
 
   const handleValue = (event) => {
@@ -56,31 +53,28 @@ const Chat = () => {
   };
 
   const registerUser = () => {
-    console.log("1111111111111111 register User");
     var sockJS = new SockJS(process.env.REACT_APP_URL2 + "/ws/chat");
-    console.log(sockJS);
 
     stompClient = Stomp.over(sockJS);
-    console.log(stompClient);
 
     stompClient.connect({}, onConnected, onError);
-    console.log("1111111111111111 register User finish");
   };
 
   const onConnected = () => {
-    console.log("2222222222222222 on connected");
     // setUserData({ ...userData, type: "ENTER" });
     // console.log(userData);
 
     // 기존의 대화내용 가져옴
     // stompClient.subscribe(`/sub/chat/room/${roomId}`, (body) => {
-		// 	console.log(body);
+    // 	console.log(body);
     //   // setpublicChats((_chatMessages) => [..._chatMessages, JSON.parse(body)]);
-		// 	// console.log(publicChats);
+    // 	// console.log(publicChats);
     // });
-		const a = stompClient.subscribe(`/sub/chat/room/${roomId}`, onPublicMessageReceived);
-		console.log(a);
-		
+    const a = stompClient.subscribe(
+      `/sub/chat/room/${roomId}`,
+      onPublicMessageReceived
+    );
+
     // stompClient.subscribe(
     //   "/user" + userData.username + "/private",
     //   onPrivateMessageReceived,
@@ -89,11 +83,9 @@ const Chat = () => {
 
     // 채팅방 들어감
     userJoin();
-    console.log("2222222222222222 finish enter");
   };
 
   const onError = (err) => {
-    console.log("ffffffffffffffff error");
     console.log(err);
   };
 
@@ -105,11 +97,13 @@ const Chat = () => {
       sender: "rang",
       message: "",
     };
-    console.log(chatMessage);
     // sockjs.send(JSON.stringify(chatMessage));
-    const c = stompClient.send(`/pub/chat/message`, {}, JSON.stringify(chatMessage));
-		console.log(c);
-		// setpublicChats([...publicChats, {sender: "rang", message: ""}]);
+    const c = stompClient.send(
+      `/pub/chat/message`,
+      {},
+      JSON.stringify(chatMessage)
+    );
+    // setpublicChats([...publicChats, {sender: "rang", message: ""}]);
     console.log("444444444444444444 user enter finish");
   };
 
@@ -118,10 +112,10 @@ const Chat = () => {
     console.log("public message received", payload);
     let payloadData = JSON.parse(payload.body);
 
-		if (payloadData.type === "ENTER" || payloadData.type === "TALK") {
-			publicChats.push(payloadData);
-			setpublicChats([...publicChats]);
-		}
+    if (payloadData.type === "ENTER" || payloadData.type === "TALK") {
+      publicChats.push(payloadData);
+      setpublicChats([...publicChats]);
+    }
 
     // switch (payloadData.type) {
     //   case "ENTER":
@@ -151,7 +145,7 @@ const Chat = () => {
 
       // sockjs.send(JSON.stringify(chatMessage));
       stompClient.send("/pub/chat/message", {}, JSON.stringify(chatMessage));
-			// setpublicChats([...publicChats, chatMessage]);
+      // setpublicChats([...publicChats, chatMessage]);
       setUserData({ ...userData, message: "" });
     }
   };
@@ -204,7 +198,7 @@ const Chat = () => {
               )}
             </ul>
           </MemberList> */}
-				{/* {publicChats.map((item, idx) => (
+        {/* {publicChats.map((item, idx) => (
 					<>
 					{item.type === "TALK" ? (
 						<>
@@ -217,15 +211,15 @@ const Chat = () => {
 				))} */}
         {tab === "TALK" && (
           <ChatContent>
-						chat content
+            chat content
             <ChatMessage>
-							{console.log('csssssssssssssssss', publicChats)}
+              {console.log("csssssssssssssssss", publicChats)}
               {publicChats?.map((chat, idx) => (
                 <Message key={idx}>
-									<div>
-										{chat.sender}
-										{chat.message}
-									</div>
+                  <div>
+                    {chat.sender}
+                    {chat.message}
+                  </div>
                   {/* {chat.sender !== "rang" && (
                     <div>{chat.sender}</div>
                   )}
@@ -236,7 +230,6 @@ const Chat = () => {
                 </Message>
               ))}
             </ChatMessage>
-
             {/* <SendMessage>
                 <MessageInput
                   type="text"

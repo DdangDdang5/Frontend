@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 
 // Redux import
-import { hideModal } from "../../redux/modules/ModalSlice";
+import { hideModal, _regionList } from "../../redux/modules/ModalSlice";
 
 // Style import
 import {
@@ -24,49 +24,19 @@ const CategoryModal = () => {
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
 
+  const categoryList = useSelector((state) =>
+    state.modal.categoryList.map((item, index) => {
+      return item.categoryName;
+    })
+  );
+  const regionList = useSelector((state) =>
+    state.modal.regionList.map((item, index) => {
+      return item.region;
+    })
+  );
+
   const [modalList, setModalList] = useState([]);
   const [title, setTitle] = useState("");
-
-  const regionList = [
-    "서울 전체",
-    "강남구",
-    "강동구",
-    "강북구",
-    "강서구",
-    "관악구",
-    "광진구",
-    "구로구",
-    "금천구",
-    "노원구",
-    "도봉구",
-    "동대문구",
-    "동작구",
-    "마포구",
-    "서대문구",
-    "서초구",
-    "성동구",
-    "성북구",
-    "송파구",
-    "양천구",
-    "영등포구",
-    "용산구",
-    "은평구",
-    "종로구",
-    "중구",
-    "중랑구",
-  ];
-  const categoryList = [
-    "전체 품목",
-    "가구/인테리어",
-    "가전",
-    "남성 패션",
-    "여성 패션",
-    "악세서리",
-    "스포츠/레저",
-    "취미/게임/악기",
-    "디지털",
-    "뷰티/미용",
-  ];
 
   useEffect(() => {
     if (division === "regionList") {
@@ -76,10 +46,6 @@ const CategoryModal = () => {
       setModalList(categoryList);
       setTitle("품목 선택");
     }
-		
-    // return () => {
-    //   setModalList([]);
-    // };
   }, [dispatch, division]);
 
   const onCheckCategoryRegion = (categoryName, regionName) => {
@@ -92,7 +58,7 @@ const CategoryModal = () => {
         auctionCategoryRegionList({
           categoryName: categoryNameCheck,
           regionName,
-        }),
+        })
       );
     } else if (categoryName !== "전체품목") {
       dispatch(auctionCategoryList(categoryNameCheck));
@@ -118,8 +84,7 @@ const CategoryModal = () => {
         if (modalRef.current === e.target) {
           dispatch(hideModal());
         }
-      }}
-    >
+      }}>
       <CategoryModalWrap>
         <CategoryModalHead>{title}</CategoryModalHead>
         <CategoryModalBodyContainer>
@@ -128,8 +93,7 @@ const CategoryModal = () => {
               <CategoryModalBodyItem>
                 <CategoryModalBodyItemIn
                   key={idx}
-                  onClick={() => onClickModalItem(item)}
-                >
+                  onClick={() => onClickModalItem(item)}>
                   {item}
                 </CategoryModalBodyItemIn>
               </CategoryModalBodyItem>
@@ -187,7 +151,8 @@ const CategoryModalBodyContainer = styled.div`
   ::-webkit-scrollbar {
     display: none;
     width: 0 !important;
-  }
+  }import { useEffect } from 'react';
+
 
   align-content: flex-start;
   justify-content: flex-start;

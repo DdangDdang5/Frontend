@@ -10,26 +10,25 @@ const ProfileEdit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const img_ref = useRef(null);
-  const data = useSelector((state) => state.myPage.myPage);
-
-  const [imgFile, setImgFile] = useState("");
-  const [imagePreview, setImagePreview] = useState(data.profileImgUrl);
-  const memberId = localStorage.getItem("memberId");
-
-  const initialState = {
+  const data = {
     nickname: "",
   };
 
-  const [inputForm, setInputForm] = useState(initialState);
+  const profileData = useSelector((state) => state.myPage.myPage);
+  const img_ref = useRef(null);
 
-  const onChangeHandler = (e) => {
-    const { name, value } = e.target;
-    setInputForm({ ...inputForm, [name]: value });
-  };
+  const [inputForm, setInputForm] = useState(data);
+  console.log("닉네임!!!", inputForm);
+  const [imgFile, setImgFile] = useState([]);
+  console.log("imgFile22222", imgFile);
+  const [imagePreview, setImagePreview] = useState(profileData.profileImgUrl);
+  const memberId = localStorage.getItem("memberId");
+
+  // useEffect(() => {
+  //   dispatch(editMyPage(memberId));
+  // }, [memberId]);
 
   const onLoadFile = (e) => {
-    // 미리보기에선 삭제가 됬는데 업로드 올린건 삭제가 됬나?
     const reader = new FileReader();
     setImgFile(...imgFile, URL.createObjectURL(e.target.files[0]));
 
@@ -39,6 +38,12 @@ const ProfileEdit = () => {
       setImagePreview(reader.result);
     };
   };
+
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+    setInputForm({ ...inputForm, [name]: value });
+  };
+
   const onSubmitHandler = (e) => {
     e.preventDefault();
     let formData = new FormData();
@@ -48,18 +53,12 @@ const ProfileEdit = () => {
       "data",
       new Blob([JSON.stringify(inputForm)], { type: "application/json" })
     );
-
     formData.append("profileImg", uploadImg.files[0]);
-
     dispatch(editMyPage(formData));
     window.alert("새 게시물 만들기 완료");
     // 포스팅 완료후 새로고침
     navigate(-1, { replace: true });
   };
-
-  useEffect(() => {
-    dispatch(myPageData(memberId));
-  }, []);
 
   return (
     <ProfileEditLayout>
@@ -86,10 +85,10 @@ const ProfileEdit = () => {
           <div className="MyTextInputWrap">
             <input
               type="text"
-              placeholder="닉네임을 입력해주세요."
               value={inputForm.nickname}
               name="nickname"
               onChange={onChangeHandler}
+              placeholder="닉네임을 입력해주세요."
             />
             <button>X</button>
           </div>
