@@ -51,7 +51,6 @@ const CategoryModal = () => {
   const onCheckCategoryRegion = (categoryName, regionName) => {
     const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
     const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
-    console.log(categoryNameCheck, regionNameCheck);
 
     if (categoryNameCheck === "전체품목" && regionNameCheck === "서울전체") {
       dispatch(auctionItemList());
@@ -63,7 +62,7 @@ const CategoryModal = () => {
         auctionCategoryRegionList({
           categoryName: categoryNameCheck,
           regionName: regionNameCheck,
-        }),
+        })
       );
     } else if (categoryNameCheck !== "전체품목") {
       dispatch(auctionCategoryList(categoryNameCheck));
@@ -95,13 +94,15 @@ const CategoryModal = () => {
         <CategoryModalBodyContainer>
           {modalList.map((item, idx) => {
             return (
-              <CategoryModalBodyItem>
-                <CategoryModalBodyItemIn
-                  key={idx}
-                  onClick={() => onClickModalItem(item)}>
-                  {item}
-                </CategoryModalBodyItemIn>
-              </CategoryModalBodyItem>
+              <React.Fragment key={idx}>
+                <CategoryModalBodyItem>
+                  <CategoryModalBodyItemIn
+                    key={idx}
+                    onClick={() => onClickModalItem(item)}>
+                    {item}
+                  </CategoryModalBodyItemIn>
+                </CategoryModalBodyItem>
+              </React.Fragment>
             );
           })}
         </CategoryModalBodyContainer>

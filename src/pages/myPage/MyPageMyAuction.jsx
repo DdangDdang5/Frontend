@@ -22,7 +22,7 @@ function MyPageMyAuction() {
     dispatch(_MyPageInAuction());
   }, []);
 
-  console.log("myauction", auctionIng);
+  // console.log("myauction", auctionIng);
 
   return (
     <MyAuctionLayout>

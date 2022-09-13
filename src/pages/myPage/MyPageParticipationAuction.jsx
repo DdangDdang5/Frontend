@@ -36,7 +36,8 @@ const MyPageParticipationAuction = () => {
     }
   };
 
-  console.log("part", myPageParticipati);
+  // console.log("part", myPageParticipati);
+
   return (
     <MyAuctionLayout>
       <Header back={true} pageName="참여 경매" alarm={true} />

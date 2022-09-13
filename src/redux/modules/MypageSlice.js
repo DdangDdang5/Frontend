@@ -16,7 +16,7 @@ export const _MyPageData = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get(`/member/${payload}/mypage`);
-      return thunkAPI.fulfillWithValue(response.data.data);
+      // return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -28,7 +28,7 @@ export const _MyPageInAuction = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const { paging } = thunkAPI.getState().myPage;
-      const response = await api.get(`/member/mypage/myauction`);
+      const response = await api.get(`/pagination/member/mypage/myauction`);
       console.log("in", response);
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
@@ -46,7 +46,9 @@ export const _MyPageInterestAuction = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const { paging } = thunkAPI.getState().myPage;
-      const response = await api.get(`/member/favorite`);
+      const response = await api.get(
+        `/pagination/member/mypage/myauction?page=${paging}&size=6&sortBy=id&isAsc=false`
+      );
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
       }
@@ -80,14 +82,14 @@ export const editMyPage = createAsyncThunk(
   "editAuctionItem",
   async (payload, thunkAPI) => {
     const { memberId } = thunkAPI.getState().myPage.myPage;
-    console.log("-------", memberId);
-    console.log("1234", payload);
+    // console.log("-------", memberId);
+    // console.log("1234", payload);
     try {
       const response = await api.patch(`/member/${memberId}/mypage`, payload, {
         "Content-Type": "multipart/form-data",
       });
-      // return thunkAPI.fulfillWithValue(response.data);
-      return console.log("마이페이지 수정", response.data.data);
+      console.log("마이페이지 수정", response.data.data);
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

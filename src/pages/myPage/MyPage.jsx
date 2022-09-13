@@ -19,10 +19,6 @@ const MyPage = () => {
     dispatch(_MyPageData(memberId));
   }, [memberId]);
 
-  // useEffect(() => {
-  //   dispatch(_MyPageInAuction());
-  // }, []);
-
   const Img = <img src={data.profileImgUrl} alt="" />;
 
   return (
@@ -94,6 +90,12 @@ const MyPage = () => {
             <div></div>
           </div>
           <div className="listTitle">자주 묻는 질문</div>
+        </ListContainer>
+        <ListContainer>
+          <div className="listIcon">
+            <div></div>
+          </div>
+          <div className="listTitle">로그아웃</div>
         </ListContainer>
       </MyProfileListWrap>
       <Footer myPage={true} />
