@@ -5,18 +5,23 @@ import Footer from "../../components/footer/Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/exports";
-import { myPageData } from "../../redux/modules/MyPageSlice";
+import { _MyPageData, _MyPageInAuction } from "../../redux/modules/MyPageSlice";
 
 const MyPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.myPage.myPage);
 
+  console.log(data);
   const memberId = localStorage.getItem("memberId");
 
   useEffect(() => {
-    dispatch(myPageData(memberId));
+    dispatch(_MyPageData(memberId));
   }, [memberId]);
+
+  // useEffect(() => {
+  //   dispatch(_MyPageInAuction());
+  // }, []);
 
   const Img = <img src={data.profileImgUrl} alt="" />;
 
@@ -44,7 +49,9 @@ const MyPage = () => {
             </div>
           </NickBox>
           <LevelBox>
-            <div className="levelIcon" onClick={() => navigate("/myGrade")}>등급</div>
+            <div className="levelIcon" onClick={() => navigate("/myGrade")}>
+              등급
+            </div>
           </LevelBox>
         </MyNickContainer>
       </MyProfileWrap>
@@ -52,7 +59,7 @@ const MyPage = () => {
       <MyStateWrap>
         <div className="stateBox" onClick={() => navigate("/myPageMyAuction")}>
           <div className="title">나의 경매</div>
-          <div className="count">12</div>
+          <div className="count">{data.myAuctionCnt}</div>
         </div>
         <StateBox>
           <div
@@ -60,13 +67,13 @@ const MyPage = () => {
             onClick={() => navigate("/myPageParticipationAuction")}>
             참여 경매
           </div>
-          <div className="count">36</div>
+          <div className="count">{data.myParticipantCnt}</div>
         </StateBox>
         <div
           className="stateBox"
           onClick={() => navigate("/MyPageInterestAuction")}>
           <div className="title">관심 경매</div>
-          <div className="count">50</div>
+          <div className="count">{data.myFavoriteCnt}</div>
         </div>
       </MyStateWrap>
       <MyProfileListWrap>

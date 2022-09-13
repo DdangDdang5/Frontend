@@ -2,7 +2,11 @@
 import React, { useEffect } from "react";
 
 // Reducer import
-import { showModal } from "../../redux/modules/ModalSlice";
+import {
+  showModal,
+  _categoryList,
+  _regionList,
+} from "../../redux/modules/ModalSlice";
 import { auctionItemList } from "../../redux/modules/AuctionListSlice";
 
 // Package import
@@ -18,17 +22,41 @@ import AuctionColumn from "../../components/auction/AuctionColumn";
 const AuctionList = () => {
   const dispatch = useDispatch();
 
-  const AuctionListData = useSelector((state) => state.auctionList.auctionList);
+  const {
+    auctionList: AuctionListData,
+    loading,
+    paging,
+    followingItem,
+  } = useSelector((state) => state.auctionList);
+
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
 
   useEffect(() => {
-    // console.log(AuctionListData);
+    dispatch(_categoryList());
+  }, []);
+  useEffect(() => {
+    dispatch(_regionList());
+  }, []);
 
+  useEffect(() => {
     if (categoryName === "전체품목" && regionName === "전체지역") {
       dispatch(auctionItemList());
     }
-  }, [JSON.stringify(AuctionListData), categoryName, regionName]);
+  }, [categoryName, regionName]);
+
+  const handleScroll = (e) => {
+    let scrollTopHandler = e.target.scrollTop;
+    let clientHeightHandler = e.target.clientHeight;
+    let scrollHeightHandler = e.target.scrollHeight;
+    if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
+      if (!loading) {
+        if (followingItem) {
+          dispatch(auctionItemList());
+        }
+      }
+    }
+  };
 
   if (!AuctionListData) {
     return <></>;
@@ -37,12 +65,14 @@ const AuctionList = () => {
     <AuctionListLayout>
       <Header />
       <ListCategoryWrap>
-        <CategoryBtn onClick={() => dispatch(showModal("categoryList"))}>
+        <CategoryBtn
+          onClick={() => dispatch(showModal("categoryList"), _categoryList())}>
           <CategoryBtnText>{categoryName}</CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
         </CategoryBtn>
         <CategoryBtn>
-          <CategoryBtnText onClick={() => dispatch(showModal("regionList"))}>
+          <CategoryBtnText
+            onClick={() => dispatch(showModal("regionList"), _regionList())}>
             {regionName}
           </CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
@@ -51,9 +81,14 @@ const AuctionList = () => {
           <CategoryBtnTimeText>마감임박</CategoryBtnTimeText>
         </CategoryBtn>
       </ListCategoryWrap>
-      <ListContents>
-        {AuctionListData?.map((item) => {
-          return <Auction key={item.auctionId} data={item} />;
+      <ListContents onScroll={handleScroll}>
+        {AuctionListData?.map((item, index) => {
+          return (
+            <AuctionColumn
+              key={`${item.auctionId}-${index}-${item.title}`}
+              data={item}
+            />
+          );
         })}
       </ListContents>
       <PlusButton />

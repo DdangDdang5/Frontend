@@ -1,11 +1,20 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import { useDispatch } from "react-redux";
-import { addAuctionItem } from "../../redux/modules/AuctionListSlice";
+import {
+  addAuctionItem,
+  auctionItemList,
+} from "../../redux/modules/AuctionListSlice";
 import { useNavigate } from "react-router-dom";
-import { showModal } from "../../redux/modules/ModalSlice";
+import {
+  showModal,
+  _categoryList,
+  _regionList,
+} from "../../redux/modules/ModalSlice";
+import { useSelector } from "react-redux/es/exports";
+
 const AuctionWrite = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -15,7 +24,7 @@ const AuctionWrite = () => {
     content: "",
     startPrice: "",
     category: "가전",
-    region: "동대문구",
+    region: "종로구",
     direct: false,
     delivery: false,
     auctionPeriod: 1,
@@ -35,7 +44,40 @@ const AuctionWrite = () => {
   const [inputForm, setInputForm] = useState(auctionRequestDto);
   const [tags, setTags] = useState([]);
 
-  console.log("배돌배돌데이터", inputForm);
+  useEffect(() => {
+    dispatch(_categoryList());
+  }, []);
+  useEffect(() => {
+    dispatch(_regionList());
+  }, []);
+
+  const categoryName = useSelector((state) => state.modal.categoryName);
+  const regionName = useSelector((state) => state.modal.regionName);
+
+  console.log("배돌배돌", inputForm);
+
+  // useEffect(() => {
+  //   if (categoryName === "전체품목" && regionName === "전체지역") {
+  //     dispatch(auctionItemList());
+  //   }
+  //   setInputForm({ ...inputForm, category: categoryName });
+  //   setInputForm({ ...inputForm, region: regionName });
+  // }, [categoryName, regionName]);
+
+  // useEffect(() => {
+  //   if (categoryName === "전체품목") {
+  //     dispatch(auctionItemList());
+  //   }
+  //   setInputForm({ ...inputForm, category: categoryName });
+  // }, [categoryName]);
+
+  // useEffect(() => {
+  //   if (categoryName === "전체지역") {
+  //     dispatch(auctionItemList());
+  //   }
+  //   setInputForm({ ...inputForm, region: regionName });
+  // }, [regionName]);
+
   // 이미지 업로드
   const onLoadFile = (e) => {
     // 미리보기에선 삭제가 됬는데 업로드 올린건 삭제가 됬나?
@@ -94,7 +136,6 @@ const AuctionWrite = () => {
     // 포스팅 완료후 새로고침
 
     navigate(-1, { replace: true });
-    // window.location.reload();
   };
 
   return (
@@ -147,9 +188,16 @@ const AuctionWrite = () => {
           placeholder="정확한 상품명을 입력해주세요."
         />
         <WriteTitleContainer>카테고리 선택</WriteTitleContainer>
-        <WriteBtnBox onClick={() => dispatch(showModal("categoryList"))}>
-          <div>미선택</div>
-          <div>V</div>
+        <WriteBtnBox
+          onClick={() => dispatch(showModal("categoryList"), _categoryList())}>
+          <div className="WriteBtnBoxWrap">
+            {categoryName === "" ? (
+              <div>미선택</div>
+            ) : (
+              <div>{categoryName}</div>
+            )}
+            <div>V</div>
+          </div>
         </WriteBtnBox>
         <WriteTitleContainer>경매 시작가</WriteTitleContainer>
 
@@ -186,9 +234,16 @@ const AuctionWrite = () => {
           </DirectBtn>
         </WriteDeliveryStateContainer>
         <WriteTitleContainer>지역 선택</WriteTitleContainer>
-        <WriteBtnBox onClick={() => dispatch(showModal("regionList"))}>
-          <div>미선택</div>
-          <div>V</div>
+        <WriteBtnBox
+          onClick={() => dispatch(showModal("regionList"), _regionList())}>
+          <div className="WriteBtnBoxWrap">
+            {regionName === "전체지역" ? (
+              <div>미선택</div>
+            ) : (
+              <div>{regionName}</div>
+            )}
+            <div>V</div>
+          </div>
         </WriteBtnBox>
         <WriteTitleContainer>상세 설명</WriteTitleContainer>
         <WriteTextArea
@@ -231,7 +286,6 @@ const AuctionWriteWrap = styled.div`
     display: flex;
     flex-direction: column;
   }
-  /* background-color: yellow; */
 `;
 const WriteImgContainer = styled.div`
   display: flex;
@@ -336,6 +390,15 @@ const WriteBtnBox = styled.button`
   font-size: 18px;
   font-weight: 400;
   padding: 0px 10px;
+  .WriteBtnBoxWrap {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    color: black;
+    div {
+      display: flex;
+    }
+  }
 `;
 const WriteDeliveryStateContainer = styled.div`
   display: flex;

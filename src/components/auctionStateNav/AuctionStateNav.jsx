@@ -1,7 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
-const AuctionStateNav = ({ isAuction, setIsAuction }) => {
+const AuctionStateNav = ({
+  isAuction,
+  setIsAuction,
+  auctionIng,
+  auctionDone,
+}) => {
   return (
     <AuctionStateNavLayout>
       <StateNavContainer
@@ -9,11 +14,11 @@ const AuctionStateNav = ({ isAuction, setIsAuction }) => {
         state={isAuction}
         onClick={() => setIsAuction(true)}>
         <div>경매중</div>
-        <div>10</div>
+        <div>{auctionIng}</div>
       </StateNavContainer>
       <StateNavContainer state={!isAuction} onClick={() => setIsAuction(false)}>
         <div>경매완료</div>
-        <div>20</div>
+        <div>{auctionDone}</div>
       </StateNavContainer>
     </AuctionStateNavLayout>
   );
