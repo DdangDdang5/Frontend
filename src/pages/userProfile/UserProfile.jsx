@@ -32,7 +32,7 @@ const UserProfile = () => {
 
   return (
     <UserProfileContainer>
-      <Header page="프로필" />
+      <Header back={true} pageName="프로필" />
 
       <UserProfileContent>
         {/* 유저 프로필 정보 */}

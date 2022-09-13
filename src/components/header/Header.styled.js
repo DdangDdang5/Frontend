@@ -4,7 +4,6 @@ import styled from "styled-components";
 export const HeaderContainer = styled.div`
   width: 100%;
   height: 70px;
-  border-bottom: ${(props) => props.borderBottom};
 
   position: absolute;
   top: 0;

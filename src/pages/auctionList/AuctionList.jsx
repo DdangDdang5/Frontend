@@ -35,11 +35,7 @@ const AuctionList = () => {
 
   useEffect(() => {
     dispatch(_categoryList());
-  }, []);
-  useEffect(() => {
     dispatch(_regionList());
-  }, []);
-
     if (categoryName === "전체 품목" && regionName === "서울 전체") {
       dispatch(auctionItemList());
     }
@@ -63,7 +59,7 @@ const AuctionList = () => {
   }
   return (
     <AuctionListLayout>
-      <Header />
+      <Header back={true} pageName="경매 목록" search={true} alarm={true}/>
       <ListCategoryWrap>
         <CategoryBtn
           onClick={() => dispatch(showModal("categoryList"), _categoryList())}>

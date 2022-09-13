@@ -27,7 +27,7 @@ const MyPage = () => {
 
   return (
     <MyPageLayout>
-      <Header />
+      <Header pageName="마이페이지" alarm={true} />
 
       <MyProfileWrap>
         <MyImgContainer>

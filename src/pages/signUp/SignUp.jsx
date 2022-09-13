@@ -196,7 +196,7 @@ const SignUp = () => {
 
   return (
     <Fragment>
-      <Header page="회원가입" />
+      <Header back={true} pageName="회원가입" />
       <SignUpBox>
         {/* <SignUpBoxTitle>
           <SignUpBoxTitleSpan>
