@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 const MyPageInterestAuction = () => {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.myPage.myPage);
+  const data = useSelector((state) => state.myPage.myPageInterest);
   const [isAuction, setIsAuction] = useState(true);
 
   console.log("inter", data);

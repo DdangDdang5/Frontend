@@ -2,17 +2,25 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/exports";
-import { _MyPageInterestAuction } from "../../redux/modules/MyPageSlice";
+import { _MyPageInAuction } from "../../redux/modules/MyPageSlice";
 import { useNavigate } from "react-router-dom";
 
 const AuctionRow = ({ isAuction }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const data = useSelector((state) => state.myPage.myPage);
+  const data = useSelector((state) => state.myPage.myPageIn);
   const [shouldShownData, setShouldShownData] = useState([]);
 
+  const {
+    auctionList: AuctionListData,
+    loading,
+    paging,
+    followingItem,
+  } = useSelector((state) => state.myPage);
+
   useEffect(() => {
-    dispatch(_MyPageInterestAuction());
+    dispatch(_MyPageInAuction());
+
     if (data && data.length > 0) {
       data?.map((item, index) => {
         if (isAuction) {
@@ -34,6 +42,19 @@ const AuctionRow = ({ isAuction }) => {
       setShouldShownData([]);
     };
   }, [isAuction, JSON.stringify(data)]);
+
+  const handleScroll = (e) => {
+    let scrollTopHandler = e.target.scrollTop;
+    let clientHeightHandler = e.target.clientHeight;
+    let scrollHeightHandler = e.target.scrollHeight;
+    if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
+      if (!loading) {
+        if (followingItem) {
+          dispatch(_MyPageInAuction());
+        }
+      }
+    }
+  };
 
   const Img = (
     <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />

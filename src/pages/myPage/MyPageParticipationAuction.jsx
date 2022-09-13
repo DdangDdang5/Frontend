@@ -9,25 +9,45 @@ import { _MyPageParticipationAuction } from "../../redux/modules/MyPageSlice";
 
 const MyPageParticipationAuction = () => {
   const dispatch = useDispatch();
-
   const [isAuction, setIsAuction] = useState(true);
+  const data = useSelector((state) => state.myPage.myPageParticipati);
 
-  const data = useSelector((state) => state.myPage.myPage);
+  const {
+    myPageParticipati: myPageParticipati,
+    loading,
+    paging,
+    followingItem,
+  } = useSelector((state) => state.myPage);
+
   useEffect(() => {
     dispatch(_MyPageParticipationAuction());
   }, []);
 
+  const handleScroll = (e) => {
+    let scrollTopHandler = e.target.scrollTop;
+    let clientHeightHandler = e.target.clientHeight;
+    let scrollHeightHandler = e.target.scrollHeight;
+    if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
+      if (!loading) {
+        if (followingItem) {
+          dispatch(_MyPageParticipationAuction());
+        }
+      }
+    }
+  };
+
+  console.log("part", myPageParticipati);
   return (
     <MyAuctionLayout>
       <Header />
       <AuctionStateNav isAuction={isAuction} setIsAuction={setIsAuction} />
       <MyAuctionBody>
-        <AuctionLayout>
-          {data.data === null ? (
+        <AuctionLayout onScroll={handleScroll}>
+          {data.data == null ? (
             <None>상품없음</None>
           ) : (
             <>
-              {data.map((item, index) => {
+              {myPageParticipati.map((item, index) => {
                 return (
                   <React.Fragment key={`${index}_${item.id}`}>
                     <Auction2Container>

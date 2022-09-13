@@ -11,7 +11,7 @@ import { _MyPageInAuction } from "../../redux/modules/MyPageSlice";
 function MyPageMyAuction() {
   const dispatch = useDispatch();
   const [isAuction, setIsAuction] = useState(true);
-  const data = useSelector((state) => state.myPage.myPage);
+  const data = useSelector((state) => state.myPage.myPageIn);
 
   const auctionIng = data?.filter((data) => data.auctionStatus === true).length;
   const auctionDone = data?.filter(
