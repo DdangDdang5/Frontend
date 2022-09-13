@@ -1,39 +1,38 @@
 // React import
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 
 // Package import
+import { useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+
+// Component import
 import Header from "../../components/header/Header";
 
 // Style import
 import {
-  ChatBox,
   ChatContainer,
   ChatContent,
+  ChatFooter,
   ChatMessage,
-  Member,
-  MemberList,
+  ChatMessageList,
   Message,
-  MessageData,
+  MessageChecked,
+  MessageInfo,
   MessageInput,
+  MessageProfile,
+  MessageTime,
+  MessageWrap,
   SendBtn,
-  SendMessage,
-  SendMessageWrap,
 } from "./Chat.styled";
 
-// 웹소켓 연결
-// let sockJS = new SockJS("http://localhost:8080/ws/chat");
-// const stompClient = Stomp.over(sockJS);
 var stompClient = null;
 
 const Chat = () => {
   const { roomId } = useParams();
+  const chatRef = useRef(null);
 
-  const [publicChats, setpublicChats] = useState([]);
-  const [privateChats, setPrivateChats] = useState(new Map());
-  const [tab, setTab] = useState("TALK");
+  const [chatList, setChatList] = useState([]);
   const [userData, setUserData] = useState({
     type: "",
     roomId: roomId,
@@ -41,10 +40,20 @@ const Chat = () => {
     message: "",
   });
 
-  // const roomId = "9245f350-836b-4097-81b5-2611aa08fa9c";
+  const scrollToBottom = () => {
+    // console.log("scroll to bottom!!!!!!!!!!!!");
+    
+		if (chatRef.current) {
+      chatRef.current.scrollTop = chatRef.current.scrollHeight;
+      // chatRef.current.scrollTo(0, chatRef.current.scrollHeight);
+    }
+  };
 
   useEffect(() => {
+    // connect();						// spring homepage
     registerUser();
+
+    scrollToBottom();
   }, []);
 
   const handleValue = (event) => {
@@ -52,9 +61,48 @@ const Chat = () => {
     setUserData({ ...userData, message: value });
   };
 
-  const registerUser = () => {
-    var sockJS = new SockJS(process.env.REACT_APP_URL2 + "/ws/chat");
+  // =======================================================================================
+	// spring homepage
 
+  // function connect() {
+  // 	// spring homepage
+  //   var socket = new SockJS(process.env.REACT_APP_URL + '/gs-guide-websocket');
+  //   stompClient = Stomp.over(socket);
+  //   stompClient.connect({}, (frame) => {
+  //     // setConnected(true);
+  //     console.log('Connected: ' + frame);
+
+  // 		// spring homepage
+  //     stompClient.subscribe('/topic/chat/room', (greeting) => {
+  //       showGreeting(JSON.parse(greeting.body).content);
+  //     });
+  //   });
+  // }
+
+  // function sendName() {
+  //   stompClient.send("/app/hello", {}, JSON.stringify({name: userData.message}));
+  // 	setUserData({ ...userData, message: "" })
+  // }
+
+  // function showGreeting(message) {
+  // 	console.log(message);
+  // 	chatList.push(message);
+  // 	setChatList([...chatList]);
+  // }
+
+  // function disconnect() {
+  //     if (stompClient !== null) {
+  //         stompClient.disconnect();
+  //     }
+  //     // setConnected(false);
+  //     console.log("Disconnected");
+  // }
+
+  // =======================================================================================
+
+  // 웹소켓 연결
+  const registerUser = () => {
+    var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
     stompClient = Stomp.over(sockJS);
 
     stompClient.connect({}, onConnected, onError);
@@ -64,25 +112,12 @@ const Chat = () => {
     // setUserData({ ...userData, type: "ENTER" });
     // console.log(userData);
 
-    // 기존의 대화내용 가져옴
-    // stompClient.subscribe(`/sub/chat/room/${roomId}`, (body) => {
-    // 	console.log(body);
-    //   // setpublicChats((_chatMessages) => [..._chatMessages, JSON.parse(body)]);
-    // 	// console.log(publicChats);
-    // });
-    const a = stompClient.subscribe(
-      `/sub/chat/room/${roomId}`,
-      onPublicMessageReceived
-    );
-
-    // stompClient.subscribe(
-    //   "/user" + userData.username + "/private",
-    //   onPrivateMessageReceived,
-    // );
-    // stompClient.send()
+    stompClient.subscribe(`/topic/chat/room/${roomId}`, onMessageReceived);
 
     // 채팅방 들어감
     userJoin();
+
+    scrollToBottom();
   };
 
   const onError = (err) => {
@@ -90,52 +125,29 @@ const Chat = () => {
   };
 
   const userJoin = () => {
-    console.log("444444444444444444 user enter");
     let chatMessage = {
       type: "ENTER",
       roomId: roomId,
       sender: "rang",
       message: "",
     };
-    // sockjs.send(JSON.stringify(chatMessage));
-    const c = stompClient.send(
-      `/pub/chat/message`,
-      {},
-      JSON.stringify(chatMessage)
-    );
-    // setpublicChats([...publicChats, {sender: "rang", message: ""}]);
-    console.log("444444444444444444 user enter finish");
+    
+    stompClient.send(`/app/chat/message`, {}, JSON.stringify(chatMessage));
   };
 
-  const onPublicMessageReceived = (payload) => {
-    console.log("3333333333333333333 on public message received");
-    console.log("public message received", payload);
+  const onMessageReceived = (payload) => {
     let payloadData = JSON.parse(payload.body);
 
     if (payloadData.type === "ENTER" || payloadData.type === "TALK") {
-      publicChats.push(payloadData);
-      setpublicChats([...publicChats]);
+      chatList.push(payloadData);
+      setChatList([...chatList]);
     }
 
-    // switch (payloadData.type) {
-    //   case "ENTER":
-    //     if (privateChats.get(payloadData.sender)) {
-    //       privateChats.set(payloadData.sender, []);
-    //       setPrivateChats(new Map(privateChats));
-    //     }
-    //     break;
-    //   case "TALK":
-    //     publicChats.push(payloadData);
-    //     setpublicChats([...publicChats]);
-    //     break;
-    //   default:
-    //     break;
-    // }
-    console.log("3333333333333333333 on public message received finish");
+    scrollToBottom();
   };
 
-  const sendPublicMessage = () => {
-    if (stompClient) {
+  const sendMessage = () => {
+    if (stompClient && userData.message) {
       let chatMessage = {
         type: "TALK",
         roomId: roomId,
@@ -143,161 +155,72 @@ const Chat = () => {
         message: userData.message,
       };
 
-      // sockjs.send(JSON.stringify(chatMessage));
-      stompClient.send("/pub/chat/message", {}, JSON.stringify(chatMessage));
-      // setpublicChats([...publicChats, chatMessage]);
+      stompClient.send("/app/chat/message", {}, JSON.stringify(chatMessage));
       setUserData({ ...userData, message: "" });
     }
+
+    scrollToBottom();
   };
 
-  // const onPrivateMessageReceived = (payload) => {
-  //   let payloadData = JSON.parse(payload);
-  //   if (privateChats.get(payloadData.senderName)) {
-  //     privateChats.get(payloadData.senderName).push(payloadData);
-  //     setPrivateChats(new Map(privateChats));
-  //   } else {
-  //     let list = [];
-  //     list.push(payloadData);
-
-  //     privateChats.set(payloadData.senderName, list);
-  //     setPrivateChats(new Map(privateChats));
-  //   }
-  // };
-
-  // const sendPrivateMessage = () => {
-  //   if (stompClient) {
-  //     let chatMessage = {
-  //       sender: userData.username,
-  // 			receivername: tab,
-  //       message: userData.message,
-  //       type: "TALK",
-  //     };
-  // 		if (userData.username !== tab) {
-  // 			privateChats.set(tab).push(chatMessage);
-  // 			setPrivateChats(new Map(privateChats));
-  // 		}
-  //     stompClient.send(`/app/private-message`, {}, JSON.stringify(chatMessage));
-  //     setUserData({ ...userData, message: "" });
-  //   }
-  // };
+  const onKeyPress = (event) => {
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+  };
 
   return (
     <ChatContainer>
       <Header borderBottom="1px solid gray" logo={false} />
-      {/* {userData.connected ? ( */}
-      <ChatBox>
-        {/* <MemberList>
-            <ul>
-              {tab === "TALK" && "active" ? (
-                <Member onClick={() => setTab("TALK")}>Chatroom</Member>
-              ) : null}
-              {[...privateChats.keys()].map((name, idx) =>
-                tab === name && "active" ? (
-                  <Member onClick={() => setTab(name)}>Chatroom</Member>
-                ) : null,
+      <ChatContent ref={chatRef}>
+        <ChatMessageList>
+          {chatList?.map((chat, idx) => (
+            <div key={idx}>
+              {chat.sender !== "rang" ? (
+                <ChatMessage>
+                  <MessageProfile src="/maskable.png" alt="chat-profile" />
+                  <MessageWrap>
+                    <span>{chat.sender}</span>
+                    <Message>
+                      <div>{chat.message}</div>
+                    </Message>
+                  </MessageWrap>
+									<MessageInfo>
+										<MessageChecked>1</MessageChecked>
+                  	<MessageTime>PM 09:15</MessageTime>
+									</MessageInfo>
+                </ChatMessage>
+              ) : (
+                <ChatMessage isMe={true}>
+									<MessageInfo>
+										<MessageChecked>1</MessageChecked>
+                  	<MessageTime>PM 09:15</MessageTime>
+									</MessageInfo>
+                  <MessageWrap>
+                    <Message isMe={true}>
+                      <div>{chat.message}</div>
+                    </Message>
+                  </MessageWrap>
+                </ChatMessage>
               )}
-            </ul>
-          </MemberList> */}
-        {/* {publicChats.map((item, idx) => (
-					<>
-					{item.type === "TALK" ? (
-						<>
+            </div>
+          ))}
+        </ChatMessageList>
+      </ChatContent>
 
-						</>
-					) : (
-          	<div>{item.message}</div>
-					)}
-					</>
-				))} */}
-        {tab === "TALK" && (
-          <ChatContent>
-            chat content
-            <ChatMessage>
-              {console.log("csssssssssssssssss", publicChats)}
-              {publicChats?.map((chat, idx) => (
-                <Message key={idx}>
-                  <div>
-                    {chat.sender}
-                    {chat.message}
-                  </div>
-                  {/* {chat.sender !== "rang" && (
-                    <div>{chat.sender}</div>
-                  )}
-                  <MessageData>{chat.message}</MessageData>
-                  {chat.sender === "rang" && (
-                    <div>{chat.sender}</div>
-                  )} */}
-                </Message>
-              ))}
-            </ChatMessage>
-            {/* <SendMessage>
-                <MessageInput
-                  type="text"
-                  placeholder="enter public message"
-                  value={userData.message}
-                  onChange={(event) => handleValue(event)}
-                />
-                <SendBtn type="button" onClick={sendPublicMessage}></SendBtn>
-              </SendMessage> */}
-          </ChatContent>
-        )}
-        {/* {tab !== "TALK" && (
-            <ChatContent>
-              <ChatMessage>
-                {[...privateChats.get(tab)].map((chat, idx) => {
-                  <Message key={idx}>
-                    {chat.senderName !== userData.username && (
-                      <div>{chat.senderName}</div>
-                    )}
-                    <MessageData>{chat.message}</MessageData>
-                    {chat.senderName === userData.username && (
-                      <div>{chat.senderName}</div>
-                    )}
-                  </Message>;
-                })}
-              </ChatMessage>
-
-              <SendMessage>
-                <MessageInput
-                  type="text"
-                  placeholder={`enter private message for ${tab}`}
-                  value={userData.message}
-                  onChange={handleValue}
-                />
-                <SendBtn type="button" onClick={sendPrivateMessage}></SendBtn>
-              </SendMessage>
-            </ChatContent>
-          )} */}
-      </ChatBox>
-      {/* ) : (
-        <div>
-          <input
-            id="username"
-            placeholder="Enter the username"
-            type="text"
-            value={userData.username}
-            onChange={(e) => handleValue(e)}
-          />
-          <button type="button" onClick={registerUser}>
-            connect
-          </button>
-        </div>
-      )} */}
-
-      <SendMessageWrap>
+      {/* 채팅 보내기 */}
+      <ChatFooter>
         <img src="/maskable.png" alt="add-chat" />
-
-        <SendMessage>
-          <MessageInput
-            type="text"
-            placeholder="enter public message"
-            value={userData.message}
-            onChange={(event) => handleValue(event)}
-          />
-          <SendBtn type="button" onClick={sendPublicMessage}></SendBtn>
-        </SendMessage>
-        <img src="/maskable.png" alt="push-chat" />
-      </SendMessageWrap>
+        <MessageInput
+          type="text"
+          placeholder="enter public message"
+          value={userData.message}
+          onChange={(event) => handleValue(event)}
+          onKeyDown={(event) => onKeyPress(event)}
+        />
+        <SendBtn onClick={sendMessage}>
+          <img src="/maskable.png" alt="push-chat" />
+        </SendBtn>
+      </ChatFooter>
     </ChatContainer>
   );
 };

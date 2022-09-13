@@ -29,6 +29,7 @@ const Header = ({
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const handleDelete = () => {
     dispatch(deleteAuctionItem(detailData.id));
     navigate(-1, { replace: true });

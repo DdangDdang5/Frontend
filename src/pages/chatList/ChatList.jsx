@@ -14,31 +14,14 @@ import ChatRoom from "../../components/chatRoom/ChatRoom";
 
 // Style import
 import { ChatListContainer, ChatRoomList } from "./ChatList.styled";
-import api from "../../shared/Api";
 
 const ChatList = () => {
 	const dispatch = useDispatch();
 	const chatRoomList = useSelector((state) => state.chat.chatRoomList);
-	// const roomId = "6e9cf34c-fca7-40c3-93fe-180f70d77e11";
-
-  // const onMakeChatRoom = async () => {
-  //   try {
-  //     await api
-  //       .post("http://localhost:8080/chat/room?name=채팅")
-  //       .then((res) => console.log(res))
-  //       .then((res) => (roomId = res.roomId));
-  //     // console.log(response);
-  //     // return response.roomId;
-  //     // roomId = response.roomId;
-	// 		console.log(roomId);
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
 
   useEffect(() => {
     // onMakeChatRoom();
-		console.log(chatRoomList);
+		// console.log(chatRoomList);
 		dispatch(makeChatRoom());
   }, [dispatch]);
 
@@ -47,7 +30,7 @@ const ChatList = () => {
       <Header logo={false} />
       <ChatRoomList>
         {Array.from({ length: 4 }, (_, idx) => (
-          <ChatRoom key={idx} roomId={chatRoomList[chatRoomList.length - 1]?.roomId} />
+          <ChatRoom key={idx} roomId={chatRoomList[0]?.roomId} />
         ))}
       </ChatRoomList>
       <Footer />

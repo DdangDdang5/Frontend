@@ -7,8 +7,8 @@ import api from "../../shared/Api";
 const initialState = {
   show: false,
   division: "",
-  categoryName: "전체품목",
-  regionName: "전체지역",
+	categoryName: "전체 품목",
+	regionName: "서울 전체",
   categoryList: [],
   regionList: [],
   mode: "",

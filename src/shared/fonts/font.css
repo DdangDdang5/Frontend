@@ -7,10 +7,12 @@
   font-family: "SpoqaHanSansNeo-Light";
   src: url("./SpoqaHanSansNeo-Light.otf");
 }
+
 @font-face {
   font-family: "SpoqaHanSansNeo-Medium";
   src: url("./SpoqaHanSansNeo-Medium.otf");
 }
+
 @font-face {
   font-family: "SpoqaHanSansNeo-Regular";
   src: url("./SpoqaHanSansNeo-Regular.otf");

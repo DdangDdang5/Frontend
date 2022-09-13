@@ -18,6 +18,7 @@ import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import PlusButton from "../../components/button/PlusButton";
 import AuctionColumn from "../../components/auction/AuctionColumn";
+import Auction from "../../components/auction/AuctionColumn";
 
 const AuctionList = () => {
   const dispatch = useDispatch();
@@ -39,8 +40,7 @@ const AuctionList = () => {
     dispatch(_regionList());
   }, []);
 
-  useEffect(() => {
-    if (categoryName === "전체품목" && regionName === "전체지역") {
+    if (categoryName === "전체 품목" && regionName === "서울 전체") {
       dispatch(auctionItemList());
     }
   }, [categoryName, regionName]);
