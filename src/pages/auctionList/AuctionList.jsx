@@ -29,6 +29,7 @@ const AuctionList = () => {
     paging,
     followingItem,
   } = useSelector((state) => state.auctionList);
+  console.log("AuctionListData", AuctionListData);
 
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
@@ -36,9 +37,7 @@ const AuctionList = () => {
   useEffect(() => {
     dispatch(_categoryList());
 
-
     dispatch(_regionList());
-
 
     if (categoryName === "전체 품목" && regionName === "서울 전체") {
       dispatch(auctionItemList());
@@ -63,7 +62,7 @@ const AuctionList = () => {
   }
   return (
     <AuctionListLayout>
-      <Header back={true} pageName="경매 목록" search={true} alarm={true}/>
+      <Header back={true} pageName="경매 목록" search={true} alarm={true} />
       <ListCategoryWrap>
         <CategoryBtn
           onClick={() => dispatch(showModal("categoryList"), _categoryList())}>

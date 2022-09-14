@@ -69,7 +69,7 @@ const Header = ({
           {search ? <Search onClick={() => navigate("/search")} /> : null}
           {alarm ? <Alarm /> : null}
           {share ? <Share /> : null}
-          {menu ? <Menu onClick={onClickBtn} /> : null}
+          {menu ? <Menu onClick={handleDelete} /> : null}
           {save ? <span onClick={onClickSave}>{save.type}</span> : null}
         </HeaderIconContainer>
       </HeaderContent>
