@@ -3,6 +3,10 @@ import styled from "styled-components";
 export const SearchBox = styled.div`
   width: 100%;
   height: 100vh;
+  box-sizing: border-box;
+  top: 0;
+  bottom: 0;
+  overflow-y: scroll;
 `;
 
 export const SearchInputGroup = styled.div`

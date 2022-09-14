@@ -52,21 +52,22 @@ export const loginMemberThunk = createAsyncThunk(
           window.location.replace("/login")
         );
       } else {
-        // console.log(res);
-        // localStorage.setItem("memberId", res.data.data.memberId);
-        // localStorage.setItem("accessToken", res.headers.authorization);
-        // console.log(localStorage.getItem("accessToken"));
-        const token = getCookie("accessToken")
-        console.log(res.headers);
+        // const token = getCookie("accessToken");
         // setCookie("accessToken", res.headers.authorization, +res.headers.expires);
-        cookies.set("accessToken", res.headers.authorization, +res.headers.expires);
+        cookies.set(
+          "accessToken",
+          res.headers.authorization,
+          +res.headers.expires
+        );
         cookies.set("memberId", res.data.data.memberId);
 
         // const cookie = getCookie("accessToken");
         console.log(cookies);
 
-        return window.alert(`${res.data.data.nickName}님 안녕하세요!`);
-        // window.location.replace("/")
+        return (
+          window.alert(`${res.data.data.nickName}님 안녕하세요!`),
+          window.location.replace("/")
+        );
       }
     });
     return thunkAPI.fulfillWithValue(resData.data.data);
@@ -86,16 +87,21 @@ export const kakaoOauthThunk = createAsyncThunk(
       .then((res) => {
         console.log(res);
         if (res.data.statusCode) {
-          localStorage.setItem("memberId", res.data.data.email);
-          localStorage.setItem("accessToken", res.headers.authorization);
+          // localStorage.setItem("memberId", res.data.data.email);
+          // localStorage.setItem("accessToken", res.headers.authorization);
 
           console.log(res.data.data);
-
-          setCookie(
+          cookies.set(
             "accessToken",
-            res.headers["authorization"],
+            res.headers.authorization,
             +res.headers.expires
           );
+          cookies.set("memberId", res.data.data.memberId);
+          // setCookie(
+          //   "accessToken",
+          //   res.headers["authorization"],
+          //   +res.headers.expires
+          // );
 
           // cookies.set(
           //   "accessToken",

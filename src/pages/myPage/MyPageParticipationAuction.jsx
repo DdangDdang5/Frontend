@@ -36,10 +36,11 @@ const MyPageParticipationAuction = () => {
     }
   };
 
-  console.log("part", myPageParticipati);
+  // console.log("part", myPageParticipati);
+
   return (
     <MyAuctionLayout>
-      <Header />
+      <Header back={true} pageName="참여 경매" alarm={true} />
       <AuctionStateNav isAuction={isAuction} setIsAuction={setIsAuction} />
       <MyAuctionBody>
         <AuctionLayout onScroll={handleScroll}>

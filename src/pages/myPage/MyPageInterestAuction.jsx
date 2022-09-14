@@ -11,7 +11,7 @@ const MyPageInterestAuction = () => {
   const data = useSelector((state) => state.myPage.myPageInterest);
   const [isAuction, setIsAuction] = useState(true);
 
-  console.log("inter", data);
+  // console.log("inter", data);
 
   useEffect(() => {
     dispatch(_MyPageInterestAuction());
@@ -19,7 +19,7 @@ const MyPageInterestAuction = () => {
 
   return (
     <MyAuctionLayout>
-      <Header />
+      <Header back={true} pageName="관심 경매" alarm={true} />
       <AuctionStateNav isAuction={isAuction} setIsAuction={setIsAuction} />
       <MyAuctionBody>
         <AuctionLayout>

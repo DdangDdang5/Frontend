@@ -19,15 +19,11 @@ const MyPage = () => {
     dispatch(_MyPageData(memberId));
   }, [memberId]);
 
-  // useEffect(() => {
-  //   dispatch(_MyPageInAuction());
-  // }, []);
-
   const Img = <img src={data.profileImgUrl} alt="" />;
 
   return (
     <MyPageLayout>
-      <Header />
+      <Header pageName="마이페이지" alarm={true} />
 
       <MyProfileWrap>
         <MyImgContainer>
@@ -95,8 +91,14 @@ const MyPage = () => {
           </div>
           <div className="listTitle">자주 묻는 질문</div>
         </ListContainer>
+        <ListContainer>
+          <div className="listIcon">
+            <div></div>
+          </div>
+          <div className="listTitle">로그아웃</div>
+        </ListContainer>
       </MyProfileListWrap>
-      <Footer />
+      <Footer myPage={true} />
     </MyPageLayout>
   );
 };

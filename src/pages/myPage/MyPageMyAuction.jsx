@@ -22,11 +22,11 @@ function MyPageMyAuction() {
     dispatch(_MyPageInAuction());
   }, []);
 
-  console.log("myauction", auctionIng);
+  // console.log("myauction", auctionIng);
 
   return (
     <MyAuctionLayout>
-      <Header />
+      <Header back={true} pageName="나의 경매" alarm={true} />
       <AuctionStateNav
         isAuction={isAuction}
         setIsAuction={setIsAuction}

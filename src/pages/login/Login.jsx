@@ -33,11 +33,13 @@ import {
   LoginBoxSignUpLink,
 } from "./Login.styled";
 
+// Shared import
+import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
+
 const Login = ({ location }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
-  const REDIRECT_URI = "http://localhost:3000/member/kakao/callback";
+  const[loginError, setLoginError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -86,7 +88,7 @@ const Login = ({ location }) => {
       // ) {
       //   event.preventDefault();
       //   alert("이메일과 비밀번호를 입력해주세요");
-      // } 
+      // }
       else {
         dispatch(loginMemberThunk({ email, password }));
       }
@@ -94,9 +96,19 @@ const Login = ({ location }) => {
     [email, password]
   );
 
+  // const onValid = (loginObj) => {
+  //   dispatch(loginMemberThunk(loginObj.username, loginObj.password)).then((result) => {
+  //     if (!result) {
+  //       setLoginError("이메일 또는 비밀번호를 잘못 입력했습니다.");
+  //       return false;
+  //     }
+  //     navigate("/");
+  //   });
+  // };
+
   return (
     <Fragment>
-      <Header page="로그인" />
+      <Header close={true} />
       <LoginBox>
         <LoginBoxTitle>
           <LoginBoxTitleSpan>땅땅</LoginBoxTitleSpan>
@@ -156,7 +168,7 @@ const Login = ({ location }) => {
             type={"button"}
             text={"카카오로 로그인하기"}
             _onClick={() => {
-              window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+              window.location.href = { KAKAO_OAUTH_URL };
             }}
             style={{
               width: "100%",

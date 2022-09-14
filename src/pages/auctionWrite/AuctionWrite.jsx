@@ -1,19 +1,29 @@
+// React import
 import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+
+// Package import
+import { useNavigate } from "react-router-dom";
+
+//components import
+
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
+
+//redux import
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux/es/exports";
 import {
   addAuctionItem,
   auctionItemList,
 } from "../../redux/modules/AuctionListSlice";
-import { useNavigate } from "react-router-dom";
 import {
   showModal,
   _categoryList,
   _regionList,
 } from "../../redux/modules/ModalSlice";
-import { useSelector } from "react-redux/es/exports";
+
+// Style import
+import styled from "styled-components";
 
 const AuctionWrite = () => {
   const dispatch = useDispatch();
@@ -22,9 +32,9 @@ const AuctionWrite = () => {
   const auctionRequestDto = {
     title: "",
     content: "",
-    startPrice: "",
+    startPrice: 0,
     category: "가전",
-    region: "종로구",
+    region: "동대문구",
     direct: false,
     delivery: false,
     auctionPeriod: 1,
@@ -64,19 +74,23 @@ const AuctionWrite = () => {
   //   setInputForm({ ...inputForm, region: regionName });
   // }, [categoryName, regionName]);
 
-  // useEffect(() => {
-  //   if (categoryName === "전체품목") {
-  //     dispatch(auctionItemList());
-  //   }
-  //   setInputForm({ ...inputForm, category: categoryName });
-  // }, [categoryName]);
+  useEffect(() => {
+    // if (categoryName === "전체품목") {
+    //   dispatch(auctionItemList());
+    // }
+    setInputForm((prev) => {
+      return { ...prev, category: categoryName };
+    });
+  }, [categoryName]);
 
-  // useEffect(() => {
-  //   if (categoryName === "전체지역") {
-  //     dispatch(auctionItemList());
-  //   }
-  //   setInputForm({ ...inputForm, region: regionName });
-  // }, [regionName]);
+  useEffect(() => {
+    // if (categoryName === "전체지역") {
+    //   dispatch(auctionItemList());
+    // }
+    setInputForm((prev) => {
+      return { ...prev, region: regionName };
+    });
+  }, [regionName]);
 
   // 이미지 업로드
   const onLoadFile = (e) => {
@@ -85,6 +99,7 @@ const AuctionWrite = () => {
     setImgFile(...imgFile, URL.createObjectURL(e.target.files[0]));
 
     const prevImg = e.target.files[0];
+
     reader.readAsDataURL(prevImg);
     reader.onloadend = () => {
       setImagePreview([
@@ -102,7 +117,11 @@ const AuctionWrite = () => {
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
-    setInputForm({ ...inputForm, [name]: value });
+    if (name === "startPrice") {
+      setInputForm({ ...inputForm, [name]: Number(value) });
+    } else {
+      setInputForm({ ...inputForm, [name]: value });
+    }
   };
 
   const onTransmitHandler = () => {
@@ -140,13 +159,25 @@ const AuctionWrite = () => {
 
   return (
     <AuctionWriteLayout>
-      <Header page="경매 글쓰기" write={true} movePage={onTransmitHandler} />
+      <Header back={true} pageName="경매 글쓰기" save={{type: "완료"}} onClickSave={onTransmitHandler} />
 
       <AuctionWriteWrap>
         <WriteImgContainer>
           <ImgBoxBtn>
             <label className="inBoxBtnContainer" htmlFor="img_UpFile">
-              <div>+</div>
+              <div>
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 28 28"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M26.6452 12.6452H15.3548V1.35484C15.3548 0.605161 14.7497 0 14 0C13.2503 0 12.6452 0.605161 12.6452 1.35484V12.6452H1.35484C0.605161 12.6452 0 13.2503 0 14C0 14.7497 0.605161 15.3548 1.35484 15.3548H12.6452V26.6452C12.6452 27.3948 13.2503 28 14 28C14.7497 28 15.3548 27.3948 15.3548 26.6452V15.3548H26.6452C27.3948 15.3548 28 14.7497 28 14C28 13.2503 27.3948 12.6452 26.6452 12.6452Z"
+                    fill="#A5A9B6"
+                  />
+                </svg>
+              </div>
               <div>파일을 입력</div>
             </label>
             <input
@@ -158,7 +189,6 @@ const AuctionWrite = () => {
               style={{ display: "none" }}
             />
           </ImgBoxBtn>
-
           {imagePreview.map((item, index) => {
             return (
               <ImgBox key={index}>
@@ -196,7 +226,19 @@ const AuctionWrite = () => {
             ) : (
               <div>{categoryName}</div>
             )}
-            <div>V</div>
+            <div>
+              <svg
+                width="18"
+                height="10"
+                viewBox="0 0 18 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M17.7048 0.29272C17.3145 -0.0975732 16.684 -0.0975732 16.2938 0.29272L8.99872 7.58819L1.70368 0.29272C1.31341 -0.0975732 0.682972 -0.0975732 0.292702 0.29272C-0.0975675 0.683012 -0.0975675 1.31348 0.292702 1.70377L8.29824 9.70979C8.49838 9.90994 8.74856 10 9.00874 10C9.26892 10 9.51908 9.89993 9.71922 9.70979L17.7248 1.70377C18.095 1.31348 18.095 0.683012 17.7048 0.29272Z"
+                  fill="#3A3A3A"
+                />
+              </svg>
+            </div>
           </div>
         </WriteBtnBox>
         <WriteTitleContainer>경매 시작가</WriteTitleContainer>
@@ -206,7 +248,9 @@ const AuctionWrite = () => {
         <WriteInputBox
           placeholder="시작가를 입력해주세요."
           type="number"
-          value={inputForm.startPrice}
+          value={
+            inputForm.startPrice === 0 ? "" : inputForm.startPrice.toString()
+          }
           name="startPrice"
           onChange={onChangeHandler}
         />
@@ -242,7 +286,19 @@ const AuctionWrite = () => {
             ) : (
               <div>{regionName}</div>
             )}
-            <div>V</div>
+            <div>
+              <svg
+                width="18"
+                height="10"
+                viewBox="0 0 18 10"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M17.7048 0.29272C17.3145 -0.0975732 16.684 -0.0975732 16.2938 0.29272L8.99872 7.58819L1.70368 0.29272C1.31341 -0.0975732 0.682972 -0.0975732 0.292702 0.29272C-0.0975675 0.683012 -0.0975675 1.31348 0.292702 1.70377L8.29824 9.70979C8.49838 9.90994 8.74856 10 9.00874 10C9.26892 10 9.51908 9.89993 9.71922 9.70979L17.7248 1.70377C18.095 1.31348 18.095 0.683012 17.7048 0.29272Z"
+                  fill="#3A3A3A"
+                />
+              </svg>
+            </div>
           </div>
         </WriteBtnBox>
         <WriteTitleContainer>상세 설명</WriteTitleContainer>
@@ -311,6 +367,10 @@ const ImgBoxBtn = styled.button`
   .inBoxBtnContainer {
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+    height: 100%;
   }
   div {
     font-size: 12px;
@@ -397,6 +457,8 @@ const WriteBtnBox = styled.button`
     color: black;
     div {
       display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 `;
