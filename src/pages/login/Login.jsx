@@ -39,7 +39,7 @@ import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
 const Login = ({ location }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const[loginError, setLoginError] = useState(null);
+  const [loginError, setLoginError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -81,30 +81,23 @@ const Login = ({ location }) => {
         alert("이메일을 입력해주세요");
       } else if (emailRegExp.test(email) === false) {
         alert("이메일 형식에 맞지 않습니다");
+      } else if (password === "") {
+        alert("비밀번호를 입력해주세요");
       }
-      // else if (
-      //   emailRef.current.value === "" ||
-      //   passwordRef.current.value === ""
-      // ) {
-      //   event.preventDefault();
-      //   alert("이메일과 비밀번호를 입력해주세요");
-      // }
       else {
-        dispatch(loginMemberThunk({ email, password }));
+        dispatch(loginMemberThunk({ email, password })).then((res) => {
+         console.log(res)
+          if (res.payload.statusCode === 200) {
+          window.alert(`${res.payload.data.nickName}님 안녕하세요!`)
+          window.location.replace("/")
+         } else {
+          alert(res.payload.msg);
+         }
+        });
       }
     },
     [email, password]
   );
-
-  // const onValid = (loginObj) => {
-  //   dispatch(loginMemberThunk(loginObj.username, loginObj.password)).then((result) => {
-  //     if (!result) {
-  //       setLoginError("이메일 또는 비밀번호를 잘못 입력했습니다.");
-  //       return false;
-  //     }
-  //     navigate("/");
-  //   });
-  // };
 
   return (
     <Fragment>
@@ -168,7 +161,9 @@ const Login = ({ location }) => {
             type={"button"}
             text={"카카오로 로그인하기"}
             _onClick={() => {
-              window.location.href = { KAKAO_OAUTH_URL };
+              // navigate("/member/kakao/callback")
+              // window.location.href = KAKAO_OAUTH_URL;
+            location.href="https://kauth.kakao.com/oauth/authorize?client_id=0e615a5250af79c8016d4690ed0abe7c&redirect_uri=https://sysgood.shop/member/kakao/callback&response_type=code">
             }}
             style={{
               width: "100%",
