@@ -1,23 +1,43 @@
 // Package import
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+
+// Shared import
+import api from "../../shared/Api";
 
 const initialState = {
-  chatList: [],
+  chatMessageList: [],
   chatRoomList: [],
 };
 
 export const makeChatRoom = createAsyncThunk(
   "makeChatRoom",
   async (payload, thunkAPI) => {
-		try {
-	    const response = await axios.post(process.env.REACT_APP_URL + "/chat/room?name=채팅방777");
-	    // const response = await axios.post("http://localhost:8080/chat/room?name=채팅방999");
-	    return thunkAPI.fulfillWithValue(response.data);
-		} catch(err) {
-			console.log(err);
-			// return thunkAPI.rejectWithValue(err);
-		}
+    try {
+      const response = await api.post("/chat/room?name=채팅방777");
+      return thunkAPI.fulfillWithValue(response.data);
+    } catch (err) {
+      console.log(err);
+      // return thunkAPI.rejectWithValue(err);
+    }
+  },
+);
+
+export const getChatRoomList = createAsyncThunk(
+  "getChatRoomList",
+  async (payload, thunkAPI) => {
+    const response = await api.get("/chat/rooms/all");
+    return thunkAPI.fulfillWithValue(response.data.data);
+  },
+);
+
+export const getChatMessageList = createAsyncThunk(
+  "getChatMessageList",
+  async (payload, thunkAPI) => {
+    const response = await api.get(`/chat/message/${payload}`);
+    return thunkAPI.fulfillWithValue({
+      roomId: payload,
+      data: response.data.data,
+    });
   },
 );
 
@@ -26,8 +46,25 @@ const chatListSlice = createSlice({
   initialState,
   extraReducers: {
     [makeChatRoom.fulfilled]: (state, action) => {
-			// action.payload -> chatroom list
+      // action.payload -> chatroom
       state.chatRoomList.push(action.payload);
+    },
+
+    [getChatRoomList.fulfilled]: (state, action) => {
+      // action.paylaod -> chatroom list
+      state.chatRoomList = action.payload;
+    },
+
+    [getChatMessageList.fulfilled]: (state, action) => {
+      // action.payload -> chatroom message list
+
+      if (state.chatMessageList.length === 0) {
+        state.chatMessageList.push(action.payload);
+      } else {
+        state.chatMessageList = state.chatMessageList.map((item) =>
+          item.roomId === action.payload.roomId ? action.payload : item,
+        );
+      }
     },
   },
 });

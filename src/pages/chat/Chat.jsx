@@ -1,14 +1,16 @@
 // React import
 import React, { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 // Package import
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
 // Component import
 import Header from "../../components/header/Header";
 import MenuModal from "../../components/modal/MenuModal";
+import { getChatMessageList } from "../../redux/modules/ChatSlice";
 import { Add, Send } from "../../shared/images";
 
 // Style import
@@ -35,11 +37,18 @@ import {
 var stompClient = null;
 
 const Chat = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const { roomId } = useParams();
   const isDetail = useLocation().state?.isDetail;
-	const nickName = "hey";
+  const nickName = "hey";
 
-  const chatRef = useRef(null);
+  const chatMessageList = useSelector(
+    (state) => state.chat.chatMessageList,
+  ).filter((item) => item.roomId === roomId);
+
+  const [visible, setVisible] = useState(false); // 채팅 메뉴 모달
 
   const [chatList, setChatList] = useState([]);
   const [userData, setUserData] = useState({
@@ -47,73 +56,65 @@ const Chat = () => {
     roomId: roomId,
     sender: "",
     message: "",
+    createdAt: "",
   });
 
-  const scrollToBottom = () => {
-    // console.log("scroll to bottom!!!!!!!!!!!!");
-
-    if (chatRef.current) {
-      chatRef.current.scrollTop = chatRef.current.scrollHeight;
-      // chatRef.current.scrollTo(0, chatRef.current.scrollHeight);
-    }
-  };
-
   useEffect(() => {
-    // connect();						// spring homepage
     registerUser();
 
     scrollToBottom();
   }, []);
+
+  useEffect(() => {
+    dispatch(getChatMessageList(roomId));
+
+    if (chatMessageList[0]?.data.length > 0) {
+      chatList.push(...chatMessageList[0].data);
+      setChatList(chatList);
+    }
+  }, [JSON.stringify(chatMessageList)]);
+
+  useEffect(() => {
+    // console.log(chatList);
+    scrollToBottom();
+  }, [chatList]);
+
+  // 채팅 메뉴 모달 클릭
+  const onClickMenu = () => {
+    setVisible(true);
+  };
+
+  const calcTime = (createdAt) => {
+    const date = new Date(createdAt);
+    return date.getHours() >= 12
+      ? "PM "
+      : "AM " +
+          date.getHours().toString().padStart(2, 0) +
+          ":" +
+          date.getMinutes().toString().padStart(2, 0);
+  };
+
+  const scrollToBottom = () => {
+    window.document.body
+      .querySelector("#root > div > div.sc-dUWWNf > div.sc-hsOonA.jcBIja")
+      .scrollTo(
+        0,
+        document.body.querySelector(
+          "#root > div > div.sc-dUWWNf > div.sc-hsOonA.jcBIja",
+        ).scrollHeight,
+      );
+  };
 
   const handleValue = (event) => {
     const { value } = event.target;
     setUserData({ ...userData, message: value });
   };
 
-  // =======================================================================================
-  // spring homepage
-
-  // function connect() {
-  // 	// spring homepage
-  //   var socket = new SockJS(process.env.REACT_APP_URL + '/gs-guide-websocket');
-  //   stompClient = Stomp.over(socket);
-  //   stompClient.connect({}, (frame) => {
-  //     // setConnected(true);
-  //     console.log('Connected: ' + frame);
-
-  // 		// spring homepage
-  //     stompClient.subscribe('/topic/chat/room', (greeting) => {
-  //       showGreeting(JSON.parse(greeting.body).content);
-  //     });
-  //   });
-  // }
-
-  // function sendName() {
-  //   stompClient.send("/app/hello", {}, JSON.stringify({name: userData.message}));
-  // 	setUserData({ ...userData, message: "" })
-  // }
-
-  // function showGreeting(message) {
-  // 	console.log(message);
-  // 	chatList.push(message);
-  // 	setChatList([...chatList]);
-  // }
-
-  // function disconnect() {
-  //     if (stompClient !== null) {
-  //         stompClient.disconnect();
-  //     }
-  //     // setConnected(false);
-  //     console.log("Disconnected");
-  // }
-
-  // =======================================================================================
-
   // 웹소켓 연결
   const registerUser = () => {
     var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
-    // var sockJS = new SockJS("https://3.34.2.159/wss/chat");
     stompClient = Stomp.over(sockJS);
+    stompClient.debug = null; // stompJS console.log 막기
 
     stompClient.connect({}, onConnected, onError);
   };
@@ -123,7 +124,6 @@ const Chat = () => {
     // console.log(userData);
 
     stompClient.subscribe(`/topic/chat/room/${roomId}`, onMessageReceived);
-    // stompClient.subscribe(`/sub/chat/room/77`, onMessageReceived);
 
     // 채팅방 들어감
     userJoin();
@@ -144,7 +144,6 @@ const Chat = () => {
     };
 
     stompClient.send("/app/chat/message", {}, JSON.stringify(chatMessage));
-    // stompClient.send(`/pub/chat/message`, {}, JSON.stringify(chatMessage));
   };
 
   const onMessageReceived = (payload) => {
@@ -166,9 +165,9 @@ const Chat = () => {
         sender: nickName,
         message: userData.message,
       };
+      console.log(chatMessage);
 
       stompClient.send("/app/chat/message", {}, JSON.stringify(chatMessage));
-      // stompClient.send("/pub/chat/message", {}, JSON.stringify(chatMessage));
       setUserData({ ...userData, message: "" });
     }
 
@@ -181,10 +180,12 @@ const Chat = () => {
     }
   };
 
-  const [visible, setVisible] = useState(false);
-
-  const onClickMenu = () => {
-    setVisible(true);
+  const onDisconnected = () => {
+    if (stompClient !== null && window.confirm("채팅방을 나가겠습니까?")) {
+      stompClient.disconnect();
+      stompClient = null;
+      navigate(-1);
+    }
   };
 
   return (
@@ -198,7 +199,7 @@ const Chat = () => {
         />
 
         {/* 경매 남은 시간 */}
-        <ChatContent ref={chatRef}>
+        <ChatContent>
           {isDetail ? (
             <AuctionTimeWrap>
               <span>남은시간</span>
@@ -220,14 +221,14 @@ const Chat = () => {
                     </MessageWrap>
                     <MessageInfo>
                       <MessageChecked>1</MessageChecked>
-                      <MessageTime>PM 09:15</MessageTime>
+                      <MessageTime>{calcTime(chat.createdAt)}</MessageTime>
                     </MessageInfo>
                   </ChatMessage>
                 ) : (
                   <ChatMessage isMe={true}>
                     <MessageInfo isMe={true}>
                       <MessageChecked>1</MessageChecked>
-                      <MessageTime>PM 09:15</MessageTime>
+                      <MessageTime>{calcTime(chat.createdAt)}</MessageTime>
                     </MessageInfo>
                     <MessageWrap>
                       <Message isMe={true}>
@@ -263,7 +264,7 @@ const Chat = () => {
           <MenuItem>거래 완료하기</MenuItem>
           <MenuItem>차단하기</MenuItem>
           <MenuItem>신고하기</MenuItem>
-          <MenuItem>채팅방 나가기</MenuItem>
+          <MenuItem onClick={onDisconnected}>채팅방 나가기</MenuItem>
         </MenuItemList>
       </MenuModal>
     </>
