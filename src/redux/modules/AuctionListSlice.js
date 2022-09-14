@@ -17,11 +17,10 @@ export const auctionItemList = createAsyncThunk(
     try {
       // auctionList는 스토어에 있는 리덕스
       const { paging } = thunkAPI.getState().auctionList;
-      console.log("234", paging);
       const response = await api.get(
         `/pagination/auction?page=${paging}&size=6&sortBy=id&isAsc=false`
       );
-      console.log("123", response);
+      console.log("auctionItemListSlice", response);
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
       }
@@ -170,7 +169,7 @@ const auctionListSlice = createSlice({
 
     [deleteAuctionItem.fulfilled]: (state, action) => {
       state.auctionList = state.auctionList.filter(
-        (post) => post.id !== action.payload
+        (post) => post.auctionId !== action.payload
       );
     },
     [deleteAuctionItem.rejected]: (state, action) => {

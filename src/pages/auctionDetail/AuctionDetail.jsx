@@ -31,9 +31,13 @@ const AuctionDetail = () => {
     return navigate(-1);
   }
 
-  const handleDelete = () => {
-    dispatch(deleteAuctionItem(data.id));
-    navigate(-1, { replace: true });
+  const handleDelete = async () => {
+    try {
+      const response = await dispatch(deleteAuctionItem(data.id)).unwrap();
+      if (response) {
+        return navigate(-1, { replace: true });
+      }
+    } catch {}
   };
 
   return (
