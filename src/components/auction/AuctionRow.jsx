@@ -5,95 +5,39 @@ import { useSelector } from "react-redux/es/exports";
 import { _MyPageInAuction } from "../../redux/modules/MyPageSlice";
 import { useNavigate } from "react-router-dom";
 
-const AuctionRow = ({ isAuction }) => {
-  const dispatch = useDispatch();
+const AuctionRow = ({ data, isAuction }) => {
   const navigate = useNavigate();
-  const data = useSelector((state) => state.myPage.myPageIn);
-  const [shouldShownData, setShouldShownData] = useState([]);
 
-  const {
-    auctionList: AuctionListData,
-    loading,
-    paging,
-    followingItem,
-  } = useSelector((state) => state.myPage);
-
-  useEffect(() => {
-    dispatch(_MyPageInAuction());
-
-    if (data && data.length > 0) {
-      data?.map((item, index) => {
-        if (isAuction) {
-          if (item?.auctionStatus === true) {
-            setShouldShownData((prev) => {
-              return [...prev, item];
-            });
-          }
-        } else {
-          if (item?.auctionStatus === false) {
-            setShouldShownData((prev) => {
-              return [...prev, item];
-            });
-          }
-        }
-      });
-    }
-    return () => {
-      setShouldShownData([]);
-    };
-  }, [isAuction, JSON.stringify(data)]);
-
-  const handleScroll = (e) => {
-    let scrollTopHandler = e.target.scrollTop;
-    let clientHeightHandler = e.target.clientHeight;
-    let scrollHeightHandler = e.target.scrollHeight;
-    if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
-      if (!loading) {
-        if (followingItem) {
-          dispatch(_MyPageInAuction());
-        }
-      }
-    }
-  };
-
-  const Img = (
-    <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
-  );
+  const Img = <img src={data.multiImages[0].imgUrl} alt="" />;
 
   return (
+    // {data.data == '' ? }
     <AuctionLayout>
-      {shouldShownData.map((item, index) => {
-        return (
-          <React.Fragment key={`${index}_${item.id}`}>
-            <div
-              onClick={() => {
-                navigate(`/auctionDetail/${item?.auctionId}`);
-              }}>
-              <Auction2Container>
-                <ImgBox>{Img}</ImgBox>
-                <ContentBox>
-                  <div className="contentNavBox">
-                    <div className="delivery">택배</div>
-                    <div className="region">성산구</div>
-                  </div>
-                  <div className="title">
-                    제목은 한 줄만 노출됩니다. 길어진다면 짤라야 겠죠
-                  </div>
-                  <div className="priceBox">
-                    <div>최근입찰가</div>
-                    <div className="price">5000원</div>
-                  </div>
-                </ContentBox>
-              </Auction2Container>
-              {isAuction ? (
-                <Action2Btn>거래 진행중</Action2Btn>
-              ) : (
-                <Action2Btn>거래 완료</Action2Btn>
-              )}
+      <div
+        onClick={() => {
+          navigate(`/auctionDetail/${data.auctionId}`);
+        }}>
+        <Auction2Container>
+          <ImgBox>{Img}</ImgBox>
+          <ContentBox>
+            <div className="contentNavBox">
+              {data?.direct ? <div className="delivery">택배</div> : ""}
+              {data?.delivery ? <div className="region">직거래</div> : ""}
+              <div className="region">{data.region}</div>
             </div>
-          </React.Fragment>
-        );
-      })}
+            <div className="title">{data.title}</div>
+            <div className="priceBox">
+              <div>최근입찰가</div>
+              <div className="price">5000원</div>
+            </div>
+          </ContentBox>
+        </Auction2Container>
+        {isAuction ? (
+          <Action2Btn>거래 진행중</Action2Btn>
+        ) : (
+          <Action2Btn>거래 완료</Action2Btn>
+        )}
+      </div>
     </AuctionLayout>
   );
 };
@@ -103,11 +47,12 @@ const AuctionLayout = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  padding: 0px 20px;
+  margin: 0px 20px;
 `;
 const Auction2Container = styled.div`
   display: flex;
   flex-direction: row;
+  width: 350px;
   gap: 18px;
   margin-bottom: 15px;
 `;
@@ -124,9 +69,8 @@ const ImgBox = styled.div`
 const ContentBox = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
+  height: 75px;
   gap: 4px;
-
   .contentNavBox {
     display: flex;
     flex-direction: row;
@@ -150,6 +94,7 @@ const ContentBox = styled.div`
     }
   }
   .title {
+    display: flex;
     width: 100%;
     height: 25px;
     font-size: 18px;
@@ -183,11 +128,11 @@ const Action2Btn = styled.button`
   align-items: center;
   width: 100%;
   box-sizing: border-box;
-  height: 30px;
+  height: 40px;
   margin-bottom: 20px;
   background-color: white;
-  border: 1px solid #a5a9b6;
+  border: 1px solid #4d71ff;
   border-radius: 8px;
-  color: black;
+  color: #4d71ff;
 `;
 export default AuctionRow;

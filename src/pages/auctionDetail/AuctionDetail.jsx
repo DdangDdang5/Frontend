@@ -18,7 +18,6 @@ const AuctionDetail = () => {
 
   const params = useParams();
   const data = useSelector((state) => state.auction.auction);
-  console.log(data);
 
   useEffect(() => {
     if (!params?.auctionId) {
@@ -31,15 +30,24 @@ const AuctionDetail = () => {
   if (!data) {
     return navigate(-1);
   }
-	
-  const handleDelete = () => {
-    dispatch(deleteAuctionItem(data.id));
-    navigate(-1, { replace: true });
+
+  const handleDelete = async () => {
+    try {
+      const response = await dispatch(deleteAuctionItem(data.id)).unwrap();
+      if (response) {
+        return navigate(-1, { replace: true });
+      }
+    } catch {}
   };
 
   return (
     <AuctionDetailLayout>
-      <Header back={true} share={true} menu={true} onClickBtn={handleDelete} />
+      <Header
+        back={true}
+        share={true}
+        menu={true}
+        handleDelete={handleDelete}
+      />
 
       <DetailBodyWrap>
         <ItemImgContainer>

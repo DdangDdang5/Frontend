@@ -39,7 +39,6 @@ const Search = () => {
   const searchList = useSelector((state) => state.search.data);
   const navigate = useNavigate();
   const token = getCookie("accessToken");
-  console.log(searchList);
   const [keyword, setKeyword] = useState("");
 
   const onKeyPress = (e) => {
@@ -80,8 +79,7 @@ const Search = () => {
                   return (
                     <SearchItem
                       key={item.auctionId}
-                      onClick={() => moveAuctionDetail(item.auctionId)}
-                    >
+                      onClick={() => moveAuctionDetail(item.auctionId)}>
                       <img
                         src={item.multiImages[0].imgUrl}
                         alt="auction-popular-img"
