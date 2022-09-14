@@ -58,7 +58,6 @@ export const editAuctionItem = createAsyncThunk(
         }
       );
       return thunkAPI.fulfillWithValue(response.data.data);
-      // return console.log("3333333333", response);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

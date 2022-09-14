@@ -5,7 +5,15 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 // Shared import
-import { Alarm, Back, Close, Menu, Logo, Search, Share } from "../../shared/images";
+import {
+  Alarm,
+  Back,
+  Close,
+  Menu,
+  Logo,
+  Search,
+  Share,
+} from "../../shared/images";
 
 // Style import
 import {
@@ -37,6 +45,7 @@ const Header = ({
   save,
   onClickBtn,
   onClickSave,
+  handleDelete,
 }) => {
   const navigate = useNavigate();
 
@@ -48,7 +57,11 @@ const Header = ({
           {back ? <Back onClick={() => navigate(-1)} /> : null}
           {close ? <Close onClick={() => navigate(-1)} /> : null}
           {pageName ? <PageTitle>{pageName}</PageTitle> : null}
-          {logo ? <Logo className="logo" onClick={() => navigate("/")}>땅땅</Logo> : null}
+          {logo ? (
+            <Logo className="logo" onClick={() => navigate("/")}>
+              땅땅
+            </Logo>
+          ) : null}
         </HeaderTitle>
 
         {/* right */}
