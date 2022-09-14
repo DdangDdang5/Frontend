@@ -8,7 +8,6 @@ import { useNavigate } from "react-router-dom";
 const AuctionRow = ({ data, isAuction }) => {
   const navigate = useNavigate();
 
-  console.log(data);
   const Img = <img src={data.multiImages[0].imgUrl} alt="" />;
 
   return (

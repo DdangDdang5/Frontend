@@ -18,7 +18,6 @@ function MyPageMyAuction() {
     followingItem,
   } = useSelector((state) => state.myPage);
   const [shouldShownData, setShouldShownData] = useState([]);
-  console.log("1111", shouldShownData);
 
   // useEffect(() => {
   //   dispatch(_MyPageInAuction());

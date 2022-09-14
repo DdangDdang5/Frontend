@@ -11,22 +11,20 @@ const ProfileEdit = () => {
   const navigate = useNavigate();
 
   const data = {
-    nickname: "",
+    nickName: "",
   };
 
   const profileData = useSelector((state) => state.myPage.myPage);
   const img_ref = useRef(null);
 
   const [inputForm, setInputForm] = useState(data);
-  console.log("닉네임!!!", inputForm);
   const [imgFile, setImgFile] = useState([]);
-  console.log("imgFile22222", imgFile);
   const [imagePreview, setImagePreview] = useState(profileData.profileImgUrl);
   const memberId = localStorage?.getItem("memberId");
 
-  useEffect(() => {
-    dispatch(editMyPage(memberId));
-  }, [memberId]);
+  // useEffect(() => {
+  //   dispatch(editMyPage(memberId));
+  // }, []);
 
   const onLoadFile = (e) => {
     const reader = new FileReader();
@@ -44,7 +42,7 @@ const ProfileEdit = () => {
     setInputForm({ ...inputForm, [name]: value });
   };
 
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = () => {
     let formData = new FormData();
     let uploadImg = img_ref.current;
 
@@ -53,7 +51,8 @@ const ProfileEdit = () => {
       new Blob([JSON.stringify(inputForm)], { type: "application/json" })
     );
     formData.append("profileImg", uploadImg.files[0]);
-    dispatch(editMyPage(formData));
+
+    dispatch(editMyPage({ memberId: memberId, formData: formData }));
     window.alert("새 게시물 만들기 완료");
     // 포스팅 완료후 새로고침
     navigate(-1, { replace: true });
@@ -84,8 +83,8 @@ const ProfileEdit = () => {
           <div className="MyTextInputWrap">
             <input
               type="text"
-              value={inputForm.nickname}
-              name="nickname"
+              value={inputForm.nickName}
+              name="nickName"
               onChange={onChangeHandler}
               placeholder="닉네임을 입력해주세요."
             />

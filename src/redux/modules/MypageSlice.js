@@ -84,12 +84,15 @@ export const editMyPage = createAsyncThunk(
   "editAuctionItem",
   async (payload, thunkAPI) => {
     // const { memberId } = thunkAPI.getState().myPage.myPage;
-
+    console.log(payload);
     try {
-      const response = await api.patch(`/member/${payload}/mypage`, payload, {
-        "Content-Type": "multipart/form-data",
-      });
-      console.log("마이페이지 수정", response.data.data);
+      const response = await api.patch(
+        `/member/${payload.memberId}/mypage`,
+        payload.formData,
+        {
+          "Content-Type": "multipart/form-data",
+        }
+      );
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

@@ -133,8 +133,6 @@ const AuctionWrite = () => {
     const imgList = e.target.files;
     const imgFileList = [];
     const imgUrlList = [];
-    console.log("imgList", imgList, imgFileList, imgUrlList);
-    console.log(imgFile, imagePreview);
 
     // imgFile.map((item) => imgUrlList.push(item));
 
@@ -142,7 +140,6 @@ const AuctionWrite = () => {
       imgUrlList.push(imagePreview[i]);
       imgFileList.push(imgFile[i]);
     }
-    console.log(imgUrlList);
 
     for (let i = 0; i < imgList.length; i++) {
       imgUrlList.push({
@@ -151,11 +148,9 @@ const AuctionWrite = () => {
       });
       imgFileList.push(imgList[i]);
     }
-    console.log(imgUrlList, imgFileList);
 
     setImgFile(imgFileList);
     setImagePreview(imgUrlList);
-    console.log(imgFile, imagePreview);
 
     // setFileImage(imgList);
     // setFileImageUrl(imgUrlList);
