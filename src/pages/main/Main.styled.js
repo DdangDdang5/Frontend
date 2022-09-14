@@ -13,6 +13,10 @@ export const MainContent = styled.div`
   bottom: 70px;
 
   overflow-y: scroll;
+	
+	&::-webkit-scrollbar {
+		display: none;
+	}
 `;
 
 export const BannerContainer = styled.div`

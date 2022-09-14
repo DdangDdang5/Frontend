@@ -13,4 +13,6 @@ export const ChatRoomList = styled.div`
   position: absolute;
   top: 70px;
   bottom: 70px;
+
+	overflow-y: scroll;
 `;
