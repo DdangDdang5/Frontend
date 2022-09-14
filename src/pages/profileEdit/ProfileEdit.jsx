@@ -18,15 +18,15 @@ const ProfileEdit = () => {
   const img_ref = useRef(null);
 
   const [inputForm, setInputForm] = useState(data);
-  // console.log("닉네임!!!", inputForm);
+  console.log("닉네임!!!", inputForm);
   const [imgFile, setImgFile] = useState([]);
-  // console.log("imgFile22222", imgFile);
+  console.log("imgFile22222", imgFile);
   const [imagePreview, setImagePreview] = useState(profileData.profileImgUrl);
-  const memberId = localStorage.getItem("memberId");
+  const memberId = localStorage?.getItem("memberId");
 
-  // useEffect(() => {
-  //   dispatch(editMyPage(memberId));
-  // }, [memberId]);
+  useEffect(() => {
+    dispatch(editMyPage(memberId));
+  }, [memberId]);
 
   const onLoadFile = (e) => {
     const reader = new FileReader();
@@ -45,7 +45,6 @@ const ProfileEdit = () => {
   };
 
   const onSubmitHandler = (e) => {
-    e.preventDefault();
     let formData = new FormData();
     let uploadImg = img_ref.current;
 
@@ -62,7 +61,7 @@ const ProfileEdit = () => {
 
   return (
     <ProfileEditLayout>
-      <Header back={true} pageName="프로필 수정"/>
+      <Header back={true} pageName="프로필 수정" />
 
       <MyProfile>
         <MyImgWrap>

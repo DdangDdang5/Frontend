@@ -11,7 +11,7 @@ const MyPageInterestAuction = () => {
   const data = useSelector((state) => state.myPage.myPageInterest);
   const [isAuction, setIsAuction] = useState(true);
 
-  // console.log("inter", data);
+  console.log("inter", data);
 
   useEffect(() => {
     dispatch(_MyPageInterestAuction());

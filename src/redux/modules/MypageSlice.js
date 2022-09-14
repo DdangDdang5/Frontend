@@ -16,7 +16,7 @@ export const _MyPageData = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get(`/member/${payload}/mypage`);
-      // return thunkAPI.fulfillWithValue(response.data.data);
+      return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -28,8 +28,10 @@ export const _MyPageInAuction = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const { paging } = thunkAPI.getState().myPage;
-      const response = await api.get(`/pagination/member/mypage/myauction`);
-      console.log("in", response);
+      const response = await api.get(
+        `/pagination/member/mypage/myauction?page=${paging}&size=6&sortBy=id&isAsc=false`
+      );
+      // console.log("_MyPageInAuction배돌", response);
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
       }
@@ -81,11 +83,10 @@ export const _MyPageParticipationAuction = createAsyncThunk(
 export const editMyPage = createAsyncThunk(
   "editAuctionItem",
   async (payload, thunkAPI) => {
-    const { memberId } = thunkAPI.getState().myPage.myPage;
-    // console.log("-------", memberId);
-    // console.log("1234", payload);
+    // const { memberId } = thunkAPI.getState().myPage.myPage;
+
     try {
-      const response = await api.patch(`/member/${memberId}/mypage`, payload, {
+      const response = await api.patch(`/member/${payload}/mypage`, payload, {
         "Content-Type": "multipart/form-data",
       });
       console.log("마이페이지 수정", response.data.data);
@@ -112,7 +113,7 @@ const myPageSlice = createSlice({
       console.log(action);
     },
     [_MyPageInAuction.fulfilled]: (state, action) => {
-      state._MyPageInAuction = [...state._MyPageInAuction, ...action.payload];
+      state.myPageIn = [...state.myPageIn, ...action.payload];
       state.loading = false;
       state.paging = state.paging + 1;
     },
@@ -120,10 +121,7 @@ const myPageSlice = createSlice({
       console.log(action);
     },
     [_MyPageInterestAuction.fulfilled]: (state, action) => {
-      state._MyPageInterestAuction = [
-        ...state._MyPageInterestAuction,
-        ...action.payload,
-      ];
+      state.myPageInterest = [...state.myPageInterest, ...action.payload];
       state.loading = false;
       state.paging = state.paging + 1;
     },

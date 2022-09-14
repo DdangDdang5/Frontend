@@ -92,21 +92,73 @@ const AuctionWrite = () => {
     });
   }, [regionName]);
 
+  useEffect(() => {}, [imagePreview]);
+
   // 이미지 업로드
+  // const onLoadFile = (e) => {
+  //   // 미리보기에선 삭제가 됬는데 업로드 올린건 삭제가 됬나?
+  //   const reader = new FileReader();
+
+  //   const imgList = e.target.files;
+  //   const imgUrlList = [];
+  //   // console.log("imgList", imgList, imgUrlList);
+
+  //   for (let i = 0; i < imgList.length; i++) {
+  //     imagePreview.push({ id: imagePreview.length, img: URL.createObjectURL(imgList[i]) });
+  //       imgUrlList.push(URL.createObjectURL(imgList[i]));
+  //   }
+  //    // console.log(imgUrlList);
+  //    console.log(imgUrlList);
+  //    console.log(imagePreview);
+
+  //   // setImgFile(...imgFile, ...imgUrlList);
+  //   // setImagePreview(...imagePreview, ...imgUrlList, { id: imagePreview.length, img: reader.result });
+  //    setImagePreview(imagePreview);
+  //    // console.log(imgFile);
+  //    console.log(imagePreview)
+
+  //   // const prevImg = e.target.files[0];
+
+  //   // reader.readAsDataURL(prevImg);
+  //   // reader.onloadend = () => {
+  //   //   setImagePreview([
+  //   //     ...imagePreview,
+  //    //       ...imgUrlList,
+  //   //     { id: imagePreview.length, img: reader.result },
+  //   //   ]);
+  //   // };
+  // };
+
   const onLoadFile = (e) => {
-    // 미리보기에선 삭제가 됬는데 업로드 올린건 삭제가 됬나?
-    const reader = new FileReader();
-    setImgFile(...imgFile, URL.createObjectURL(e.target.files[0]));
+    const imgList = e.target.files;
+    const imgFileList = [];
+    const imgUrlList = [];
+    console.log("imgList", imgList, imgFileList, imgUrlList);
+    console.log(imgFile, imagePreview);
 
-    const prevImg = e.target.files[0];
+    // imgFile.map((item) => imgUrlList.push(item));
 
-    reader.readAsDataURL(prevImg);
-    reader.onloadend = () => {
-      setImagePreview([
-        ...imagePreview,
-        { id: imagePreview.length, img: reader.result },
-      ]);
-    };
+    for (let i = 0; i < imagePreview.length; i++) {
+      imgUrlList.push(imagePreview[i]);
+      imgFileList.push(imgFile[i]);
+    }
+    console.log(imgUrlList);
+
+    for (let i = 0; i < imgList.length; i++) {
+      imgUrlList.push({
+        id: imagePreview.length,
+        img: URL.createObjectURL(imgList[i]),
+      });
+      imgFileList.push(imgList[i]);
+    }
+    console.log(imgUrlList, imgFileList);
+
+    setImgFile(imgFileList);
+    setImagePreview(imgUrlList);
+    console.log(imgFile, imagePreview);
+
+    // setFileImage(imgList);
+    // setFileImageUrl(imgUrlList);
   };
 
   const onRemove = (id) => {
@@ -138,7 +190,9 @@ const AuctionWrite = () => {
       }
     }
     // 이미지 업로드
-    let uploadImg = img_ref.current;
+    // let uploadImg = img_ref.current;
+    // console.log(uploadImg.files);
+
     let formData = new FormData();
     formData.append(
       "auctionRequestDto",
@@ -148,7 +202,12 @@ const AuctionWrite = () => {
       "tags",
       new Blob([JSON.stringify(initialTag)], { type: "application/json" })
     );
-    formData.append("images", uploadImg.files[0]);
+    // formData.append("images", uploadImg.file[0]);
+
+    for (let i = 0; i < imgFile.length; i++) {
+      formData.append("images", imgFile[i]);
+    }
+
     window.alert("새 게시물 만들기 완료");
 
     dispatch(addAuctionItem(formData));
@@ -159,7 +218,12 @@ const AuctionWrite = () => {
 
   return (
     <AuctionWriteLayout>
-      <Header back={true} pageName="경매 글쓰기" save={{type: "완료"}} onClickSave={onTransmitHandler} />
+      <Header
+        back={true}
+        pageName="경매 글쓰기"
+        save={{ type: "완료" }}
+        onClickSave={onTransmitHandler}
+      />
 
       <AuctionWriteWrap>
         <WriteImgContainer>
@@ -183,6 +247,7 @@ const AuctionWrite = () => {
             <input
               ref={img_ref}
               type="file"
+              multiple="multiple"
               accept="image/*"
               id="img_UpFile"
               onChange={onLoadFile}
