@@ -1,26 +1,6 @@
-// export const setCookie = (name, value, exp = 1) => {
-//   let date = new Date();
-//   date.setTime(date.getTime() + exp * 24 * 60 * 60 * 1000);
-//   //  let date = Date(exp);
-//   document.cookie = `${name}=${value}; expires=${date.toUTCString()}; path=/`;
-//   console.log(document.cookie);
-// };
+import { Cookies } from "react-cookie";
 
-// export const getCookie = (name) => {
-//   // console.log(document.cookie);
-//   // let value = "; " + document.cookie;
-//   // console.log(value);
-//   // let parts = value.split("; " + name + "=");
-//   // console.log(parts);
-//   // if (parts.length === 2) {
-//   //   return parts.pop().split(";").shift();
-//   // }
-
-//   let value = document.cookie.split(";");
-//   let parts = value[0].split(name + "=");
-
-//   return parts[parts.length - 1];
-// };
+const cookies = new Cookies();
 
 export const setCookie = function (name, value, exp) {
   var date = new Date();

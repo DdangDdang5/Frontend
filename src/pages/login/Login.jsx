@@ -10,6 +10,7 @@ import { history } from "../../redux/config/ConfigStore";
 import { MdCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { getCookie, setCookie } from "../../shared/Cookie";
+import { Cookies } from "react-cookie";
 
 // Component & Element import
 import Button from "../../elements/button/Button";
@@ -32,14 +33,17 @@ import {
   LoginBoxSignUpLink,
 } from "./Login.styled";
 
+// Shared import
+import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
+
 const Login = ({ location }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const REST_API_KEY = process.env.REACT_APP_KAKAO_REST_API_KEY;
-  const REDIRECT_URI = "http://localhost:3000/member/kakao/callback";
+  const [loginError, setLoginError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const cookies = new Cookies();
   const token = getCookie("accessToken");
 
   const isLogin = useSelector((state) => state.member.isLogin);
@@ -77,8 +81,19 @@ const Login = ({ location }) => {
         alert("이메일을 입력해주세요");
       } else if (emailRegExp.test(email) === false) {
         alert("이메일 형식에 맞지 않습니다");
-      } else {
-        dispatch(loginMemberThunk({ email, password }));
+      } else if (password === "") {
+        alert("비밀번호를 입력해주세요");
+      }
+      else {
+        dispatch(loginMemberThunk({ email, password })).then((res) => {
+         console.log(res)
+          if (res.payload.statusCode === 200) {
+          window.alert(`${res.payload.data.nickName}님 안녕하세요!`)
+          window.location.replace("/")
+         } else {
+          alert(res.payload.msg);
+         }
+        });
       }
     },
     [email, password]
@@ -86,7 +101,7 @@ const Login = ({ location }) => {
 
   return (
     <Fragment>
-      <Header close={true}/>
+      <Header close={true} />
       <LoginBox>
         <LoginBoxTitle>
           <LoginBoxTitleSpan>땅땅</LoginBoxTitleSpan>
@@ -146,7 +161,9 @@ const Login = ({ location }) => {
             type={"button"}
             text={"카카오로 로그인하기"}
             _onClick={() => {
-              window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+              // navigate("/member/kakao/callback")
+              // window.location.href = KAKAO_OAUTH_URL;
+            location.href="https://kauth.kakao.com/oauth/authorize?client_id=0e615a5250af79c8016d4690ed0abe7c&redirect_uri=https://sysgood.shop/member/kakao/callback&response_type=code">
             }}
             style={{
               width: "100%",

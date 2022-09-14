@@ -65,13 +65,15 @@ const AuctionList = () => {
       <Header back={true} pageName="경매 목록" search={true} alarm={true} />
       <ListCategoryWrap>
         <CategoryBtn
-          onClick={() => dispatch(showModal("categoryList"), _categoryList())}>
+          onClick={() => dispatch(showModal("categoryList"), _categoryList())}
+        >
           <CategoryBtnText>{categoryName}</CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
         </CategoryBtn>
         <CategoryBtn>
           <CategoryBtnText
-            onClick={() => dispatch(showModal("regionList"), _regionList())}>
+            onClick={() => dispatch(showModal("regionList"), _regionList())}
+          >
             {regionName}
           </CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
