@@ -19,9 +19,7 @@ function MyPageMyAuction() {
   } = useSelector((state) => state.myPage);
   const [shouldShownData, setShouldShownData] = useState([]);
 
-  // useEffect(() => {
-  //   dispatch(_MyPageInAuction());
-  // }, [isAuction]);
+  console.log(myPageInData);
 
   const auctionIng = myPageInData?.filter(
     (myPageInData) => myPageInData.auctionStatus === true

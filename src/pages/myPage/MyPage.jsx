@@ -11,7 +11,7 @@ const MyPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.myPage?.myPage);
-  const memberId = localStorage?.getItem("memberId");
+  const memberId = sessionStorage?.getItem("memberId");
 
   useEffect(() => {
     dispatch(_MyPageData(memberId));
@@ -114,7 +114,13 @@ const MyPage = () => {
           <div className="listIcon">
             <div></div>
           </div>
-          <div className="listTitle">로그아웃</div>
+          {memberId === null ? (
+            <div onClick={() => navigate("/login")} className="listTitle">
+              로그인
+            </div>
+          ) : (
+            <div className="listTitle">로그아웃</div>
+          )}
         </ListContainer>
       </MyProfileListWrap>
       <Footer myPage={true} />

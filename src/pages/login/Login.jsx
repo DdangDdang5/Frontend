@@ -15,7 +15,6 @@ import { Cookies } from "react-cookie";
 // Component & Element & Shared import
 import Button from "../../elements/button/Button";
 import Header from "../../components/header/Header";
-import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
 
 // Style import
 import {
@@ -84,16 +83,15 @@ const Login = ({ location }) => {
         alert("이메일 형식에 맞지 않습니다");
       } else if (password === "") {
         alert("비밀번호를 입력해주세요");
-      }
-      else {
+      } else {
         dispatch(loginMemberThunk({ email, password })).then((res) => {
-         console.log(res)
+          console.log(res);
           if (res.payload.statusCode === 200) {
-          window.alert(`${res.payload.data.nickName}님 안녕하세요!`)
-          window.location.replace("/")
-         } else {
-          alert(res.payload.msg);
-         }
+            window.alert(`${res.payload.data.nickName}님 안녕하세요!`);
+            window.location.replace("/");
+          } else {
+            alert(res.payload.msg);
+          }
         });
       }
     },

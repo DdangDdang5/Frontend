@@ -31,7 +31,7 @@ export const _MyPageInAuction = createAsyncThunk(
       const response = await api.get(
         `/pagination/member/mypage/myauction?page=${paging}&size=6&sortBy=id&isAsc=false`
       );
-      // console.log("_MyPageInAuction배돌", response);
+      console.log("_MyPageInAuction배돌", response);
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
       }
