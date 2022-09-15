@@ -12,9 +12,10 @@ import { useNavigate } from "react-router-dom";
 import { getCookie, setCookie } from "../../shared/Cookie";
 import { Cookies } from "react-cookie";
 
-// Component & Element import
+// Component & Element & Shared import
 import Button from "../../elements/button/Button";
 import Header from "../../components/header/Header";
+import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
 
 // Style import
 import {
@@ -161,9 +162,7 @@ const Login = ({ location }) => {
             type={"button"}
             text={"카카오로 로그인하기"}
             _onClick={() => {
-              // navigate("/member/kakao/callback")
-              // window.location.href = KAKAO_OAUTH_URL;
-            location.href="https://kauth.kakao.com/oauth/authorize?client_id=0e615a5250af79c8016d4690ed0abe7c&redirect_uri=https://sysgood.shop/member/kakao/callback&response_type=code">
+              window.location.href = KAKAO_OAUTH_URL;
             }}
             style={{
               width: "100%",
