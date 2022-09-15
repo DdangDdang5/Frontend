@@ -74,7 +74,9 @@ export const loginMemberThunk = createAsyncThunk(
 export const kakaoOauthThunk = createAsyncThunk(
   "member/kakaoLogin",
   async (payload, thunkAPI) => {
-    console.log(payload);
+    console.log("payload", payload);
+    console.log(KAKAO_OAUTH_URL);
+
     const resData = await api
       .get(process.env.REACT_APP_URL + "/member/kakao/callback", {
         params: {

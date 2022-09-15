@@ -3,6 +3,10 @@ import styled from "styled-components";
 export const SearchBox = styled.div`
   width: 100%;
   height: 100vh;
+  box-sizing: border-box;
+  top: 0;
+  bottom: 0;
+  overflow-y: scroll;
 `;
 
 export const SearchInputGroup = styled.div`
@@ -83,7 +87,7 @@ export const Loadingtext = styled.div`
 
 export const SearchItemList = styled.div`
   width: 100%;
-  margin-top: 16px; 
+  margin-top: 16px;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -92,17 +96,16 @@ export const SearchItemList = styled.div`
 `;
 
 export const SearchItem = styled.div`
-width: 165px;
-img {
-  width: 100%;
-  height: 160px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-}
+  width: 165px;
+  img {
+    width: 100%;
+    height: 160px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+  }
 `;
 
-export const SearchItemContent = styled.div`
-`;
+export const SearchItemContent = styled.div``;
 
 export const SearchTagWrap = styled.div`
   margin-bottom: 10px;
@@ -113,6 +116,7 @@ export const SearchTagWrap = styled.div`
     font-weight: bold;
     color: ${(props) => props.theme.colors.White};
     background-color: ${(props) => props.theme.colors.Blue1};
+    font-size: ${(props) => props.theme.fontSizes.sm};
     border-radius: 100px;
   }
 `;
