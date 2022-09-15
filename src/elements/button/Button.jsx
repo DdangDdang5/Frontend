@@ -25,7 +25,7 @@ export const StyledButton = styled.button`
   font-size: ${(props) => (props.ft_size ? props.ft_size : '16px')};
   background-color: ${(props) => (props.bg_color ? props.bg_color : '#54AEFF')};
   color: ${(props) => (props.color ? props.color : '#000000')};
-  border-radius: 10px;
+  border-radius: 8px;
   border: none;
   font-weight: 700;
   &:hover {

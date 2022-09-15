@@ -35,7 +35,12 @@ export const HeaderTitle = styled.div`
   align-items: center;
   gap: 8px;
 
-	.logo {
+	.close {
+		width: 16px;
+		height: 16px;
+	}
+  
+  .logo {
 		width: 56px;
 		height: 36px;
 	}

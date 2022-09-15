@@ -61,6 +61,7 @@ export const loginMemberThunk = createAsyncThunk(
 
         sessionStorage.setItem("accessToken", res.headers.authorization);
         sessionStorage.setItem("memberId", res.data.data.memberId);
+        sessionStorage.setItem("memberNickname", res.data.data.nickName);
         return res;
       } else {
         return res;
@@ -89,14 +90,14 @@ export const kakaoOauthThunk = createAsyncThunk(
           cookies.set(
             "accessToken",
             res.headers.authorization,
-            +res.headers.expires,
+            +res.headers.expires
           );
           cookies.set("memberId", res.data.data.memberId);
           console.log(cookies);
 
           sessionStorage.setItem("accessToken", res.headers.authorization);
           sessionStorage.setItem("memberId", res.data.data.memberId);
-
+          sessionStorage.setItem("memberNickname", res.data.data.nickName);
           window.location.replace("/");
           return res;
         } else {
@@ -105,7 +106,7 @@ export const kakaoOauthThunk = createAsyncThunk(
       });
     console.log(resData);
     return thunkAPI.fulfillWithValue(resData.data);
-  },
+  }
 );
 
 // export const loginCheckDB = () => {

@@ -7,7 +7,6 @@ import { loginMemberThunk } from "../../redux/modules/MemberSlice";
 import { history } from "../../redux/config/ConfigStore";
 
 // Package import
-import { MdCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { getCookie, setCookie } from "../../shared/Cookie";
 import { Cookies } from "react-cookie";
@@ -35,6 +34,7 @@ import {
 
 // Shared import
 import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
+import { Delete, Logo } from "../../shared/images";
 
 const Login = ({ location }) => {
   const [email, setEmail] = useState("");
@@ -100,10 +100,17 @@ const Login = ({ location }) => {
 
   return (
     <Fragment>
-      <Header close={true} />
+      <Header close={true}/>
       <LoginBox>
         <LoginBoxTitle>
-          <LoginBoxTitleSpan>땅땅</LoginBoxTitleSpan>
+          <LoginBoxTitleSpan>
+            <Logo
+              style={{
+                width: "44.51px",
+                height: "29px",
+              }}
+            />
+          </LoginBoxTitleSpan>
         </LoginBoxTitle>
         <LoginBoxForm onSubmit={(event) => onsubmitHandler(event)}>
           <LoginBoxInputGroup>
@@ -116,7 +123,7 @@ const Login = ({ location }) => {
                 required
               />
               <LoginBoxInputIcon ref={emailIconRef}>
-                <MdCancel onClick={deleteEmailText} className="icon" />
+                <Delete onClick={deleteEmailText} className="icon" />
               </LoginBoxInputIcon>
             </LoginBoxInputWrap>
           </LoginBoxInputGroup>
@@ -129,7 +136,7 @@ const Login = ({ location }) => {
                 placeholder="비밀번호를 입력하세요."
               />
               <LoginBoxInputIcon ref={emailIconRef}>
-                <MdCancel onClick={deletePasswordText} className="icon" />
+                <Delete onClick={deletePasswordText} className="icon" />
               </LoginBoxInputIcon>
             </LoginBoxInputWrap>
           </LoginBoxInputGroup>

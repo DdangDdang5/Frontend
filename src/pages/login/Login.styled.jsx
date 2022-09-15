@@ -66,8 +66,12 @@ export const LoginBoxInput = styled.input`
   font-size: ${(props) => props.theme.fontSizes.md};
   background-color: ${(props) => props.theme.colors.White};
   color: black;
-  border: 1px solid #dedede;
+  border: 1px solid ${(props) => props.theme.colors.Gray2};
   border-radius: 8px;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
   &:focus {
     outline: none;
     border-color: #6d6d6d;
@@ -78,8 +82,9 @@ export const LoginBoxInputIcon = styled.div`
   .icon {
     position: absolute;
     right: 10px;
-    color: #6d6d6d;
-    top: 50%;
+    color: ${(props) => props.theme.colors.Gray2};
+    top: 56%;
+    bottom: 0;
     transform: translate(-50%, -50%);
   }
 `;
@@ -115,14 +120,13 @@ export const LoginBoxSignUpText = styled.span`
   width: 100%;
   text-align: center;
   display: flex;
-  margin-left: 20px;
-  color: #6d6d6d;
-  font-size: 16px;
-  font-weight: 400;
+  color: ${(props) => props.theme.colors.Gray4};
+  font-size: ${(props) => props.theme.fontSizes.ms};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
   line-height: 140%;
-  letter-spacing: -0.05em;
   margin-top: 5%;
-  gap: 22%;
+  margin-left: 5%;
+  gap: 30%;
 `;
 
 export const LoginBoxSignUpLink = styled.span`
