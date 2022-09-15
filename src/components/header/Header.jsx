@@ -55,7 +55,7 @@ const Header = ({
         {/* left */}
         <HeaderTitle>
           {back ? <Back onClick={() => navigate(-1)} /> : null}
-          {close ? <Close onClick={() => navigate(-1)} /> : null}
+          {close ? <Close className="close" onClick={() => navigate(-1)} /> : null}
           {pageName ? <PageTitle>{pageName}</PageTitle> : null}
           {logo ? (
             <Logo className="logo" onClick={() => navigate("/")}>

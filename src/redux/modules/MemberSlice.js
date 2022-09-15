@@ -91,7 +91,7 @@ export const kakaoOauthThunk = createAsyncThunk(
           cookies.set(
             "accessToken",
             res.headers.authorization,
-            +res.headers.expires,
+            +res.headers.expires
           );
           cookies.set("memberId", res.data.data.memberId);
           console.log(cookies);
@@ -108,7 +108,7 @@ export const kakaoOauthThunk = createAsyncThunk(
       });
     console.log(resData);
     return thunkAPI.fulfillWithValue(resData.data);
-  },
+  }
 );
 
 // export const loginCheckDB = () => {

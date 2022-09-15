@@ -12,6 +12,7 @@ import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
 //styled
 import styled from "styled-components";
 import { Close, Next } from "../../shared/images";
+import Slider from "../../components/auction/Slider";
 import AuctionJoinModal from "../../components/modal/AuctionJoinModal";
 import Button from "../../elements/button/Button";
 
@@ -21,6 +22,10 @@ const AuctionDetail = () => {
 
   const params = useParams();
   const data = useSelector((state) => state.auction.auction);
+
+  const imgList = data.multiImages;
+
+  console.log(imgList);
 
   const [joinVisible, setJoinVisible] = useState(false);
   const [price, setPrice] = useState(0);
@@ -56,12 +61,13 @@ const AuctionDetail = () => {
           handleDelete={handleDelete}
         />
 
-        <DetailBodyWrap>
-          <ItemImgContainer>
-            {data?.multiImages?.[0]?.imgUrl && (
-              <img src={data.multiImages[0].imgUrl} alt="" />
-            )}
-          </ItemImgContainer>
+      <DetailBodyWrap>
+        <ItemImgContainer>
+          {/* {data?.multiImages?.[0]?.imgUrl && (
+            <img src={data.multiImages[0].imgUrl} alt="" />
+          )} */}
+          <Slider data={imgList} />
+        </ItemImgContainer>
 
           <DetailBodyContainer>
             <DetailBodyProfileBox>

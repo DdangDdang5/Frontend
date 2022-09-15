@@ -114,7 +114,13 @@ const MyPage = () => {
           <div className="listIcon">
             <div></div>
           </div>
-          <div className="listTitle">로그아웃</div>
+          {memberId === null ? (
+            <div onClick={() => navigate("/login")} className="listTitle">
+              로그인
+            </div>
+          ) : (
+            <div className="listTitle">로그아웃</div>
+          )}
         </ListContainer>
       </MyProfileListWrap>
       <Footer myPage={true} />

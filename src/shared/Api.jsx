@@ -18,8 +18,8 @@ api.interceptors.request.use((config) => {
   // const token = getCookie("accessToken");
   // const refreshToken = getCookie("refreshToken");
 
-	const token = sessionStorage.getItem("accessToken");
-	const refreshToken = sessionStorage.getItem("refreshToken");
+  const token = sessionStorage.getItem("accessToken");
+  const refreshToken = sessionStorage.getItem("refreshToken");
 
   config.headers.common["Authorization"] = token;
   config.headers.common["reAuthorization"] = refreshToken;
