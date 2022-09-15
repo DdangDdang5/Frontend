@@ -163,7 +163,6 @@ const Login = ({ location }) => {
             _onClick={() => {
               // navigate("/member/kakao/callback")
               // window.location.href = KAKAO_OAUTH_URL;
-            location.href="https://kauth.kakao.com/oauth/authorize?client_id=0e615a5250af79c8016d4690ed0abe7c&redirect_uri=https://sysgood.shop/member/kakao/callback&response_type=code">
             }}
             style={{
               width: "100%",
