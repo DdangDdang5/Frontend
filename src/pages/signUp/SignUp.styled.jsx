@@ -79,7 +79,7 @@ export const SignUpBoxInputIcon = styled.div`
   .icon {
     position: absolute;
     right: 10px;
-    color: ${(props) => props.theme.colors.Green1};
+    /* color: ${(props) => props.theme.colors.Green1}; */
     top: 50%;
     transform: translate(-50%, -50%);
   }
