@@ -15,11 +15,14 @@ const api = axios.create({
 
 // api.defaults.headers.common["authorization"] = token ? `${token}` : null;
 api.interceptors.request.use((config) => {
-  const token = getCookie("accessToken");
-  const refreshToken = getCookie("refreshToken");
+  // const token = getCookie("accessToken");
+  // const refreshToken = getCookie("refreshToken");
 
-  config.headers.common["Authorization"] = `Bearer ${token}`;
-  config.headers.common["reAuthorization"] = `Bearer ${refreshToken}`;
+	const token = sessionStorage.getItem("accessToken");
+	const refreshToken = sessionStorage.getItem("refreshToken");
+
+  config.headers.common["Authorization"] = token;
+  config.headers.common["reAuthorization"] = refreshToken;
 
   return config;
 });

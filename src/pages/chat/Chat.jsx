@@ -9,7 +9,7 @@ import Stomp from "stompjs";
 
 // Component import
 import Header from "../../components/header/Header";
-import MenuModal from "../../components/modal/MenuModal";
+import OptionModal from "../../components/modal/OptionModal";
 import { getChatMessageList } from "../../redux/modules/ChatSlice";
 import { Add, Send } from "../../shared/images";
 
@@ -114,7 +114,7 @@ const Chat = () => {
   const registerUser = () => {
     var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
     stompClient = Stomp.over(sockJS);
-    stompClient.debug = null; // stompJS console.log 막기
+    // stompClient.debug = null; // stompJS console.log 막기
 
     stompClient.connect({}, onConnected, onError);
   };
@@ -259,14 +259,14 @@ const Chat = () => {
       </ChatContainer>
 
       {/* 메뉴 모달 */}
-      <MenuModal minHeight="200px" visible={visible} setVisible={setVisible}>
+      <OptionModal minHeight="200px" visible={visible} setVisible={setVisible}>
         <MenuItemList>
           <MenuItem>거래 완료하기</MenuItem>
           <MenuItem>차단하기</MenuItem>
           <MenuItem>신고하기</MenuItem>
           <MenuItem onClick={onDisconnected}>채팅방 나가기</MenuItem>
         </MenuItemList>
-      </MenuModal>
+      </OptionModal>
     </>
   );
 };

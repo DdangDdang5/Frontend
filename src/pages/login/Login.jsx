@@ -15,7 +15,6 @@ import { Cookies } from "react-cookie";
 // Component & Element & Shared import
 import Button from "../../elements/button/Button";
 import Header from "../../components/header/Header";
-import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
 
 // Style import
 import {

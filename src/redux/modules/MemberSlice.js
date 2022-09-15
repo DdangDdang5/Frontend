@@ -61,6 +61,8 @@ export const loginMemberThunk = createAsyncThunk(
 
         sessionStorage.setItem("accessToken", res.headers.authorization);
         sessionStorage.setItem("memberId", res.data.data.memberId);
+        sessionStorage.setItem("memberNickname", res.data.data.nickName);
+				
         return res;
       } else {
         return res;
@@ -96,6 +98,7 @@ export const kakaoOauthThunk = createAsyncThunk(
 
           sessionStorage.setItem("accessToken", res.headers.authorization);
           sessionStorage.setItem("memberId", res.data.data.memberId);
+					sessionStorage.setItem("memberNickname", res.data.data.nickName);
 
           window.location.replace("/");
           return res;

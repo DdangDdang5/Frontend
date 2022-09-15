@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 //components
@@ -11,7 +11,9 @@ import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
 
 //styled
 import styled from "styled-components";
-import { Next } from "../../shared/images";
+import { Close, Next } from "../../shared/images";
+import AuctionJoinModal from "../../components/modal/AuctionJoinModal";
+import Button from "../../elements/button/Button";
 
 const AuctionDetail = () => {
   const dispatch = useDispatch();
@@ -19,6 +21,9 @@ const AuctionDetail = () => {
 
   const params = useParams();
   const data = useSelector((state) => state.auction.auction);
+
+  const [joinVisible, setJoinVisible] = useState(false);
+  const [price, setPrice] = useState(0);
 
   useEffect(() => {
     if (!params?.auctionId) {
@@ -42,60 +47,65 @@ const AuctionDetail = () => {
   };
 
   return (
-    <AuctionDetailLayout>
-      <Header
-        back={true}
-        share={true}
-        menu={true}
-        handleDelete={handleDelete}
-      />
+    <>
+      <AuctionDetailLayout>
+        <Header
+          back={true}
+          share={true}
+          menu={true}
+          handleDelete={handleDelete}
+        />
 
-      <DetailBodyWrap>
-        <ItemImgContainer>
-          {data?.multiImages?.[0]?.imgUrl && (
-            <img src={data.multiImages[0].imgUrl} alt="" />
-          )}
-        </ItemImgContainer>
+        <DetailBodyWrap>
+          <ItemImgContainer>
+            {data?.multiImages?.[0]?.imgUrl && (
+              <img src={data.multiImages[0].imgUrl} alt="" />
+            )}
+          </ItemImgContainer>
 
-        <DetailBodyContainer>
-          <DetailBodyProfileBox>
-            <DetailBodyProfileImg>
-              <img src={data.profileImgUrl} alt="" />
-            </DetailBodyProfileImg>
-            <div className="DetailBodyProfile">
-              <DetailBodyProfileContent>
-                <div className="nickName">{data.member.nickName}</div>
-                <div className="trustCount">신뢰도</div>
-              </DetailBodyProfileContent>
-              <div>신고</div>
-            </div>
-          </DetailBodyProfileBox>
+          <DetailBodyContainer>
+            <DetailBodyProfileBox>
+              <DetailBodyProfileImg>
+                <img src={data.profileImgUrl} alt="" />
+              </DetailBodyProfileImg>
+              <div className="DetailBodyProfile">
+                <DetailBodyProfileContent>
+                  <div className="nickName">{data.member.nickName}</div>
+                  <div className="trustCount">신뢰도</div>
+                </DetailBodyProfileContent>
+                <div>신고</div>
+              </div>
+            </DetailBodyProfileBox>
 
-          <DetailBodyTitle>{data.title}</DetailBodyTitle>
+            <DetailBodyTitle>{data.title}</DetailBodyTitle>
 
-          <DetailBodySelectTag>
-            {data.direct ? <div>택배</div> : ""}
-            {data.delivery ? <div>직거래</div> : ""}
-            {data.region ? <div>{data.region}</div> : ""}
-          </DetailBodySelectTag>
+            <DetailBodySelectTag>
+              {data.direct ? <div>택배</div> : ""}
+              {data.delivery ? <div>직거래</div> : ""}
+              {data.region ? <div>{data.region}</div> : ""}
+            </DetailBodySelectTag>
 
-          <DetailBodyContent>{data.content}</DetailBodyContent>
-          <DetailBodyViewTag>
-            <div>관심 10</div>
-            <div>조회 {data.viewerCnt}</div>
-          </DetailBodyViewTag>
-          <DetailBodyItemTag></DetailBodyItemTag>
-        </DetailBodyContainer>
+            <DetailBodyContent>{data.content}</DetailBodyContent>
+            <DetailBodyViewTag>
+              <div>관심 10</div>
+              <div>조회 {data.viewerCnt}</div>
+            </DetailBodyViewTag>
+            <DetailBodyItemTag></DetailBodyItemTag>
+          </DetailBodyContainer>
 
-        <CommentCountContainer onClick={() => navigate("/chat/roomId", { state: { isDetail: true }})}>
-          <CommentCountWrap>
-            <CommentCountTitle>실시간 채팅방</CommentCountTitle>
-            <p>{data.participantCnt}명 참여중</p>
-          </CommentCountWrap>
-					<Next />
-        </CommentCountContainer>
+          <CommentCountContainer
+            onClick={() =>
+              navigate("/chat/roomId", { state: { isDetail: true } })
+            }
+          >
+            <CommentCountWrap>
+              <CommentCountTitle>실시간 채팅방</CommentCountTitle>
+              <p>{data.participantCnt}명 참여중</p>
+            </CommentCountWrap>
+            <Next />
+          </CommentCountContainer>
 
-        {/* <DetailCommentContainer>
+          {/* <DetailCommentContainer>
           <CommentFormBox>
             <div className="inputBox">
               <textarea placeholder="댓글을 입력해주세요." rows="" cols="" />
@@ -103,24 +113,70 @@ const AuctionDetail = () => {
             </div>
           </CommentFormBox>
         </DetailCommentContainer> */}
-      </DetailBodyWrap>
+        </DetailBodyWrap>
 
-      <DetailFooterWrap>
-        <DetailFooterTimeContainer>
-          <p>남은 시간</p>
-          <h3>{data.createdAt}</h3>
-        </DetailFooterTimeContainer>
-        <DetailFooterContainer>
-          <FooterLeftBox>
-            <div className="presentPrice">{`시작가 ${data.startPrice}원`}</div>
-            <div className="price">{`현재가 ${data.nowPrice}원`}</div>
-          </FooterLeftBox>
-          <FooterRightBox>
-            <button>입찰하기</button>
-          </FooterRightBox>
-        </DetailFooterContainer>
-      </DetailFooterWrap>
-    </AuctionDetailLayout>
+        <DetailFooterWrap>
+          <DetailFooterTimeContainer>
+            <p>남은 시간</p>
+            <h3>{data.createdAt}</h3>
+          </DetailFooterTimeContainer>
+          <DetailFooterContainer>
+            <FooterLeftBox>
+              <div className="presentPrice">{`시작가 ${data.startPrice}원`}</div>
+              <div className="price">{`현재가 ${data.nowPrice}원`}</div>
+            </FooterLeftBox>
+            <FooterRightBox>
+              <button onClick={() => setJoinVisible(true)}>입찰하기</button>
+            </FooterRightBox>
+          </DetailFooterContainer>
+        </DetailFooterWrap>
+      </AuctionDetailLayout>
+
+      <AuctionJoinModal visible={joinVisible} setVisible={setJoinVisible}>
+        <AuctionJoinModalContent>
+          <AuctionJoinIcon>
+            <img src="/maskable.png" alt="auction-join" />
+          </AuctionJoinIcon>
+
+          <AuctionJoinCloseWrap>
+            <Close onClick={() => setJoinVisible(false)} />
+          </AuctionJoinCloseWrap>
+          <AuctionNowPriceWrap>
+            <span>현재 최고가</span>
+            <AuctionNowPrice>50000원</AuctionNowPrice>
+          </AuctionNowPriceWrap>
+          <AuctionJoinInfo>
+            입찰 후에는 금액을 수정하거나 취소할 수 없습니다.
+          </AuctionJoinInfo>
+          <AuctionJoinInput
+            type="number"
+            value={price}
+            onChange={(e) => setPrice(e.target.value)}
+            placeholder="입찰 가격을 입력해주세요."
+          />
+          {price <= Math.max(data.startPrice, data.nowPrice) ? (
+	          <AuctionJoinInputInfo>
+	            현재 최고가보다 낮은 호가입니다.
+	          </AuctionJoinInputInfo>
+          ) : (
+						<AuctionJoinInputInfo></AuctionJoinInputInfo>
+          )}
+          <ButtonContainer>
+            <Button
+              type={"submit"}
+              text={"입찰하기"}
+              style={{
+                width: "100%",
+                height: "56px",
+                ft_size: "18px",
+                color: "#FFFFFF",
+                bg_color: "#4D71FF",
+              }}
+            />
+          </ButtonContainer>
+        </AuctionJoinModalContent>
+      </AuctionJoinModal>
+    </>
   );
 };
 
@@ -128,6 +184,7 @@ const AuctionDetailLayout = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
 `;
 const DetailBodyWrap = styled.div`
   display: flex;
@@ -270,13 +327,13 @@ const CommentCountContainer = styled.div`
     height: 16px;
   }
 
-	svg {
-		width: 10px;
-		height: 18px;
-		path {
-			fill: ${(props) => props.theme.colors.Gray3};
-		}
-	}
+  svg {
+    width: 10px;
+    height: 18px;
+    path {
+      fill: ${(props) => props.theme.colors.Gray3};
+    }
+  }
 `;
 
 const CommentCountWrap = styled.div`
@@ -400,6 +457,101 @@ const FooterRightBox = styled.div`
     border: none;
     border-radius: 8px;
   }
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  margin-top: 2% auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const AuctionJoinIcon = styled.div`
+  width: 104px;
+  height: 104px;
+
+  background-color: ${(props) => props.theme.colors.White};
+  border-radius: 50%;
+
+  position: absolute;
+  top: -30%;
+  right: 50%;
+  transform: translate(50%, 50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 82px;
+    height: 82px;
+
+    border-radius: 50%;
+  }
+`;
+
+const AuctionJoinModalContent = styled.div`
+  padding: 20px;
+  /* background-color: aliceblue; */
+`;
+
+const AuctionJoinCloseWrap = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+`;
+
+const AuctionNowPriceWrap = styled.div`
+  margin-top: 45px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+
+  span {
+    color: ${(props) => props.theme.colors.Black};
+    font-size: ${(props) => props.theme.fontSizes.md};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+  }
+`;
+
+const AuctionNowPrice = styled.span`
+  font-size: ${(props) => props.theme.fontSizes.xl} !important;
+  font-weight: ${(props) => props.theme.fontWeights.medium} !important;
+`;
+
+const AuctionJoinInfo = styled.p`
+  margin-top: 1px;
+
+  color: ${(props) => props.theme.colors.Gray3};
+  font-size: ${(props) => props.theme.fontSizes.sm};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
+
+  text-align: center;
+`;
+
+const AuctionJoinInput = styled.input`
+  width: calc(100% - 30px);
+  height: 22px;
+  margin-top: 20px;
+  padding: 16px 15px;
+
+  background: ${(props) => props.theme.colors.White};
+  border: 1px solid ${(props) => props.theme.colors.Gray1};
+  border-radius: 8px;
+`;
+
+const AuctionJoinInputInfo = styled.p`
+	height: 20px;
+  margin-top: 8px;
+
+  color: ${(props) => props.theme.colors.Red};
+  font-size: ${(props) => props.theme.fontSizes.sm};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
 `;
 
 export default AuctionDetail;

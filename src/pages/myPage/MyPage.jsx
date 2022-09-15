@@ -11,7 +11,7 @@ const MyPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.myPage?.myPage);
-  const memberId = localStorage?.getItem("memberId");
+  const memberId = sessionStorage?.getItem("memberId");
 
   useEffect(() => {
     dispatch(_MyPageData(memberId));

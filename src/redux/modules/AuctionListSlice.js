@@ -11,6 +11,20 @@ const initialState = {
   paging: 1,
 };
 
+export const auctionItemListNotPage = createAsyncThunk(
+	"getAuctionItemList",
+	async (payload, thunkAPI) => {
+		try {
+			const response = await api.get("/auction");
+			console.log(response);
+
+			return thunkAPI.fulfillWithValue(response.data.data);
+		} catch (err) {
+			return thunkAPI.rejectWithValue(err);
+		}
+	}
+)
+
 export const auctionItemList = createAsyncThunk(
   "getAuctionItemList",
   async (payload, thunkAPI) => {
@@ -131,6 +145,11 @@ const auctionListSlice = createSlice({
     },
   },
   extraReducers: {
+		[auctionItemListNotPage.fulfilled]: (state, action) => {
+			// console.log(action.payload);
+			state.auctionList = action.payload;
+		},
+
     [auctionItemList.fulfilled]: (state, action) => {
       state.auctionList = [...state.auctionList, ...action.payload];
       state.loading = false;
