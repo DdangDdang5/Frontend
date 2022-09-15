@@ -6,24 +6,27 @@ import api from "../../shared/Api";
 
 const initialState = {
   auctionList: [],
+  auctionHitList: [],
+  auctionNewList: [],
+  auctionDeadlineList: [],
   loading: false,
   followingItem: true,
   paging: 1,
 };
 
 export const auctionItemListNotPage = createAsyncThunk(
-	"getAuctionItemList",
-	async (payload, thunkAPI) => {
-		try {
-			const response = await api.get("/auction");
-			console.log(response);
+  "getAuctionItemList",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get("/auction");
+      console.log(response);
 
-			return thunkAPI.fulfillWithValue(response.data.data);
-		} catch (err) {
-			return thunkAPI.rejectWithValue(err);
-		}
-	}
-)
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (err) {
+      return thunkAPI.rejectWithValue(err);
+    }
+  },
+);
 
 export const auctionItemList = createAsyncThunk(
   "getAuctionItemList",
@@ -32,7 +35,7 @@ export const auctionItemList = createAsyncThunk(
       // auctionList는 스토어에 있는 리덕스
       const { paging } = thunkAPI.getState().auctionList;
       const response = await api.get(
-        `/pagination/auction?page=${paging}&size=6&sortBy=id&isAsc=false`
+        `/pagination/auction?page=${paging}&size=6&sortBy=id&isAsc=false`,
       );
       console.log("auctionItemListSlice", response);
       if (response?.data?.data && response?.data?.data <= 0) {
@@ -42,7 +45,7 @@ export const auctionItemList = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const addAuctionItem = createAsyncThunk(
@@ -56,7 +59,7 @@ export const addAuctionItem = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const editAuctionItem = createAsyncThunk(
@@ -68,13 +71,13 @@ export const editAuctionItem = createAsyncThunk(
         payload.formData,
         {
           "Content-Type": "multipart/form-data",
-        }
+        },
       );
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const deleteAuctionItem = createAsyncThunk(
@@ -86,7 +89,7 @@ export const deleteAuctionItem = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const auctionCategoryList = createAsyncThunk(
@@ -98,7 +101,7 @@ export const auctionCategoryList = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const auctionRegionList = createAsyncThunk(
@@ -110,7 +113,7 @@ export const auctionRegionList = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const auctionCategoryRegionList = createAsyncThunk(
@@ -118,13 +121,49 @@ export const auctionCategoryRegionList = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get(
-        `/auction/category/${payload.categoryName}/region/${payload.regionName}`
+        `/auction/category/${payload.categoryName}/region/${payload.regionName}`,
       );
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
+);
+
+export const getAuctionHitList = createAsyncThunk(
+  "getAuctionHitList",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get("/auction/hit");
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+export const getAuctionNewList = createAsyncThunk(
+  "getAuctionNewList",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get("/auction/new-release");
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
+);
+
+export const getAuctionDeadlineList = createAsyncThunk(
+  "getAuctionDeadlineList",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get("/auction/deadline");
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
 );
 
 const auctionListSlice = createSlice({
@@ -145,10 +184,10 @@ const auctionListSlice = createSlice({
     },
   },
   extraReducers: {
-		[auctionItemListNotPage.fulfilled]: (state, action) => {
-			// console.log(action.payload);
-			state.auctionList = action.payload;
-		},
+    [auctionItemListNotPage.fulfilled]: (state, action) => {
+      // console.log(action.payload);
+      state.auctionList = action.payload;
+    },
 
     [auctionItemList.fulfilled]: (state, action) => {
       state.auctionList = [...state.auctionList, ...action.payload];
@@ -188,7 +227,7 @@ const auctionListSlice = createSlice({
 
     [deleteAuctionItem.fulfilled]: (state, action) => {
       state.auctionList = state.auctionList.filter(
-        (post) => post.auctionId !== action.payload
+        (post) => post.auctionId !== action.payload,
       );
     },
     [deleteAuctionItem.rejected]: (state, action) => {
@@ -218,6 +257,33 @@ const auctionListSlice = createSlice({
     [auctionCategoryRegionList.rejected]: (state, action) => {
       console.log(action);
     },
+
+		// 인기 경매 4개 조회
+    [getAuctionHitList.fulfilled]: (state, action) => {
+			// action.payload  -> top 4 hit auction list
+      state.auctionHitList = action.payload;
+    },
+		[getAuctionHitList.rejected]: (state, action) => {
+			console.log(action);
+		},
+
+		// 새로운 경매 3개 조회
+    [getAuctionNewList.fulfilled]: (state, action) => {
+      // action.payload -> 3 new release auction list 
+      state.auctionNewList = action.payload;
+    },
+		[getAuctionNewList.rejected]: (state, action) => {
+			console.log(action);
+		},
+
+		// 마감임박 경매 4개 조회
+    [getAuctionDeadlineList.fulfilled]: (state, action) => {
+      // action.payload -> 4 deadline auction list
+      state.auctionDeadlineList = action.payload;
+    },
+		[getAuctionDeadlineList.rejected]: (state, action) => {
+			console.log(action);
+		}
   },
 });
 
