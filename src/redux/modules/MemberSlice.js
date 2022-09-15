@@ -1,17 +1,21 @@
 // Redux import
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { Cookies } from "react-cookie";
 
 // Shared import
 import api from "../../shared/Api";
 import { getCookie, setCookie } from "../../shared/Cookie";
+import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
+
+const cookies = new Cookies();
 
 export const emailCheckThunk = createAsyncThunk(
   "member/emailCheck",
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/emailcheck`, payload);
     return thunkAPI.fulfillWithValue(resData.data.data);
-  },
+  }
 );
 
 export const nickNameCheckThunk = createAsyncThunk(
@@ -19,7 +23,7 @@ export const nickNameCheckThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/nicknamecheck`, payload);
     return thunkAPI.fulfillWithValue(resData.data.data);
-  },
+  }
 );
 
 export const signUpMemberThunk = createAsyncThunk(
@@ -36,81 +40,69 @@ export const signUpMemberThunk = createAsyncThunk(
       }
     });
     return thunkAPI.fulfillWithValue(resData.data.data);
-  },
+  }
 );
 
 export const loginMemberThunk = createAsyncThunk(
   "member/loginMember",
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/login`, payload).then((res) => {
-      if (res.data.success === false) {
-        return window.alert(res.data.err.message);
-      } else {
-        console.log(res);
-        localStorage.setItem("memberId", res.data.data.memberId);
-        localStorage.setItem("accessToken", res.headers.authorization);
-        console.log(localStorage.getItem("accessToken"));
-
-        console.log(res.headers);
-        setCookie(
+      console.log(res);
+      if (res.data.statusCode === 200) {
+        // const tokeretn = getCookie("accessToken");
+        // setCookie("accessToken", res.headers.authorization, +res.headers.expires);
+        cookies.set(
           "accessToken",
           res.headers.authorization,
           +res.headers.expires
         );
-        const cookie = getCookie("accessToken");
-        console.log(cookie);
+        cookies.set("memberId", res.data.data.memberId);
+        console.log(cookies);
 
-        return (
-          window.alert(`${res.data.data.nickName}님 안녕하세요!`),
-          window.location.replace("/")
-        );
+        sessionStorage.setItem("accessToken", res.headers.authorization);
+        sessionStorage.setItem("memberId", res.data.data.memberId);
+        return res;
+      } else {
+        return res;
       }
     });
-    return thunkAPI.fulfillWithValue(resData.data.data);
-  },
+    console.log(resData);
+    return thunkAPI.fulfillWithValue(resData.data);
+  }
 );
 
 export const kakaoOauthThunk = createAsyncThunk(
   "member/kakaoLogin",
   async (payload, thunkAPI) => {
-    console.log("payload", payload);
+    console.log(payload);
     const resData = await api
-      .get("/member/kakao/callback", {
+      .get(process.env.REACT_APP_URL + "/member/kakao/callback", {
         params: {
           code: payload,
         },
       })
       .then((res) => {
         console.log(res);
-        if (res.data.statusCode) {
-          localStorage.setItem("memberId", res.data.data.email);
-          localStorage.setItem("accessToken", res.headers.authorization);
-          console.log(res.data.data);
-
-          setCookie(
+        if (res.data.statusCode === 200) {
+          cookies.set(
             "accessToken",
-            res.headers["authorization"],
+            res.headers.authorization,
             +res.headers.expires,
           );
+          cookies.set("memberId", res.data.data.memberId);
+          console.log(cookies);
 
-          const cookie = getCookie("accessToken");
-          console.log(cookie);
-           window.location.replace('/');
+          sessionStorage.setItem("accessToken", res.headers.authorization);
+          sessionStorage.setItem("memberId", res.data.data.memberId);
+
+          window.location.replace("/");
+          return res;
+        } else {
           return res;
         }
-      })
-      .catch((err) => console.log(err));
-
-    // window.localStorage.setItem(
-    //   "authorization",
-    //   resData.headers["authorization"].split(" ")[1]
-    // );
-    // window.localStorage.setItem(
-    //   "refresh-token",
-    //   resData.headers["refresh-token"]
-    // );
-
-    return thunkAPI.fulfillWithValue(resData.data.data);
+      });
+    console.log(resData);
+    return thunkAPI.fulfillWithValue(resData.data);
   },
 );
 
@@ -149,6 +141,7 @@ export const memberSlice = createSlice({
       state.isLogin = true;
     });
     builder.addCase(kakaoOauthThunk.fulfilled, (state, action) => {
+      state.member = action.payload;
       console.log(state, action);
     });
   },

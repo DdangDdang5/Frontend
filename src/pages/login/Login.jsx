@@ -11,9 +11,10 @@ import { MdCancel } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import { getCookie, setCookie } from "../../shared/Cookie";
 
-// Component & Element import
+// Component & Element & Shared import
 import Button from "../../elements/button/Button";
 import Header from "../../components/header/Header";
+import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
 
 // Style import
 import {
@@ -146,7 +147,7 @@ const Login = ({ location }) => {
             type={"button"}
             text={"카카오로 로그인하기"}
             _onClick={() => {
-              window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${REST_API_KEY}&redirect_uri=${REDIRECT_URI}&response_type=code`;
+              window.location.href = KAKAO_OAUTH_URL;
             }}
             style={{
               width: "100%",
