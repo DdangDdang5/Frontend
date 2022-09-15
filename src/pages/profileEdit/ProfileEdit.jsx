@@ -20,8 +20,9 @@ const ProfileEdit = () => {
   const [inputForm, setInputForm] = useState(data);
   const [imgFile, setImgFile] = useState([]);
   const [imagePreview, setImagePreview] = useState(profileData.profileImgUrl);
-  const memberId = localStorage?.getItem("memberId");
+  const memberId = sessionStorage?.getItem("memberId");
 
+  // console.log("memberId", memberId);
   // useEffect(() => {
   //   dispatch(editMyPage(memberId));
   // }, []);
