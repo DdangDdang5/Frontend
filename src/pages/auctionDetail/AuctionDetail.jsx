@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 //components
@@ -12,6 +12,7 @@ import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
 //styled
 import styled from "styled-components";
 import { Next } from "../../shared/images";
+import Slider from "../../components/auction/Slider";
 
 const AuctionDetail = () => {
   const dispatch = useDispatch();
@@ -19,6 +20,10 @@ const AuctionDetail = () => {
 
   const params = useParams();
   const data = useSelector((state) => state.auction.auction);
+
+  const imgList = data.multiImages;
+
+  console.log(imgList);
 
   useEffect(() => {
     if (!params?.auctionId) {
@@ -52,9 +57,10 @@ const AuctionDetail = () => {
 
       <DetailBodyWrap>
         <ItemImgContainer>
-          {data?.multiImages?.[0]?.imgUrl && (
+          {/* {data?.multiImages?.[0]?.imgUrl && (
             <img src={data.multiImages[0].imgUrl} alt="" />
-          )}
+          )} */}
+          <Slider data={imgList} />
         </ItemImgContainer>
 
         <DetailBodyContainer>
@@ -87,12 +93,15 @@ const AuctionDetail = () => {
           <DetailBodyItemTag></DetailBodyItemTag>
         </DetailBodyContainer>
 
-        <CommentCountContainer onClick={() => navigate("/chat/roomId", { state: { isDetail: true }})}>
+        <CommentCountContainer
+          onClick={() =>
+            navigate("/chat/roomId", { state: { isDetail: true } })
+          }>
           <CommentCountWrap>
             <CommentCountTitle>실시간 채팅방</CommentCountTitle>
             <p>{data.participantCnt}명 참여중</p>
           </CommentCountWrap>
-					<Next />
+          <Next />
         </CommentCountContainer>
 
         {/* <DetailCommentContainer>
@@ -270,13 +279,13 @@ const CommentCountContainer = styled.div`
     height: 16px;
   }
 
-	svg {
-		width: 10px;
-		height: 18px;
-		path {
-			fill: ${(props) => props.theme.colors.Gray3};
-		}
-	}
+  svg {
+    width: 10px;
+    height: 18px;
+    path {
+      fill: ${(props) => props.theme.colors.Gray3};
+    }
+  }
 `;
 
 const CommentCountWrap = styled.div`
