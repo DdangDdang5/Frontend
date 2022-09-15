@@ -82,7 +82,7 @@ const Main = () => {
 
   useEffect(() => {
     dispatch(auctionItemList());
-  }, [dispatch]);
+  }, [dispatch, JSON.stringify(auctionAllList)]);
 
   const moveAuctionDetail = (auctionId) => {
     navigate(`/auctionDetail/${auctionId}`);

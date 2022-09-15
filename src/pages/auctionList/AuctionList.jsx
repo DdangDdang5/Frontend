@@ -29,12 +29,14 @@ const AuctionList = () => {
     paging,
     followingItem,
   } = useSelector((state) => state.auctionList);
+  console.log("AuctionListData", AuctionListData);
 
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
 
   useEffect(() => {
     dispatch(_categoryList());
+
     dispatch(_regionList());
 
     if (categoryName === "전체 품목" && regionName === "서울 전체") {

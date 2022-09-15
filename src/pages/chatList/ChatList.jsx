@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 
 // Redux import
-import { makeChatRoom } from "../../redux/modules/ChatSlice";
+import { getChatRoomList, makeChatRoom } from "../../redux/modules/ChatSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
@@ -20,17 +20,16 @@ const ChatList = () => {
 	const chatRoomList = useSelector((state) => state.chat.chatRoomList);
 
   useEffect(() => {
-    // onMakeChatRoom();
-		// console.log(chatRoomList);
-		dispatch(makeChatRoom());
-  }, [dispatch]);
+		// dispatch(makeChatRoom());
+		dispatch(getChatRoomList());
+  }, [JSON.stringify(chatRoomList)]);
 
   return (
     <ChatListContainer>
       <Header pageName="채팅" alarm={true} />
       <ChatRoomList>
-        {Array.from({ length: 4 }, (_, idx) => (
-          <ChatRoom key={idx} roomId={chatRoomList[0]?.roomId} />
+				{chatRoomList?.map((item) => (
+          <ChatRoom key={item.roomId} room={item} />
         ))}
       </ChatRoomList>
       <Footer chat={true} />

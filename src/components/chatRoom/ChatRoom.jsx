@@ -16,15 +16,15 @@ import {
   ChatRoomProfile,
 } from "./ChatRoom.styled";
 
-const ChatRoom = ({ roomId }) => {
+const ChatRoom = ({ room }) => {
 	const navigate = useNavigate();
 
   return (
-    <ChatRoomContainer onClick={() => navigate(`/chat/${roomId}`)}>
+    <ChatRoomContainer onClick={() => navigate(`/chat/${room.roomId}`)}>
       <ChatRoomProfile src="maskable.png" alt="profile" />
       <ChatRoomContent>
         <ChatRoomInfo>
-          <ChatRoomNickname>nickname</ChatRoomNickname>
+          <ChatRoomNickname>{room.roomName}</ChatRoomNickname>
           <span>오후 2:30</span>
         </ChatRoomInfo>
 				<ChatRoomMessageWrap>

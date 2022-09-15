@@ -82,18 +82,21 @@ const SignUp = () => {
         /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
       if (!emailRegExp.test(email)) {
         emailSpanRef.current.innerText = "이메일 형식에 맞지 않습니다.";
-        emailSpanRef.current.style.color = "#BCBCBC";
+        emailSpanRef.current.style.color = "#FF664D";
+        emailRef.current.style.borderColor = "#FF664D";
         setEmailCheck(false);
       } else {
         dispatch(emailCheckThunk({ email })).then((res) => {
           if (!res.payload) {
             emailSpanRef.current.innerText = "중복되는 이메일입니다.";
-            emailSpanRef.current.style.color = "#BCBCBC";
+            emailSpanRef.current.style.color = "#FF664D";
+                  emailRef.current.style.borderColor = "#FF664D";
             setEmailCheck(true);
           } else {
             emailSpanRef.current.innerText = "사용가능한 이메일입니다.";
-            emailSpanRef.current.style.color = "#BCBCBC";
+            emailSpanRef.current.style.color = "#1DC79A";
             emailIconRef.current.color = "blue";
+                  emailRef.current.style.borderColor = "#1DC79A";
             setEmailCheck(false);
           }
         });
@@ -214,6 +217,7 @@ const SignUp = () => {
               <SignUpBoxInput
                 type="text"
                 value={email}
+                        ref={emailRef}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="이메일 주소를 입력하세요."
                 required

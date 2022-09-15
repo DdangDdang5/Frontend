@@ -58,6 +58,10 @@ export const loginMemberThunk = createAsyncThunk(
         );
         cookies.set("memberId", res.data.data.memberId);
         console.log(cookies);
+
+        sessionStorage.setItem("accessToken", res.headers.authorization);
+        sessionStorage.setItem("memberId", res.data.data.memberId);
+        sessionStorage.setItem("memberNickname", res.data.data.nickName);
         return res;
       } else {
         return res;
@@ -75,51 +79,33 @@ export const kakaoOauthThunk = createAsyncThunk(
     console.log(KAKAO_OAUTH_URL);
 
     const resData = await api
-      .get("/member/kakao/callback", {
+      .get(process.env.REACT_APP_URL + "/member/kakao/callback", {
         params: {
           code: payload,
         },
       })
       .then((res) => {
         console.log(res);
-        // if (res.data.statusCode === 200) {
-        //   console.log(res);
-        //   cookies.set(
-        //     "accessToken",
-        //     res.headers.authorization,
-        //     +res.headers.expires
-        //   );
-        //   cookies.set("memberId", res.data.data.memberId);
-        //   // setCookie(
-        //   //   "accessToken",
-        //   //   res.headers["authorization"],
-        //   //   +res.headers.expires
-        //   // );
+        if (res.data.statusCode === 200) {
+          cookies.set(
+            "accessToken",
+            res.headers.authorization,
+            +res.headers.expires
+          );
+          cookies.set("memberId", res.data.data.memberId);
+          console.log(cookies);
 
-        //   // cookies.set(
-        //   //   "accessToken",
-        //   //   res.headers["authorization"],
-        //   //   +res.headers.expires
-        //   // );
-
-        //   const cookie = getCookie("accessToken");
-        //   console.log(cookie);
-        //   window.location.replace("/");
-        //   return res;
-        // }
-      })
-      .catch((err) => console.log(err));
-
-    // window.localStorage.setItem(
-    //   "authorization",
-    //   resData.headers["authorization"].split(" ")[1]
-    // );
-    // window.localStorage.setItem(
-    //   "refresh-token",
-    //   resData.headers["refresh-token"]
-    // );
-
-    // return thunkAPI.fulfillWithValue(resData.data.data);
+          sessionStorage.setItem("accessToken", res.headers.authorization);
+          sessionStorage.setItem("memberId", res.data.data.memberId);
+          sessionStorage.setItem("memberNickname", res.data.data.nickName);
+          window.location.replace("/");
+          return res;
+        } else {
+          return res;
+        }
+      });
+    console.log(resData);
+    return thunkAPI.fulfillWithValue(resData.data);
   }
 );
 
@@ -158,6 +144,7 @@ export const memberSlice = createSlice({
       state.isLogin = true;
     });
     builder.addCase(kakaoOauthThunk.fulfilled, (state, action) => {
+      state.member = action.payload;
       console.log(state, action);
     });
   },
