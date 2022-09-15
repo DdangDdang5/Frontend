@@ -58,7 +58,7 @@ const actionDivisionSlice = createSlice({
             return { ...item, categoryName: "스포츠/레저" };
           case "취미게임악기":
             return { ...item, categoryName: "취미/게임/악기" };
-          case "뷰티/미용":
+          case "뷰티미용":
             return { ...item, categoryName: "뷰티/미용" };
           default:
             return item;
