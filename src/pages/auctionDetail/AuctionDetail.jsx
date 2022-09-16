@@ -35,6 +35,7 @@ const AuctionDetail = () => {
   const imgList = data.multiImages;
 
   const nickName = sessionStorage.getItem("memberNickname");
+  // console.log("111111", imgList);
 
   const [joinVisible, setJoinVisible] = useState(false);
   // const [price, setPrice] = useState(data.nowPrice);
@@ -175,13 +176,7 @@ const AuctionDetail = () => {
 
         <DetailBodyWrap>
           <ItemImgContainer>
-            {/* {data?.multiImages?.[0]?.imgUrl && (
-            <img src={data.multiImages[0].imgUrl} alt="" />
-          )} */}
             <Slider data={imgList} />
-            {/* {data.multiImages.length > 0 && (
-              <SwipeImage isMain={false} data={imgList} minHeight="390px" />
-            )} */}
           </ItemImgContainer>
 
           <DetailBodyContainer>
@@ -328,11 +323,12 @@ const DetailBodyWrap = styled.div`
 `;
 const ItemImgContainer = styled.div`
   display: flex;
+  width: 100%;
   margin-bottom: 20px;
-  img {
+  /* img {
     width: 100%;
     height: 390px;
-  }
+  } */
 `;
 const DetailBodyContainer = styled.div`
   display: flex;

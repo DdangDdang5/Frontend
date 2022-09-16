@@ -108,29 +108,31 @@ export const LoginBoxkakaoButtonGroup = styled.div`
 `;
 
 export const LoginBoxSignUp = styled.div`
-  width: 100%;
+  width: 90%;
   height: 15%;
+  margin-top: 5%;
   box-sizing: border-box;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-`;
 
-export const LoginBoxSignUpText = styled.span`
-  width: 100%;
-  text-align: center;
-  display: flex;
   color: ${(props) => props.theme.colors.Gray4};
   font-size: ${(props) => props.theme.fontSizes.ms};
   font-weight: ${(props) => props.theme.fontWeights.normal};
+`;
+
+export const LoginBoxSignUpText = styled.span`
+  /* width: 100%; */
+  text-align: center;
+  display: flex;
   line-height: 140%;
-  margin-top: 5%;
-  margin-left: 5%;
-  gap: 30%;
+  /* margin-left: 5%; */
+  /* gap: 30%; */
 `;
 
 export const LoginBoxSignUpLink = styled.span`
   margin-left: 10px;
+
   &:hover {
     color: #000000;
     cursor: pointer;

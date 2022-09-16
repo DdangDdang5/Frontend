@@ -33,6 +33,7 @@ import {
   Loadingtext,
   SearchItemList,
 } from "./Search.styled";
+import SearchHistory from "../../components/search/SearchHistory";
 
 const Search = () => {
   const dispatch = useDispatch();
@@ -53,6 +54,10 @@ const Search = () => {
     navigate(`/auctionDetail/${auctionId}`);
   };
 
+  const handleClearKeyword = () => {
+    setKeyword([]);
+  };
+
   return (
     <Fragment>
       <SearchBox>
@@ -70,6 +75,10 @@ const Search = () => {
           </SearchInputWrap>
         </SearchInputGroup>
         <SearchFilterGroup>
+          <SearchHistory
+            keyword={keyword}
+            onClearKeyword={handleClearKeyword}
+          />
           <SearchFilterTitleSpan>최근 검색했어요</SearchFilterTitleSpan>
           <SearchFilterWrap>
             <SearchItemList>
@@ -79,7 +88,8 @@ const Search = () => {
                   return (
                     <SearchItem
                       key={item.auctionId}
-                      onClick={() => moveAuctionDetail(item.auctionId)}>
+                      onClick={() => moveAuctionDetail(item.auctionId)}
+                    >
                       <img
                         src={item.multiImages[0].imgUrl}
                         alt="auction-popular-img"
