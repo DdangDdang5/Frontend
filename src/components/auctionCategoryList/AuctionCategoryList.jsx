@@ -11,8 +11,21 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-// Component import
+// Component & Shared import
 import AuctionCategory from "../auctionCategory/AuctionCategory";
+import {
+  Accessory,
+  Beauty,
+  Digital,
+  Hobby,
+  HomeElectronics,
+  Interior,
+  LogoNormal,
+  ManFashion,
+  Next,
+  Sport,
+  WomanFashion,
+} from "../../shared/images";
 
 // Style import
 import {
@@ -30,7 +43,7 @@ const AuctionCategoryList = ({ isCategory }) => {
 
   // 카테고리 목록, 지역 목록
   const { categoryList, regionList } = useSelector(
-    (state) => state.auctionDivision
+    (state) => state.auctionDivision,
   );
 
   // isCategory === true -> category / false -> place
@@ -53,21 +66,21 @@ const AuctionCategoryList = ({ isCategory }) => {
         </CategoryTitle>
         <CategoryMore onClick={() => navigate("/auctionList")}>
           <span>전체 보기</span>
-          <img src="maskable.png" alt="all" />
+          <Next />
         </CategoryMore>
       </CategoryHeader>
       <CategoryList>
         {list6?.map((item, idx) =>
           isCategory ? (
             <AuctionCategory
-							division="categoryList"
+              division="categoryList"
               divisionName={item.categoryName}
               key={idx}
             />
           ) : (
             <AuctionCategory
-							division="regionList"
-							divisionName={item.regionName}
+              division="regionList"
+              divisionName={item.regionName}
               key={idx}
             />
           ),

@@ -16,3 +16,14 @@ export const ChatRoomList = styled.div`
 
 	overflow-y: scroll;
 `;
+
+export const NoChatRoom = styled.div`
+	height: 100%;
+
+	font-size: ${(props) => props.theme.fontSizes.xl};
+	font-weight: ${(props) => props.theme.fontWeights.bold};
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+`;
