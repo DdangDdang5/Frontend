@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 // Style import
 import {
-	ChatRoomAlarm,
+  ChatRoomAlarm,
   ChatRoomContainer,
   ChatRoomContent,
   ChatRoomInfo,
@@ -17,22 +17,28 @@ import {
 } from "./ChatRoom.styled";
 
 const ChatRoom = ({ room }) => {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
-    <ChatRoomContainer onClick={() => navigate(`/chat/${room.roomId}`)}>
+    <ChatRoomContainer
+      onClick={() =>
+        navigate(`/chat/${room.roomId}`, {
+          state: { isDetail: false, title: room.roomName },
+        })
+      }
+    >
       <ChatRoomProfile src="maskable.png" alt="profile" />
       <ChatRoomContent>
         <ChatRoomInfo>
           <ChatRoomNickname>{room.roomName}</ChatRoomNickname>
           <span>오후 2:30</span>
         </ChatRoomInfo>
-				<ChatRoomMessageWrap>
-	        <ChatRoomMessage>
-	          채팅방 메세지 내용입니다. 두 줄까지 확인 가능합니다.
-	        </ChatRoomMessage>
-					<ChatRoomAlarm>1</ChatRoomAlarm>
-				</ChatRoomMessageWrap>
+        <ChatRoomMessageWrap>
+          <ChatRoomMessage>
+            채팅방 메세지 내용입니다. 두 줄까지 확인 가능합니다.
+          </ChatRoomMessage>
+          <ChatRoomAlarm>1</ChatRoomAlarm>
+        </ChatRoomMessageWrap>
       </ChatRoomContent>
     </ChatRoomContainer>
   );

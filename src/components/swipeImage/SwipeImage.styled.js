@@ -37,7 +37,7 @@ export const SwipeImg = styled.img`
   position: absolute;
 	z-index: -5;
 
-  object-fit: cover;
+  object-fit: contain;
 `;
 
 export const SwipeImgLayer = styled.div`
@@ -122,7 +122,7 @@ export const SwipeIdx = styled.div`
 
   position: absolute;
 	top: ${(props) => (props.isMain ? "20px" : null)};
-	right: ${(props) => (props.isMain ? "20px" : "50%")};
+	right: ${(props) => (props.isMain ? "20px" : "45%")};
 	bottom: ${(props) => (props.isMain ? null : "17px")};
 
   display: flex;
@@ -158,4 +158,21 @@ export const SwipeBtn = styled.button`
   &:hover {
     opacity: 1;
   }
+
+	svg {
+		width: 15px;
+		height: 15px;
+
+		path {
+			fill: ${(props) => props.theme.colors.Gray4};
+		}
+	}
+
+	.back-btn {
+		margin-right: 2px;
+	}
+
+	.next-btn {
+		margin-left: 2px;
+	}
 `;

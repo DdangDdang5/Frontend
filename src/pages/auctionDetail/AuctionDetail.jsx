@@ -1,20 +1,29 @@
+// React import
 import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 
-//components
-import Header from "../../components/header/Header";
-
-//reducer
+// Reducer import
 import { useSelector, useDispatch } from "react-redux";
 import { auctionDetailData } from "../../redux/modules/AuctionSlice";
 import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
+import { history } from "../../redux/config/ConfigStore";
 
-//styled
+// Package import
+import { useNavigate, useParams } from "react-router-dom";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 import styled from "styled-components";
-import { Close, Next } from "../../shared/images";
+
+// Component import
+import Header from "../../components/header/Header";
 import Slider from "../../components/auction/Slider";
 import AuctionJoinModal from "../../components/modal/AuctionJoinModal";
+import SwipeImage from "../../components/swipeImage/SwipeImage";
+
+// Element & Shared import
 import Button from "../../elements/button/Button";
+import { Close, Next } from "../../shared/images";
+
+var stompClient = null;
 
 const AuctionDetail = () => {
   const dispatch = useDispatch();
@@ -25,18 +34,35 @@ const AuctionDetail = () => {
 
   const imgList = data.multiImages;
 
-  console.log(imgList);
+  const nickName = sessionStorage.getItem("memberNickname");
 
   const [joinVisible, setJoinVisible] = useState(false);
-  const [price, setPrice] = useState(0);
+  // const [price, setPrice] = useState(data.nowPrice);
+
+  const [chatList, setChatList] = useState([]);
+  const [userData, setUserData] = useState({
+    type: "",
+    roomId: data.bidRoomId,
+    sender: "",
+    message: data.nowPrice,
+    createdAt: "",
+  });
 
   useEffect(() => {
     if (!params?.auctionId) {
       return <></>;
     } else {
-      dispatch(auctionDetailData(+params?.auctionId));
-    }
-  }, [params?.auctionId]);
+      dispatch(auctionDetailData(+params?.auctionId)).then((res) => {
+				if (data.bidRoomId !== undefined && chatList.length === 0) {
+					registerUser();
+				}
+			});
+		}
+  }, [JSON.stringify(data)]);
+
+  useEffect(() => {
+    dispatch(auctionDetailData(+params?.auctionId));
+  }, [JSON.stringify(chatList)]);
 
   if (!data) {
     return navigate(-1);
@@ -51,6 +77,92 @@ const AuctionDetail = () => {
     } catch {}
   };
 
+  const onClickAuctionJoin = async () => {
+    // 비로그인 -> 세션에 닉네임 없음
+    if (!nickName) {
+      if (window.confirm("로그인이 필요합니다. 로그인하시겠습니까?")) {
+        navigate("/login");
+      }
+    } else {
+      // 입찰 모달 보여줌
+      setJoinVisible(true);
+    }
+  };
+
+  // 웹소켓 연결
+  const registerUser = () => {
+    var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
+    stompClient = Stomp.over(sockJS);
+    // stompClient.debug = null; // stompJS console.log 막기
+
+    stompClient.connect({}, onConnected, onError);
+  };
+
+  const onConnected = () => {
+    // setUserData({ ...userData, type: "ENTER" });
+    // console.log(userData);
+
+    stompClient.subscribe(
+      `/topic/chat/room/${data.bidRoomId}`,
+      onMessageReceived,
+    );
+
+    // 채팅방 들어감
+    // userJoin();
+  };
+
+  const onError = (err) => {
+    console.log(err);
+  };
+
+  const userJoin = () => {
+    let chatMessage = {
+      type: "ENTER",
+      roomId: data.bidRoomId,
+      sender: nickName,
+      message: data.nowPrice,
+    };
+
+    stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
+  };
+
+  const onMessageReceived = (payload) => {
+    let payloadData = JSON.parse(payload.body);
+
+    if (payloadData.type === "ENTER" || payloadData.type === "TALK") {
+      chatList.push(payloadData);
+      setChatList([...chatList]);
+    }
+  };
+
+  const sendMessage = () => {
+    if (stompClient && userData.message) {
+      let chatMessage = {
+        type: "TALK",
+        roomId: data.bidRoomId,
+        sender: nickName,
+        message: userData.message,
+      };
+
+      stompClient.send(
+        "/app/chat/bid",
+        {},
+        JSON.stringify({ ...chatMessage, type: "ENTER" }),
+      );
+
+      stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
+      setUserData({ ...userData, message: "" });
+
+      setJoinVisible(false);
+    }
+  };
+
+  const onKeyPress = (event) => {
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+  };
+
   return (
     <>
       <AuctionDetailLayout>
@@ -61,18 +173,21 @@ const AuctionDetail = () => {
           handleDelete={handleDelete}
         />
 
-      <DetailBodyWrap>
-        <ItemImgContainer>
-          {/* {data?.multiImages?.[0]?.imgUrl && (
+        <DetailBodyWrap>
+          <ItemImgContainer>
+            {/* {data?.multiImages?.[0]?.imgUrl && (
             <img src={data.multiImages[0].imgUrl} alt="" />
           )} */}
-          <Slider data={imgList} />
-        </ItemImgContainer>
+            <Slider data={imgList} />
+            {/* {data.multiImages.length > 0 && (
+              <SwipeImage isMain={false} data={imgList} minHeight="390px" />
+            )} */}
+          </ItemImgContainer>
 
           <DetailBodyContainer>
             <DetailBodyProfileBox>
               <DetailBodyProfileImg>
-                <img src={data.profileImgUrl} alt="" />
+                <img src={data.member.profileImgUrl} alt="" />
               </DetailBodyProfileImg>
               <div className="DetailBodyProfile">
                 <DetailBodyProfileContent>
@@ -101,7 +216,9 @@ const AuctionDetail = () => {
 
           <CommentCountContainer
             onClick={() =>
-              navigate("/chat/roomId", { state: { isDetail: true } })
+              navigate(`/chat/${data.chatRoomId}`, {
+                state: { isDetail: true, title: data.title },
+              })
             }
           >
             <CommentCountWrap>
@@ -129,15 +246,18 @@ const AuctionDetail = () => {
           <DetailFooterContainer>
             <FooterLeftBox>
               <div className="presentPrice">{`시작가 ${data.startPrice}원`}</div>
+							{/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
               <div className="price">{`현재가 ${data.nowPrice}원`}</div>
             </FooterLeftBox>
             <FooterRightBox>
-              <button onClick={() => setJoinVisible(true)}>입찰하기</button>
+              <button onClick={onClickAuctionJoin}>입찰하기</button>
             </FooterRightBox>
           </DetailFooterContainer>
         </DetailFooterWrap>
       </AuctionDetailLayout>
 
+      {/* 경매 입찰 모달 */}
+			<>
       <AuctionJoinModal visible={joinVisible} setVisible={setJoinVisible}>
         <AuctionJoinModalContent>
           <AuctionJoinIcon>
@@ -149,28 +269,34 @@ const AuctionDetail = () => {
           </AuctionJoinCloseWrap>
           <AuctionNowPriceWrap>
             <span>현재 최고가</span>
-            <AuctionNowPrice>50000원</AuctionNowPrice>
+            <AuctionNowPrice>
+              {Math.max(data.startPrice, data.nowPrice)}원
+            </AuctionNowPrice>
           </AuctionNowPriceWrap>
           <AuctionJoinInfo>
             입찰 후에는 금액을 수정하거나 취소할 수 없습니다.
           </AuctionJoinInfo>
           <AuctionJoinInput
             type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
+            value={userData.message}
+            onChange={(event) =>
+              setUserData({ ...userData, message: event.target.value })
+            }
+            onKeyDown={(event) => onKeyPress(event)}
             placeholder="입찰 가격을 입력해주세요."
           />
-          {price <= Math.max(data.startPrice, data.nowPrice) ? (
-	          <AuctionJoinInputInfo>
-	            현재 최고가보다 낮은 호가입니다.
-	          </AuctionJoinInputInfo>
+          {userData.message <= Math.max(data.startPrice, data.nowPrice) ? (
+            <AuctionJoinInputInfo>
+              현재 최고가보다 낮은 호가입니다.
+            </AuctionJoinInputInfo>
           ) : (
-						<AuctionJoinInputInfo></AuctionJoinInputInfo>
+            <AuctionJoinInputInfo></AuctionJoinInputInfo>
           )}
           <ButtonContainer>
             <Button
               type={"submit"}
               text={"입찰하기"}
+              _onClick={sendMessage}
               style={{
                 width: "100%",
                 height: "56px",
@@ -182,6 +308,7 @@ const AuctionDetail = () => {
           </ButtonContainer>
         </AuctionJoinModalContent>
       </AuctionJoinModal>
+			</>
     </>
   );
 };
@@ -499,6 +626,15 @@ const AuctionJoinIcon = styled.div`
   }
 `;
 
+// const AuctionWrap = styled.div`
+// 	background-color: aliceblue;
+// 	height: fit-content;
+// 	position: absolute;
+// 	bottom: 50%;
+// 	left: 0;
+// 	right: 0;
+// `;
+
 const AuctionJoinModalContent = styled.div`
   padding: 20px;
   /* background-color: aliceblue; */
@@ -552,7 +688,7 @@ const AuctionJoinInput = styled.input`
 `;
 
 const AuctionJoinInputInfo = styled.p`
-	height: 20px;
+  height: 20px;
   margin-top: 8px;
 
   color: ${(props) => props.theme.colors.Red};

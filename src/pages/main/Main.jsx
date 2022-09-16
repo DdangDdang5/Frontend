@@ -68,7 +68,7 @@ const Main = () => {
     dispatch(getAuctionHitList());
     dispatch(getAuctionNewList());
     // dispatch(getAuctionDeadlineList());
-  }, []);
+  }, [JSON.stringify(auctionHitList), JSON.stringify(auctionNewList)]);
 
   const moveAuctionDetail = (auctionId) => {
     navigate(`/auctionDetail/${auctionId}`);
@@ -81,7 +81,7 @@ const Main = () => {
       <MainContent>
         {/* 배너 */}
         <BannerContainer>
-          <SwipeImage isMain={true} data={auctionDeadlineList} height="100%" />
+          <SwipeImage isMain={true} data={auctionHitList} height="100%" />
         </BannerContainer>
 
         {/* 카테고리별, 지역별 TOP 6 */}
