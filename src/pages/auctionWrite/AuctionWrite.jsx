@@ -12,10 +12,7 @@ import Header from "../../components/header/Header";
 //redux import
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/exports";
-import {
-  addAuctionItem,
-  auctionItemList,
-} from "../../redux/modules/AuctionListSlice";
+import { addAuctionItem } from "../../redux/modules/AuctionListSlice";
 import {
   showModal,
   _categoryList,
@@ -64,77 +61,26 @@ const AuctionWrite = () => {
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
 
-  console.log("배돌배돌", inputForm);
-
-  // useEffect(() => {
-  //   if (categoryName === "전체품목" && regionName === "전체지역") {
-  //     dispatch(auctionItemList());
-  //   }
-  //   setInputForm({ ...inputForm, category: categoryName });
-  //   setInputForm({ ...inputForm, region: regionName });
-  // }, [categoryName, regionName]);
+  console.log("배돌배돌", inputForm.auctionPeriod);
 
   useEffect(() => {
-    // if (categoryName === "전체품목") {
-    //   dispatch(auctionItemList());
-    // }
     setInputForm((prev) => {
       return { ...prev, category: categoryName };
     });
   }, [categoryName]);
 
   useEffect(() => {
-    // if (categoryName === "전체지역") {
-    //   dispatch(auctionItemList());
-    // }
     setInputForm((prev) => {
       return { ...prev, region: regionName };
     });
   }, [regionName]);
 
-  useEffect(() => {}, [imagePreview]);
-
-  // 이미지 업로드
-  // const onLoadFile = (e) => {
-  //   // 미리보기에선 삭제가 됬는데 업로드 올린건 삭제가 됬나?
-  //   const reader = new FileReader();
-
-  //   const imgList = e.target.files;
-  //   const imgUrlList = [];
-  //   // console.log("imgList", imgList, imgUrlList);
-
-  //   for (let i = 0; i < imgList.length; i++) {
-  //     imagePreview.push({ id: imagePreview.length, img: URL.createObjectURL(imgList[i]) });
-  //       imgUrlList.push(URL.createObjectURL(imgList[i]));
-  //   }
-  //    // console.log(imgUrlList);
-  //    console.log(imgUrlList);
-  //    console.log(imagePreview);
-
-  //   // setImgFile(...imgFile, ...imgUrlList);
-  //   // setImagePreview(...imagePreview, ...imgUrlList, { id: imagePreview.length, img: reader.result });
-  //    setImagePreview(imagePreview);
-  //    // console.log(imgFile);
-  //    console.log(imagePreview)
-
-  //   // const prevImg = e.target.files[0];
-
-  //   // reader.readAsDataURL(prevImg);
-  //   // reader.onloadend = () => {
-  //   //   setImagePreview([
-  //   //     ...imagePreview,
-  //    //       ...imgUrlList,
-  //   //     { id: imagePreview.length, img: reader.result },
-  //   //   ]);
-  //   // };
-  // };
+  useEffect(() => {}, [imagePreview, inputForm.auctionPeriod]);
 
   const onLoadFile = (e) => {
     const imgList = e.target.files;
     const imgFileList = [];
     const imgUrlList = [];
-
-    // imgFile.map((item) => imgUrlList.push(item));
 
     for (let i = 0; i < imagePreview.length; i++) {
       imgUrlList.push(imagePreview[i]);
@@ -151,15 +97,6 @@ const AuctionWrite = () => {
 
     setImgFile(imgFileList);
     setImagePreview(imgUrlList);
-
-    // setFileImage(imgList);
-    // setFileImageUrl(imgUrlList);
-  };
-
-  const onRemove = (id) => {
-    return setImagePreview(
-      imagePreview.filter((imagePreview) => imagePreview.id !== id)
-    );
   };
 
   const onChangeHandler = (e) => {
@@ -171,6 +108,7 @@ const AuctionWrite = () => {
     }
   };
 
+  // 이미지, 태그 , 글 업로드
   const onTransmitHandler = () => {
     // 태그 추가
     let tagList = tags.split("#");
@@ -184,9 +122,6 @@ const AuctionWrite = () => {
         delete initialTag[tmp];
       }
     }
-    // 이미지 업로드
-    // let uploadImg = img_ref.current;
-    // console.log(uploadImg.files);
 
     let formData = new FormData();
     formData.append(
@@ -197,7 +132,6 @@ const AuctionWrite = () => {
       "tags",
       new Blob([JSON.stringify(initialTag)], { type: "application/json" })
     );
-    // formData.append("images", uploadImg.file[0]);
 
     for (let i = 0; i < imgFile.length; i++) {
       formData.append("images", imgFile[i]);
@@ -209,6 +143,13 @@ const AuctionWrite = () => {
     // 포스팅 완료후 새로고침
 
     navigate(-1, { replace: true });
+  };
+
+  // 이미지 미리보기 삭제
+  const onRemove = (id) => {
+    return setImagePreview(
+      imagePreview.filter((imagePreview) => imagePreview.id !== id)
+    );
   };
 
   return (
@@ -249,16 +190,18 @@ const AuctionWrite = () => {
               style={{ display: "none" }}
             />
           </ImgBoxBtn>
-          {imagePreview.map((item, index) => {
-            return (
-              <ImgBox key={index}>
-                <img src={item.img} alt="" />
-                <div className="deleteBox" onClick={() => onRemove(item.id)}>
-                  <div>x</div>
-                </div>
-              </ImgBox>
-            );
-          })}
+          <ImgBoxWrap>
+            {imagePreview.map((item, index) => {
+              return (
+                <ImgBox key={index}>
+                  <img src={item.img} id={index} alt="" />
+                  <div className="deleteBox" onClick={() => onRemove(item.id)}>
+                    <div>x</div>
+                  </div>
+                </ImgBox>
+              );
+            })}
+          </ImgBoxWrap>
         </WriteImgContainer>
 
         <WriteTitleContainer>제목</WriteTitleContainer>
@@ -315,6 +258,28 @@ const AuctionWrite = () => {
           onChange={onChangeHandler}
         />
         {/* <input className="inputTag" type="text" placeholder="원" /> */}
+
+        <WriteTitleContainer>경매 일수</WriteTitleContainer>
+        <WriteTitleAuctionDay>
+          <button
+            className="btn1"
+            state={inputForm.auctionPeriod}
+            onClick={() => setInputForm({ ...inputForm, auctionPeriod: 1 })}>
+            1
+          </button>
+          <button
+            className="btn5"
+            state={inputForm.auctionPeriod}
+            onClick={() => setInputForm({ ...inputForm, auctionPeriod: 5 })}>
+            5
+          </button>
+          <button
+            className="btn7"
+            state={inputForm.auctionPeriod}
+            onClick={() => setInputForm({ ...inputForm, auctionPeriod: 7 })}>
+            7
+          </button>
+        </WriteTitleAuctionDay>
 
         <WriteTitleContainer>
           배송 방법
@@ -409,12 +374,12 @@ const WriteImgContainer = styled.div`
   /* height: 93px; */
   min-height: 93px;
   gap: 12px;
-  overflow-y: scroll;
+  /* overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
   ::-webkit-scrollbar {
     display: none;
-  }
+  } */
 `;
 const ImgBoxBtn = styled.button`
   display: flex;
@@ -437,6 +402,19 @@ const ImgBoxBtn = styled.button`
     font-weight: 400;
   }
 `;
+
+const ImgBoxWrap = styled.div`
+  display: flex;
+  min-height: 93px;
+  gap: 12px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 const ImgBox = styled.div`
   display: flex;
   height: 100%;
@@ -444,6 +422,8 @@ const ImgBox = styled.div`
   width: 93px;
   gap: 16px;
   position: relative;
+  background-color: yellow;
+
   img {
     display: flex;
     object-fit: cover;
@@ -558,6 +538,45 @@ const DeliveryBtn = styled.button`
   background-color: ${(props) => (props.state ? "#E9F3FF" : "white")};
   color: ${(props) => (props.state ? "#4D71FF" : "#a5a9b6")};
 `;
+
+const WriteTitleAuctionDay = styled.div`
+  display: flex;
+  justify-content: space-between;
+  .btn1 {
+    width: 100px;
+    height: 48px;
+    border-radius: 100px;
+    border: ${(props) =>
+      props.children[0].props.state === 1
+        ? "1px solid #4D71FF"
+        : "1px solid #a5a9b6"};
+    /* border: ${(props) => console.log(props.children[0].props.state)}; */
+    background-color: ${(props) => (props.state === 1 ? "#E9F3FF" : "white")};
+    color: ${(props) => (props.state === 1 ? "#4D71FF" : "#a5a9b6")};
+  }
+  .btn5 {
+    width: 100px;
+    height: 48px;
+    border-radius: 100px;
+    border: ${(props) =>
+      props.children[0].props.state === 5
+        ? "1px solid #4D71FF"
+        : "1px solid #a5a9b6"};
+    background-color: ${(props) => (props.state === 5 ? "#E9F3FF" : "white")};
+    color: ${(props) => (props.state === 5 ? "#4D71FF" : "#a5a9b6")};
+  }
+  .btn7 {
+    width: 100px;
+    height: 48px;
+    border-radius: 100px;
+    border: ${(props) =>
+      props.children[0].props.state === 7
+        ? "1px solid #4D71FF"
+        : "1px solid #a5a9b6"};
+    background-color: ${(props) => (props.state === 7 ? "#E9F3FF" : "white")};
+    color: ${(props) => (props.state === 7 ? "#4D71FF" : "#a5a9b6")};
+  }
+`;
 const WriteTextArea = styled.textarea`
   display: flex;
   width: 100%;
@@ -565,13 +584,6 @@ const WriteTextArea = styled.textarea`
   box-sizing: border-box;
   resize: none;
   border: 1px solid #c5d0e1;
-`;
-
-const WritePostBtn = styled.button`
-  display: flex;
-  width: 40px;
-  height: 30px;
-  background-color: red;
 `;
 
 export default AuctionWrite;
