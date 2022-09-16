@@ -93,6 +93,7 @@ export const kakaoOauthThunk = createAsyncThunk(
           sessionStorage.setItem("memberId", res.data.data.memberId);
           sessionStorage.setItem("memberNickname", res.data.data.nickname);
           window.history.go(-2);
+          
           return res;
         } else {
           return res;

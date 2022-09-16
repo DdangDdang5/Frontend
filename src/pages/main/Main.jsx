@@ -2,7 +2,13 @@
 import React, { useEffect } from "react";
 
 // Redux import
-import { auctionItemList, auctionItemListNotPage } from "../../redux/modules/AuctionListSlice";
+import {
+  auctionItemList,
+  auctionItemListNotPage,
+  getAuctionDeadlineList,
+  getAuctionHitList,
+  getAuctionNewList,
+} from "../../redux/modules/AuctionListSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +22,6 @@ import SwipeImage from "../../components/swipeImage/SwipeImage";
 
 // Style import
 import {
-  AddAuction,
   BannerContainer,
   LastItem,
   LastList,
@@ -48,42 +53,22 @@ const Main = () => {
 
   const auctionAllList = useSelector((state) => state.auctionList.auctionList);
 
-  // 판매중인 경매 목록
-  const auctionSaleList = auctionAllList?.filter(
-    (item) => item?.auctionStatus === true
+  const auctionHitList = useSelector(
+    (state) => state.auctionList.auctionHitList,
+  );
+  const auctionNewList = useSelector(
+    (state) => state.auctionList.auctionNewList,
+  );
+  const auctionDeadlineList = useSelector(
+    (state) => state.auctionList.auctionDeadlineList,
   );
 
-  // 인기 경매 목록 3개
-  const auctionPopularList = auctionSaleList
-    ?.slice()
-    .sort((a, b) => b.viewerCnt - a.viewerCnt)
-    .slice(0, 3);
-
-  // 새로운 경매 목록 3개
-  const auctionNewList = auctionSaleList?.slice(0, 3);
-
-  // 마감임박 경매 목록 4개
-  const auctionLastList = auctionSaleList
-    ?.map((item) => {
-      const date = new Date(item.createdAt);
-      return {
-        ...item,
-        auctionPeriod: new Date(
-          date.setDate(date.getDate() + item.auctionPeriod)
-        ),
-      };
-    })
-    .sort(
-      (a, b) =>
-        new Date(a.auctionPeriod).valueOf() -
-        new Date(b.auctionPeriod).valueOf()
-    )
-    .slice(0, 4);
-
   useEffect(() => {
-    // dispatch(auctionItemList());
-    dispatch(auctionItemListNotPage());
-  }, []);
+    // dispatch(auctionItemListNotPage());
+    dispatch(getAuctionHitList());
+    dispatch(getAuctionNewList());
+    // dispatch(getAuctionDeadlineList());
+  }, [JSON.stringify(auctionHitList), JSON.stringify(auctionNewList)]);
 
   const moveAuctionDetail = (auctionId) => {
     navigate(`/auctionDetail/${auctionId}`);
@@ -91,12 +76,12 @@ const Main = () => {
 
   return (
     <MainContainer>
-      <Header logo={true} search={true} alarm={true}/>
+      <Header logo={true} search={true} alarm={true} />
 
       <MainContent>
         {/* 배너 */}
         <BannerContainer>
-          <SwipeImage isMain={true} data={auctionLastList} height="100%" />
+          <SwipeImage isMain={true} data={auctionHitList} height="100%" />
         </BannerContainer>
 
         {/* 카테고리별, 지역별 TOP 6 */}
@@ -108,10 +93,11 @@ const Main = () => {
           <ListHeader>지금 관심 폭발 중!</ListHeader>
 
           <PopularList>
-            {auctionPopularList?.map((item) => (
+            {auctionHitList?.map((item) => (
               <PopularItem
                 key={item.auctionId}
-                onClick={() => moveAuctionDetail(item.auctionId)}>
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
                 <img
                   src={item.multiImages[0].imgUrl}
                   alt="auction-popular-img"
@@ -127,7 +113,7 @@ const Main = () => {
                   </div>
                   <PopularPriceWrap>
                     <span>현재 입찰가</span>
-                    <PopularPrice>{item.startPrice}원</PopularPrice>
+                    <PopularPrice>{item.nowPrice}원</PopularPrice>
                   </PopularPriceWrap>
                 </PopularItemContent>
               </PopularItem>
@@ -149,7 +135,8 @@ const Main = () => {
             {auctionNewList?.map((item) => (
               <NewItem
                 key={item.auctionId}
-                onClick={() => moveAuctionDetail(item.auctionId)}>
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
                 <img src={item.multiImages[0].imgUrl} alt="auction-new-img" />
                 <NewItemContent>
                   <TagWrap>
@@ -160,7 +147,7 @@ const Main = () => {
                   <NewItemTitle>{item.title}</NewItemTitle>
                   <NewItemPriceWrap>
                     <span>입찰시작가</span>
-                    <NewItemPrice>{item.startPrice}원</NewItemPrice>
+                    <NewItemPrice>{item.nowPrice}원</NewItemPrice>
                   </NewItemPriceWrap>
                 </NewItemContent>
               </NewItem>
@@ -179,10 +166,11 @@ const Main = () => {
           </ListHeader>
 
           <LastList>
-            {auctionLastList?.map((item) => (
+            {auctionDeadlineList?.map((item) => (
               <LastItem
                 key={item.auctionId}
-                onClick={() => moveAuctionDetail(item.auctionId)}>
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
                 <img src={item.multiImages[0].imgUrl} alt="auction-last-img" />
                 <TagWrap>
                   {item.delivery ? <span>택배</span> : null}
@@ -192,7 +180,7 @@ const Main = () => {
                 <NewItemTitle>{item.title}</NewItemTitle>
                 <NewItemPriceWrap>
                   <span>최고입찰가</span>
-                  <NewItemPrice>{item.startPrice}원</NewItemPrice>
+                  <NewItemPrice>{item.nowPrice}원</NewItemPrice>
                 </NewItemPriceWrap>
               </LastItem>
             ))}

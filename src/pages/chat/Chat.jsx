@@ -1,8 +1,8 @@
 // React import
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
 
 // Package import
+import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
@@ -41,11 +41,11 @@ const Chat = () => {
   const dispatch = useDispatch();
 
   const { roomId } = useParams();
-  const isDetail = useLocation().state?.isDetail;
-  const nickName = "hey";
+  const { isDetail, title } = useLocation().state;
+  const nickName = sessionStorage.getItem("memberNickname");
 
   const chatMessageList = useSelector(
-    (state) => state.chat.chatMessageList
+    (state) => state.chat.chatMessageList,
   ).filter((item) => item.roomId === roomId);
 
   const [visible, setVisible] = useState(false); // 채팅 메뉴 모달
@@ -79,6 +79,16 @@ const Chat = () => {
     scrollToBottom();
   }, [chatList]);
 
+  // 채팅 입력창 클릭
+  const onClickInput = () => {
+    // 비로그인 -> 세션에 닉네임 없음
+    if (!nickName) {
+      if (window.confirm("로그인이 필요합니다. 로그인하시겠습니까?")) {
+        navigate("/login");
+      }
+    }
+  };
+
   // 채팅 메뉴 모달 클릭
   const onClickMenu = () => {
     setVisible(true);
@@ -86,13 +96,21 @@ const Chat = () => {
 
   const calcTime = (createdAt) => {
     const date = new Date(createdAt);
-    return date.getHours() >= 12
-      ? "PM "
-      : "AM " +
-          date.getHours().toString().padStart(2, 0) +
-          ":" +
-          date.getMinutes().toString().padStart(2, 0);
+    return (
+      (date.getHours() >= 12 ? "PM " : "AM ") +
+      (date.getHours() % 12).toString().padStart(2, 0) +
+      ":" +
+      date.getMinutes().toString().padStart(2, 0)
+    );
   };
+
+	const checkNickname = (nickName) => {
+		if (nickName.includes("kakao")) {
+			return nickName = nickName.split("kakao")[0] + "kakao";
+		} else {
+			return nickName;
+		}
+	}
 
   const scrollToBottom = () => {
     window.document.body
@@ -100,8 +118,8 @@ const Chat = () => {
       .scrollTo(
         0,
         document.body.querySelector(
-          "#root > div > div.sc-dUWWNf > div.sc-hsOonA.jcBIja"
-        ).scrollHeight
+          "#root > div > div.sc-dUWWNf > div.sc-hsOonA.jcBIja",
+        ).scrollHeight,
       );
   };
 
@@ -165,7 +183,6 @@ const Chat = () => {
         sender: nickName,
         message: userData.message,
       };
-      console.log(chatMessage);
 
       stompClient.send("/app/chat/message", {}, JSON.stringify(chatMessage));
       setUserData({ ...userData, message: "" });
@@ -193,7 +210,7 @@ const Chat = () => {
       <ChatContainer>
         <Header
           back={true}
-          pageName="채팅방 제목"
+          pageName={title}
           menu={true}
           onClickBtn={onClickMenu}
         />
@@ -212,22 +229,25 @@ const Chat = () => {
               <div key={idx}>
                 {chat.sender !== nickName ? (
                   <ChatMessage>
-                    <MessageProfile src="/maskable.png" alt="chat-profile" />
+                    <MessageProfile
+                      src={chat.profileImgUrl}
+                      alt="chat-profile"
+                    />
                     <MessageWrap>
-                      <span>{chat.sender}</span>
+                      <span>{checkNickname(chat.sender)}</span>
                       <Message>
                         <div>{chat.message}</div>
                       </Message>
                     </MessageWrap>
                     <MessageInfo>
-                      <MessageChecked>1</MessageChecked>
+                      {/* <MessageChecked>1</MessageChecked> */}
                       <MessageTime>{calcTime(chat.createdAt)}</MessageTime>
                     </MessageInfo>
                   </ChatMessage>
                 ) : (
                   <ChatMessage isMe={true}>
                     <MessageInfo isMe={true}>
-                      <MessageChecked>1</MessageChecked>
+                      {/* <MessageChecked>1</MessageChecked> */}
                       <MessageTime>{calcTime(chat.createdAt)}</MessageTime>
                     </MessageInfo>
                     <MessageWrap>
@@ -251,6 +271,7 @@ const Chat = () => {
             value={userData.message}
             onChange={(event) => handleValue(event)}
             onKeyDown={(event) => onKeyPress(event)}
+            onClick={onClickInput}
           />
           <SendBtn onClick={sendMessage}>
             <Send />

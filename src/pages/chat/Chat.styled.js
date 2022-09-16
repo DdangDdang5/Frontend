@@ -67,7 +67,7 @@ export const MessageProfile = styled.img`
 `;
 
 export const MessageWrap = styled.div`
-  max-width: 75%;
+  max-width: 65%;
   display: flex;
   flex-direction: column;
   gap: 2px;
