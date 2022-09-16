@@ -25,7 +25,7 @@ const AuctionDetail = () => {
 
   const imgList = data.multiImages;
 
-  // console.log(data);
+  console.log("111111", imgList);
 
   const [joinVisible, setJoinVisible] = useState(false);
   const [price, setPrice] = useState(0);

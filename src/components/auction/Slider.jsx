@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
+import { addAuctionItem } from "../../redux/modules/AuctionListSlice";
 
 const Slider = ({ data }) => {
   const ref = useRef(null);
@@ -8,18 +9,12 @@ const Slider = ({ data }) => {
     return item.imgUrl;
   });
 
-  // const [imageList, setImageList] = useState([
-  //   cnt[cnt?.length - 1],
-  //   ...cnt,
-  //   cnt[0],
-  // ]);
+  console.log(cnt);
 
-  console.log(cnt.length);
-
-  const [touch, setTouch] = useState({
-    start: 0,
-    end: 0,
-  });
+  // const [touch, setTouch] = useState({
+  //   start: 0,
+  //   end: 0,
+  // });
 
   const [currentIndex, setCurrentIndex] = useState(0);
   console.log("1111", currentIndex);
@@ -31,9 +26,9 @@ const Slider = ({ data }) => {
 
   const nextSlide = () => {
     if (cnt.length - 1 <= currentIndex) {
-      setCurrentIndex(0);
+      setCurrentIndex(currentIndex);
       setStyled({
-        transform: `translateX(-${currentIndex - (cnt.length - 1)}00%)`,
+        transform: `translateX(-${cnt.length - 1}00%)`,
         transition: `all 0.4s ease-in-out`,
       });
     } else {
@@ -46,10 +41,10 @@ const Slider = ({ data }) => {
   };
 
   const prevSlide = () => {
-    if (currentIndex <= 0) {
-      setCurrentIndex(cnt.length);
+    if (currentIndex == 0) {
+      setCurrentIndex(0);
       setStyled({
-        transform: `translateX(-${currentIndex + cnt.length - 1}00%)`,
+        transform: `translateX(-${currentIndex}00%)`,
         transition: `all 0.4s ease-in-out`,
       });
     } else {
@@ -63,8 +58,8 @@ const Slider = ({ data }) => {
 
   return (
     <SliderWrap>
-      <ImgBox>
-        <div style={styled} ref={ref}>
+      <ImgBox style={styled} ref={ref}>
+        <div>
           {cnt.map((item, index) => {
             return <img key={index} src={item} alt="" />;
           })}
@@ -72,35 +67,35 @@ const Slider = ({ data }) => {
       </ImgBox>
 
       <BtnBox>
-        <button className="left" onClick={prevSlide}>
-          'ㅓ'
-        </button>
-        <button className="right" onClick={nextSlide}>
-          'ㅏ'
-        </button>
+        <button className="left" onClick={prevSlide}></button>
+        <button className="right" onClick={nextSlide}></button>
       </BtnBox>
     </SliderWrap>
   );
 };
 
 const SliderWrap = styled.div`
-  position: relative;
   display: flex;
-
-  background-color: red;
+  flex-direction: row;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
 `;
 
 const ImgBox = styled.div`
-  display: flex;
-  min-width: 390px;
-  width: 100%;
-  height: 390px;
   div {
     display: flex;
-
+    min-width: 390px;
+    max-width: 390px;
+    min-height: 390px;
+    max-height: 390px;
     img {
-      width: 100%;
-      height: 100%;
+      display: flex;
+      min-width: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      align-items: center;
+      justify-content: center;
     }
   }
 `;
@@ -109,9 +104,25 @@ const BtnBox = styled.div`
   position: absolute;
   justify-content: space-between;
   align-items: center;
-  top: 50%;
+  top: 0;
   width: 100%;
   .left {
+    width: 50%;
+    height: 390px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border: none;
+  }
+  .right {
+    width: 50%;
+    height: 390px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-color: transparent;
+    border: none;
   }
 `;
 
