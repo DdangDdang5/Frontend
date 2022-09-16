@@ -25,7 +25,7 @@ const AuctionDetail = () => {
 
   const imgList = data.multiImages;
 
-  console.log(imgList);
+  // console.log(data);
 
   const [joinVisible, setJoinVisible] = useState(false);
   const [price, setPrice] = useState(0);
@@ -61,18 +61,15 @@ const AuctionDetail = () => {
           handleDelete={handleDelete}
         />
 
-      <DetailBodyWrap>
-        <ItemImgContainer>
-          {/* {data?.multiImages?.[0]?.imgUrl && (
-            <img src={data.multiImages[0].imgUrl} alt="" />
-          )} */}
-          <Slider data={imgList} />
-        </ItemImgContainer>
+        <DetailBodyWrap>
+          <ItemImgContainer>
+            <Slider data={imgList} />
+          </ItemImgContainer>
 
           <DetailBodyContainer>
             <DetailBodyProfileBox>
               <DetailBodyProfileImg>
-                <img src={data.profileImgUrl} alt="" />
+                <img src={data.member.profileImgUrl} alt="" />
               </DetailBodyProfileImg>
               <div className="DetailBodyProfile">
                 <DetailBodyProfileContent>
@@ -102,8 +99,7 @@ const AuctionDetail = () => {
           <CommentCountContainer
             onClick={() =>
               navigate("/chat/roomId", { state: { isDetail: true } })
-            }
-          >
+            }>
             <CommentCountWrap>
               <CommentCountTitle>실시간 채팅방</CommentCountTitle>
               <p>{data.participantCnt}명 참여중</p>
@@ -161,11 +157,11 @@ const AuctionDetail = () => {
             placeholder="입찰 가격을 입력해주세요."
           />
           {price <= Math.max(data.startPrice, data.nowPrice) ? (
-	          <AuctionJoinInputInfo>
-	            현재 최고가보다 낮은 호가입니다.
-	          </AuctionJoinInputInfo>
+            <AuctionJoinInputInfo>
+              현재 최고가보다 낮은 호가입니다.
+            </AuctionJoinInputInfo>
           ) : (
-						<AuctionJoinInputInfo></AuctionJoinInputInfo>
+            <AuctionJoinInputInfo></AuctionJoinInputInfo>
           )}
           <ButtonContainer>
             <Button
@@ -201,11 +197,12 @@ const DetailBodyWrap = styled.div`
 `;
 const ItemImgContainer = styled.div`
   display: flex;
+  width: 100%;
   margin-bottom: 20px;
-  img {
+  /* img {
     width: 100%;
     height: 390px;
-  }
+  } */
 `;
 const DetailBodyContainer = styled.div`
   display: flex;
@@ -552,7 +549,7 @@ const AuctionJoinInput = styled.input`
 `;
 
 const AuctionJoinInputInfo = styled.p`
-	height: 20px;
+  height: 20px;
   margin-top: 8px;
 
   color: ${(props) => props.theme.colors.Red};

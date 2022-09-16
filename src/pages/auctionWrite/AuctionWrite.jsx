@@ -64,7 +64,7 @@ const AuctionWrite = () => {
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
 
-  console.log("배돌배돌", inputForm);
+  console.log("배돌배돌", imagePreview);
 
   // useEffect(() => {
   //   if (categoryName === "전체품목" && regionName === "전체지역") {
@@ -197,7 +197,6 @@ const AuctionWrite = () => {
       "tags",
       new Blob([JSON.stringify(initialTag)], { type: "application/json" })
     );
-    // formData.append("images", uploadImg.file[0]);
 
     for (let i = 0; i < imgFile.length; i++) {
       formData.append("images", imgFile[i]);
@@ -249,16 +248,18 @@ const AuctionWrite = () => {
               style={{ display: "none" }}
             />
           </ImgBoxBtn>
-          {imagePreview.map((item, index) => {
-            return (
-              <ImgBox key={index}>
-                <img src={item.img} alt="" />
-                <div className="deleteBox" onClick={() => onRemove(item.id)}>
-                  <div>x</div>
-                </div>
-              </ImgBox>
-            );
-          })}
+          <ImgBoxWrap>
+            {imagePreview.map((item, index) => {
+              return (
+                <ImgBox key={index}>
+                  <img src={item.img} id={index} alt="" />
+                  <div className="deleteBox" onClick={() => onRemove(item.id)}>
+                    <div>x</div>
+                  </div>
+                </ImgBox>
+              );
+            })}
+          </ImgBoxWrap>
         </WriteImgContainer>
 
         <WriteTitleContainer>제목</WriteTitleContainer>
@@ -409,12 +410,12 @@ const WriteImgContainer = styled.div`
   /* height: 93px; */
   min-height: 93px;
   gap: 12px;
-  overflow-y: scroll;
+  /* overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
   ::-webkit-scrollbar {
     display: none;
-  }
+  } */
 `;
 const ImgBoxBtn = styled.button`
   display: flex;
@@ -437,6 +438,19 @@ const ImgBoxBtn = styled.button`
     font-weight: 400;
   }
 `;
+
+const ImgBoxWrap = styled.div`
+  display: flex;
+  min-height: 93px;
+  gap: 12px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 const ImgBox = styled.div`
   display: flex;
   height: 100%;
@@ -444,6 +458,8 @@ const ImgBox = styled.div`
   width: 93px;
   gap: 16px;
   position: relative;
+  background-color: yellow;
+
   img {
     display: flex;
     object-fit: cover;
@@ -565,13 +581,6 @@ const WriteTextArea = styled.textarea`
   box-sizing: border-box;
   resize: none;
   border: 1px solid #c5d0e1;
-`;
-
-const WritePostBtn = styled.button`
-  display: flex;
-  width: 40px;
-  height: 30px;
-  background-color: red;
 `;
 
 export default AuctionWrite;
