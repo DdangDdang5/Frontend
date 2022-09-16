@@ -11,10 +11,10 @@ export const CategoryItem = styled.div`
   align-items: center;
 	gap: 8px;
 
-  img {
+  svg {
     width: 56px;
     height: 56px;
-    border-radius: 30px;
+    /* border-radius: 30px; */
   }
 
   span {

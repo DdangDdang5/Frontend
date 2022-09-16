@@ -1,5 +1,5 @@
 // Package import
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const SwipeContainer = styled.div`
   width: 100%;
@@ -35,16 +35,16 @@ export const SwipeImg = styled.img`
   width: 100%;
 
   position: absolute;
-	z-index: -5;
+  z-index: -5;
 
   object-fit: contain;
 `;
 
 export const SwipeImgLayer = styled.div`
-	height: 140px;
-	background-color: #dedede;
-	
-	position: absolute;
+  height: 140px;
+  background-color: #dedede;
+
+  position: absolute;
 `;
 
 export const SwipeContent = styled.div`
@@ -104,26 +104,60 @@ export const BannerCircle = styled.div`
   width: 214px;
   height: 214px;
 
-  background: linear-gradient(
-    140.57deg,
-    rgba(253, 176, 36, 0.7) 17.63%,
-    rgba(253, 176, 36, 0) 63.63%
-  );
   border-radius: 200px;
   z-index: -5;
 
   position: absolute;
   bottom: -100px;
   right: -50px;
+	
+  ${(props) => {
+    switch (props.idx) {
+      case 0:
+        return css`
+          background: linear-gradient(
+            140.57deg,
+            #1dc79a 17.63%,
+            rgba(29, 199, 154, 0) 63.63%
+          );
+        `;
+      case 1:
+        return css`
+          background: linear-gradient(
+            140.57deg,
+            #fdb024 17.63%,
+            rgba(253, 176, 36, 0) 63.63%
+          );
+        `;
+      case 2:
+        return css`
+          background: linear-gradient(
+            140.57deg,
+            #4d71ff 17.63%,
+            rgba(77, 113, 255, 0) 63.63%
+          );
+        `;
+      case 3:
+        return css`
+          background: linear-gradient(
+            140.57deg,
+            #ff664d 17.63%,
+            rgba(255, 102, 77, 0) 63.63%
+          );
+        `;
+      default:
+        return;
+    }
+  }};
 `;
 
 export const SwipeIdx = styled.div`
   width: fit-content;
 
   position: absolute;
-	top: ${(props) => (props.isMain ? "20px" : null)};
-	right: ${(props) => (props.isMain ? "20px" : "45%")};
-	bottom: ${(props) => (props.isMain ? null : "17px")};
+  top: ${(props) => (props.isMain ? "20px" : null)};
+  right: ${(props) => (props.isMain ? "20px" : "45%")};
+  bottom: ${(props) => (props.isMain ? null : "17px")};
 
   display: flex;
   gap: 4px;
@@ -159,20 +193,20 @@ export const SwipeBtn = styled.button`
     opacity: 1;
   }
 
-	svg {
-		width: 15px;
-		height: 15px;
+  svg {
+    width: 15px;
+    height: 15px;
 
-		path {
-			fill: ${(props) => props.theme.colors.Gray4};
-		}
-	}
+    path {
+      fill: ${(props) => props.theme.colors.Gray4};
+    }
+  }
 
-	.back-btn {
-		margin-right: 2px;
-	}
+  .back-btn {
+    margin-right: 2px;
+  }
 
-	.next-btn {
-		margin-left: 2px;
-	}
+  .next-btn {
+    margin-left: 2px;
+  }
 `;

@@ -65,13 +65,16 @@ const AuctionWrite = () => {
 
   useEffect(() => {
     setInputForm((prev) => {
-      return { ...prev, category: categoryName };
+			const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
+      return { ...prev, category: categoryNameCheck };
     });
   }, [categoryName]);
 
   useEffect(() => {
     setInputForm((prev) => {
-      return { ...prev, region: regionName };
+			const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
+
+      return { ...prev, region: regionNameCheck };
     });
   }, [regionName]);
 

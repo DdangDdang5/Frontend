@@ -113,12 +113,13 @@ const Chat = () => {
 	}
 
   const scrollToBottom = () => {
+		// #root > div > div.sc-dUWWNf > div.sc-hsOonA.jcBIja
     window.document.body
-      .querySelector("#root > div > div.sc-dUWWNf > div.sc-hsOonA.jcBIja")
-      .scrollTo(
+      .querySelector("#root > div > div.sc-gzzPqb > div.sc-gkJlnC.iINcZz")
+      ?.scrollTo(
         0,
         document.body.querySelector(
-          "#root > div > div.sc-dUWWNf > div.sc-hsOonA.jcBIja",
+          "#root > div > div.sc-gzzPqb > div.sc-gkJlnC.iINcZz",
         ).scrollHeight,
       );
   };
@@ -216,21 +217,21 @@ const Chat = () => {
         />
 
         {/* 경매 남은 시간 */}
-        <ChatContent>
-          {isDetail ? (
-            <AuctionTimeWrap>
-              <span>남은시간</span>
-              <AuctionTime>5일 03:37</AuctionTime>
-            </AuctionTimeWrap>
-          ) : null}
+        {isDetail ? (
+          <AuctionTimeWrap>
+            <span>남은시간</span>
+            <AuctionTime>5일 03:37</AuctionTime>
+          </AuctionTimeWrap>
+        ) : null}
 
+        <ChatContent isDetail={isDetail}>
           <ChatMessageList>
             {chatList?.map((chat, idx) => (
               <div key={idx}>
                 {chat.sender !== nickName ? (
                   <ChatMessage>
                     <MessageProfile
-                      src={chat.profileImgUrl}
+                      src={chat.profileImgUrl ? chat.profileImgUrl : "/maskable.png"}
                       alt="chat-profile"
                     />
                     <MessageWrap>

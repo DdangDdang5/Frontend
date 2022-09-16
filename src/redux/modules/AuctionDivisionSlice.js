@@ -70,9 +70,14 @@ const actionDivisionSlice = createSlice({
     },
 
     [regionHitList.fulfilled]: (state, action) => {
-      state.regionList = action.payload.map((item) =>
-        item === "서울전체" ? { ...item, regionName: "서울 전체" } : item,
-      );
+      state.regionList = action.payload.map((item) => {
+        switch (item.regionName) {
+					case "서울전체":
+						return {...item, regionName: "서울 전체"};
+          default:
+            return item;
+        }
+      });
     },
     [regionHitList.rejected]: (state, action) => {
 			console.log(action);

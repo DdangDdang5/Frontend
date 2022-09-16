@@ -8,7 +8,7 @@ export const ChatContent = styled.div`
   background-color: ${(props) => props.theme.colors.Gray1};
 
   position: absolute;
-  top: 70px;
+  top: ${(props) => props.isDetail ? "112px" : "70px"};
   bottom: 70px;
 
   overflow-y: scroll;
@@ -22,6 +22,9 @@ export const AuctionTimeWrap = styled.div`
   background-color: ${(props) => props.theme.colors.Red};
   font-size: ${(props) => props.theme.fontSizes.sm};
   font-weight: ${(props) => props.theme.fontWeights.normal};
+
+	position: absolute;
+	top: 70px;
 
   display: flex;
   justify-content: center;

@@ -79,13 +79,13 @@ const SwipeImage = ({
       }
     };
   });
-
+	
   return (
     <SwipeContainer maxWidth={maxWidth} height={height}>
       <SwipeShowContainer ref={ref} style={style}>
         {data?.map((item, idx) => {
           if (isMain) {
-            const diff = new Date(new Date(item.auctionPeriod) - Date.now());
+            const diff = new Date(new Date(item.deadline) - Date.now());
             const auctionPeriodDiff = `
 						${diff.getDate()}일 
 						${diff.getHours().toString().padStart(2, "0")}시간
@@ -107,7 +107,7 @@ const SwipeImage = ({
                     <span>최고입찰가</span>
                     <BannerPrice>{item.nowPrice}원</BannerPrice>
                   </BannerPriceWrap>
-                  <BannerCircle></BannerCircle>
+                  <BannerCircle idx={idx}/>
                 </SwipeContent>
 
                 <SwipeIdx isMain={isMain}>
