@@ -57,7 +57,8 @@ const SignUp = () => {
   const rePasswordIconRef = useRef();
   const nickNameRef = useRef();
   const nickNameIconRef = useRef();
-  const NickNameCheckef = useEffect;
+  const nickNameSpanRef = useRef();
+  const NickNameCheckef = useRef();
 
   const [color, setColor] = useState({
     email: "#dedede",
@@ -84,19 +85,21 @@ const SignUp = () => {
         emailSpanRef.current.innerText = "이메일 형식에 맞지 않습니다.";
         emailSpanRef.current.style.color = "#FF664D";
         emailRef.current.style.borderColor = "#FF664D";
+        emailIconRef.current.style.color = "#FF664D";
         setEmailCheck(false);
       } else {
         dispatch(emailCheckThunk({ email })).then((res) => {
           if (!res.payload) {
             emailSpanRef.current.innerText = "중복되는 이메일입니다.";
             emailSpanRef.current.style.color = "#FF664D";
-                  emailRef.current.style.borderColor = "#FF664D";
+            emailRef.current.style.borderColor = "#FF664D";
+            emailIconRef.current.style.color = "#FF664D";
             setEmailCheck(true);
           } else {
             emailSpanRef.current.innerText = "사용가능한 이메일입니다.";
             emailSpanRef.current.style.color = "#1DC79A";
-            emailIconRef.current.color = "blue";
-                  emailRef.current.style.borderColor = "#1DC79A";
+            emailRef.current.style.borderColor = "#1DC79A";
+            emailIconRef.current.style.color = "#1DC79A";
             setEmailCheck(false);
           }
         });
@@ -111,11 +114,19 @@ const SignUp = () => {
     } else if (passwordRegExp.test(password) === false) {
       passwordSpanRef.current.innerText =
         "비밀번호는 영문 대소문자, 숫자, 특수문자(`!@#$%)를 혼합하여 8~20자로 입력해주세요.";
-      passwordSpanRef.current.style.color = "#BCBCBC";
+      passwordSpanRef.current.style.color = "#FF664D";
+      passwordRef.current.style.borderColor = "#FF664D";
+      passwordIconRef.current.style.color = "#FF664D";
+    } else if (passwordRegExp.test(password) === true) {
+      passwordSpanRef.current.style.color = "#1DC79A";
+      passwordRef.current.style.borderColor = "#1DC79A";
+      passwordSpanRef.current.innerText = "";
+      passwordIconRef.current.style.color = "#1DC79A";
     } else if (password === "") {
       rePasswordSpanRef.current.style.color = "";
       rePasswordSpanRef.current.innerText = "";
-      passwordSpanRef.current.style.color = "#BCBCBC";
+      passwordSpanRef.current.style.color = "#FF664D";
+      passwordRef.current.style.borderColor = "#FF664D";
       passwordSpanRef.current.innerText =
         "비밀번호는 영문 대소문자, 숫자, 특수문자(`!@#$%)를 혼합하여 8~20자로 입력해주세요.";
     } else if (repassword === "") {
@@ -123,13 +134,19 @@ const SignUp = () => {
       passwordSpanRef.current.style.color = "";
     } else {
       if (password !== repassword) {
-        rePasswordSpanRef.current.style.color = "#BCBCBC";
-        rePasswordSpanRef.current.innerText = "비밀번호가 일치하지 않습니다.";
         passwordSpanRef.current.style.color = "";
+        rePasswordSpanRef.current.style.color = "#FF664D";
+        rePasswordSpanRef.current.innerText = "비밀번호가 일치하지 않습니다.";
+        passwordRef.current.style.borderColor = "#FF664D";
+        passwordIconRef.current.style.color = "#FF664D";
       } else {
         passwordSpanRef.current.style.color = "";
         rePasswordSpanRef.current.innerText = "비밀번호가 일치합니다";
-        rePasswordSpanRef.current.style.color = "#BCBCBC";
+        rePasswordSpanRef.current.style.color = "#1DC79A";
+        rePasswordRef.current.style.borderColor = "#1DC79A";
+        rePasswordIconRef.current.style.color = "#1DC79A";
+        passwordIconRef.current.style.color = "#1DC79A";
+        passwordRef.current.style.borderColor = "#1DC79A";
       }
     }
   }, [password, repassword]);
@@ -138,8 +155,8 @@ const SignUp = () => {
     if (nickName !== "") {
       checkNickName(nickName);
     } else {
-      nickNameRef.current.innerText = "";
-      nickNameRef.current.style.color = "";
+      nickNameSpanRef.current.innerText = "";
+      nickNameSpanRef.current.style.color = "";
     }
   }, [nickName]);
 
@@ -147,12 +164,16 @@ const SignUp = () => {
     debounce((nickName) => {
       dispatch(nickNameCheckThunk({ nickName })).then((res) => {
         if (!res.payload) {
-          nickNameRef.current.innerText = "중복되는 닉네임입니다";
-          nickNameRef.current.style.color = "#BCBCBC";
+          nickNameSpanRef.current.innerText = "중복되는 닉네임입니다";
+          nickNameSpanRef.current.style.color = "#FF664D";
+          nickNameIconRef.current.style.color = "#FF664D";
+          nickNameRef.current.style.borderColor = "#FF664D";
           setNickNameCheck(true);
         } else {
-          nickNameRef.current.innerText = "사용가능한 닉네임입니다";
-          nickNameRef.current.style.color = "#BCBCBC";
+          nickNameSpanRef.current.innerText = "사용가능한 닉네임입니다";
+          nickNameSpanRef.current.style.color = "#1DC79A";
+          nickNameIconRef.current.style.color = "#1DC79A";
+          nickNameRef.current.style.borderColor = "#1DC79A";
           setNickNameCheck(false);
         }
       });
@@ -201,15 +222,6 @@ const SignUp = () => {
     <Fragment>
       <Header back={true} pageName="회원가입" />
       <SignUpBox>
-        {/* <SignUpBoxTitle>
-          <SignUpBoxTitleSpan>
-            <MdOutlineArrowBackIos
-              onClick={() => navigate(-1)}
-              className="icon-cancel"
-            />
-            회원가입
-          </SignUpBoxTitleSpan>
-        </SignUpBoxTitle> */}
         <SignUpBoxForm onSubmit={(event) => onsubmitHandler(event)}>
           <SignUpBoxInputGroup>
             이메일
@@ -217,7 +229,7 @@ const SignUp = () => {
               <SignUpBoxInput
                 type="text"
                 value={email}
-                        ref={emailRef}
+                ref={emailRef}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="이메일 주소를 입력하세요."
                 required
@@ -236,6 +248,8 @@ const SignUp = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="비밀번호를 입력하세요."
+                minLength="8"
+                maxLength="20"
                 ref={passwordRef}
                 required
               ></SignUpBoxInput>
@@ -252,6 +266,8 @@ const SignUp = () => {
                 value={repassword}
                 onChange={(e) => setRePassword(e.target.value)}
                 placeholder="비밀번호를 재입력하세요."
+                minLength="8"
+                maxLength="20"
                 ref={rePasswordRef}
                 required
               ></SignUpBoxInput>
@@ -272,13 +288,14 @@ const SignUp = () => {
                 placeholder="닉네임을 입력하세요.(최대 6글자)"
                 minLength="4"
                 maxLength="6"
+                ref={nickNameRef}
                 required
               />
               <SignUpBoxInputIcon ref={nickNameIconRef}>
                 <BsFillCheckCircleFill className="icon" />
               </SignUpBoxInputIcon>
             </SignUpBoxInputWrap>
-            <SignUpBoxSpan ref={nickNameRef}></SignUpBoxSpan>
+            <SignUpBoxSpan ref={nickNameSpanRef}></SignUpBoxSpan>
           </SignUpBoxInputGroup>
           <SignUpButtonGroup>
             <Button

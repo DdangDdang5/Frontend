@@ -17,7 +17,7 @@ import {
   SwipeIdx,
   SwipeIdxItem,
   SwipeImg,
-	SwipeImgLayer,
+  SwipeImgLayer,
   SwipeItem,
   SwipeShowContainer,
 } from "./SwipeImage.styled";
@@ -56,9 +56,10 @@ const SwipeImage = ({
   };
 
   useEffect(() => {
+		var timeout;
     // 메인화면 5초마다 슬라이드 움직임
     if (isMain) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         if (currentImgIndex !== data.length - 1) {
           nextSlide();
         } else {
@@ -70,6 +71,12 @@ const SwipeImage = ({
         }
       }, 5000);
     }
+
+    return () => {
+      if (isMain) {
+        setTimeout(timeout);
+      }
+    };
   });
 
   return (
@@ -89,7 +96,7 @@ const SwipeImage = ({
                 src={item.multiImages[0].imgUrl}
                 minHeight={minHeight}
               />
-							{/* <SwipeImgLayer /> */}
+              {/* <SwipeImgLayer /> */}
 
               {/* 메인화면 배너 */}
               {isMain ? (

@@ -4,7 +4,7 @@ import React from "react";
 // Package import
 import styled from "styled-components";
 
-const MenuModal = ({ children, visible, setVisible, minHeight }) => {
+const OptionModal = ({ children, visible, setVisible, minHeight }) => {
   return (
     <ModalLayout visible={visible} onClick={() => setVisible(false)}>
       <ModalWrapper visible={visible}>
@@ -65,4 +65,4 @@ const ModalInner = styled.div`
   /* top: 0; */
 `;
 
-export default MenuModal;
+export default OptionModal;

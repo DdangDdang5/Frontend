@@ -4,7 +4,6 @@ import { Fragment, useRef, useState, useCallback, useEffect } from "react";
 // Redux import
 import { useDispatch, useSelector } from "react-redux/es/exports";
 import { loginMemberThunk } from "../../redux/modules/MemberSlice";
-import { history } from "../../redux/config/ConfigStore";
 
 // Package import
 import { useNavigate } from "react-router-dom";
@@ -34,7 +33,7 @@ import {
 
 // Shared import
 import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
-import { Delete, Logo } from "../../shared/images";
+import { Delete, Kakao, Logo } from "../../shared/images";
 
 const Login = ({ location }) => {
   const [email, setEmail] = useState("");
@@ -54,7 +53,7 @@ const Login = ({ location }) => {
   }
 
   useEffect(() => {
-    if (token) history.push("/");
+    // if (token) history.push("/");
   }, [isLogin]);
 
   const emailRef = useRef();
@@ -85,10 +84,9 @@ const Login = ({ location }) => {
         alert("비밀번호를 입력해주세요");
       } else {
         dispatch(loginMemberThunk({ email, password })).then((res) => {
-          console.log(res);
           if (res.payload.statusCode === 200) {
             window.alert(`${res.payload.data.nickName}님 안녕하세요!`);
-            window.location.replace("/");
+            navigate(-1);
           } else {
             alert(res.payload.msg);
           }
@@ -100,7 +98,7 @@ const Login = ({ location }) => {
 
   return (
     <Fragment>
-      <Header close={true}/>
+      <Header close={true} />
       <LoginBox>
         <LoginBoxTitle>
           <LoginBoxTitleSpan>
@@ -155,18 +153,16 @@ const Login = ({ location }) => {
           </LoginBoxButtonGroup>
         </LoginBoxForm>
         <LoginBoxSignUp>
-          <LoginBoxSignUpText>
-            계정정보를 잊으셨나요?
-            <LoginBoxSignUpLink onClick={() => navigate("/signup")}>
-              회원가입하기
-            </LoginBoxSignUpLink>
-          </LoginBoxSignUpText>
+          <LoginBoxSignUpText>계정정보를 잊으셨나요?</LoginBoxSignUpText>
+          <LoginBoxSignUpLink onClick={() => navigate("/signup")}>
+            회원가입하기
+          </LoginBoxSignUpLink>
         </LoginBoxSignUp>
         <LoginBoxkakaoButtonGroup>
-          <Button
+          <Kakao
             type={"button"}
             text={"카카오로 로그인하기"}
-            _onClick={() => {
+            onClick={() => {
               window.location.href = KAKAO_OAUTH_URL;
             }}
             style={{

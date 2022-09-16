@@ -19,6 +19,7 @@ import { ReactComponent as search } from "./Search.svg";
 import { ReactComponent as send } from "./Send.svg";
 import { ReactComponent as share } from "./Share.svg";
 import { ReactComponent as write } from "./Write.svg";
+import { ReactComponent as kakao } from "./Kakao.svg";
 
 export const Add = add;
 export const Alarm = alarm;
@@ -41,3 +42,4 @@ export const Search = search;
 export const Send = send;
 export const Share = share;
 export const Write = write;
+export const Kakao = kakao;

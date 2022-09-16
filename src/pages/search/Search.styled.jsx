@@ -91,7 +91,7 @@ export const SearchItemList = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
+  margin-left: 5%;
   gap: 16px 20px;
 `;
 

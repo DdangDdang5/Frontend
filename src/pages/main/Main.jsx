@@ -2,7 +2,7 @@
 import React, { useEffect } from "react";
 
 // Redux import
-import { auctionItemList } from "../../redux/modules/AuctionListSlice";
+import { auctionItemList, auctionItemListNotPage } from "../../redux/modules/AuctionListSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
@@ -81,8 +81,9 @@ const Main = () => {
     .slice(0, 4);
 
   useEffect(() => {
-    dispatch(auctionItemList());
-  }, [dispatch, JSON.stringify(auctionAllList)]);
+    // dispatch(auctionItemList());
+    dispatch(auctionItemListNotPage());
+  }, []);
 
   const moveAuctionDetail = (auctionId) => {
     navigate(`/auctionDetail/${auctionId}`);
