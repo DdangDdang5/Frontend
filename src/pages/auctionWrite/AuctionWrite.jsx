@@ -61,19 +61,22 @@ const AuctionWrite = () => {
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
 
-  console.log("배돌배돌", inputForm.auctionPeriod);
+  const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
+  const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
+
+  console.log("배돌배돌", inputForm);
 
   useEffect(() => {
     setInputForm((prev) => {
-      return { ...prev, category: categoryName };
+      return { ...prev, category: categoryNameCheck };
     });
-  }, [categoryName]);
+  }, [categoryNameCheck]);
 
   useEffect(() => {
     setInputForm((prev) => {
-      return { ...prev, region: regionName };
+      return { ...prev, region: regionNameCheck };
     });
-  }, [regionName]);
+  }, [regionNameCheck]);
 
   useEffect(() => {}, [imagePreview, inputForm.auctionPeriod]);
 
@@ -224,10 +227,10 @@ const AuctionWrite = () => {
         <WriteBtnBox
           onClick={() => dispatch(showModal("categoryList"), _categoryList())}>
           <div className="WriteBtnBoxWrap">
-            {categoryName === "" ? (
+            {categoryNameCheck === "" ? (
               <div>미선택</div>
             ) : (
-              <div>{categoryName}</div>
+              <div>{categoryNameCheck}</div>
             )}
             <div>
               <svg
@@ -306,10 +309,10 @@ const AuctionWrite = () => {
         <WriteBtnBox
           onClick={() => dispatch(showModal("regionList"), _regionList())}>
           <div className="WriteBtnBoxWrap">
-            {regionName === "전체지역" ? (
+            {regionNameCheck === "전체지역" ? (
               <div>미선택</div>
             ) : (
-              <div>{regionName}</div>
+              <div>{regionNameCheck}</div>
             )}
             <div>
               <svg
@@ -541,7 +544,9 @@ const DeliveryBtn = styled.button`
 
 const WriteTitleAuctionDay = styled.div`
   display: flex;
-  justify-content: space-between;
+
+  justify-content: center;
+  gap: 20px;
   .btn1 {
     width: 100px;
     height: 48px;
@@ -551,8 +556,10 @@ const WriteTitleAuctionDay = styled.div`
         ? "1px solid #4D71FF"
         : "1px solid #a5a9b6"};
     /* border: ${(props) => console.log(props.children[0].props.state)}; */
-    background-color: ${(props) => (props.state === 1 ? "#E9F3FF" : "white")};
-    color: ${(props) => (props.state === 1 ? "#4D71FF" : "#a5a9b6")};
+    background-color: ${(props) =>
+      props.children[0].props.state === 1 ? "#E9F3FF" : "white"};
+    color: ${(props) =>
+      props.children[0].props.state === 1 ? "#4D71FF" : "#a5a9b6"};
   }
   .btn5 {
     width: 100px;
@@ -562,8 +569,10 @@ const WriteTitleAuctionDay = styled.div`
       props.children[0].props.state === 5
         ? "1px solid #4D71FF"
         : "1px solid #a5a9b6"};
-    background-color: ${(props) => (props.state === 5 ? "#E9F3FF" : "white")};
-    color: ${(props) => (props.state === 5 ? "#4D71FF" : "#a5a9b6")};
+    background-color: ${(props) =>
+      props.children[0].props.state === 5 ? "#E9F3FF" : "white"};
+    color: ${(props) =>
+      props.children[0].props.state === 5 ? "#4D71FF" : "#a5a9b6"};
   }
   .btn7 {
     width: 100px;
@@ -573,8 +582,10 @@ const WriteTitleAuctionDay = styled.div`
       props.children[0].props.state === 7
         ? "1px solid #4D71FF"
         : "1px solid #a5a9b6"};
-    background-color: ${(props) => (props.state === 7 ? "#E9F3FF" : "white")};
-    color: ${(props) => (props.state === 7 ? "#4D71FF" : "#a5a9b6")};
+    background-color: ${(props) =>
+      props.children[0].props.state === 7 ? "#E9F3FF" : "white"};
+    color: ${(props) =>
+      props.children[0].props.state === 7 ? "#4D71FF" : "#a5a9b6"};
   }
 `;
 const WriteTextArea = styled.textarea`

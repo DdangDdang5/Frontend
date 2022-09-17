@@ -22,6 +22,7 @@ import SwipeImage from "../../components/swipeImage/SwipeImage";
 // Element & Shared import
 import Button from "../../elements/button/Button";
 import { Close, Next } from "../../shared/images";
+import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
 
 var stompClient = null;
 
@@ -31,11 +32,10 @@ const AuctionDetail = () => {
 
   const params = useParams();
   const data = useSelector((state) => state.auction.auction);
-
+  console.log(data);
   const imgList = data.multiImages;
 
-  const nickName = sessionStorage.getItem("memberNickname");
-  // console.log("111111", imgList);
+  const nickName = sessionStorage.getItem("memberNickname").split("kakao")[0];
 
   const [joinVisible, setJoinVisible] = useState(false);
   // const [price, setPrice] = useState(data.nowPrice);
@@ -54,11 +54,11 @@ const AuctionDetail = () => {
       return <></>;
     } else {
       dispatch(auctionDetailData(+params?.auctionId)).then((res) => {
-				if (data.bidRoomId !== undefined && chatList.length === 0) {
-					registerUser();
-				}
-			});
-		}
+        if (data.bidRoomId !== undefined && chatList.length === 0) {
+          registerUser();
+        }
+      });
+    }
   }, [JSON.stringify(data)]);
 
   useEffect(() => {
@@ -105,7 +105,7 @@ const AuctionDetail = () => {
 
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived,
+      onMessageReceived
     );
 
     // 채팅방 들어감
@@ -148,7 +148,7 @@ const AuctionDetail = () => {
       stompClient.send(
         "/app/chat/bid",
         {},
-        JSON.stringify({ ...chatMessage, type: "ENTER" }),
+        JSON.stringify({ ...chatMessage, type: "ENTER" })
       );
 
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
@@ -163,6 +163,16 @@ const AuctionDetail = () => {
       sendMessage();
     }
   };
+
+  // 타이머 기능
+  const oneDay = 1 * 24 * 60 * 60 * 1000;
+  const fiveDay = 5 * 24 * 60 * 60 * 1000;
+  const sevenDay = 7 * 24 * 60 * 60 * 1000;
+  const startTime = new Date().getTime();
+  console.log("time", startTime);
+  const dateTimeAfterOneDays = startTime + oneDay;
+  const dateTimeAfterFiveDays = startTime + fiveDay;
+  const dateTimeAfterSevenDays = startTime + sevenDay;
 
   return (
     <>
@@ -214,34 +224,24 @@ const AuctionDetail = () => {
               navigate(`/chat/${data.chatRoomId}`, {
                 state: { isDetail: true, title: data.title },
               })
-            }
-          >
+            }>
             <CommentCountWrap>
               <CommentCountTitle>실시간 채팅방</CommentCountTitle>
               <p>{data.participantCnt}명 참여중</p>
             </CommentCountWrap>
             <Next />
           </CommentCountContainer>
-
-          {/* <DetailCommentContainer>
-          <CommentFormBox>
-            <div className="inputBox">
-              <textarea placeholder="댓글을 입력해주세요." rows="" cols="" />
-              <button>댓글 작성</button>
-            </div>
-          </CommentFormBox>
-        </DetailCommentContainer> */}
         </DetailBodyWrap>
 
         <DetailFooterWrap>
           <DetailFooterTimeContainer>
             <p>남은 시간</p>
-            <h3>{data.createdAt}</h3>
+            <CountdownTimer targetDate={dateTimeAfterOneDays} />
           </DetailFooterTimeContainer>
           <DetailFooterContainer>
             <FooterLeftBox>
               <div className="presentPrice">{`시작가 ${data.startPrice}원`}</div>
-							{/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
+              {/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
               <div className="price">{`현재가 ${data.nowPrice}원`}</div>
             </FooterLeftBox>
             <FooterRightBox>
@@ -252,58 +252,58 @@ const AuctionDetail = () => {
       </AuctionDetailLayout>
 
       {/* 경매 입찰 모달 */}
-			<>
-      <AuctionJoinModal visible={joinVisible} setVisible={setJoinVisible}>
-        <AuctionJoinModalContent>
-          <AuctionJoinIcon>
-            <img src="/maskable.png" alt="auction-join" />
-          </AuctionJoinIcon>
+      <>
+        <AuctionJoinModal visible={joinVisible} setVisible={setJoinVisible}>
+          <AuctionJoinModalContent>
+            <AuctionJoinIcon>
+              <img src="/maskable.png" alt="auction-join" />
+            </AuctionJoinIcon>
 
-          <AuctionJoinCloseWrap>
-            <Close onClick={() => setJoinVisible(false)} />
-          </AuctionJoinCloseWrap>
-          <AuctionNowPriceWrap>
-            <span>현재 최고가</span>
-            <AuctionNowPrice>
-              {Math.max(data.startPrice, data.nowPrice)}원
-            </AuctionNowPrice>
-          </AuctionNowPriceWrap>
-          <AuctionJoinInfo>
-            입찰 후에는 금액을 수정하거나 취소할 수 없습니다.
-          </AuctionJoinInfo>
-          <AuctionJoinInput
-            type="number"
-            value={userData.message}
-            onChange={(event) =>
-              setUserData({ ...userData, message: event.target.value })
-            }
-            onKeyDown={(event) => onKeyPress(event)}
-            placeholder="입찰 가격을 입력해주세요."
-          />
-          {userData.message <= Math.max(data.startPrice, data.nowPrice) ? (
-            <AuctionJoinInputInfo>
-              현재 최고가보다 낮은 호가입니다.
-            </AuctionJoinInputInfo>
-          ) : (
-            <AuctionJoinInputInfo></AuctionJoinInputInfo>
-          )}
-          <ButtonContainer>
-            <Button
-              type={"submit"}
-              text={"입찰하기"}
-              _onClick={sendMessage}
-              style={{
-                width: "100%",
-                height: "56px",
-                ft_size: "18px",
-                color: "#FFFFFF",
-                bg_color: "#4D71FF",
-              }}
+            <AuctionJoinCloseWrap>
+              <Close onClick={() => setJoinVisible(false)} />
+            </AuctionJoinCloseWrap>
+            <AuctionNowPriceWrap>
+              <span>현재 최고가</span>
+              <AuctionNowPrice>
+                {Math.max(data.startPrice, data.nowPrice)}원
+              </AuctionNowPrice>
+            </AuctionNowPriceWrap>
+            <AuctionJoinInfo>
+              입찰 후에는 금액을 수정하거나 취소할 수 없습니다.
+            </AuctionJoinInfo>
+            <AuctionJoinInput
+              type="number"
+              value={userData.message}
+              onChange={(event) =>
+                setUserData({ ...userData, message: event.target.value })
+              }
+              onKeyDown={(event) => onKeyPress(event)}
+              placeholder="입찰 가격을 입력해주세요."
             />
-          </ButtonContainer>
-        </AuctionJoinModalContent>
-      </AuctionJoinModal>
-			</>
+            {userData.message <= Math.max(data.startPrice, data.nowPrice) ? (
+              <AuctionJoinInputInfo>
+                현재 최고가보다 낮은 호가입니다.
+              </AuctionJoinInputInfo>
+            ) : (
+              <AuctionJoinInputInfo></AuctionJoinInputInfo>
+            )}
+            <ButtonContainer>
+              <Button
+                type={"submit"}
+                text={"입찰하기"}
+                _onClick={sendMessage}
+                style={{
+                  width: "100%",
+                  height: "56px",
+                  ft_size: "18px",
+                  color: "#FFFFFF",
+                  bg_color: "#4D71FF",
+                }}
+              />
+            </ButtonContainer>
+          </AuctionJoinModalContent>
+        </AuctionJoinModal>
+      </>
     </>
   );
 };
@@ -473,52 +473,6 @@ const CommentCountWrap = styled.div`
 const CommentCountTitle = styled.p`
   font-weight: 700 !important;
   color: black !important;
-`;
-
-const DetailCommentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const CommentFormBox = styled.form`
-  display: flex;
-  justify-content: center;
-  height: 180px;
-  background-color: #dedede;
-  .inputBox {
-    display: flex;
-    flex-direction: column;
-    width: 350px;
-    gap: 16px;
-    textarea {
-      display: flex;
-      border-radius: 8px;
-      border: 1px solid #bcbcbc;
-      margin-top: 20px;
-      width: 100%;
-      height: 68px;
-      resize: none;
-
-      box-sizing: border-box;
-      padding: 13px 16px;
-      font-size: 14px;
-      font-weight: 400;
-      letter-spacing: -0.05em;
-    }
-    button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      border: none;
-      background-color: #bcbcbc;
-      width: 100%;
-      height: 56px;
-
-      font-size: 18px;
-      font-weight: 400;
-      color: #6d6d6d;
-    }
-  }
 `;
 
 const DetailFooterWrap = styled.div`

@@ -42,10 +42,10 @@ const Chat = () => {
 
   const { roomId } = useParams();
   const { isDetail, title } = useLocation().state;
-  const nickName = sessionStorage.getItem("memberNickname");
+  const nickName = sessionStorage.getItem("memberNickname").split("kakao")[0];
 
   const chatMessageList = useSelector(
-    (state) => state.chat.chatMessageList,
+    (state) => state.chat.chatMessageList
   ).filter((item) => item.roomId === roomId);
 
   const [visible, setVisible] = useState(false); // 채팅 메뉴 모달
@@ -104,13 +104,13 @@ const Chat = () => {
     );
   };
 
-	const checkNickname = (nickName) => {
-		if (nickName.includes("kakao")) {
-			return nickName = nickName.split("kakao")[0] + "kakao";
-		} else {
-			return nickName;
-		}
-	}
+  const checkNickname = (nickName) => {
+    if (nickName.includes("kakao")) {
+      return (nickName = nickName.split("kakao")[0] + "kakao");
+    } else {
+      return nickName;
+    }
+  };
 
   const scrollToBottom = () => {
     window.document.body
@@ -118,8 +118,8 @@ const Chat = () => {
       .scrollTo(
         0,
         document.body.querySelector(
-          "#root > div > div.sc-dUWWNf > div.sc-hsOonA.jcBIja",
-        ).scrollHeight,
+          "#root > div > div.sc-dUWWNf > div.sc-hsOonA.jcBIja"
+        ).scrollHeight
       );
   };
 
