@@ -1,62 +1,310 @@
-import React from "react";
-import Header from "../../components/header/Header";
+// React import
+import React, { useEffect, useState } from "react";
+
+// Reducer import
+import { useSelector, useDispatch } from "react-redux";
+import { auctionDetailData } from "../../redux/modules/AuctionSlice";
+import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
+import { history } from "../../redux/config/ConfigStore";
+
+// Package import
+import { useNavigate, useParams } from "react-router-dom";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
 import styled from "styled-components";
 
+// Component import
+import Header from "../../components/header/Header";
+import Slider from "../../components/auction/Slider";
+import AuctionJoinModal from "../../components/modal/AuctionJoinModal";
+import SwipeImage from "../../components/swipeImage/SwipeImage";
+
+// Element & Shared import
+import Button from "../../elements/button/Button";
+import { Close, Next } from "../../shared/images";
+
+var stompClient = null;
+
 const AuctionDetail = () => {
-  const Img = (
-    <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
-  );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const params = useParams();
+  const data = useSelector((state) => state.auction.auction);
+
+  const imgList = data.multiImages;
+
+  const nickName = sessionStorage.getItem("memberNickname");
+  // console.log("111111", imgList);
+
+  const [joinVisible, setJoinVisible] = useState(false);
+  // const [price, setPrice] = useState(data.nowPrice);
+
+  const [chatList, setChatList] = useState([]);
+  const [userData, setUserData] = useState({
+    type: "",
+    roomId: data.bidRoomId,
+    sender: "",
+    message: data.nowPrice,
+    createdAt: "",
+  });
+
+  useEffect(() => {
+    if (!params?.auctionId) {
+      return <></>;
+    } else {
+      dispatch(auctionDetailData(+params?.auctionId)).then((res) => {
+				if (data.bidRoomId !== undefined && chatList.length === 0) {
+					registerUser();
+				}
+			});
+		}
+  }, [JSON.stringify(data)]);
+
+  useEffect(() => {
+    dispatch(auctionDetailData(+params?.auctionId));
+  }, [JSON.stringify(chatList)]);
+
+  if (!data) {
+    return navigate(-1);
+  }
+
+  const handleDelete = async () => {
+    try {
+      const response = await dispatch(deleteAuctionItem(data.id)).unwrap();
+      if (response) {
+        return navigate(-1, { replace: true });
+      }
+    } catch {}
+  };
+
+  const onClickAuctionJoin = async () => {
+    // 비로그인 -> 세션에 닉네임 없음
+    if (!nickName) {
+      if (window.confirm("로그인이 필요합니다. 로그인하시겠습니까?")) {
+        navigate("/login");
+      }
+    } else {
+      // 입찰 모달 보여줌
+      setJoinVisible(true);
+    }
+  };
+
+  // 웹소켓 연결
+  const registerUser = () => {
+    var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
+    stompClient = Stomp.over(sockJS);
+    // stompClient.debug = null; // stompJS console.log 막기
+
+    stompClient.connect({}, onConnected, onError);
+  };
+
+  const onConnected = () => {
+    // setUserData({ ...userData, type: "ENTER" });
+    // console.log(userData);
+
+    stompClient.subscribe(
+      `/topic/chat/room/${data.bidRoomId}`,
+      onMessageReceived,
+    );
+
+    // 채팅방 들어감
+    // userJoin();
+  };
+
+  const onError = (err) => {
+    console.log(err);
+  };
+
+  const userJoin = () => {
+    let chatMessage = {
+      type: "ENTER",
+      roomId: data.bidRoomId,
+      sender: nickName,
+      message: data.nowPrice,
+    };
+
+    stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
+  };
+
+  const onMessageReceived = (payload) => {
+    let payloadData = JSON.parse(payload.body);
+
+    if (payloadData.type === "ENTER" || payloadData.type === "TALK") {
+      chatList.push(payloadData);
+      setChatList([...chatList]);
+    }
+  };
+
+  const sendMessage = () => {
+    if (stompClient && userData.message) {
+      let chatMessage = {
+        type: "TALK",
+        roomId: data.bidRoomId,
+        sender: nickName,
+        message: userData.message,
+      };
+
+      stompClient.send(
+        "/app/chat/bid",
+        {},
+        JSON.stringify({ ...chatMessage, type: "ENTER" }),
+      );
+
+      stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
+      setUserData({ ...userData, message: "" });
+
+      setJoinVisible(false);
+    }
+  };
+
+  const onKeyPress = (event) => {
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+  };
 
   return (
-    <AuctionDetailLayout>
-      <Header />
+    <>
+      <AuctionDetailLayout>
+        <Header
+          back={true}
+          share={true}
+          menu={true}
+          handleDelete={handleDelete}
+        />
 
-      <DetailBodyWrap>
-        <ItemImg>{Img}</ItemImg>
+        <DetailBodyWrap>
+          <ItemImgContainer>
+            <Slider data={imgList} />
+          </ItemImgContainer>
 
-        <DetailBodyContainer>
-          <DetailBodyProfile>
-            <DetailBodyProfileImg>{Img}</DetailBodyProfileImg>
-            <DetailBodyProfileContent>
-              <div className="nickName">아이유</div>
-              <div className="trustCount">신뢰도</div>
-            </DetailBodyProfileContent>
-          </DetailBodyProfile>
+          <DetailBodyContainer>
+            <DetailBodyProfileBox>
+              <DetailBodyProfileImg>
+                <img src={data.member.profileImgUrl} alt="" />
+              </DetailBodyProfileImg>
+              <div className="DetailBodyProfile">
+                <DetailBodyProfileContent>
+                  <div className="nickName">{data.member.nickName}</div>
+                  <div className="trustCount">신뢰도</div>
+                </DetailBodyProfileContent>
+                <div>신고</div>
+              </div>
+            </DetailBodyProfileBox>
 
-          <DetailBodyTitle>
-            게시글 제목이 들어가야 될 것 같습니다.
-          </DetailBodyTitle>
+            <DetailBodyTitle>{data.title}</DetailBodyTitle>
 
-          <DetailBodyTag>
-            <div>택배</div>
-            <div>서대문구</div>
-          </DetailBodyTag>
+            <DetailBodySelectTag>
+              {data.direct ? <div>택배</div> : ""}
+              {data.delivery ? <div>직거래</div> : ""}
+              {data.region ? <div>{data.region}</div> : ""}
+            </DetailBodySelectTag>
 
-          <DetailBodyContent>
-            경매 내용입니다. 글자수 제한이 필요할까요?또 모르지 내 마음이 저
-            날씨처럼 바뀔지 날 나조차 다 알 수 없으니 그게 뭐가 중요하니 지금
-            네게 완전히 푹 빠졌단 게 중요한 거지 아마 꿈만 같겠지만 분명 꿈이
-            아니야 달리 설명할 수 없는 이건 사랑일 거야 방금 내가 말한 감정 감히
-            의심하지 마 그냥 좋다는 게 아냐 What's after 'LIKE'? 경매
-            내용입니다. 글자수 제한이 필요할까요?또 모르지 내 마음이 저 날씨처럼
-            바뀔지 날 나조차 다 알 수 없으니 그게 뭐가 중요하니 지금 네게 완전히
-            푹 빠졌단 게 중요한 거지 아마 꿈만 같겠지만 분명 꿈이 아니야 달리
-            설명할 수 없는 이건 사랑일 거야 방금 내가 말한 감정 감히 의심하지 마
-            그냥 좋다는 게 아냐 What's after 'LIKE'?
-          </DetailBodyContent>
-        </DetailBodyContainer>
-      </DetailBodyWrap>
+            <DetailBodyContent>{data.content}</DetailBodyContent>
+            <DetailBodyViewTag>
+              <div>관심 10</div>
+              <div>조회 {data.viewerCnt}</div>
+            </DetailBodyViewTag>
+            <DetailBodyItemTag></DetailBodyItemTag>
+          </DetailBodyContainer>
 
-      <DetailFooter>
-        <FooterLeftWrap>
-          <div className="presentPrice">최근 입찰가</div>
-          <div className="price">1000원</div>
-        </FooterLeftWrap>
-        <FooterRightWrap>
-          <button>입찰하기</button>
-        </FooterRightWrap>
-      </DetailFooter>
-    </AuctionDetailLayout>
+          <CommentCountContainer
+            onClick={() =>
+              navigate(`/chat/${data.chatRoomId}`, {
+                state: { isDetail: true, title: data.title },
+              })
+            }
+          >
+            <CommentCountWrap>
+              <CommentCountTitle>실시간 채팅방</CommentCountTitle>
+              <p>{data.participantCnt}명 참여중</p>
+            </CommentCountWrap>
+            <Next />
+          </CommentCountContainer>
+
+          {/* <DetailCommentContainer>
+          <CommentFormBox>
+            <div className="inputBox">
+              <textarea placeholder="댓글을 입력해주세요." rows="" cols="" />
+              <button>댓글 작성</button>
+            </div>
+          </CommentFormBox>
+        </DetailCommentContainer> */}
+        </DetailBodyWrap>
+
+        <DetailFooterWrap>
+          <DetailFooterTimeContainer>
+            <p>남은 시간</p>
+            <h3>{data.createdAt}</h3>
+          </DetailFooterTimeContainer>
+          <DetailFooterContainer>
+            <FooterLeftBox>
+              <div className="presentPrice">{`시작가 ${data.startPrice}원`}</div>
+							{/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
+              <div className="price">{`현재가 ${data.nowPrice}원`}</div>
+            </FooterLeftBox>
+            <FooterRightBox>
+              <button onClick={onClickAuctionJoin}>입찰하기</button>
+            </FooterRightBox>
+          </DetailFooterContainer>
+        </DetailFooterWrap>
+      </AuctionDetailLayout>
+
+      {/* 경매 입찰 모달 */}
+			<>
+      <AuctionJoinModal visible={joinVisible} setVisible={setJoinVisible}>
+        <AuctionJoinModalContent>
+          <AuctionJoinIcon>
+            <img src="/maskable.png" alt="auction-join" />
+          </AuctionJoinIcon>
+
+          <AuctionJoinCloseWrap>
+            <Close onClick={() => setJoinVisible(false)} />
+          </AuctionJoinCloseWrap>
+          <AuctionNowPriceWrap>
+            <span>현재 최고가</span>
+            <AuctionNowPrice>
+              {Math.max(data.startPrice, data.nowPrice)}원
+            </AuctionNowPrice>
+          </AuctionNowPriceWrap>
+          <AuctionJoinInfo>
+            입찰 후에는 금액을 수정하거나 취소할 수 없습니다.
+          </AuctionJoinInfo>
+          <AuctionJoinInput
+            type="number"
+            value={userData.message}
+            onChange={(event) =>
+              setUserData({ ...userData, message: event.target.value })
+            }
+            onKeyDown={(event) => onKeyPress(event)}
+            placeholder="입찰 가격을 입력해주세요."
+          />
+          {userData.message <= Math.max(data.startPrice, data.nowPrice) ? (
+            <AuctionJoinInputInfo>
+              현재 최고가보다 낮은 호가입니다.
+            </AuctionJoinInputInfo>
+          ) : (
+            <AuctionJoinInputInfo></AuctionJoinInputInfo>
+          )}
+          <ButtonContainer>
+            <Button
+              type={"submit"}
+              text={"입찰하기"}
+              _onClick={sendMessage}
+              style={{
+                width: "100%",
+                height: "56px",
+                ft_size: "18px",
+                color: "#FFFFFF",
+                bg_color: "#4D71FF",
+              }}
+            />
+          </ButtonContainer>
+        </AuctionJoinModalContent>
+      </AuctionJoinModal>
+			</>
+    </>
   );
 };
 
@@ -64,33 +312,41 @@ const AuctionDetailLayout = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
 `;
 const DetailBodyWrap = styled.div`
   display: flex;
   flex-direction: column;
   margin-top: 70px;
-  height: calc(100vh - 160px);
+  height: calc(100vh - 185px);
   overflow: scroll;
 `;
-const ItemImg = styled.div`
+const ItemImgContainer = styled.div`
   display: flex;
+  width: 100%;
   margin-bottom: 20px;
-  img {
+  /* img {
     width: 100%;
     height: 390px;
-  }
+  } */
 `;
 const DetailBodyContainer = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0px 20px;
 `;
-const DetailBodyProfile = styled.div`
+const DetailBodyProfileBox = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
   height: 48px;
   margin-bottom: 24px;
+  .DetailBodyProfile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
 `;
 const DetailBodyProfileImg = styled.div`
   display: flex;
@@ -107,7 +363,7 @@ const DetailBodyProfileContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   .nickName {
     font-size: 16px;
     font-weight: 700;
@@ -125,7 +381,7 @@ const DetailBodyTitle = styled.div`
   word-break: break-all;
   margin-bottom: 16px;
 `;
-const DetailBodyTag = styled.div`
+const DetailBodySelectTag = styled.div`
   display: flex;
   margin-bottom: 16px;
   div {
@@ -141,21 +397,166 @@ const DetailBodyContent = styled.div`
   word-break: break-all;
   font-size: 20px;
   height: 100%;
-  background-color: beige;
+`;
+const DetailBodyViewTag = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 49px;
+  gap: 0 9px;
+
+  div {
+    font-size: 16px;
+    font-weight: 400;
+    color: #9b9b9b;
+  }
 `;
 
-const DetailFooter = styled.div`
+const DetailBodyItemTag = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0 8px;
+  height: 22px;
+  margin-bottom: 40px;
+  div {
+    display: flex;
+    font-size: 14px;
+    font-weight: 500;
+    justify-content: center;
+
+    padding: 2px 6px;
+    border-radius: 100px;
+    background-color: #9b9b9b;
+    color: white;
+  }
+`;
+
+const CommentCountContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  height: 57px;
+  padding: 0px 20px;
+  border-top: 1px solid #dedede;
+  gap: 8px;
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  p {
+    font-size: 20px;
+    font-weight: 400;
+    color: #9b9b9b;
+  }
+
+  img {
+    width: 16px;
+    height: 16px;
+  }
+
+  svg {
+    width: 10px;
+    height: 18px;
+    path {
+      fill: ${(props) => props.theme.colors.Gray3};
+    }
+  }
+`;
+
+const CommentCountWrap = styled.div`
+  display: flex;
+  gap: 12px;
+`;
+
+const CommentCountTitle = styled.p`
+  font-weight: 700 !important;
+  color: black !important;
+`;
+
+const DetailCommentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+const CommentFormBox = styled.form`
+  display: flex;
+  justify-content: center;
+  height: 180px;
+  background-color: #dedede;
+  .inputBox {
+    display: flex;
+    flex-direction: column;
+    width: 350px;
+    gap: 16px;
+    textarea {
+      display: flex;
+      border-radius: 8px;
+      border: 1px solid #bcbcbc;
+      margin-top: 20px;
+      width: 100%;
+      height: 68px;
+      resize: none;
+
+      box-sizing: border-box;
+      padding: 13px 16px;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: -0.05em;
+    }
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      border: none;
+      background-color: #bcbcbc;
+      width: 100%;
+      height: 56px;
+
+      font-size: 18px;
+      font-weight: 400;
+      color: #6d6d6d;
+    }
+  }
+`;
+
+const DetailFooterWrap = styled.div`
   display: flex;
   justify-content: space-between;
+
   width: 100%;
-  height: 74px;
-  flex-direction: row;
+  height: 116px;
+  flex-direction: column;
   position: absolute;
   bottom: 0;
-  background-color: skyblue;
+`;
+const DetailFooterTimeContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 42px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  gap: 0 8px;
+  p {
+    font-size: 14px;
+    font-weight: 400;
+  }
+  h3 {
+    font-size: 20px;
+    font-weight: 700;
+  }
+`;
+const DetailFooterContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
-const FooterLeftWrap = styled.div`
+const FooterLeftBox = styled.div`
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -171,7 +572,7 @@ const FooterLeftWrap = styled.div`
     font-weight: 700;
   }
 `;
-const FooterRightWrap = styled.div`
+const FooterRightBox = styled.div`
   display: flex;
   margin: 13px 20px 14px 0px;
   button {
@@ -185,6 +586,110 @@ const FooterRightWrap = styled.div`
     border: none;
     border-radius: 8px;
   }
+`;
+
+const ButtonContainer = styled.div`
+  width: 100%;
+  margin-top: 2% auto;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+
+const AuctionJoinIcon = styled.div`
+  width: 104px;
+  height: 104px;
+
+  background-color: ${(props) => props.theme.colors.White};
+  border-radius: 50%;
+
+  position: absolute;
+  top: -30%;
+  right: 50%;
+  transform: translate(50%, 50%);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    width: 82px;
+    height: 82px;
+
+    border-radius: 50%;
+  }
+`;
+
+// const AuctionWrap = styled.div`
+// 	background-color: aliceblue;
+// 	height: fit-content;
+// 	position: absolute;
+// 	bottom: 50%;
+// 	left: 0;
+// 	right: 0;
+// `;
+
+const AuctionJoinModalContent = styled.div`
+  padding: 20px;
+  /* background-color: aliceblue; */
+`;
+
+const AuctionJoinCloseWrap = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 20px;
+`;
+
+const AuctionNowPriceWrap = styled.div`
+  margin-top: 45px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+
+  span {
+    color: ${(props) => props.theme.colors.Black};
+    font-size: ${(props) => props.theme.fontSizes.md};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+  }
+`;
+
+const AuctionNowPrice = styled.span`
+  font-size: ${(props) => props.theme.fontSizes.xl} !important;
+  font-weight: ${(props) => props.theme.fontWeights.medium} !important;
+`;
+
+const AuctionJoinInfo = styled.p`
+  margin-top: 1px;
+
+  color: ${(props) => props.theme.colors.Gray3};
+  font-size: ${(props) => props.theme.fontSizes.sm};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
+
+  text-align: center;
+`;
+
+const AuctionJoinInput = styled.input`
+  width: calc(100% - 30px);
+  height: 22px;
+  margin-top: 20px;
+  padding: 16px 15px;
+
+  background: ${(props) => props.theme.colors.White};
+  border: 1px solid ${(props) => props.theme.colors.Gray1};
+  border-radius: 8px;
+`;
+
+const AuctionJoinInputInfo = styled.p`
+  height: 20px;
+  margin-top: 8px;
+
+  color: ${(props) => props.theme.colors.Red};
+  font-size: ${(props) => props.theme.fontSizes.sm};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
 `;
 
 export default AuctionDetail;

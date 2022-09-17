@@ -1,89 +1,167 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Header from "../../components/header/Header";
 import styled from "styled-components";
 import Footer from "../../components/footer/Footer";
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux/es/exports";
+import { _MyPageData, _MyPageInAuction } from "../../redux/modules/MyPageSlice";
 
 const MyPage = () => {
-  const Img = (
-    <img src="https://t1.daumcdn.net/cfile/blog/231A3A3A557C6B3D0A" alt="" />
-  );
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const data = useSelector((state) => state.myPage?.myPage);
+  const memberId = sessionStorage?.getItem("memberId");
 
+  useEffect(() => {
+    dispatch(_MyPageData(memberId));
+  }, [memberId]);
+
+  const Img = (
+    <img
+      src={
+        data?.profileImgUrl == null ? (
+          <svg
+            width="120"
+            height="120"
+            viewBox="0 0 120 120"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M120 60C120 76.99 112.94 92.32 101.6 103.24C100.35 104.44 99.05 105.59 97.69 106.68C97.5 106.84 97.31 106.99 97.12 107.14C96.24 107.84 95.33 108.51 94.41 109.16C84.66 115.99 72.8 120 60 120C47.2 120 35.34 115.99 25.59 109.16C24.67 108.52 23.76 107.85 22.88 107.15C22.69 107 22.5 106.85 22.31 106.69C20.95 105.6 19.65 104.45 18.4 103.25C7.06 92.32 0 76.99 0 60C0 26.86 26.86 0 60 0C93.14 0 120 26.86 120 60Z"
+              fill="#C5D0E1"
+            />
+          </svg>
+        ) : (
+          data?.profileImgUrl
+        )
+      }
+      alt=""
+    />
+  );
+  // console.log("mypage배돌", data);
   return (
     <MyPageLayout>
-      <Header />
+      <Header pageName="마이페이지" alarm={true} />
 
-      <MyProfile>
-        <MyImgWrap>
+      <MyProfileWrap>
+        <MyImgContainer>
           <MyImgBox>
             {Img}
-            <div>사진</div>
+            {/* <div>사진</div> */}
           </MyImgBox>
-        </MyImgWrap>
+        </MyImgContainer>
 
-        <div>
-          <div>닉네임</div>
-          <div>정보</div>
+        <MyNickContainer>
+          <NickBox>
+            <div className="nickName">{data?.nickname}</div>
+            <div
+              className="profileEdit"
+              onClick={() => {
+                navigate("/profileEdit");
+              }}>
+              프로필 수정
+            </div>
+          </NickBox>
+          <LevelBox>
+            <div className="levelIcon" onClick={() => navigate("/myGrade")}>
+              등급
+            </div>
+          </LevelBox>
+        </MyNickContainer>
+      </MyProfileWrap>
+
+      <MyStateWrap>
+        <div className="stateBox" onClick={() => navigate("/myPageMyAuction")}>
+          <div className="title">나의 경매</div>
+          <div className="count">{data?.myAuctionCnt}</div>
         </div>
-      </MyProfile>
-
-      <div>
-        <div>매너온도</div>
-        <div>매너온도 점수</div>
-      </div>
-
-      <MyStateContainer>
-        <button>판매내역</button>
-        <button>구매내역</button>
-        <button>관심목록</button>
-      </MyStateContainer>
-      <div>
-        <div>프로필 수정</div>
-        <div>키워드 알림</div>
-        <div></div>
-        <div></div>
-      </div>
-      <Footer />
+        <StateBox>
+          <div
+            className="title"
+            onClick={() => navigate("/myPageParticipationAuction")}>
+            참여 경매
+          </div>
+          <div className="count">{data?.myParticipantCnt}</div>
+        </StateBox>
+        <div
+          className="stateBox"
+          onClick={() => navigate("/MyPageInterestAuction")}>
+          <div className="title">관심 경매</div>
+          <div className="count">{data?.myFavoriteCnt}</div>
+        </div>
+      </MyStateWrap>
+      <MyProfileListWrap>
+        <ListContainer>
+          <div className="listIcon">
+            <div></div>
+          </div>
+          <div className="listTitle">이벤트</div>
+        </ListContainer>
+        <ListContainer>
+          <div className="listIcon">
+            <div></div>
+          </div>
+          <div className="listTitle">공지사항</div>
+        </ListContainer>
+        <ListContainer>
+          <div className="listIcon">
+            <div></div>
+          </div>
+          <div className="listTitle">자주 묻는 질문</div>
+        </ListContainer>
+        <ListContainer>
+          <div className="listIcon">
+            <div></div>
+          </div>
+          {memberId === null ? (
+            <div onClick={() => navigate("/login")} className="listTitle">
+              로그인
+            </div>
+          ) : (
+            <div className="listTitle">로그아웃</div>
+          )}
+        </ListContainer>
+      </MyProfileListWrap>
+      <Footer myPage={true} />
     </MyPageLayout>
   );
 };
 
 const MyPageLayout = styled.div`
   display: flex;
+  justify-content: flex-start;
   width: 100%;
   height: 100vh;
   flex-direction: column;
-  background-color: beige;
 `;
-const MyProfile = styled.div`
+const MyProfileWrap = styled.div`
   display: flex;
-  flex-direction: column;
-
-  margin: 70px 10px 10px 10px;
-  background-color: skyblue;
-  margin-top: 70px;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 20px;
+  margin: 93px 20px 20px 20px;
 `;
-const MyImgWrap = styled.div`
+const MyImgContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 120px;
-  margin-top: 32px;
+  width: 73px;
 
-  background-color: aqua;
+  height: 73px;
 `;
 const MyImgBox = styled.div`
   display: flex;
-  width: 120px;
+  width: 100%;
   height: 100%;
 
   img {
     display: flex;
-    width: 120px;
-    height: 120px;
+    width: 73px;
+    height: 100%;
     border-radius: 120px;
   }
-  div {
+  /* div {
     display: flex;
     position: absolute;
     top: 186px;
@@ -94,17 +172,130 @@ const MyImgBox = styled.div`
     align-items: center;
     justify-content: center;
     background-color: white;
+  } */
+`;
+const MyNickContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: space-between;
+`;
+const NickBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 1px;
+  .nickName {
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .profileEdit {
+    font-size: 14px;
+    font-weight: 400;
+    color: #9b9b9b;
   }
 `;
-const MyStateContainer = styled.div`
+const LevelBox = styled.div`
   display: flex;
-  margin: 0px 10px 10px 10px;
-  button {
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+  .levelIcon {
     display: flex;
-    width: 100%;
+    width: 46px;
+    height: 46px;
+    border-radius: 46px;
     justify-content: center;
     align-items: center;
+
+    background-color: grey;
   }
 `;
+const MyStateWrap = styled.div`
+  display: flex;
+  position: relative;
+  width: 350px;
+  margin: 0px 20px 40px 20px;
+  height: 86px;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: #ededed;
 
+  .stateBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 114px;
+    height: 100%;
+    margin: 16px 0px;
+
+    .title {
+      display: flex;
+
+      font-size: 16px;
+      font-weight: 400px;
+      color: #6d6d6d;
+    }
+    .count {
+      font-size: 20px;
+      font-weight: 700;
+    }
+  }
+`;
+const StateBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 114px;
+  height: 26px;
+
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+
+  .title {
+    display: flex;
+
+    font-size: 16px;
+    font-weight: 400px;
+    color: #6d6d6d;
+  }
+  .count {
+    font-size: 20px;
+    font-weight: 700;
+  }
+`;
+const MyProfileListWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0px 20px;
+  gap: 40px;
+`;
+const ListContainer = styled.div`
+  display: flex;
+  gap: 8px;
+  justify-content: flex-start;
+  align-items: center;
+
+  .listIcon {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    div {
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      background-color: #d9d9d9;
+    }
+  }
+  .listTitle {
+    display: flex;
+    font-size: 16px;
+    font-weight: 400;
+  }
+`;
 export default MyPage;

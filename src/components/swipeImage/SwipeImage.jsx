@@ -1,7 +1,8 @@
 // React import
 import React, { useEffect, useRef, useState } from "react";
 
-// import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+// Shared import
+import { Back, Next } from "../../shared/images";
 
 // Style import
 import {
@@ -17,6 +18,7 @@ import {
   SwipeIdx,
   SwipeIdxItem,
   SwipeImg,
+  SwipeImgLayer,
   SwipeItem,
   SwipeShowContainer,
 } from "./SwipeImage.styled";
@@ -55,9 +57,10 @@ const SwipeImage = ({
   };
 
   useEffect(() => {
+    var timeout;
     // 메인화면 5초마다 슬라이드 움직임
     if (isMain) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         if (currentImgIndex !== data.length - 1) {
           nextSlide();
         } else {
@@ -69,44 +72,74 @@ const SwipeImage = ({
         }
       }, 5000);
     }
-  });
 
+    return () => {
+      if (isMain) {
+        setTimeout(timeout);
+      }
+    };
+  });
+	
   return (
     <SwipeContainer maxWidth={maxWidth} height={height}>
       <SwipeShowContainer ref={ref} style={style}>
         {data?.map((item, idx) => {
-          return (
-            <SwipeItem>
-              <SwipeImg key={idx} src={item.imgUrl} minHeight={minHeight} />
+          if (isMain) {
+            const diff = new Date(new Date(item.deadline) - Date.now());
+            const auctionPeriodDiff = `
+						${diff.getDate()}일 
+						${diff.getHours().toString().padStart(2, "0")}시간
+						${diff.getMinutes().toString().padStart(2, "0")}분
+					`;
 
-              {/* 메인화면 배너 */}
-              {isMain ? (
+            return (
+              <SwipeItem key={idx} minHeight={minHeight}>
+                <SwipeImg src={item.multiImages[0].imgUrl} />
+                {/* <SwipeImgLayer /> */}
+
+                {/* 메인화면 배너 */}
                 <SwipeContent>
                   <BannerContent>
-                    <BannerTime>{item.time}</BannerTime>
+                    <BannerTime>{auctionPeriodDiff}</BannerTime>
                     <BannerTitle>{item.title}</BannerTitle>
                   </BannerContent>
                   <BannerPriceWrap>
                     <span>최고입찰가</span>
-                    <BannerPrice>{item.price}원</BannerPrice>
+                    <BannerPrice>{item.nowPrice}원</BannerPrice>
                   </BannerPriceWrap>
-                  <BannerCircle></BannerCircle>
+                  <BannerCircle idx={idx}/>
                 </SwipeContent>
-              ) : (
-                <SwipeContent></SwipeContent>
-              )}
 
-              <SwipeIdx>
-                {Array.from({ length: data.length }, (_, idx_i) =>
-                  idx === idx_i ? (
-                    <SwipeIdxItem color="black" />
-                  ) : (
-                    <SwipeIdxItem color="white" />
-                  ),
-                )}
-              </SwipeIdx>
-            </SwipeItem>
-          );
+                <SwipeIdx isMain={isMain}>
+                  {Array.from({ length: data.length }, (_, idxI) =>
+                    idx === idxI ? (
+                      <SwipeIdxItem key={idxI} idxNow={true} />
+                    ) : (
+                      <SwipeIdxItem key={idxI} idxNow={false} />
+                    ),
+                  )}
+                </SwipeIdx>
+              </SwipeItem>
+            );
+          } else {
+            return (
+              <SwipeItem key={idx} minHeight={minHeight}>
+                <SwipeImg src={item.imgUrl} />
+
+                <div></div>
+								
+                <SwipeIdx isMain={isMain}>
+                  {Array.from({ length: data.length }, (_, idxI) =>
+                    idx === idxI ? (
+                      <SwipeIdxItem key={idxI} idxNow={true} />
+                    ) : (
+                      <SwipeIdxItem key={idxI} idxNow={false} />
+                    ),
+                  )}
+                </SwipeIdx>
+              </SwipeItem>
+            );
+          }
         })}
       </SwipeShowContainer>
 
@@ -115,23 +148,13 @@ const SwipeImage = ({
         <>
           {currentImgIndex !== 0 ? (
             <SwipeBtn location="prev" onClick={prevSlide}>
-              {/* <IoIosArrowBack size="20"/> */}
-              <img
-                src="maskable.png"
-                alt="all"
-                style={{ width: "20px", height: "20px" }}
-              />
+							<Back className="back-btn"/>
             </SwipeBtn>
           ) : null}
 
           {currentImgIndex !== data.length - 1 ? (
             <SwipeBtn location="next" onClick={nextSlide}>
-              {/* <IoIosArrowForward size="20"/> */}
-              <img
-                src="maskable.png"
-                alt="all"
-                style={{ width: "20px", height: "20px" }}
-              />
+							<Next className="next-btn"/>
             </SwipeBtn>
           ) : null}
         </>

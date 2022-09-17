@@ -8,8 +8,22 @@ export const ChatListContainer = styled.div`
 
 export const ChatRoomList = styled.div`
   width: 100%;
+	margin-top: 10px;
 
   position: absolute;
   top: 70px;
   bottom: 70px;
+
+	overflow-y: scroll;
+`;
+
+export const NoChatRoom = styled.div`
+	height: 100%;
+
+	font-size: ${(props) => props.theme.fontSizes.xl};
+	font-weight: ${(props) => props.theme.fontWeights.bold};
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;

@@ -1,68 +1,136 @@
 // Redux import
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-//package import
+// Package import
+import { Cookies } from "react-cookie";
+
+// Shared import
 import api from "../../shared/Api";
+import { getCookie, setCookie } from "../../shared/Cookie";
+import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
 
-export const loginMemberThunk = createAsyncThunk(
-  "member/loginMember",
+const cookies = new Cookies();
+
+export const emailCheckThunk = createAsyncThunk(
+  "member/emailCheck",
   async (payload, thunkAPI) => {
-    const resData = await api
-      .post(`${URL}/member/login`, payload)
-      .then((res) => res)
-      .catch((err) => console.err(err));
-    window.localStorage.setItem(
-      "authorization",
-      resData.headers["authorization"]
-    );
+    const resData = await api.post(`/member/emailcheck`, payload);
+    return thunkAPI.fulfillWithValue(resData.data.data);
+  }
+);
 
-    return thunkAPI.fulfillWithValue(resData.data.success);
+export const nickNameCheckThunk = createAsyncThunk(
+  "member/nickNameCheck",
+  async (payload, thunkAPI) => {
+    const resData = await api.post(`/member/nicknamecheck`, payload);
+    return thunkAPI.fulfillWithValue(resData.data.data);
   }
 );
 
 export const signUpMemberThunk = createAsyncThunk(
   "member/signUpMember",
   async (payload, thunkAPI) => {
-    const resData = await api
-      .post(`${URL}/member/signUp`, payload)
-      .then((res) => res);
-
-    return thunkAPI.fulfillWithValue(resData);
+    const resData = await api.post(`/member/signup`, payload).then((res) => {
+      if (res.data.success === false) {
+        return window.alert(res.data.err.message);
+      } else {
+        return (
+          window.alert(`${res.data.data.nickName}님 회원가입을 축하드립니다!`),
+          window.location.replace("/login")
+        );
+      }
+    });
+    return thunkAPI.fulfillWithValue(resData.data.data);
   }
 );
 
-export const kakaoAuthThunk = createAsyncThunk(
+export const loginMemberThunk = createAsyncThunk(
+  "member/loginMember",
+  async (payload, thunkAPI) => {
+    const resData = await api.post(`/member/login`, payload).then((res) => {
+      if (res.data.statusCode === 200) {
+        // const tokeretn = getCookie("accessToken");
+        // setCookie("accessToken", res.headers.authorization, +res.headers.expires);
+        cookies.set(
+          "accessToken",
+          res.headers.authorization,
+          +res.headers.expires
+        );
+        cookies.set("memberId", res.data.data.memberId);
+
+        sessionStorage.setItem("accessToken", res.headers.authorization);
+        sessionStorage.setItem("memberId", res.data.data.memberId);
+        sessionStorage.setItem("memberNickname", res.data.data.nickName);
+
+        return res;
+      } else {
+        return res;
+      }
+    });
+    return thunkAPI.fulfillWithValue(resData.data);
+  }
+);
+
+export const kakaoOauthThunk = createAsyncThunk(
   "member/kakaoLogin",
   async (payload, thunkAPI) => {
     const resData = await api
-      .get(`/oauth/kakao/callback?code=${payload.code}`)
-      .then((res) => res);
-    window.localStorage.setItem(
-      "authorization",
-      resData.headers["authorization"].split(" ")[1]
-    );
+      .get(process.env.REACT_APP_URL + "/member/kakao/callback", {
+        params: {
+          code: payload,
+        },
+      })
+      .then((res) => {
+        if (res.data.statusCode === 200) {
+          cookies.set(
+            "accessToken",
+            res.headers.authorization,
+            +res.headers.expires
+          );
+          cookies.set("memberId", res.data.data.memberId);
 
-    return thunkAPI.fulfillWithValue(resData.data.success);
+          sessionStorage.setItem("accessToken", res.headers.authorization);
+          sessionStorage.setItem("memberId", res.data.data.memberId);
+          sessionStorage.setItem("memberNickname", res.data.data.nickname);
+          window.history.go(-2);
+          
+          return res;
+        } else {
+          return res;
+        }
+      });
+    return thunkAPI.fulfillWithValue(resData.data);
   }
 );
 
-const URL = process.env.REACT_APP_URL;
-
 const initialState = {
-  member: [],
-  loginStatus: false,
+  member: "",
+  isLogin: false,
 };
 
 export const memberSlice = createSlice({
   name: "member",
   initialState,
-  extraReducers: {
+  reducers: {
     loginAction: (state, action) => {
       state.email = action.payload.email;
-      state.loginStatus = action.payload.loginStatus;
+      state.isLogin = action.payload.isLogin;
     },
+    headerAction: (state, action) => {
+      state.email = action.payload.email;
+      state.isLogin = action.payload.isLogin;
+    },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(loginMemberThunk.fulfilled, (state, action) => {
+      state.member = action.payload;
+      state.isLogin = true;
+    });
+    builder.addCase(kakaoOauthThunk.fulfilled, (state, action) => {
+      state.member = action.payload;
+    });
   },
 });
 
-export const { loginAction } = memberSlice.actions;
+export const { headerAction, loginAction } = memberSlice.actions;
 export default memberSlice.reducer;

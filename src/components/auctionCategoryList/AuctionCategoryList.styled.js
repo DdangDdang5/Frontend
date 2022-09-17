@@ -13,21 +13,32 @@ export const CategoryHeader = styled.div`
 `;
 
 export const CategoryTitle = styled.div`
-  font-size: 20px;
-  font-weight: bold;
+  font-size: ${(props) => props.theme.fontSizes.lg};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
 `;
 
 export const CategoryNum = styled.span`
-  color: gray;
+  color: ${(props) => props.theme.colors.Blue1};
 `;
 
 export const CategoryMore = styled.div`
   display: flex;
   align-items: center;
+	gap: 8px;
 
-  img {
-    width: 23px;
-    height: 23px;
+	span {
+		color: ${(props) => props.theme.colors.Gray3};
+		font-size: ${(props) => props.theme.fontSizes.sm};
+		font-weight: ${(props) => props.theme.fontWeights.normal};
+	}
+
+  svg {
+    width: 6px;
+    height: 10px;
+
+		path {
+			fill: ${(props) => props.theme.colors.Gray3};
+		}
   }
 `;
 

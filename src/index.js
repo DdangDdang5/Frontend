@@ -8,18 +8,28 @@ import store from "./redux/config/ConfigStore";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { ThemeProvider } from "styled-components";
+import { CookiesProvider } from "react-cookie";
 
-// Component import
+// Component & Shared import
 import reportWebVitals from "./reportWebVitals";
-import "./index.css";
 import App from "./App";
+import Theme from "./shared/Theme";
+
+// Style import
+import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
+
 root.render(
   <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+    <CookiesProvider>
+      <ThemeProvider theme={Theme}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ThemeProvider>
+    </CookiesProvider>
   </Provider>
 );
 

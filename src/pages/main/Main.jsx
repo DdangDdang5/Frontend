@@ -1,15 +1,28 @@
 // React import
-import React from "react";
+import React, { useEffect } from "react";
 
-// Component import
+// Redux import
+import {
+  auctionItemList,
+  auctionItemListNotPage,
+  getAuctionDeadlineList,
+  getAuctionHitList,
+  getAuctionNewList,
+} from "../../redux/modules/AuctionListSlice";
+
+// Package import
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+// Component & Shared import
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import AuctionCategoryList from "../../components/auctionCategoryList/AuctionCategoryList";
 import SwipeImage from "../../components/swipeImage/SwipeImage";
+import { Next } from "../../shared/images";
 
 // Style import
 import {
-  AddAuction,
   BannerContainer,
   LastItem,
   LastList,
@@ -25,43 +38,68 @@ import {
   NewItemTitle,
   NewList,
   PopularItem,
+  PopularItemContent,
   PopularList,
   PopularPrice,
   PopularPriceWrap,
   PopularTitle,
+  TagRegion,
   TagWrap,
 } from "./Main.styled";
+import PlusButton from "../../components/button/PlusButton";
 
 const Main = () => {
-  const data = [
-    {
-			imgUrl: "maskable.png",
-      time: "6일 12:36:01",
-      title: "폰트사이즈가 고민입니다.. 최대길이는 이 정도입니다.",
-      price: 598000,
-    },
-    {
-			imgUrl: "logo512.png",
-      time: "4일 11:59:59",
-      title: "Banner Title!!!",
-      price: 398000,
-    },
-    {
-			imgUrl: "logo192.png",
-      time: "1일 02:30:27",
-      title: "Banner Title!!!",
-      price: 198000,
-    },
-  ];
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const auctionAllList = useSelector((state) => state.auctionList.auctionList);
+
+  const auctionHitList = useSelector(
+    (state) => state.auctionList.auctionHitList,
+  );
+  const auctionNewList = useSelector(
+    (state) => state.auctionList.auctionNewList,
+  );
+  const auctionDeadlineList = useSelector(
+    (state) => state.auctionList.auctionDeadlineList,
+  );
+
+  const auctionLastList = auctionHitList
+    ?.map((item) => {
+      const date = new Date(item.createdAt);
+      return {
+        ...item,
+        auctionPeriod: new Date(
+          date.setDate(date.getDate() + item.auctionPeriod)
+        ),
+      };
+    })
+    .sort(
+      (a, b) =>
+        new Date(a.auctionPeriod).valueOf() -
+        new Date(b.auctionPeriod).valueOf()
+    );
+
+
+  useEffect(() => {
+    // dispatch(auctionItemListNotPage());
+    dispatch(getAuctionHitList());
+    dispatch(getAuctionNewList());
+    dispatch(getAuctionDeadlineList());
+  }, [JSON.stringify(auctionAllList), JSON.stringify(auctionHitList), JSON.stringify(auctionNewList), JSON.stringify(auctionDeadlineList)]);
+
+  const moveAuctionDetail = (auctionId) => {
+    navigate(`/auctionDetail/${auctionId}`);
+  };
 
   return (
     <MainContainer>
-      <Header logo={true} />
+      <Header logo={true} search={true} alarm={true} />
 
       <MainContent>
         {/* 배너 */}
         <BannerContainer>
-					<SwipeImage isMain={true} data={data} height="100%" />
+          <SwipeImage isMain={true} data={auctionDeadlineList} height="100%" />
         </BannerContainer>
 
         {/* 카테고리별, 지역별 TOP 6 */}
@@ -73,19 +111,29 @@ const Main = () => {
           <ListHeader>지금 관심 폭발 중!</ListHeader>
 
           <PopularList>
-            {Array.from({ length: 3 }, () => (
-              <PopularItem>
-                <div>
-                  <TagWrap backgroundColor="white">
-                    <span>택배</span>
-                    <span>마포구</span>
-                  </TagWrap>
-                  <PopularTitle>예시 텍스트입니다. 최대 두줄</PopularTitle>
-                </div>
-                <PopularPriceWrap>
-                  <span>현재 입찰가</span>
-                  <PopularPrice>{18000}원</PopularPrice>
-                </PopularPriceWrap>
+            {auctionHitList?.map((item, idx) => (
+              <PopularItem
+                key={item.auctionId}
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
+                <img
+                  src={item.multiImages[0].imgUrl}
+                  alt="auction-popular-img"
+                />
+                <PopularItemContent idx={idx}>
+                  <div>
+                    <TagWrap isPopular={true} idx={idx}>
+                      {item.delivery ? <span>택배</span> : null}
+                      {item.direct ? <span>직거래</span> : null}
+                      <span>{item.region}</span>
+                    </TagWrap>
+                    <PopularTitle>{item.title}</PopularTitle>
+                  </div>
+                  <PopularPriceWrap>
+                    <span>현재 입찰가</span>
+                    <PopularPrice>{item.nowPrice}원</PopularPrice>
+                  </PopularPriceWrap>
+                </PopularItemContent>
               </PopularItem>
             ))}
           </PopularList>
@@ -95,27 +143,29 @@ const Main = () => {
         <ListContainer>
           <ListHeader>
             <span>따끈따끈 새로 올라온 경매!</span>
-            <ListHeaderMore>
-              <span>전체보기</span>
-              <img src="maskable.png" alt="all" />
+            <ListHeaderMore onClick={() => navigate("/auctionList")}>
+              <span>전체 보기</span>
+							<Next />
             </ListHeaderMore>
           </ListHeader>
 
           <NewList>
-            {Array.from({ length: 3 }, () => (
-              <NewItem>
-                <img src="maskable.png" alt="auction-img" />
+            {auctionNewList?.map((item) => (
+              <NewItem
+                key={item.auctionId}
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
+                <img src={item.multiImages[0].imgUrl} alt="auction-new-img" />
                 <NewItemContent>
-                  <TagWrap backgroundColor="gray">
-                    <span>택배</span>
-                    <span>성산구</span>
+                  <TagWrap>
+                    {item.delivery ? <span>택배</span> : null}
+                    {item.direct ? <span>직거래</span> : null}
+                    <TagRegion>{item.region}</TagRegion>
                   </TagWrap>
-                  <NewItemTitle>
-                    제목은 한 줄만 노출됩니다. 길어진 길이는 안보입니다.
-                  </NewItemTitle>
+                  <NewItemTitle>{item.title}</NewItemTitle>
                   <NewItemPriceWrap>
                     <span>입찰시작가</span>
-                    <NewItemPrice>{5000}원</NewItemPrice>
+                    <NewItemPrice>{item.nowPrice}원</NewItemPrice>
                   </NewItemPriceWrap>
                 </NewItemContent>
               </NewItem>
@@ -125,28 +175,30 @@ const Main = () => {
 
         {/* 마감임박 경매 */}
         <ListContainer>
-          <ListHeader fontSize="18px">
+          <ListHeader isLast={true}>
             <span>서두르세요! 곧 경매가 끝나요</span>
-            <ListHeaderMore>
-              <span>전체보기</span>
-              <img src="maskable.png" alt="all" />
+            <ListHeaderMore onClick={() => navigate("/auctionList")}>
+              <span>전체 보기</span>
+							<Next />
             </ListHeaderMore>
           </ListHeader>
 
           <LastList>
-            {Array.from({ length: 4 }, () => (
-              <LastItem>
-                <img src="maskable.png" alt="auction-img" />
-                <TagWrap backgroundColor="gray">
-                  <span>택배</span>
-                  <span>성산구</span>
+            {auctionDeadlineList?.map((item) => (
+              <LastItem
+                key={item.auctionId}
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
+                <img src={item.multiImages[0].imgUrl} alt="auction-last-img" />
+                <TagWrap>
+                  {item.delivery ? <span>택배</span> : null}
+                  {item.direct ? <span>직거래</span> : null}
+                  <TagRegion>{item.region}</TagRegion>
                 </TagWrap>
-                <NewItemTitle>
-                  제목은 한 줄만 노출됩니다. 길어진 길이는 안보입니다.
-                </NewItemTitle>
+                <NewItemTitle>{item.title}</NewItemTitle>
                 <NewItemPriceWrap>
                   <span>최고입찰가</span>
-                  <NewItemPrice>{5000}원</NewItemPrice>
+                  <NewItemPrice>{item.nowPrice}원</NewItemPrice>
                 </NewItemPriceWrap>
               </LastItem>
             ))}
@@ -154,9 +206,9 @@ const Main = () => {
         </ListContainer>
       </MainContent>
 
-      <AddAuction src="maskable.png" alt="auction-img" />
+      <PlusButton />
 
-      <Footer />
+      <Footer home={true} />
     </MainContainer>
   );
 };
