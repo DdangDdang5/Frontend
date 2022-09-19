@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux/es/exports";
-import { _MyPageInAuction } from "../../redux/modules/MyPageSlice";
 import { useNavigate } from "react-router-dom";
 
 const AuctionRow = ({ data, isAuction }) => {
@@ -13,31 +10,29 @@ const AuctionRow = ({ data, isAuction }) => {
   return (
     // {data.data == '' ? }
     <AuctionLayout>
-      <div
+      <Auction2Container
         onClick={() => {
           navigate(`/auctionDetail/${data.auctionId}`);
         }}>
-        <Auction2Container>
-          <ImgBox>{Img}</ImgBox>
-          <ContentBox>
-            <div className="contentNavBox">
-              {data?.direct ? <div className="delivery">택배</div> : ""}
-              {data?.delivery ? <div className="region">직거래</div> : ""}
-              <div className="region">{data.region}</div>
-            </div>
-            <div className="title">{data.title}</div>
-            <div className="priceBox">
-              <div>최근입찰가</div>
-              <div className="price">5000원</div>
-            </div>
-          </ContentBox>
-        </Auction2Container>
-        {isAuction ? (
-          <Action2Btn>거래 진행중</Action2Btn>
-        ) : (
-          <Action2Btn>거래 완료</Action2Btn>
-        )}
-      </div>
+        <ImgBox>{Img}</ImgBox>
+        <ContentBox>
+          <div className="contentNavBox">
+            {data?.direct ? <div className="delivery">택배</div> : ""}
+            {data?.delivery ? <div className="region">직거래</div> : ""}
+            <div className="region">{data.region}</div>
+          </div>
+          <div className="title">{data.title}</div>
+          <div className="priceBox">
+            <div>최근입찰가</div>
+            <div className="price">5000원</div>
+          </div>
+        </ContentBox>
+      </Auction2Container>
+      {isAuction ? (
+        <Action2Btn>거래 진행중</Action2Btn>
+      ) : (
+        <Action2Btn>거래 완료</Action2Btn>
+      )}
     </AuctionLayout>
   );
 };
@@ -47,11 +42,10 @@ const AuctionLayout = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  margin: 0px 20px;
+  padding: 0px 20px;
 `;
 const Auction2Container = styled.div`
   display: flex;
-  flex-direction: row;
   width: 350px;
   gap: 18px;
   margin-bottom: 15px;
@@ -59,7 +53,6 @@ const Auction2Container = styled.div`
 
 const ImgBox = styled.div`
   display: flex;
-
   img {
     width: 75px;
     height: 75px;
@@ -69,8 +62,10 @@ const ImgBox = styled.div`
 const ContentBox = styled.div`
   display: flex;
   flex-direction: column;
+  min-width: 277px;
   height: 75px;
   gap: 4px;
+
   .contentNavBox {
     display: flex;
     flex-direction: row;
@@ -94,16 +89,14 @@ const ContentBox = styled.div`
     }
   }
   .title {
-    display: flex;
-    width: 100%;
-    height: 25px;
+    max-height: 25px;
     font-size: 18px;
     font-weight: 400;
     align-items: center;
-
-    flex-wrap: nowrap;
     overflow: hidden;
+    white-space: nowrap;
     -webkit-line-clamp: 1;
+    max-lines: 1;
     text-overflow: ellipsis;
   }
   .priceBox {
