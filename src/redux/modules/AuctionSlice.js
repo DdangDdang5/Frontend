@@ -36,6 +36,18 @@ export const winAuctionItem = createAsyncThunk(
   },
 );
 
+export const doneAuction = createAsyncThunk(
+	"doneAuction", 
+	async (payload, thunkAPI) => {
+		try {
+			const response = await api.get(`/auction/${payload}/done`);
+			console.log(response);
+		} catch (error) {
+			return thunkAPI.rejectWithValue(error);
+		}
+	}
+)
+
 const auctionSlice = createSlice({
   name: "auction_",
   initialState,
@@ -53,6 +65,15 @@ const auctionSlice = createSlice({
       state.bid = action.payload;
     },
     [winAuctionItem.rejected]: (state, action) => {
+      console.log(action);
+    },
+
+    // 경매 거래 종료
+    [doneAuction.fulfilled]: (state, action) => {
+			// action.payload -> auction (auctionStatus === false)
+      state.auction = action.payload;
+    },
+    [doneAuction.rejected]: (state, action) => {
       console.log(action);
     },
   },

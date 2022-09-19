@@ -9,6 +9,7 @@ const Button = ({ type, text, style, _onClick }) => {
       width={style?.width}
       height={style?.height}
       ft_size={style?.ft_size}
+			ft_weight={style?.ft_weight}
       bg_color={style?.bg_color}
       color={style?.color}
     >
@@ -23,6 +24,7 @@ export const StyledButton = styled.button`
   width: ${(props) => (props.width ? props.width : '100px')};
   height: ${(props) => (props.height ? props.height : '50px')};
   font-size: ${(props) => (props.ft_size ? props.ft_size : '16px')};
+	font-weight: ${(props) => (props.ft_weight ? props.ft_weight : props.theme.fontWeights.normal)};
   background-color: ${(props) => (props.bg_color ? props.bg_color : '#54AEFF')};
   color: ${(props) => (props.color ? props.color : '#000000')};
   border-radius: 8px;

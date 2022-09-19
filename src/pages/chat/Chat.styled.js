@@ -190,3 +190,25 @@ export const MenuItemList = styled.div`
 export const MenuItem = styled.div`
 	padding: 12px 20px;
 `;
+
+export const OptionModalContainer = styled.div`
+	padding: 32px;
+`;
+
+export const ModalTextWrap = styled.div`
+	color: ${(props) => props.theme.colors.Black};
+	font-size: ${(props) => props.theme.fontSizes.ms};
+	font-weight: ${(props) => props.theme.fontWeights.normal};
+
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+`;
+
+export const ModalBtnWrap = styled.div`
+	margin-top: 28px;
+
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+`;

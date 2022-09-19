@@ -60,26 +60,26 @@ const AuctionDetail = () => {
           registerUser();
         }
       });
-			
-			const date = new Date(data.createdAt);
-			const deadline = new Date(
-				date.setDate(date.getDate() + data.auctionPeriod),
-			);
 
-			if (deadline <= Date.now()) {
-				console.log("finish auction");
-			} else {
-				console.log("not finish auction", params);
-				console.log(bid);
-	
-				dispatch(winAuctionItem(params.auctionId));
-				if (bid) {
-					if (bid.seller === nickName || bid.bidder === nickName) {
-						setWinBid(true);
-						console.log("me is win the auction");
-					}
-				}
-			}
+      const date = new Date(data.createdAt);
+      const deadline = new Date(
+        date.setDate(date.getDate() + data.auctionPeriod),
+      );
+
+      if (deadline <= Date.now()) {
+        console.log("finish auction");
+      } else {
+        console.log("not finish auction", params);
+        console.log(bid);
+
+        dispatch(winAuctionItem(params.auctionId));
+        if (bid) {
+          if (bid.seller === nickName || bid.bidder === nickName) {
+            setWinBid(true);
+            console.log("me is win the auction");
+          }
+        }
+      }
     }
   }, [JSON.stringify(data), JSON.stringify(bid.auctionId)]);
 
@@ -179,7 +179,7 @@ const AuctionDetail = () => {
           back={true}
           share={true}
           menu={true}
-          handleDelete={handleDelete}
+          onClickBtn={handleDelete}
         />
 
         <DetailBodyWrap>
@@ -220,7 +220,7 @@ const AuctionDetail = () => {
           <CommentCountContainer
             onClick={() =>
               navigate(`/chat/${data.chatRoomId}`, {
-                state: { isDetail: true, title: data.title },
+                state: { auctionId: params?.auctionId, isDetail: true, title: data.title },
               })
             }
           >
@@ -247,31 +247,37 @@ const AuctionDetail = () => {
             <h3>{data.createdAt}</h3>
           </DetailFooterTimeContainer>
           <DetailFooterContainer>
+            <FooterLeftBox>
+              <div className="presentPrice">{`시작가 ${data.startPrice}원`}</div>
+              {/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
+              <div className="price">{`현재가 ${data.nowPrice}원`}</div>
+            </FooterLeftBox>
             {winBid ? (
               <FooterBidContainer>
                 <Button
-                  text="거래하기"
+                  text="채팅방으로 이동"
                   _onClick={() => {
                     navigate(`/chat/${bid.roomId}`, {
-                      state: { isDetail: false, title: data.title },
+                      state: {
+                        auctionId: params.auctionId,
+                        isDetail: false,
+                        title: data.title,
+                      },
                     });
                   }}
                   style={{
-                    width: "90%",
+                    width: "165px",
+										ft_size: "18px",
+										ft_weight: "500",
+										color: "white",
+										bg_color: "#1DC79A"
                   }}
                 />
               </FooterBidContainer>
             ) : (
-              <>
-                <FooterLeftBox>
-                  <div className="presentPrice">{`시작가 ${data.startPrice}원`}</div>
-                  {/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
-                  <div className="price">{`현재가 ${data.nowPrice}원`}</div>
-                </FooterLeftBox>
-                <FooterRightBox>
-                  <button onClick={onClickAuctionJoin}>입찰하기</button>
-                </FooterRightBox>
-              </>
+              <FooterRightBox>
+                <button onClick={onClickAuctionJoin}>입찰하기</button>
+              </FooterRightBox>
             )}
           </DetailFooterContainer>
         </DetailFooterWrap>
@@ -583,11 +589,7 @@ const DetailFooterContainer = styled.div`
 `;
 
 const FooterBidContainer = styled.div`
-  width: 100%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin: auto 12px auto 20px;
 `;
 
 const FooterLeftBox = styled.div`
