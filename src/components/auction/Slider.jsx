@@ -8,8 +8,6 @@ const Slider = ({ data }) => {
     return item.imgUrl;
   });
 
-  // console.log(cnt);
-
   // const [touch, setTouch] = useState({
   //   start: 0,
   //   end: 0,

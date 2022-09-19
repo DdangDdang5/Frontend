@@ -64,18 +64,16 @@ const AuctionWrite = () => {
   const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
   const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
 
-  console.log("배돌배돌", inputForm);
-
   useEffect(() => {
     setInputForm((prev) => {
-			const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
+      const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
       return { ...prev, category: categoryNameCheck };
     });
   }, [categoryNameCheck]);
 
   useEffect(() => {
     setInputForm((prev) => {
-			const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
+      const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
       return { ...prev, region: regionNameCheck };
     });
   }, [regionNameCheck]);
