@@ -1,8 +1,14 @@
 // React import
-import React from "react";
+import React, { useState } from "react";
+
+//Reducer import
+import { useDispatch } from "react-redux";
 
 // Package import
 import { useNavigate } from "react-router-dom";
+
+// Component import
+import OptionModal from "../modal/OptionModal";
 
 // Shared import
 import {
@@ -48,6 +54,8 @@ const Header = ({
   handleDelete,
 }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <HeaderContainer>
@@ -55,7 +63,9 @@ const Header = ({
         {/* left */}
         <HeaderTitle>
           {back ? <Back onClick={() => navigate(-1)} /> : null}
-          {close ? <Close className="close" onClick={() => navigate(-1)} /> : null}
+          {close ? (
+            <Close className="close" onClick={() => navigate(-1)} />
+          ) : null}
           {pageName ? <PageTitle>{pageName}</PageTitle> : null}
           {logo ? (
             <Logo className="logo" onClick={() => navigate("/")}>
@@ -69,7 +79,7 @@ const Header = ({
           {search ? <Search onClick={() => navigate("/search")} /> : null}
           {alarm ? <Alarm /> : null}
           {share ? <Share /> : null}
-          {menu ? <Menu onClick={handleDelete} /> : null}
+          {menu ? <Menu onClick={() => setShowModal(true)} /> : null}
           {save ? <span onClick={onClickSave}>{save.type}</span> : null}
         </HeaderIconContainer>
       </HeaderContent>

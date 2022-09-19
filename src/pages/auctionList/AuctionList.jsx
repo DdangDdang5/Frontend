@@ -16,7 +16,7 @@ import styled from "styled-components";
 // Component import
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
-import PlusButton from "../../components/button/PlusButton";
+import PlusButton from "../../elements/button/PlusButton";
 import AuctionColumn from "../../components/auction/AuctionColumn";
 import Auction from "../../components/auction/AuctionColumn";
 
@@ -65,15 +65,13 @@ const AuctionList = () => {
       <Header back={true} pageName="경매 목록" search={true} alarm={true} />
       <ListCategoryWrap>
         <CategoryBtn
-          onClick={() => dispatch(showModal("categoryList"), _categoryList())}
-        >
+          onClick={() => dispatch(showModal("categoryList"), _categoryList())}>
           <CategoryBtnText>{categoryName}</CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
         </CategoryBtn>
         <CategoryBtn>
           <CategoryBtnText
-            onClick={() => dispatch(showModal("regionList"), _regionList())}
-          >
+            onClick={() => dispatch(showModal("regionList"), _regionList())}>
             {regionName}
           </CategoryBtnText>
           <CategoryBtnIcon>v</CategoryBtnIcon>
