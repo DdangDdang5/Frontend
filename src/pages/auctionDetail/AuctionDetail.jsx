@@ -165,14 +165,26 @@ const AuctionDetail = () => {
   };
 
   // 타이머 기능
-  const oneDay = 1 * 24 * 60 * 60 * 1000;
-  const fiveDay = 5 * 24 * 60 * 60 * 1000;
-  const sevenDay = 7 * 24 * 60 * 60 * 1000;
-  const startTime = new Date().getTime();
-  console.log("time", startTime);
-  const dateTimeAfterOneDays = startTime + oneDay;
-  const dateTimeAfterFiveDays = startTime + fiveDay;
-  const dateTimeAfterSevenDays = startTime + sevenDay;
+  const timer = (countDown) => {
+    const oneDay = 1 * 24 * 60 * 60 * 1000;
+    const fiveDay = oneDay * 5;
+    const sevenDay = oneDay * 7;
+    const startTime = Date.parse(data.createdAt);
+    const dateTimeAfterOneDays = startTime + oneDay;
+    const dateTimeAfterFiveDays = startTime + fiveDay;
+    const dateTimeAfterSevenDays = startTime + sevenDay;
+    console.log("1111", startTime);
+
+    switch (countDown) {
+      case 1:
+        return dateTimeAfterOneDays;
+      case 5:
+        return dateTimeAfterFiveDays;
+      case 7:
+        return dateTimeAfterSevenDays;
+      default:
+    }
+  };
 
   return (
     <>
@@ -236,7 +248,9 @@ const AuctionDetail = () => {
         <DetailFooterWrap>
           <DetailFooterTimeContainer>
             <p>남은 시간</p>
-            <CountdownTimer targetDate={dateTimeAfterOneDays} />
+
+            <CountdownTimer targetDate={timer(data.auctionPeriod)} />
+            {/* <Timer date={data.createdAt} /> */}
           </DetailFooterTimeContainer>
           <DetailFooterContainer>
             <FooterLeftBox>

@@ -16,12 +16,13 @@ const ShowCounter = ({ days, hours, minutes, seconds }) => {
   return (
     <div style={{ display: "flex", color: "white" }}>
       <DateTimeDisplay value={days} type={"Days"} isDanger={days <= 3} />
-      <p>:</p>
+      <p>일&nbsp;</p>
       <DateTimeDisplay value={hours} type={"Hours"} isDanger={false} />
-      <p>:</p>
+      <p>시&nbsp;</p>
       <DateTimeDisplay value={minutes} type={"Mins"} isDanger={false} />
-      <p>:</p>
+      <p>분&nbsp;</p>
       <DateTimeDisplay value={seconds} type={"Seconds"} isDanger={false} />
+      <p>초</p>
     </div>
   );
 };
