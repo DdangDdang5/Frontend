@@ -173,7 +173,6 @@ const AuctionDetail = () => {
     const dateTimeAfterOneDays = startTime + oneDay;
     const dateTimeAfterFiveDays = startTime + fiveDay;
     const dateTimeAfterSevenDays = startTime + sevenDay;
-    console.log("1111", startTime);
 
     switch (countDown) {
       case 1:
@@ -183,6 +182,7 @@ const AuctionDetail = () => {
       case 7:
         return dateTimeAfterSevenDays;
       default:
+        return <div>기간이 끝났습니다</div>;
     }
   };
 
