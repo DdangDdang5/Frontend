@@ -18,7 +18,7 @@ const ShowCounter = ({ days, hours, minutes, seconds }) => {
         ""
       ) : (
         <>
-          <DateTimeDisplay value={days} type={"Days"} isDanger={days <= 3} />
+          <DateTimeDisplay value={days} type={"Days"} />
           <p>일&nbsp;</p>
         </>
       )}
@@ -34,11 +34,19 @@ const ShowCounter = ({ days, hours, minutes, seconds }) => {
         ""
       ) : (
         <>
-          <DateTimeDisplay value={minutes} type={"Mins"} isDanger={false} />
+          <DateTimeDisplay
+            value={minutes}
+            type={"Mins"}
+            isDanger={minutes <= 5}
+          />
           <p>분&nbsp;</p>
         </>
       )}
-      <DateTimeDisplay value={seconds} type={"Seconds"} isDanger={false} />
+      <DateTimeDisplay
+        value={seconds}
+        type={"Seconds"}
+        isDanger={minutes < 5 ? seconds < 60 : false}
+      />
       <p>초</p>
     </div>
   );
