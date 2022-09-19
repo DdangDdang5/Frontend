@@ -6,7 +6,7 @@ import auction from "../modules/AuctionSlice";
 import modal from "../modules/ModalSlice";
 import search from "../modules/SearchSlice";
 import chat from "../modules/ChatSlice";
-import myPage from "../modules/MyPageSlice";
+import myPage from "../modules/MyProfileSlice";
 
 // Package import
 import { configureStore } from "@reduxjs/toolkit";
