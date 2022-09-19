@@ -30,6 +30,15 @@ export const getChatRoomList = createAsyncThunk(
   },
 );
 
+export const getChatRoomListByMember = createAsyncThunk(
+	"getChatRoomListByMember",
+	async (payload, thunkAPI) => {
+		const response = await api.get(`/ono/${payload}`);
+		// console.log(response);
+		return thunkAPI.fulfillWithValue(response.data.data);
+	}
+)
+
 export const getChatMessageList = createAsyncThunk(
   "getChatMessageList",
   async (payload, thunkAPI) => {
@@ -54,6 +63,11 @@ const chatListSlice = createSlice({
       // action.paylaod -> chatroom list
       state.chatRoomList = action.payload;
     },
+
+		[getChatRoomListByMember.fulfilled]: (state, action) => {
+			// action.payload -> 1:1 chatroom list by member
+			state.chatRoomList = action.payload;
+		},
 
     [getChatMessageList.fulfilled]: (state, action) => {
       // action.payload -> chatroom message list

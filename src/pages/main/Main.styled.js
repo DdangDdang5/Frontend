@@ -1,5 +1,5 @@
 // Package import
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const MainContainer = styled.div`
   width: 100%;
@@ -13,10 +13,10 @@ export const MainContent = styled.div`
   bottom: 70px;
 
   overflow-y: scroll;
-	
-	&::-webkit-scrollbar {
-		display: none;
-	}
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 export const BannerContainer = styled.div`
@@ -39,16 +39,21 @@ export const ListHeader = styled.span`
 `;
 
 export const ListHeaderMore = styled.div`
-	color: ${(props) => props.theme.colors.Gray3};
+  color: ${(props) => props.theme.colors.Gray3};
   font-size: ${(props) => props.theme.fontSizes.sm};
   font-weight: ${(props) => props.theme.fontWeights.normal};
 
   display: flex;
   align-items: center;
+  gap: 8px;
 
-  img {
-    width: 23px;
-    height: 23px;
+  svg {
+    width: 6px;
+    height: 10px;
+
+    path {
+      fill: ${(props) => props.theme.colors.Gray3};
+    }
   }
 `;
 
@@ -93,6 +98,45 @@ export const PopularItemContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
+  ${(props) => {
+    switch (props.idx) {
+      case 0:
+        return css`
+          background: linear-gradient(
+            180deg,
+            #4d71ff 22.5%,
+            rgba(0, 0, 0, 0.4) 91.9%
+          );
+        `;
+      case 1:
+        return css`
+          background: linear-gradient(
+            180deg,
+            #1dc79a 22.5%,
+            rgba(0, 0, 0, 0.4) 91.9%
+          );
+        `;
+      case 2:
+        return css`
+          background: linear-gradient(
+            180deg,
+            #fdb024 22.5%,
+            rgba(0, 0, 0, 0.4) 91.9%
+          );
+        `;
+      case 3:
+        return css`
+          background: linear-gradient(
+            180deg,
+            #ff664d 22.5%,
+            rgba(0, 0, 0, 0.4) 91.9%
+          );
+        `;
+      default:
+        return;
+    }
+  }};
 `;
 
 export const TagWrap = styled.div`
@@ -102,39 +146,70 @@ export const TagWrap = styled.div`
   gap: 4px;
 
   span {
-    padding: 2px 6px;
+    padding: 2px 4px;
 
-    color: ${(props) => props.isPopular ? props.theme.colors.Blue1 : props.theme.colors.White};
-    background-color: ${(props) => props.isPopular ? props.theme.colors.White : props.theme.colors.Blue1};
+    /* color: ${(props) =>
+      props.isPopular ? props.theme.colors.Blue1 : props.theme.colors.White}; */
+    background-color: ${(props) =>
+      props.isPopular ? props.theme.colors.White : props.theme.colors.Blue1};
     border-radius: 100px;
-		
-		font-size: ${(props) => props.theme.fontSizes.sm};
+
+    font-size: ${(props) => props.theme.fontSizes.sm};
     font-weight: ${(props) => props.theme.fontWeights.medium};
+
+    ${(props) => {
+      if (props.isPopular) {
+        switch (props.idx) {
+          case 0:
+            return css`
+              color: ${(props) => props.theme.colors.Blue1};
+            `;
+          case 1:
+            return css`
+              color: ${(props) => props.theme.colors.Green1};
+            `;
+          case 2:
+            return css`
+              color: ${(props) => props.theme.colors.Yellow};
+            `;
+          case 3:
+            return css`
+              color: ${(props) => props.theme.colors.Red};
+            `;
+          default:
+            return;
+        }
+      } else {
+        return css`
+          color: ${(props) => props.theme.colors.White};
+        `;
+      }
+    }}
   }
-	`;
+`;
 
 export const TagRegion = styled.span`
-	color: ${(props) => props.theme.colors.Blue1} !important;
-	background-color: ${(props) => props.theme.colors.White} !important;
-	border: 1px solid ${(props) => props.theme.colors.Blue1};
+  color: ${(props) => props.theme.colors.Blue1} !important;
+  background-color: ${(props) => props.theme.colors.White} !important;
+  border: 1px solid ${(props) => props.theme.colors.Blue1};
 `;
 
 export const PopularTitle = styled.span`
   font-size: ${(props) => props.theme.fontSizes.md};
-	font-weight: ${(props) => props.theme.fontWeights.normal};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
 `;
 
 export const PopularPriceWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-	gap: 4px;
+  gap: 4px;
 
-	span {
-		font-size: ${(props) => props.theme.fontSizes.sm};
-		font-weight: ${(props) => props.theme.fontWeights.normal};
-		text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
-	}
+  span {
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+    text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.25);
+  }
 `;
 
 export const PopularPrice = styled.span`
@@ -145,9 +220,9 @@ export const PopularPrice = styled.span`
 export const NewList = styled.div`
   margin: 16px auto;
 
-	display: flex;
-	flex-direction: column;
-	gap: 19px;
+  display: flex;
+  flex-direction: column;
+  gap: 19px;
 `;
 
 export const NewItem = styled.div`
@@ -157,6 +232,8 @@ export const NewItem = styled.div`
     width: 75px;
     height: 75px;
     border-radius: 8px;
+
+    object-fit: cover;
   }
 `;
 
@@ -168,8 +245,8 @@ export const NewItemContent = styled.div`
 export const NewItemTitle = styled.span`
   width: 100%;
 
-	font-size: ${(props) => props.theme.fontSizes.md};
-	font-weight: ${(props) => props.theme.fontWeights.normal};
+  font-size: ${(props) => props.theme.fontSizes.md};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
 
   display: block;
   overflow: hidden;
@@ -179,7 +256,7 @@ export const NewItemTitle = styled.span`
 
 export const NewItemPriceWrap = styled.div`
   font-size: ${(props) => props.theme.fontSizes.sm};
-	font-weight: ${(props) => props.theme.fontWeights.normal};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
 
   display: flex;
   align-items: center;
@@ -188,7 +265,7 @@ export const NewItemPriceWrap = styled.div`
 
 export const NewItemPrice = styled.span`
   font-size: ${(props) => props.theme.fontSizes.md};
-	font-weight: ${(props) => props.theme.fontWeights.medium};
+  font-weight: ${(props) => props.theme.fontWeights.medium};
 `;
 
 export const LastList = styled.div`
@@ -205,13 +282,15 @@ export const LastList = styled.div`
 
 export const LastItem = styled.div`
   width: 100%;
-	max-width: 165px;
+  max-width: 165px;
 
   img {
     width: 100%;
     height: 120px;
     margin-bottom: 10px;
     border-radius: 8px;
+
+    object-fit: cover;
   }
 `;
 

@@ -14,11 +14,12 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-// Component import
+// Component & Shared import
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import AuctionCategoryList from "../../components/auctionCategoryList/AuctionCategoryList";
 import SwipeImage from "../../components/swipeImage/SwipeImage";
+import { Next } from "../../shared/images";
 
 // Style import
 import {
@@ -63,12 +64,29 @@ const Main = () => {
     (state) => state.auctionList.auctionDeadlineList,
   );
 
+  const auctionLastList = auctionHitList
+    ?.map((item) => {
+      const date = new Date(item.createdAt);
+      return {
+        ...item,
+        auctionPeriod: new Date(
+          date.setDate(date.getDate() + item.auctionPeriod)
+        ),
+      };
+    })
+    .sort(
+      (a, b) =>
+        new Date(a.auctionPeriod).valueOf() -
+        new Date(b.auctionPeriod).valueOf()
+    );
+
+
   useEffect(() => {
     // dispatch(auctionItemListNotPage());
     dispatch(getAuctionHitList());
     dispatch(getAuctionNewList());
-    // dispatch(getAuctionDeadlineList());
-  }, [JSON.stringify(auctionHitList), JSON.stringify(auctionNewList)]);
+    dispatch(getAuctionDeadlineList());
+  }, [JSON.stringify(auctionAllList), JSON.stringify(auctionHitList), JSON.stringify(auctionNewList), JSON.stringify(auctionDeadlineList)]);
 
   const moveAuctionDetail = (auctionId) => {
     navigate(`/auctionDetail/${auctionId}`);
@@ -81,7 +99,7 @@ const Main = () => {
       <MainContent>
         {/* 배너 */}
         <BannerContainer>
-          <SwipeImage isMain={true} data={auctionHitList} height="100%" />
+          <SwipeImage isMain={true} data={auctionDeadlineList} height="100%" />
         </BannerContainer>
 
         {/* 카테고리별, 지역별 TOP 6 */}
@@ -93,7 +111,7 @@ const Main = () => {
           <ListHeader>지금 관심 폭발 중!</ListHeader>
 
           <PopularList>
-            {auctionHitList?.map((item) => (
+            {auctionHitList?.map((item, idx) => (
               <PopularItem
                 key={item.auctionId}
                 onClick={() => moveAuctionDetail(item.auctionId)}
@@ -102,9 +120,9 @@ const Main = () => {
                   src={item.multiImages[0].imgUrl}
                   alt="auction-popular-img"
                 />
-                <PopularItemContent>
+                <PopularItemContent idx={idx}>
                   <div>
-                    <TagWrap isPopular={true}>
+                    <TagWrap isPopular={true} idx={idx}>
                       {item.delivery ? <span>택배</span> : null}
                       {item.direct ? <span>직거래</span> : null}
                       <span>{item.region}</span>
@@ -125,9 +143,9 @@ const Main = () => {
         <ListContainer>
           <ListHeader>
             <span>따끈따끈 새로 올라온 경매!</span>
-            <ListHeaderMore>
+            <ListHeaderMore onClick={() => navigate("/auctionList")}>
               <span>전체 보기</span>
-              <img src="maskable.png" alt="all" />
+							<Next />
             </ListHeaderMore>
           </ListHeader>
 
@@ -159,9 +177,9 @@ const Main = () => {
         <ListContainer>
           <ListHeader isLast={true}>
             <span>서두르세요! 곧 경매가 끝나요</span>
-            <ListHeaderMore>
+            <ListHeaderMore onClick={() => navigate("/auctionList")}>
               <span>전체 보기</span>
-              <img src="maskable.png" alt="all" />
+							<Next />
             </ListHeaderMore>
           </ListHeader>
 

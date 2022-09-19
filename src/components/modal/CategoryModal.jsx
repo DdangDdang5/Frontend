@@ -13,6 +13,7 @@ import {
   auctionCategoryList,
   auctionCategoryRegionList,
   auctionItemList,
+  auctionItemListNotPage,
   auctionRegionList,
 } from "../../redux/modules/AuctionListSlice";
 
@@ -46,14 +47,14 @@ const CategoryModal = () => {
       setModalList(categoryList);
       setTitle("품목 선택");
     }
-  }, [dispatch, division]);
+  }, [division]);
 
   const onCheckCategoryRegion = (categoryName, regionName) => {
     const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
     const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
 
     if (categoryNameCheck === "전체품목" && regionNameCheck === "서울전체") {
-      dispatch(auctionItemList());
+      dispatch(auctionItemListNotPage());
     } else if (
       categoryNameCheck !== "전체품목" &&
       regionNameCheck !== "서울전체"
@@ -67,7 +68,7 @@ const CategoryModal = () => {
     } else if (categoryNameCheck !== "전체품목") {
       dispatch(auctionCategoryList(categoryNameCheck));
     } else if (regionNameCheck !== "서울전체") {
-      dispatch(auctionRegionList(regionName));
+      dispatch(auctionRegionList(regionNameCheck));
     }
   };
 
@@ -157,8 +158,7 @@ const CategoryModalBodyContainer = styled.div`
   ::-webkit-scrollbar {
     display: none;
     width: 0 !important;
-  }import { useEffect } from 'react';
-
+  }
 
   align-content: flex-start;
   justify-content: flex-start;

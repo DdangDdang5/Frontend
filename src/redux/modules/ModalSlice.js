@@ -87,15 +87,13 @@ export const modalSlice = createSlice({
           }
         })
       );
-      console.log([...setCategoryList]);
+      // console.log([...setCategoryList]);
       state.categoryList = [...setCategoryList];
     },
     [_categoryList.rejected]: (state, action) => {
       console.log(action);
     },
     [_regionList.fulfilled]: (state, action) => {
-      // state.regionList = action.payload;
-
       const setRegionList = new Set(
         action.payload.map((item) => {
           switch (item.region) {
@@ -106,7 +104,7 @@ export const modalSlice = createSlice({
           }
         })
       );
-      console.log([...setRegionList]);
+      // console.log([...setRegionList]);
       state.regionList = [...setRegionList];
     },
     [_regionList.rejected]: (state, action) => {

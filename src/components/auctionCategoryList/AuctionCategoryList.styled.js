@@ -32,9 +32,13 @@ export const CategoryMore = styled.div`
 		font-weight: ${(props) => props.theme.fontWeights.normal};
 	}
 
-  img {
-    width: 23px;
-    height: 23px;
+  svg {
+    width: 6px;
+    height: 10px;
+
+		path {
+			fill: ${(props) => props.theme.colors.Gray3};
+		}
   }
 `;
 

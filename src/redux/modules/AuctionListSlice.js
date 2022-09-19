@@ -37,7 +37,6 @@ export const auctionItemList = createAsyncThunk(
       const response = await api.get(
         `/pagination/auction?page=${paging}&size=6&sortBy=id&isAsc=false`,
       );
-      console.log("auctionItemListSlice", response);
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
       }
@@ -55,6 +54,7 @@ export const addAuctionItem = createAsyncThunk(
       const response = await api.post("/auction", payload, {
         "Content-Type": "multipart/form-data",
       });
+			console.log(response);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -202,6 +202,7 @@ const auctionListSlice = createSlice({
       state.loading = true;
     },
     [addAuctionItem.fulfilled]: (state, action) => {
+			console.log(action);
       state.auctionList = [action.payload, ...state.auctionList];
     },
     [addAuctionItem.rejected]: (state, action) => {
