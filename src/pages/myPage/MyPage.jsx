@@ -5,7 +5,7 @@ import Footer from "../../components/footer/Footer";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/exports";
-import { _MyPageData, _MyPageInAuction } from "../../redux/modules/MyProfileSlice";
+import { _MyPageData, _MyPageInAuction } from "../../redux/modules/MyPageSlice";
 
 const MyPage = () => {
   const navigate = useNavigate();
