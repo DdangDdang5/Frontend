@@ -55,8 +55,6 @@ const Header = ({
   setIsMenuModal,
 }) => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [showModal, setShowModal] = useState(false);
 
   return (
     <HeaderContainer>
