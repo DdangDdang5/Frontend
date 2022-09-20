@@ -1,8 +1,14 @@
 // React import
-import React from "react";
+import React, { useState } from "react";
+
+//Reducer import
+import { useDispatch } from "react-redux";
 
 // Package import
 import { useNavigate } from "react-router-dom";
+
+// Component import
+import OptionModal from "../modal/OptionModal";
 
 // Shared import
 import {
@@ -49,6 +55,8 @@ const Header = ({
   setIsMenuModal,
 }) => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [showModal, setShowModal] = useState(false);
 
   return (
     <HeaderContainer>
@@ -72,7 +80,9 @@ const Header = ({
           {search ? <Search onClick={() => navigate("/search")} /> : null}
           {alarm ? <Alarm /> : null}
           {share ? <Share /> : null}
+
           {menu ? <Menu onClick={() => setIsMenuModal(!isMenuModal)} /> : null}
+
           {save ? <span onClick={onClickSave}>{save.type}</span> : null}
         </HeaderIconContainer>
       </HeaderContent>
