@@ -39,7 +39,6 @@ const MyPage = () => {
       alt=""
     />
   );
-  // console.log("mypage배돌", data);
   return (
     <MyPageLayout>
       <Header pageName="마이페이지" alarm={true} />
@@ -72,23 +71,27 @@ const MyPage = () => {
       </MyProfileWrap>
 
       <MyStateWrap>
-        <div className="stateBox" onClick={() => navigate("/myPageMyAuction")}>
-          <div className="title">나의 경매</div>
-          <div className="count">{data?.myAuctionCnt}</div>
-        </div>
-        <StateBox>
+        <div className="MyStateWrap">
           <div
-            className="title"
-            onClick={() => navigate("/myPageParticipationAuction")}>
-            참여 경매
+            className="stateBox"
+            onClick={() => navigate("/myPageMyAuction")}>
+            <div className="title">나의 경매</div>
+            <div className="count">{data?.myAuctionCnt}</div>
           </div>
-          <div className="count">{data?.myParticipantCnt}</div>
-        </StateBox>
-        <div
-          className="stateBox"
-          onClick={() => navigate("/MyPageInterestAuction")}>
-          <div className="title">관심 경매</div>
-          <div className="count">{data?.myFavoriteCnt}</div>
+          <StateBox>
+            <div
+              className="title"
+              onClick={() => navigate("/myPageParticipationAuction")}>
+              참여 경매
+            </div>
+            <div className="count">{data?.myParticipantCnt}</div>
+          </StateBox>
+          <div
+            className="stateBox"
+            onClick={() => navigate("/MyPageInterestAuction")}>
+            <div className="title">관심 경매</div>
+            <div className="count">{data?.myFavoriteCnt}</div>
+          </div>
         </div>
       </MyStateWrap>
       <MyProfileListWrap>
@@ -217,32 +220,37 @@ const LevelBox = styled.div`
 const MyStateWrap = styled.div`
   display: flex;
   position: relative;
-  width: 350px;
-  margin: 0px 20px 40px 20px;
+  width: 100%;
+  justify-content: center;
+  margin-bottom: 40px;
   height: 86px;
-  justify-content: space-evenly;
-  align-items: center;
-  background-color: #ededed;
 
-  .stateBox {
+  .MyStateWrap {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    width: 350px;
+    background-color: #ededed;
+    justify-content: space-evenly;
     align-items: center;
-    width: 114px;
-    height: 100%;
-    margin: 16px 0px;
-
-    .title {
+    .stateBox {
       display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 114px;
+      height: 100%;
+      margin: 16px 0px;
 
-      font-size: 16px;
-      font-weight: 400px;
-      color: #6d6d6d;
-    }
-    .count {
-      font-size: 20px;
-      font-weight: 700;
+      .title {
+        display: flex;
+
+        font-size: 16px;
+        font-weight: 400px;
+        color: #6d6d6d;
+      }
+      .count {
+        font-size: 20px;
+        font-weight: 700;
+      }
     }
   }
 `;

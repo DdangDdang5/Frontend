@@ -23,6 +23,7 @@ import AuctionJoinModal from "../../components/modal/AuctionJoinModal";
 // Element & Shared import
 import Button from "../../elements/button/Button";
 import { Close, Next } from "../../shared/images";
+import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
 
 var stompClient = null;
 
@@ -36,8 +37,7 @@ const AuctionDetail = () => {
 
   const imgList = data?.multiImages;
 
-  const nickName = sessionStorage.getItem("memberNickname");
-  // console.log("111111", imgList);
+  const nickName = sessionStorage.getItem("memberNickname").split("kakao")[0];
 
   const [joinVisible, setJoinVisible] = useState(false);
   const [winBid, setWinBid] = useState(false);
@@ -122,7 +122,7 @@ const AuctionDetail = () => {
   const onConnected = () => {
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived,
+      onMessageReceived
     );
 
     // 채팅방 들어감
@@ -154,7 +154,7 @@ const AuctionDetail = () => {
       stompClient.send(
         "/app/chat/bid",
         {},
-        JSON.stringify({ ...chatMessage, type: "ENTER" }),
+        JSON.stringify({ ...chatMessage, type: "ENTER" })
       );
 
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
@@ -167,6 +167,28 @@ const AuctionDetail = () => {
   const onKeyPress = (event) => {
     if (event.key === "Enter") {
       sendMessage();
+    }
+  };
+
+  // 타이머 기능
+  const timer = (countDown) => {
+    const oneDay = 1 * 24 * 60 * 60 * 1000;
+    const fiveDay = oneDay * 5;
+    const sevenDay = oneDay * 7;
+    const startTime = Date.parse(data.createdAt);
+    const dateTimeAfterOneDays = startTime + oneDay;
+    const dateTimeAfterFiveDays = startTime + fiveDay;
+    const dateTimeAfterSevenDays = startTime + sevenDay;
+
+    switch (countDown) {
+      case 1:
+        return dateTimeAfterOneDays;
+      case 5:
+        return dateTimeAfterFiveDays;
+      case 7:
+        return dateTimeAfterSevenDays;
+      default:
+        return <div>기간이 끝났습니다</div>;
     }
   };
 
@@ -220,29 +242,21 @@ const AuctionDetail = () => {
               navigate(`/chat/${data.chatRoomId}`, {
                 state: { auctionId: params?.auctionId, isDetail: true, title: data.title },
               })
-            }
-          >
+            }>
             <CommentCountWrap>
               <CommentCountTitle>실시간 채팅방</CommentCountTitle>
               <p>{data.participantCnt}명 참여중</p>
             </CommentCountWrap>
             <Next />
           </CommentCountContainer>
-
-          {/* <DetailCommentContainer>
-          <CommentFormBox>
-            <div className="inputBox">
-              <textarea placeholder="댓글을 입력해주세요." rows="" cols="" />
-              <button>댓글 작성</button>
-            </div>
-          </CommentFormBox>
-        </DetailCommentContainer> */}
         </DetailBodyWrap>
 
         <DetailFooterWrap>
           <DetailFooterTimeContainer>
             <p>남은 시간</p>
-            <h3>{data.createdAt}</h3>
+
+            <CountdownTimer targetDate={timer(data.auctionPeriod)} />
+            {/* <Timer date={data.createdAt} /> */}
           </DetailFooterTimeContainer>
           <DetailFooterContainer>
             <FooterLeftBox>
@@ -498,52 +512,6 @@ const CommentCountWrap = styled.div`
 const CommentCountTitle = styled.p`
   font-weight: 700 !important;
   color: black !important;
-`;
-
-const DetailCommentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const CommentFormBox = styled.form`
-  display: flex;
-  justify-content: center;
-  height: 180px;
-  background-color: #dedede;
-  .inputBox {
-    display: flex;
-    flex-direction: column;
-    width: 350px;
-    gap: 16px;
-    textarea {
-      display: flex;
-      border-radius: 8px;
-      border: 1px solid #bcbcbc;
-      margin-top: 20px;
-      width: 100%;
-      height: 68px;
-      resize: none;
-
-      box-sizing: border-box;
-      padding: 13px 16px;
-      font-size: 14px;
-      font-weight: 400;
-      letter-spacing: -0.05em;
-    }
-    button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      border: none;
-      background-color: #bcbcbc;
-      width: 100%;
-      height: 56px;
-
-      font-size: 18px;
-      font-weight: 400;
-      color: #6d6d6d;
-    }
-  }
 `;
 
 const DetailFooterWrap = styled.div`

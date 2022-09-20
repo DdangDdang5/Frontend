@@ -51,7 +51,7 @@ const Chat = () => {
   const nickName = sessionStorage.getItem("memberNickname");
 
   const chatMessageList = useSelector(
-    (state) => state.chat.chatMessageList,
+    (state) => state.chat.chatMessageList
   ).filter((item) => item.roomId === roomId);
 
   const [visible, setVisible] = useState(false); // 채팅 메뉴 모달
@@ -82,7 +82,6 @@ const Chat = () => {
   }, [JSON.stringify(chatMessageList)]);
 
   useEffect(() => {
-    // console.log(chatList);
     scrollToBottom();
   }, [chatList]);
 
@@ -159,7 +158,6 @@ const Chat = () => {
 
   const onConnected = () => {
     // setUserData({ ...userData, type: "ENTER" });
-    // console.log(userData);
 
     stompClient.subscribe(`/topic/chat/room/${roomId}`, onMessageReceived);
 

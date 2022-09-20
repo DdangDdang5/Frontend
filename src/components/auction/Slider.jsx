@@ -1,6 +1,5 @@
 import React, { useRef, useState } from "react";
 import styled from "styled-components";
-import { addAuctionItem } from "../../redux/modules/AuctionListSlice";
 
 const Slider = ({ data }) => {
   const ref = useRef(null);
@@ -9,15 +8,13 @@ const Slider = ({ data }) => {
     return item.imgUrl;
   });
 
-  console.log(cnt);
-
   // const [touch, setTouch] = useState({
   //   start: 0,
   //   end: 0,
   // });
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  console.log("1111", currentIndex);
+  // console.log("1111", currentIndex);
 
   const [styled, setStyled] = useState({
     transform: `translateX(-${currentIndex}00%)`,
@@ -65,7 +62,6 @@ const Slider = ({ data }) => {
           })}
         </div>
       </ImgBox>
-
       <BtnBox>
         <button className="left" onClick={prevSlide}></button>
         <button className="right" onClick={nextSlide}></button>
@@ -76,10 +72,18 @@ const Slider = ({ data }) => {
 
 const SliderWrap = styled.div`
   display: flex;
-  flex-direction: row;
-  width: 100%;
+  /* flex-direction: row; */
+  /* width: 100%; */
   position: relative;
   overflow: hidden;
+  span {
+    background-color: yellow;
+    z-index: 100;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translate(-50%);
+  }
 `;
 
 const ImgBox = styled.div`
@@ -94,8 +98,8 @@ const ImgBox = styled.div`
       min-width: 100%;
       min-height: 100%;
       object-fit: cover;
-      align-items: center;
-      justify-content: center;
+      /* align-items: center; */
+      /* justify-content: center; */
     }
   }
 `;
@@ -124,6 +128,10 @@ const BtnBox = styled.div`
     background-color: transparent;
     border: none;
   }
+`;
+
+const Baessi = styled.span`
+  font-weight: ${({ bae }) => (bae ? `900` : `100`)};
 `;
 
 export default Slider;

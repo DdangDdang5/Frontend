@@ -20,6 +20,7 @@ import { ReactComponent as send } from "./icon/Send.svg";
 import { ReactComponent as share } from "./icon/Share.svg";
 import { ReactComponent as write } from "./icon/Write.svg";
 import { ReactComponent as kakao } from "./icon/Kakao.svg";
+import { ReactComponent as noSearch } from "./icon/NoSearch.svg";
 
 import { ReactComponent as accessory } from "./category/Accessory.svg";
 import { ReactComponent as beauty } from "./category/Beauty.svg";
@@ -56,6 +57,7 @@ export const Send = send;
 export const Share = share;
 export const Write = write;
 export const Kakao = kakao;
+export const NoSearch = noSearch;
 
 // category
 export const Accessory = accessory;
@@ -70,4 +72,3 @@ export const WomanFashion = womanFashion;
 
 // 3d hammer
 export const LogoNormal = logoNormal;
-

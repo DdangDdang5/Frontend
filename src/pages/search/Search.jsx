@@ -8,10 +8,11 @@ import { auctionSearchThunk } from "../../redux/modules/SearchSlice";
 // Package import
 import { IoSearchOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
-import { getCookie } from "../../shared/Cookie";
 
 // Component import
 import Footer from "../../components/footer/Footer";
+import SearchHistory from "../../components/search/SearchHistory";
+import SearchBar from "../../components/search/SearchBar";
 
 // Style import
 import {
@@ -33,7 +34,7 @@ import {
   Loadingtext,
   SearchItemList,
 } from "./Search.styled";
-import SearchHistory from "../../components/search/SearchHistory";
+import { getCookie } from "../../shared/Cookie";
 
 const Search = () => {
   const dispatch = useDispatch();
@@ -54,6 +55,15 @@ const Search = () => {
     navigate(`/auctionDetail/${auctionId}`);
   };
 
+  const handleAddKeyword = (keyword) => {
+    console.log(keyword);
+    const newKeyword = {
+      memberId: Date.now(),
+      keyword: keyword,
+    };
+    setKeyword([newKeyword, ...keyword]);
+  };
+
   const handleClearKeyword = () => {
     setKeyword([]);
   };
@@ -61,8 +71,10 @@ const Search = () => {
   return (
     <Fragment>
       <SearchBox>
+        {/* <SearchBar onAddKeyword={handleAddKeyword}></SearchBar> */}
         <SearchInputGroup>
           <SearchInputWrap>
+            {/* <SearchBar onAddKeyword={handleAddKeyword}></SearchBar> */}
             <SearchInput
               type="text"
               onChange={(e) => setKeyword(e.target.value)}
@@ -79,7 +91,7 @@ const Search = () => {
             keyword={keyword}
             onClearKeyword={handleClearKeyword}
           />
-          <SearchFilterTitleSpan>최근 검색했어요</SearchFilterTitleSpan>
+          <SearchFilterTitleSpan>{/* 최근 검색했어요 */}</SearchFilterTitleSpan>
           <SearchFilterWrap>
             <SearchItemList>
               {searchList ? (
@@ -111,7 +123,7 @@ const Search = () => {
                 })
               ) : (
                 <LoadingWrap>
-                  <Loadingtext>검색 결과가 없습니다.</Loadingtext>
+                  <Loadingtext>{/* 검색 결과가 없습니다. */}</Loadingtext>
                 </LoadingWrap>
               )}
             </SearchItemList>
