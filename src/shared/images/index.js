@@ -32,7 +32,11 @@ import { ReactComponent as manFashion } from "./category/ManFashion.svg";
 import { ReactComponent as sport } from "./category/Sport.svg";
 import { ReactComponent as womanFashion } from "./category/WomanFashion.svg";
 
-import { ReactComponent as logoNormal } from "./logo/LogoNormal.svg";
+import { ReactComponent as logoClassic } from "./logo/LogoClassic.svg";
+import { ReactComponent as logoWood } from "./logo/LogoWood.svg";
+import { ReactComponent as logoSilver } from "./logo/LogoSliver.svg";
+import { ReactComponent as logoGold } from "./logo/LogoGold.svg";
+import { ReactComponent as logoRainbow } from "./logo/LogoRainbow.svg";
 
 // icon
 export const Add = add;
@@ -71,4 +75,8 @@ export const Sport = sport;
 export const WomanFashion = womanFashion;
 
 // 3d hammer
-export const LogoNormal = logoNormal;
+export const LogoClassic = logoClassic;
+export const LogoWood = logoWood;
+export const LogoSilver = logoSilver;
+export const LogoGold = logoGold;
+export const LogoRainbow = logoRainbow;

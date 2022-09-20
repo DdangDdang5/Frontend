@@ -15,7 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 // Shared import
-import { ReactComponent as LogoNormal } from "../../shared/images/logo/LogoNormal.svg";
+import { ReactComponent as LogoClassic } from "../../shared/images/logo/LogoClassic.svg";
 
 import Accessory from "../../shared/images/category/Accessory.svg";
 import Beauty from "../../shared/images/category/Beauty.svg";
@@ -108,7 +108,7 @@ const AuctionCategory = ({ division, divisionName }) => {
   return (
     <CategoryItem onClick={onClickAuctionDivision}>
       {{
-				"전체 품목": <LogoNormal />,
+				"전체 품목": <LogoClassic />,
 				"가전": <img src={HomeElectronics} />,
 				"가구/인테리어": <img src={Interior} />,
 				"남성 패션": <img src={ManFashion} />,
