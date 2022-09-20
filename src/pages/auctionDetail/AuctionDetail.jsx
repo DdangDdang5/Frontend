@@ -33,6 +33,7 @@ const AuctionDetail = () => {
   const navigate = useNavigate();
 
   const params = useParams();
+
   const data = useSelector((state) => state.auction.auction);
   const bid = useSelector((state) => state.auction.bid);
 
@@ -299,9 +300,10 @@ const AuctionDetail = () => {
       <>
         {isMenuModal ? (
           <MenuModal
-            data={data.member.id}
+            data={data}
             isMenuModal={isMenuModal}
             setIsMenuModal={setIsMenuModal}
+            id={params.auctionId}
           />
         ) : (
           ""

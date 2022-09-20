@@ -4,14 +4,19 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
 
-const MenuModal = ({ isMenuModal, setIsMenuModal, data }) => {
+const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const modalRef = useRef();
   const memberId = parseInt(sessionStorage?.getItem("memberId"));
-  console.log("111", memberId);
-  console.log("2222", data);
+
+  // 모달 닫기
+  const handleModalHide = (e) => {
+    if (modalRef.current === e.target) {
+      setIsMenuModal(!isMenuModal);
+    }
+  };
 
   // 게시글 삭제하기
   const handleDelete = async () => {
@@ -25,20 +30,18 @@ const MenuModal = ({ isMenuModal, setIsMenuModal, data }) => {
   };
 
   // 게시글 수정하기
-
-  const handleModalHide = (e) => {
-    if (modalRef.current === e.target) {
-      setIsMenuModal(!isMenuModal);
+  const handleEdit = () => {
+    if (window.confirm("경매글을 수정하시겠습니까?")) {
+      return navigate(`/auctionEdit/${id}`);
     }
   };
 
-  //   console.log("12312321", handleDelete());
   return (
     <MenuModalLayout ref={modalRef} onClick={handleModalHide}>
       <MenuModalWrap>
-        {memberId === data ? (
+        {memberId === data.member.id ? (
           <>
-            <div>경매글 수정하기</div>
+            <div onClick={() => handleEdit()}>경매글 수정하기</div>
             <div onClick={() => handleDelete()}>경매글 삭제하기</div>
           </>
         ) : (
