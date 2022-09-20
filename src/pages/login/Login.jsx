@@ -165,13 +165,6 @@ const Login = ({ location }) => {
             onClick={() => {
               window.location.href = KAKAO_OAUTH_URL;
             }}
-            style={{
-              width: "100%",
-              height: "56px",
-              ft_size: "18px",
-              color: "#6D6D6D",
-              bg_color: "#F7E111",
-            }}
           />
         </LoginBoxkakaoButtonGroup>
       </LoginBox>

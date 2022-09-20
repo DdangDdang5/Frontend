@@ -105,7 +105,8 @@ export const SearchItem = styled.div`
   }
 `;
 
-export const SearchItemContent = styled.div``;
+export const SearchItemContent = styled.div`
+`;
 
 export const SearchTagWrap = styled.div`
   margin-bottom: 10px;
