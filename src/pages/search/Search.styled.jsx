@@ -114,7 +114,7 @@ export const SearchTagWrap = styled.div`
   gap: 4px;
   span {
     padding: 2px 6px;
-    font-weight: bold;
+    font-weight: ${(props) => props.theme.fontWeights.bold};
     color: ${(props) => props.theme.colors.White};
     background-color: ${(props) => props.theme.colors.Blue1};
     font-size: ${(props) => props.theme.fontSizes.sm};
