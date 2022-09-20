@@ -51,7 +51,8 @@ const Header = ({
   save,
   onClickBtn,
   onClickSave,
-  handleDelete,
+  isMenuModal,
+  setIsMenuModal,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -79,7 +80,9 @@ const Header = ({
           {search ? <Search onClick={() => navigate("/search")} /> : null}
           {alarm ? <Alarm /> : null}
           {share ? <Share /> : null}
-          {menu ? <Menu onClick={() => setShowModal(true)} /> : null}
+
+          {menu ? <Menu onClick={() => setIsMenuModal(!isMenuModal)} /> : null}
+
           {save ? <span onClick={onClickSave}>{save.type}</span> : null}
         </HeaderIconContainer>
       </HeaderContent>
