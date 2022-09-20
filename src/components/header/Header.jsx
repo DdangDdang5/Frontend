@@ -45,7 +45,6 @@ const Header = ({
   save,
   onClickBtn,
   onClickSave,
-  handleDelete,
   isMenuModal,
   setIsMenuModal,
 }) => {
