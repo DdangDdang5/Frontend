@@ -3,8 +3,6 @@ import React, { useEffect } from "react";
 
 // Redux import
 import {
-  auctionItemList,
-  auctionItemListNotPage,
   getAuctionDeadlineList,
   getAuctionHitList,
   getAuctionNewList,
@@ -64,25 +62,7 @@ const Main = () => {
     (state) => state.auctionList.auctionDeadlineList,
   );
 
-  const auctionLastList = auctionHitList
-    ?.map((item) => {
-      const date = new Date(item.createdAt);
-      return {
-        ...item,
-        auctionPeriod: new Date(
-          date.setDate(date.getDate() + item.auctionPeriod)
-        ),
-      };
-    })
-    .sort(
-      (a, b) =>
-        new Date(a.auctionPeriod).valueOf() -
-        new Date(b.auctionPeriod).valueOf()
-    );
-
-
   useEffect(() => {
-    // dispatch(auctionItemListNotPage());
     dispatch(getAuctionHitList());
     dispatch(getAuctionNewList());
     dispatch(getAuctionDeadlineList());
@@ -117,7 +97,7 @@ const Main = () => {
                 onClick={() => moveAuctionDetail(item.auctionId)}
               >
                 <img
-                  src={item.multiImages[0].imgUrl}
+                  src={item.multiImages[0]?.imgUrl}
                   alt="auction-popular-img"
                 />
                 <PopularItemContent idx={idx}>
@@ -155,7 +135,7 @@ const Main = () => {
                 key={item.auctionId}
                 onClick={() => moveAuctionDetail(item.auctionId)}
               >
-                <img src={item.multiImages[0].imgUrl} alt="auction-new-img" />
+                <img src={item.multiImages[0]?.imgUrl} alt="auction-new-img" />
                 <NewItemContent>
                   <TagWrap>
                     {item.delivery ? <span>택배</span> : null}
@@ -189,7 +169,7 @@ const Main = () => {
                 key={item.auctionId}
                 onClick={() => moveAuctionDetail(item.auctionId)}
               >
-                <img src={item.multiImages[0].imgUrl} alt="auction-last-img" />
+                <img src={item.multiImages[0]?.imgUrl} alt="auction-last-img" />
                 <TagWrap>
                   {item.delivery ? <span>택배</span> : null}
                   {item.direct ? <span>직거래</span> : null}

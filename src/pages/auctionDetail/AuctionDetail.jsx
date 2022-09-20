@@ -19,11 +19,11 @@ import styled from "styled-components";
 import Header from "../../components/header/Header";
 import Slider from "../../components/auction/Slider";
 import AuctionJoinModal from "../../components/modal/AuctionJoinModal";
+import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
 
 // Element & Shared import
 import Button from "../../elements/button/Button";
 import { Close, Next } from "../../shared/images";
-import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
 
 var stompClient = null;
 
@@ -37,7 +37,7 @@ const AuctionDetail = () => {
 
   const imgList = data?.multiImages;
 
-  const nickName = sessionStorage.getItem("memberNickname").split("kakao")[0];
+  const nickName = sessionStorage.getItem("memberNickname");
 
   const [joinVisible, setJoinVisible] = useState(false);
   const [winBid, setWinBid] = useState(false);
