@@ -75,7 +75,6 @@ const Chat = () => {
   }, [JSON.stringify(chatMessageList)]);
 
   useEffect(() => {
-    // console.log(chatList);
     scrollToBottom();
   }, [chatList]);
 
@@ -113,14 +112,14 @@ const Chat = () => {
   };
 
   const scrollToBottom = () => {
-		// #root > div > div.sc-dUWWNf > div.sc-hsOonA.jcBIja
+    // #root > div > div.sc-dUWWNf > div.sc-hsOonA.jcBIja
     window.document.body
       .querySelector("#root > div > div.sc-gzzPqb > div.sc-gkJlnC.iINcZz")
       ?.scrollTo(
         0,
         document.body.querySelector(
-          "#root > div > div.sc-gzzPqb > div.sc-gkJlnC.iINcZz",
-        ).scrollHeight,
+          "#root > div > div.sc-gzzPqb > div.sc-gkJlnC.iINcZz"
+        ).scrollHeight
       );
   };
 
@@ -140,7 +139,6 @@ const Chat = () => {
 
   const onConnected = () => {
     // setUserData({ ...userData, type: "ENTER" });
-    // console.log(userData);
 
     stompClient.subscribe(`/topic/chat/room/${roomId}`, onMessageReceived);
 
@@ -231,7 +229,11 @@ const Chat = () => {
                 {chat.sender !== nickName ? (
                   <ChatMessage>
                     <MessageProfile
-                      src={chat.profileImgUrl ? chat.profileImgUrl : "/maskable.png"}
+                      src={
+                        chat.profileImgUrl
+                          ? chat.profileImgUrl
+                          : "/maskable.png"
+                      }
                       alt="chat-profile"
                     />
                     <MessageWrap>

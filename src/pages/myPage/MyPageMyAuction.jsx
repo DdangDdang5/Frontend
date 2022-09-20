@@ -19,8 +19,6 @@ function MyPageMyAuction() {
   } = useSelector((state) => state.myPage);
   const [shouldShownData, setShouldShownData] = useState([]);
 
-  console.log(myPageInData);
-
   const auctionIng = myPageInData?.filter(
     (myPageInData) => myPageInData.auctionStatus === true
   ).length;

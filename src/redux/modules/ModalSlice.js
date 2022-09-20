@@ -64,7 +64,6 @@ export const modalSlice = createSlice({
   },
   extraReducers: {
     [_categoryList.fulfilled]: (state, action) => {
-      console.log(action.payload);
       const setCategoryList = new Set(
         action.payload.map((item) => {
           switch (item.categoryName) {
@@ -87,7 +86,6 @@ export const modalSlice = createSlice({
           }
         })
       );
-      // console.log([...setCategoryList]);
       state.categoryList = [...setCategoryList];
     },
     [_categoryList.rejected]: (state, action) => {
@@ -104,7 +102,6 @@ export const modalSlice = createSlice({
           }
         })
       );
-      // console.log([...setRegionList]);
       state.regionList = [...setRegionList];
     },
     [_regionList.rejected]: (state, action) => {

@@ -39,7 +39,6 @@ const MyPage = () => {
       alt=""
     />
   );
-  // console.log("mypage배돌", data);
   return (
     <MyPageLayout>
       <Header pageName="마이페이지" alarm={true} />
