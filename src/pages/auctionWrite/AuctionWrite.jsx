@@ -54,6 +54,7 @@ const AuctionWrite = () => {
   useEffect(() => {
     dispatch(_categoryList());
   }, []);
+
   useEffect(() => {
     dispatch(_regionList());
   }, []);
@@ -425,7 +426,6 @@ const ImgBox = styled.div`
   width: 93px;
   gap: 16px;
   position: relative;
-  background-color: yellow;
 
   img {
     display: flex;

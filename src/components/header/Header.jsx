@@ -52,9 +52,6 @@ const Header = ({
   save,
   onClickBtn,
   onClickSave,
-
-  isMenuModal,
-  setIsMenuModal,
 }) => {
   const navigate = useNavigate();
 

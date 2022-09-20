@@ -42,7 +42,6 @@ const AuctionDetail = () => {
 
   const [joinVisible, setJoinVisible] = useState(false);
 
-  // const [price, setPrice] = useState(data.nowPrice);
   const [isMenuModal, setIsMenuModal] = useState(false);
 
   const [winBid, setWinBid] = useState(false);
@@ -68,6 +67,7 @@ const AuctionDetail = () => {
       });
 
       const date = new Date(data.createdAt);
+
       const deadline = new Date(
         date.setDate(date.getDate() + data.auctionPeriod)
       );
@@ -94,16 +94,6 @@ const AuctionDetail = () => {
   if (!data) {
     return navigate(-1);
   }
-
-  // 게시글 삭제하기
-  const handleDelete = async () => {
-    try {
-      const response = await dispatch(deleteAuctionItem(data.id)).unwrap();
-      if (response) {
-        return navigate(-1, { replace: true });
-      }
-    } catch {}
-  };
 
   const onClickAuctionJoin = async () => {
     // 비로그인 -> 세션에 닉네임 없음
@@ -206,8 +196,6 @@ const AuctionDetail = () => {
           back={true}
           share={true}
           menu={true}
-          isMenuModal={isMenuModal}
-          setIsMenuModal={setIsMenuModal}
           onClickBtn={() => setIsMenuModal(!isMenuModal)}
         />
 
@@ -308,7 +296,17 @@ const AuctionDetail = () => {
       </AuctionDetailLayout>
 
       {/* 경매 메뉴 모달 */}
-      <>{isMenuModal ? <MenuModal handleDelete={handleDelete} /> : ""}</>
+      <>
+        {isMenuModal ? (
+          <MenuModal
+            data={data.member.id}
+            isMenuModal={isMenuModal}
+            setIsMenuModal={setIsMenuModal}
+          />
+        ) : (
+          ""
+        )}
+      </>
 
       {/* 경매 입찰 모달 */}
       <AuctionJoinModal visible={joinVisible} setVisible={setJoinVisible}>
