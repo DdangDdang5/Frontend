@@ -8,9 +8,21 @@ import { useNavigate } from "react-router-dom";
 const PlusButton = () => {
   // const dispatch = useDispatch();
   const navigate = useNavigate();
+  const memberId = sessionStorage.getItem("memberId");
+  console.log(memberId);
+
+  const handleWrite = () => {
+    if (!memberId) {
+      if (window.confirm("로그인이 필요합니다. 로그인하시겠습니까?")) {
+        navigate("/login");
+      }
+    } else {
+      navigate("/auctionWrite");
+    }
+  };
 
   return (
-    <PlusBtn onClick={() => navigate("/auctionWrite")}>
+    <PlusBtn onClick={() => handleWrite()}>
       <svg
         width="32"
         height="32"

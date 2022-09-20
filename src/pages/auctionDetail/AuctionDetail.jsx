@@ -208,7 +208,7 @@ const AuctionDetail = () => {
           menu={true}
           isMenuModal={isMenuModal}
           setIsMenuModal={setIsMenuModal}
-          onClickBtn={handleDelete}
+          onClickBtn={() => setIsMenuModal(!isMenuModal)}
         />
 
         <DetailBodyWrap>
