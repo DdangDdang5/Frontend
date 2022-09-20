@@ -4,7 +4,7 @@ import React from "react";
 // Package import
 import styled from "styled-components";
 
-const OptionModal = ({ children, visible, setVisible, minHeight }) => {
+const ChatOptionModal = ({ children, visible, setVisible, minHeight }) => {
   return (
     <ModalLayout visible={visible} onClick={() => setVisible(false)}>
       <ModalWrapper visible={visible}>
@@ -32,23 +32,21 @@ const ModalLayout = styled.div`
   right: 0;
 
   display: ${(props) => (props.visible ? "block" : "none")};
-  /* z-index: 20; */
 `;
 
 const ModalWrapper = styled.div`
-  width: 100%;
-  max-width: 190px;
+  width: 90%;
 
   box-sizing: border-box;
 
   position: absolute;
-  top: 0;
-  right: 0;
+  top: 50%;
+  left: 50%;
+	transform: translate(-50%, -50%);
 
+	text-align: center;
   display: ${(props) => (props.visible ? "block" : "none")};
-  /* overflow: auto; */
   outline: 0;
-  /* pointer-events: none; */
 `;
 
 const ModalInner = styled.div`
@@ -62,7 +60,6 @@ const ModalInner = styled.div`
   border-radius: 8px;
 
   position: relative;
-  /* top: 0; */
 `;
 
-export default OptionModal;
+export default ChatOptionModal;

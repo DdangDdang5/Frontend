@@ -28,6 +28,7 @@ import {
   HeaderIconContainer,
   HeaderTitle,
   PageTitle,
+  SaveBtn,
 } from "./Header.styled";
 
 // props 정리
@@ -35,7 +36,7 @@ import {
 // - logo, back(이전버튼), close(닫기 버튼), pageName(화면 이름) -> true/false
 // 2. right
 // - search(검색 버튼), alerm(알림 버튼), menu(메뉴 버튼), share(공유 버튼) -> true/false
-// - save(완료, 등록, 삭제 등 저장버튼) -> { type: "완료" }
+// - save(완료, 등록, 삭제 등 저장버튼) -> { type: "완료", state: false }
 // 3. function
 // - onClickBtn(버튼 클릭 이벤트 함수), onClickSave(완료, 등록, 삭제 등 저장 버튼 이벤트 함수) -> function
 
@@ -51,6 +52,7 @@ const Header = ({
   save,
   onClickBtn,
   onClickSave,
+
   isMenuModal,
   setIsMenuModal,
 }) => {
@@ -78,10 +80,12 @@ const Header = ({
           {search ? <Search onClick={() => navigate("/search")} /> : null}
           {alarm ? <Alarm /> : null}
           {share ? <Share /> : null}
-
-          {menu ? <Menu onClick={() => setIsMenuModal(!isMenuModal)} /> : null}
-
-          {save ? <span onClick={onClickSave}>{save.type}</span> : null}
+          {menu ? <Menu onClick={onClickBtn} /> : null}
+          {save ? (
+            <SaveBtn onClick={onClickSave} state={save.state}>
+              {save.type}
+            </SaveBtn>
+          ) : null}
         </HeaderIconContainer>
       </HeaderContent>
     </HeaderContainer>

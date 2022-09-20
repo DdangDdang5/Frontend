@@ -1,5 +1,12 @@
 // React import
-import React from "react";
+import React, { useEffect, useState } from "react";
+
+// React import
+import { auctionDetailData } from "../../redux/modules/AuctionSlice";
+
+// Package improt
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -21,55 +28,117 @@ import {
   ReviewItemTitle,
   ReviewItemWrap,
   ReviewItemWrapTitle,
+  TagRegion,
   TagWrap,
 } from "./AuctionReview.styled";
 
 const AuctionReview = () => {
+  const dispatch = useDispatch();
+
+  const { auctionId } = useParams();
+
+  const auction = useSelector((state) => state.auction.auction);
+	const [checkedAll, setCheckedAll] = useState(false);
+  const [checked, setChecked] = useState({
+		value: [0, 0, 0],
+		isCheck: [false, false, false]
+	});
+
+  const questionList = [
+    "상대의 응답 속도는 어떠셨나요?",
+    "상대의 매너는 어떠셨나요?",
+    "상대가 시간 약속을 잘 지켰나요?",
+  ];
   const answerList = ["매우나쁨", "나쁨", "보통", "좋음", "매우좋음"];
+
+  useEffect(() => {
+    dispatch(auctionDetailData(auctionId));
+  }, []);
+
+  const onCheckRadioBtn = (event) => {
+    const { id, name } = event.target;
+    let num = 0;
+
+    switch (id) {
+      case "매우나쁨":
+        num = -2;
+        break;
+      case "나쁨":
+        num = -1;
+        break;
+      case "보통":
+        num = 0;
+        break;
+      case "좋음":
+        num = 1;
+        break;
+      case "매우좋음":
+        num = 2;
+        break;
+      default:
+        break;
+    }
+
+		checked.value[name[name.length - 1]] = num;
+		checked.isCheck[name[name.length - 1]] = true;
+    setChecked(checked);
+		
+		if (!checked.isCheck.includes(false)) {
+			setCheckedAll(true);
+		}
+  };
+
+	// 경매 평가 저장 버튼 클릭
+	const onClickSaveReview = () => {
+		const valueSum = checked.value.reduce((a, b) => a + b);
+		// console.log(valueSum);
+	}
 
   return (
     <AuctionReviewContainer>
-      <Header back={true} pageName="평가하기" save={{type: "완료"}} />
+      <Header back={true} pageName="평가하기" save={{ type: "완료", state: checkedAll }} onClickSave={onClickSaveReview}/>
 
       <AuctionReviewContent>
         {/* 평가 경매 */}
         <ReviewItemWrap>
           <ReviewItemWrapTitle>평가하는 경매</ReviewItemWrapTitle>
           <ReviewItem>
-            <img src="maskable.png" alt="auction-new-img" />
+            <img src={auction?.multiImages[0].imgUrl} alt="auction-new-img" />
             <ReviewItemContent>
-              <TagWrap backgroundColor="gray">
-                <span>택배</span>
-                <span>직거래</span>
-                <span>동작구</span>
+              <TagWrap>
+                {auction?.delivery ? <span>택배</span> : null}
+                {auction?.direct ? <span>직거래</span> : null}
+                <TagRegion>{auction?.region}</TagRegion>
               </TagWrap>
-              <ReviewItemTitle>
-                제목은 한 줄만 노출됩니다. 길어진 텍스트는 줄어듭니다.
-              </ReviewItemTitle>
+              <ReviewItemTitle>{auction.title}</ReviewItemTitle>
               <ReviewItemPriceWrap>
                 <span>최종낙찰가</span>
-                <ReviewItemPrice>5000원</ReviewItemPrice>
+                <ReviewItemPrice>{auction.nowPrice}원</ReviewItemPrice>
               </ReviewItemPriceWrap>
             </ReviewItemContent>
           </ReviewItem>
         </ReviewItemWrap>
 
         <QuestionList>
-          {Array.from({ length: 5 }, (_, i) => (
-            <AnswerContainer key={i}>
-              <p>
-                {i + 1}. {i + 1}번째 질문. 임시 텍스트입니다.
-              </p>
+          {questionList.map((item, idx) => (
+            <AnswerContainer key={idx}>
+              <span>
+                {idx + 1}. {item}
+              </span>
               <AnswerList>
-                {answerList.map((item, idx) => {
-                  const inputName = `action-review-${i}`;
-                  return (
-                    <AnswerItem key={idx}>
-                      <AnswerRadioBtn type="radio" id={item} name={inputName} />
-                      <span>{item}</span>
-                    </AnswerItem>
-                  );
-                })}
+                {answerList.map((itemA, idxA) => (
+                  <AnswerItem key={idxA}>
+                    <AnswerRadioBtn
+                      type="radio"
+                      id={itemA}
+                      name={`action-review-${idx}`}
+											// checked={checked.value[idx]}
+                      onChange={(e) => onCheckRadioBtn(e)}
+											// onClick={(e) => onCheckRadioBtn(e)}
+                    />
+                    <span>{itemA}</span>
+                  </AnswerItem>
+                ))}
               </AnswerList>
             </AnswerContainer>
           ))}

@@ -59,10 +59,10 @@ export const HeaderIconContainer = styled.div`
   gap: 20px;
   justify-content: end;
 	align-items: center;
-	
-  span {
-    color: ${(props) => props.theme.colors.Gray4};
-    font-size: ${(props) => props.theme.fontSizes.ms};
-    font-weight: ${(props) => props.theme.fontWeights.normal};
-  }
+`;
+
+export const SaveBtn = styled.span`
+	color: ${(props) => props.state ? props.theme.colors.Blue1 : props.theme.colors.Gray4};
+	font-size: ${(props) => props.theme.fontSizes.ms};
+	font-weight: ${(props) => props.theme.fontWeights.normal};
 `;

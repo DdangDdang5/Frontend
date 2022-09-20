@@ -59,7 +59,7 @@ function App() {
         <Route path="/auctionWrite" element={<AuctionWrite />} />
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
-        <Route path="/auctionReview" element={<AuctionReview />} />
+        <Route path="/auctionReview/:auctionId" element={<AuctionReview />} />
         <Route path="/member/kakao/callback" element={<Kakao />} />
         <Route path="/myGrade" element={<MyGrade />} />
         <Route path="/myPageMyAuction" element={<MyPageMyAuction />} />

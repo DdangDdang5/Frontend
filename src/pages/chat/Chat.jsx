@@ -9,7 +9,10 @@ import Stomp from "stompjs";
 
 // Component import
 import Header from "../../components/header/Header";
+import ChatOptionModal from "../../components/modal/ChatOptionModal";
 import OptionModal from "../../components/modal/OptionModal";
+import Button from "../../elements/button/Button";
+import { doneAuction } from "../../redux/modules/AuctionSlice";
 import { getChatMessageList } from "../../redux/modules/ChatSlice";
 import { Add, Send } from "../../shared/images";
 
@@ -31,6 +34,9 @@ import {
   MessageProfile,
   MessageTime,
   MessageWrap,
+  ModalBtnWrap,
+  ModalTextWrap,
+  OptionModalContainer,
   SendBtn,
 } from "./Chat.styled";
 
@@ -41,14 +47,15 @@ const Chat = () => {
   const dispatch = useDispatch();
 
   const { roomId } = useParams();
-  const { isDetail, title } = useLocation().state;
-  const nickName = sessionStorage.getItem("memberNickname").split("kakao")[0];
+  const { auctionId, isDetail, title } = useLocation().state;
+  const nickName = sessionStorage.getItem("memberNickname");
 
   const chatMessageList = useSelector(
     (state) => state.chat.chatMessageList
   ).filter((item) => item.roomId === roomId);
 
   const [visible, setVisible] = useState(false); // 채팅 메뉴 모달
+  const [optionVisible, setOptionVisible] = useState(false);
 
   const [chatList, setChatList] = useState([]);
   const [userData, setUserData] = useState({
@@ -93,6 +100,18 @@ const Chat = () => {
     setVisible(true);
   };
 
+	// 채팅 메뉴 모달 중 "거래 완료하기" 클릭
+	const onClickFinishMenu = () => {
+    setVisible(false);
+    setOptionVisible(true);
+	}
+
+	// 경매 거래 완료
+	const onClickFinishAuction = () => {
+		dispatch(doneAuction(auctionId));
+		navigate(`/auctionReview/${auctionId}`);
+	}
+
   const calcTime = (createdAt) => {
     const date = new Date(createdAt);
     return (
@@ -114,12 +133,12 @@ const Chat = () => {
   const scrollToBottom = () => {
     // #root > div > div.sc-dUWWNf > div.sc-hsOonA.jcBIja
     window.document.body
-      .querySelector("#root > div > div.sc-gzzPqb > div.sc-gkJlnC.iINcZz")
+      .querySelector("#root > div > div.sc-eXBvqI > div.sc-iFwKgL.jXXPEx")
       ?.scrollTo(
         0,
         document.body.querySelector(
-          "#root > div > div.sc-gzzPqb > div.sc-gkJlnC.iINcZz"
-        ).scrollHeight
+          "#root > div > div.sc-eXBvqI > div.sc-iFwKgL.jXXPEx",
+        ).scrollHeight,
       );
   };
 
@@ -285,12 +304,46 @@ const Chat = () => {
       {/* 메뉴 모달 */}
       <OptionModal minHeight="200px" visible={visible} setVisible={setVisible}>
         <MenuItemList>
-          <MenuItem>거래 완료하기</MenuItem>
+          <MenuItem onClick={onClickFinishMenu}>거래 완료하기</MenuItem>
           <MenuItem>차단하기</MenuItem>
           <MenuItem>신고하기</MenuItem>
           <MenuItem onClick={onDisconnected}>채팅방 나가기</MenuItem>
         </MenuItemList>
       </OptionModal>
+
+      {/* 메뉴 모달의 옵션 클릭 모달 */}
+      <ChatOptionModal
+        minHeight="260px"
+        visible={optionVisible}
+        setVisible={setOptionVisible}
+      >
+        <OptionModalContainer>
+          <ModalTextWrap>
+            <span>거래가 완료되었나요?</span>
+            <span>마이페이지에서 상대방 평가를 할 수 있어요.</span>
+          </ModalTextWrap>
+          <ModalBtnWrap>
+            <Button
+              text="완료할래요"
+							_onClick={onClickFinishAuction}
+              style={{
+                width: "100%",
+                ft_weight: "500",
+                color: "#FFFFFF",
+              }}
+            />
+            <Button
+              text="취소"
+							_onClick={() => setOptionVisible(false)}
+              style={{
+                width: "100%",
+                color: "#646778",
+                bg_color: "#EBEEF3",
+              }}
+            />
+          </ModalBtnWrap>
+        </OptionModalContainer>
+      </ChatOptionModal>
     </>
   );
 };
