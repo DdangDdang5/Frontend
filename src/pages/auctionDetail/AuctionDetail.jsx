@@ -23,6 +23,7 @@ import SwipeImage from "../../components/swipeImage/SwipeImage";
 import Button from "../../elements/button/Button";
 import { Close, Next } from "../../shared/images";
 import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
+import MenuModal from "../../components/modal/MenuModal";
 
 var stompClient = null;
 
@@ -38,8 +39,9 @@ const AuctionDetail = () => {
 
   const [joinVisible, setJoinVisible] = useState(false);
   // const [price, setPrice] = useState(data.nowPrice);
-
+  const [isMenuModal, setIsMenuModal] = useState(false);
   const [chatList, setChatList] = useState([]);
+
   const [userData, setUserData] = useState({
     type: "",
     roomId: data.bidRoomId,
@@ -68,6 +70,7 @@ const AuctionDetail = () => {
     return navigate(-1);
   }
 
+  // 게시글 삭제하기
   const handleDelete = async () => {
     try {
       const response = await dispatch(deleteAuctionItem(data.id)).unwrap();
@@ -191,7 +194,8 @@ const AuctionDetail = () => {
           back={true}
           share={true}
           menu={true}
-          handleDelete={handleDelete}
+          isMenuModal={isMenuModal}
+          setIsMenuModal={setIsMenuModal}
         />
 
         <DetailBodyWrap>
@@ -262,6 +266,9 @@ const AuctionDetail = () => {
           </DetailFooterContainer>
         </DetailFooterWrap>
       </AuctionDetailLayout>
+
+      {/* 경매 메뉴 모달 */}
+      <>{isMenuModal ? <MenuModal handleDelete={handleDelete} /> : ""}</>
 
       {/* 경매 입찰 모달 */}
       <>

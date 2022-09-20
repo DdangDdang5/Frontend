@@ -46,6 +46,8 @@ const Header = ({
   onClickBtn,
   onClickSave,
   handleDelete,
+  isMenuModal,
+  setIsMenuModal,
 }) => {
   const navigate = useNavigate();
 
@@ -55,7 +57,9 @@ const Header = ({
         {/* left */}
         <HeaderTitle>
           {back ? <Back onClick={() => navigate(-1)} /> : null}
-          {close ? <Close className="close" onClick={() => navigate(-1)} /> : null}
+          {close ? (
+            <Close className="close" onClick={() => navigate(-1)} />
+          ) : null}
           {pageName ? <PageTitle>{pageName}</PageTitle> : null}
           {logo ? (
             <Logo className="logo" onClick={() => navigate("/")}>
@@ -69,7 +73,7 @@ const Header = ({
           {search ? <Search onClick={() => navigate("/search")} /> : null}
           {alarm ? <Alarm /> : null}
           {share ? <Share /> : null}
-          {menu ? <Menu onClick={handleDelete} /> : null}
+          {menu ? <Menu onClick={() => setIsMenuModal(!isMenuModal)} /> : null}
           {save ? <span onClick={onClickSave}>{save.type}</span> : null}
         </HeaderIconContainer>
       </HeaderContent>
