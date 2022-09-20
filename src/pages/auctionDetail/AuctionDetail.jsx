@@ -67,11 +67,6 @@ const AuctionDetail = () => {
       );
 
       if (deadline <= Date.now()) {
-        console.log("finish auction");
-      } else {
-        console.log("not finish auction", params);
-        console.log(bid);
-
         dispatch(winAuctionItem(params.auctionId));
         if (bid) {
           if (bid.seller === nickName || bid.bidder === nickName) {
@@ -79,6 +74,9 @@ const AuctionDetail = () => {
             console.log("me is win the auction");
           }
         }
+      } else {
+        // console.log("not finish auction", params);
+        // console.log(bid);
       }
     }
   }, [JSON.stringify(data), JSON.stringify(bid.auctionId)]);
@@ -267,9 +265,8 @@ const AuctionDetail = () => {
                   }}
                   style={{
                     width: "165px",
-										ft_size: "18px",
 										ft_weight: "500",
-										color: "white",
+										color: "#FFFFFF",
 										bg_color: "#1DC79A"
                   }}
                 />
@@ -326,9 +323,7 @@ const AuctionDetail = () => {
               style={{
                 width: "100%",
                 height: "56px",
-                ft_size: "18px",
                 color: "#FFFFFF",
-                bg_color: "#4D71FF",
               }}
             />
           </ButtonContainer>

@@ -1,5 +1,12 @@
 // React import
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
+// React import
+import { auctionDetailData } from "../../redux/modules/AuctionSlice";
+
+// Package improt
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -24,28 +31,72 @@ import {
   TagRegion,
   TagWrap,
 } from "./AuctionReview.styled";
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { auctionDetailData } from "../../redux/modules/AuctionSlice";
 
 const AuctionReview = () => {
   const dispatch = useDispatch();
 
   const { auctionId } = useParams();
-  console.log(auctionId);
 
   const auction = useSelector((state) => state.auction.auction);
+	const [checkedAll, setCheckedAll] = useState(false);
+  const [checked, setChecked] = useState({
+		value: [0, 0, 0],
+		isCheck: [false, false, false]
+	});
+
+  const questionList = [
+    "상대의 응답 속도는 어떠셨나요?",
+    "상대의 매너는 어떠셨나요?",
+    "상대가 시간 약속을 잘 지켰나요?",
+  ];
+  const answerList = ["매우나쁨", "나쁨", "보통", "좋음", "매우좋음"];
 
   useEffect(() => {
     dispatch(auctionDetailData(auctionId));
-    console.log(auction);
-  }, [JSON.stringify(auction)]);
+  }, []);
 
-  const answerList = ["매우나쁨", "나쁨", "보통", "좋음", "매우좋음"];
+  const onCheckRadioBtn = (event) => {
+    const { id, name } = event.target;
+    let num = 0;
+
+    switch (id) {
+      case "매우나쁨":
+        num = -2;
+        break;
+      case "나쁨":
+        num = -1;
+        break;
+      case "보통":
+        num = 0;
+        break;
+      case "좋음":
+        num = 1;
+        break;
+      case "매우좋음":
+        num = 2;
+        break;
+      default:
+        break;
+    }
+
+		checked.value[name[name.length - 1]] = num;
+		checked.isCheck[name[name.length - 1]] = true;
+    setChecked(checked);
+		
+		if (!checked.isCheck.includes(false)) {
+			setCheckedAll(true);
+		}
+  };
+
+	// 경매 평가 저장 버튼 클릭
+	const onClickSaveReview = () => {
+		const valueSum = checked.value.reduce((a, b) => a + b);
+		// console.log(valueSum);
+	}
 
   return (
     <AuctionReviewContainer>
-      <Header back={true} pageName="평가하기" save={{ type: "완료" }} />
+      <Header back={true} pageName="평가하기" save={{ type: "완료", state: checkedAll }} onClickSave={onClickSaveReview}/>
 
       <AuctionReviewContent>
         {/* 평가 경매 */}
@@ -69,21 +120,25 @@ const AuctionReview = () => {
         </ReviewItemWrap>
 
         <QuestionList>
-          {Array.from({ length: 5 }, (_, i) => (
-            <AnswerContainer key={i}>
+          {questionList.map((item, idx) => (
+            <AnswerContainer key={idx}>
               <span>
-                {i + 1}. {i + 1}번째 질문. 임시 텍스트입니다.
+                {idx + 1}. {item}
               </span>
               <AnswerList>
-                {answerList.map((item, idx) => {
-                  const inputName = `action-review-${i}`;
-                  return (
-                    <AnswerItem key={idx}>
-                      <AnswerRadioBtn type="radio" id={item} name={inputName} />
-                      <span>{item}</span>
-                    </AnswerItem>
-                  );
-                })}
+                {answerList.map((itemA, idxA) => (
+                  <AnswerItem key={idxA}>
+                    <AnswerRadioBtn
+                      type="radio"
+                      id={itemA}
+                      name={`action-review-${idx}`}
+											// checked={checked.value[idx]}
+                      onChange={(e) => onCheckRadioBtn(e)}
+											// onClick={(e) => onCheckRadioBtn(e)}
+                    />
+                    <span>{itemA}</span>
+                  </AnswerItem>
+                ))}
               </AnswerList>
             </AnswerContainer>
           ))}

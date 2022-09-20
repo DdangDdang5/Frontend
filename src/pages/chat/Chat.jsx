@@ -330,10 +330,8 @@ const Chat = () => {
 							_onClick={onClickFinishAuction}
               style={{
                 width: "100%",
-                ft_size: "18px",
                 ft_weight: "500",
-                color: "White",
-                bg_color: "#4D71FF",
+                color: "#FFFFFF",
               }}
             />
             <Button
@@ -341,7 +339,6 @@ const Chat = () => {
 							_onClick={() => setOptionVisible(false)}
               style={{
                 width: "100%",
-                ft_size: "18px",
                 color: "#646778",
                 bg_color: "#EBEEF3",
               }}
