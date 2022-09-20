@@ -25,6 +25,7 @@ import Button from "../../elements/button/Button";
 import { Close, Next } from "../../shared/images";
 import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
 import MenuModal from "../../components/modal/MenuModal";
+import AmplitudeClient from "amplitude-js";
 
 var stompClient = null;
 
@@ -189,6 +190,10 @@ const AuctionDetail = () => {
         return <div>기간이 끝났습니다</div>;
     }
   };
+
+  const log = AmplitudeClient.getInstance().logEvent("EVENT_NAME_HERE");
+
+  console.log(log);
 
   return (
     <>

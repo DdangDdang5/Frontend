@@ -76,11 +76,11 @@ const MenuModalWrap = styled.div`
 
   z-index: 200;
   top: 0;
-  left: 220px;
+  left: 200px;
   width: 190px;
   height: 112px;
 
-  background-color: yellow;
+  background-color: white;
 
   div {
     font-size: 16px;
