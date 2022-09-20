@@ -41,13 +41,12 @@ const AuctionDetail = () => {
   const nickName = sessionStorage.getItem("memberNickname").split("kakao")[0];
 
   const [joinVisible, setJoinVisible] = useState(false);
-<<<<<<< HEAD
+
   // const [price, setPrice] = useState(data.nowPrice);
   const [isMenuModal, setIsMenuModal] = useState(false);
-=======
+
   const [winBid, setWinBid] = useState(false);
 
->>>>>>> dev
   const [chatList, setChatList] = useState([]);
 
   const [userData, setUserData] = useState({
@@ -70,7 +69,7 @@ const AuctionDetail = () => {
 
       const date = new Date(data.createdAt);
       const deadline = new Date(
-        date.setDate(date.getDate() + data.auctionPeriod),
+        date.setDate(date.getDate() + data.auctionPeriod)
       );
 
       if (deadline <= Date.now()) {
@@ -207,12 +206,9 @@ const AuctionDetail = () => {
           back={true}
           share={true}
           menu={true}
-<<<<<<< HEAD
           isMenuModal={isMenuModal}
           setIsMenuModal={setIsMenuModal}
-=======
           onClickBtn={handleDelete}
->>>>>>> dev
         />
 
         <DetailBodyWrap>
@@ -253,7 +249,11 @@ const AuctionDetail = () => {
           <CommentCountContainer
             onClick={() =>
               navigate(`/chat/${data.chatRoomId}`, {
-                state: { auctionId: params?.auctionId, isDetail: true, title: data.title },
+                state: {
+                  auctionId: params?.auctionId,
+                  isDetail: true,
+                  title: data.title,
+                },
               })
             }>
             <CommentCountWrap>
@@ -292,9 +292,9 @@ const AuctionDetail = () => {
                   }}
                   style={{
                     width: "165px",
-										ft_weight: "500",
-										color: "#FFFFFF",
-										bg_color: "#1DC79A"
+                    ft_weight: "500",
+                    color: "#FFFFFF",
+                    bg_color: "#1DC79A",
                   }}
                 />
               </FooterBidContainer>
