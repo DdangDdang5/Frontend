@@ -39,6 +39,13 @@ const MyPage = () => {
       alt=""
     />
   );
+
+  const handleLogout = () => {
+    if (window.confirm("로그아웃 하시겠습니까? ")) {
+      sessionStorage.clear();
+      navigate("/");
+    }
+  };
   return (
     <MyPageLayout>
       <Header pageName="마이페이지" alarm={true} />
@@ -122,7 +129,9 @@ const MyPage = () => {
               로그인
             </div>
           ) : (
-            <div className="listTitle">로그아웃</div>
+            <div className="listTitle" onClick={() => handleLogout()}>
+              로그아웃
+            </div>
           )}
         </ListContainer>
       </MyProfileListWrap>

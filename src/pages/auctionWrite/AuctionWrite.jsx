@@ -54,6 +54,7 @@ const AuctionWrite = () => {
   useEffect(() => {
     dispatch(_categoryList());
   }, []);
+
   useEffect(() => {
     dispatch(_regionList());
   }, []);
@@ -149,10 +150,15 @@ const AuctionWrite = () => {
   };
 
   // 이미지 미리보기 삭제
-  const onRemove = (id) => {
-    return setImagePreview(
-      imagePreview.filter((imagePreview) => imagePreview.id !== id)
-    );
+  // const onRemove = (id) => {
+  //   return setImagePreview(
+  //     imagePreview.filter((imagePreview) => imagePreview.id !== id)
+  //   );
+  // };
+  const onRemove = (index) => {
+    const cloneImagePreview = [...imagePreview];
+    cloneImagePreview.splice(index, 1);
+    setImagePreview(cloneImagePreview);
   };
 
   return (
@@ -198,7 +204,7 @@ const AuctionWrite = () => {
               return (
                 <ImgBox key={index}>
                   <img src={item.img} id={index} alt="" />
-                  <div className="deleteBox" onClick={() => onRemove(item.id)}>
+                  <div className="deleteBox" onClick={() => onRemove(index)}>
                     <div>x</div>
                   </div>
                 </ImgBox>
@@ -425,7 +431,6 @@ const ImgBox = styled.div`
   width: 93px;
   gap: 16px;
   position: relative;
-  background-color: yellow;
 
   img {
     display: flex;
