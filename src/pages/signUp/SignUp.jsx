@@ -60,6 +60,14 @@ const SignUp = () => {
   const nickNameSpanRef = useRef();
   const NickNameCheckef = useRef();
 
+  const [check, setCheck] = useState({
+    email: false,
+    id: false,
+    nickName: false,
+    password: false,
+    repassword: false,
+  });
+
   const [color, setColor] = useState({
     email: "#dedede",
     id: "#dedede",
@@ -86,6 +94,7 @@ const SignUp = () => {
         emailSpanRef.current.style.color = "#FF664D";
         emailRef.current.style.borderColor = "#FF664D";
         emailIconRef.current.style.color = "#FF664D";
+        setCheck({ ...check, email: true });
         setEmailCheck(false);
       } else {
         dispatch(emailCheckThunk({ email })).then((res) => {
@@ -230,6 +239,7 @@ const SignUp = () => {
                 type="text"
                 value={email}
                 ref={emailRef}
+                state={check.email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="이메일 주소를 입력하세요."
                 required

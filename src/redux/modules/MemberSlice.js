@@ -11,6 +11,7 @@ import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
 
 const cookies = new Cookies();
 
+// 이메일 중복 체크
 export const emailCheckThunk = createAsyncThunk(
   "member/emailCheck",
   async (payload, thunkAPI) => {
@@ -19,6 +20,7 @@ export const emailCheckThunk = createAsyncThunk(
   }
 );
 
+// 닉네임 중복 체크
 export const nickNameCheckThunk = createAsyncThunk(
   "member/nickNameCheck",
   async (payload, thunkAPI) => {
@@ -27,6 +29,7 @@ export const nickNameCheckThunk = createAsyncThunk(
   }
 );
 
+// 회원가입
 export const signUpMemberThunk = createAsyncThunk(
   "member/signUpMember",
   async (payload, thunkAPI) => {
@@ -44,6 +47,7 @@ export const signUpMemberThunk = createAsyncThunk(
   }
 );
 
+// 로그인
 export const loginMemberThunk = createAsyncThunk(
   "member/loginMember",
   async (payload, thunkAPI) => {
@@ -51,12 +55,13 @@ export const loginMemberThunk = createAsyncThunk(
       if (res.data.statusCode === 200) {
         // const tokeretn = getCookie("accessToken");
         // setCookie("accessToken", res.headers.authorization, +res.headers.expires);
-        cookies.set(
-          "accessToken",
-          res.headers.authorization,
-          +res.headers.expires
-        );
-        cookies.set("memberId", res.data.data.memberId);
+
+        // cookies.set(
+        //   "accessToken",
+        //   res.headers.authorization,
+        //   +res.headers.expires
+        // );
+        // cookies.set("memberId", res.data.data.memberId);
 
         sessionStorage.setItem("accessToken", res.headers.authorization);
         sessionStorage.setItem("memberId", res.data.data.memberId);
@@ -71,6 +76,7 @@ export const loginMemberThunk = createAsyncThunk(
   }
 );
 
+// 카카오 소셜 로그인
 export const kakaoOauthThunk = createAsyncThunk(
   "member/kakaoLogin",
   async (payload, thunkAPI) => {
@@ -82,12 +88,12 @@ export const kakaoOauthThunk = createAsyncThunk(
       })
       .then((res) => {
         if (res.data.statusCode === 200) {
-          cookies.set(
-            "accessToken",
-            res.headers.authorization,
-            +res.headers.expires
-          );
-          cookies.set("memberId", res.data.data.memberId);
+          // cookies.set(
+          //   "accessToken",
+          //   res.headers.authorization,
+          //   +res.headers.expires
+          // );
+          // cookies.set("memberId", res.data.data.memberId);
 
           sessionStorage.setItem("accessToken", res.headers.authorization);
           sessionStorage.setItem("memberId", res.data.data.memberId);

@@ -1,53 +1,116 @@
 // React import
-import React, { Fragment } from "react";
+import axios from "axios";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 
 // Redux import
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 // Style import
 import styled from "styled-components";
-import { NoSearch } from "../../shared/images";
+import {
+  popularSearchThunk,
+  recentSearchThunk,
+} from "../../redux/modules/SearchSlice";
 
-const SearchHistory = ({ keyword, onClearKeyword }) => {
+const SearchHistory = ({ onClearKeyword }) => {
+  const dispatch = useDispatch();
+  // const [recent, setRecent] = useState("");
+  // const [popular, setPopular] = useState("");
+  const recentSearch = useSelector((state) => console.log("bumsu", state.search));
+  const popularSearch = useSelector((state) => console.log("bumsu", state));
   const searchList = useSelector((state) => state.search.data);
 
+  useEffect(() => {
+    dispatch(recentSearchThunk());
+    dispatch(popularSearchThunk());
+  }, [dispatch]);
+
+  useEffect(() => {}, [dispatch]);
+
+  // useEffect(() => {
+  //   dispatch(popularSearch());
+  // },[]);
+
+  // useEffect(() => {
+  //   const popularSearchList = async () => {
+  //     await axios
+  //     .get(`/auction/popular-search`).then((res) => {
+  //       setPopular(res.data);
+  //     });
+  //   };
+  //   popularSearchList();
+  // }, []);
+
+  // const onsubmitHandler = useCallback(
+  //   async (event) => {
+  //     event.preventDefault();
+  //       dispatch(popularSearchThunk({ searchWord })).then((res) => {
+  //         if (res.payload.statusCode === 200) {
+  //           return res;
+  //         }
+  //     },
+  //   [searchWord]
+  // );
+  //   });
+
   return (
-    <HistoryContainer>
-      <HeaderContainer>
-        <Title>최근 검색했어요</Title>
-        <ClearText onClick={onClearKeyword}>모두 지우기</ClearText>
-      </HeaderContainer>
-      <ListContainer>
-        {searchList ? (
-          (searchList && searchList).map(({ memberId, text }) => {
-            return (
-              <KeywordContainer key={memberId}>
-                <Keyword>{text}</Keyword>
-              </KeywordContainer>
-            );
-          })
-        ) : (
-          <NoSearch />
-        )}
-      </ListContainer>
-    </HistoryContainer>
+    <Fragment>
+      <HistoryBox>
+        <HeaderContent>
+          <Title>최근 검색했어요</Title>
+          <HistoryWrap></HistoryWrap>
+          <ClearText onClick={onClearKeyword}>모두 지우기</ClearText>
+        </HeaderContent>
+        <HeaderContent>
+          <Title>지금 인기있어요</Title>
+          <ClearText onClick={onClearKeyword}>모두 지우기</ClearText>
+          <HistoryWrap>
+            <div>{/* <b>{popularSearch[0].searchWord}</b> */}</div>
+            {/* {Array.from({ length: 10 }, (_, idx) => (
+              <PopularKeyword key={idx}></PopularKeyword>
+            ))} */}
+            {/* {popularSearch?.map((data, idx) => {
+              <PopularKeyword
+                key={data}
+                searchWord={data.searchWord}
+              ></PopularKeyword>;
+            })} */}
+            {popularSearch?.map((value, idx)=> {
+              <p key={idx}>{value}</p>
+            })}
+          </HistoryWrap>
+        </HeaderContent>
+        <HistoryItemList></HistoryItemList>
+      </HistoryBox>
+    </Fragment>
   );
 };
 
 export default SearchHistory;
 
-export const HistoryContainer = styled.div`
+export const HistoryBox = styled.div`
   padding: 18px;
 `;
 
-export const HeaderContainer = styled.div`
+export const HeaderContent = styled.div`
+  position: relative;
   overflow: hidden;
+  height: 30vh;
+  /* border: 1px solid blue; */
 `;
 
 export const Title = styled.span`
   float: left;
-  font-weight: ${(props) => props.theme.fontWeights.normal};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
   color: ${(props) => props.theme.colors.Black};
+`;
+
+export const HistoryWrap = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 200px;
+  margin-top: 30px;
+  /* border: 1px solid red; */
 `;
 
 export const ClearText = styled.span`
@@ -57,7 +120,7 @@ export const ClearText = styled.span`
   font-size: ${(props) => props.theme.fontSizes.sm};
 `;
 
-export const ListContainer = styled.ul`
+export const HistoryItemList = styled.ul`
   margin: 10px 0;
 `;
 
@@ -68,7 +131,7 @@ export const KeywordContainer = styled.li`
   }
 `;
 
-export const Keyword = styled.span`
+export const PopularKeyword = styled.span`
   font-size: ${(props) => props.theme.fontSizes.md};
   font-weight: ${(props) => props.theme.fontWeights.normal};
 `;
