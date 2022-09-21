@@ -75,7 +75,7 @@ export const editAuctionItem = createAsyncThunk(
         }
       );
       console.log("editAuctionItem리스폰", response);
-      return thunkAPI.fulfillWithValue(response.data.data);
+      return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

@@ -17,7 +17,7 @@ const AuctionEdit = () => {
   const params = useParams();
   const navigate = useNavigate();
   const data = useSelector((state) => state.auction.auction);
-  // console.log(data);
+  console.log("배돌배돌", data);
 
   const auctionRequestDto = {
     title: data.title,
@@ -33,6 +33,15 @@ const AuctionEdit = () => {
   const [imgFile, setImgFile] = useState([]);
 
   const [imagePreview, setImagePreview] = useState([]);
+
+  const initialTag = {
+    tag1: "",
+    tag2: "지구2",
+    tag3: "",
+    tag4: "",
+    tag5: "",
+    tag6: "",
+  };
 
   const img_ref = useRef();
   const [inputForm, setInputForm] = useState(auctionRequestDto);
@@ -105,13 +114,17 @@ const AuctionEdit = () => {
   const onTransmitHandler = () => {
     let formData = new FormData();
     formData.append(
-      "auctionRequestDto",
+      "auctiontUpdateDto",
       new Blob([JSON.stringify(inputForm)], { type: "application/json" })
     );
 
     for (let i = 0; i < imgFile.length; i++) {
       formData.append("images", imgFile[i]);
     }
+    formData.append(
+      "tags",
+      new Blob([JSON.stringify(initialTag)], { type: "application/json" })
+    );
 
     window.alert("새 게시물 만들기 완료");
 

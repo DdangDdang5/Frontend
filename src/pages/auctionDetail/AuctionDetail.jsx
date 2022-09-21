@@ -25,7 +25,6 @@ import Button from "../../elements/button/Button";
 import { Close, Next } from "../../shared/images";
 import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
 import MenuModal from "../../components/modal/MenuModal";
-import AmplitudeClient from "amplitude-js";
 
 var stompClient = null;
 
@@ -191,10 +190,6 @@ const AuctionDetail = () => {
     }
   };
 
-  const log = AmplitudeClient.getInstance().logEvent("EVENT_NAME_HERE");
-
-  console.log(log);
-
   return (
     <>
       <AuctionDetailLayout>
@@ -267,9 +262,24 @@ const AuctionDetail = () => {
           </DetailFooterTimeContainer>
           <DetailFooterContainer>
             <FooterLeftBox>
-              <div className="presentPrice">{`시작가 ${data.startPrice}원`}</div>
-              {/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
-              <div className="price">{`현재가 ${data.nowPrice}원`}</div>
+              <div className="likeBox">
+                <svg
+                  width="24"
+                  height="21"
+                  viewBox="0 0 24 21"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M12.005 21C11.8549 21 11.6949 20.96 11.5548 20.8801C11.0846 20.6202 0 14.4342 0 6.57918C0 2.9515 3.00124 0.00337233 6.68277 0.00337233C8.80365 0.00337233 10.7545 0.982745 12.005 2.59172C13.8057 0.273197 17.0271 -0.666201 19.8883 0.503054C22.3893 1.5224 24 3.91089 24 6.5692C24 14.4142 12.9154 20.6102 12.4452 20.8701C12.3151 20.96 12.1551 21 12.005 21ZM6.68277 1.8422C4.01166 1.8422 1.84078 3.97084 1.84078 6.58917C1.84078 12.5654 9.97417 17.822 11.995 19.0313C14.0158 17.822 22.1492 12.5554 22.1492 6.58917C22.1492 4.67039 20.9787 2.9415 19.168 2.20197C16.7069 1.19261 13.8658 2.34189 12.8354 4.76035C12.6953 5.10013 12.3551 5.31999 11.985 5.31999C11.6148 5.31999 11.2747 5.10013 11.1346 4.76035C10.3943 2.98148 8.64359 1.8422 6.68277 1.8422Z"
+                    fill="#A5A9B6"
+                  />
+                </svg>
+              </div>
+              <div className="priceBox">
+                <div className="presentPrice">{`시작가 ${data.startPrice}원`}</div>
+                {/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
+                <div className="price">{`현재가 ${data.nowPrice}원`}</div>
+              </div>
             </FooterLeftBox>
             {winBid ? (
               <FooterBidContainer>
@@ -579,17 +589,24 @@ const FooterBidContainer = styled.div`
 const FooterLeftBox = styled.div`
   display: flex;
   align-items: flex-start;
-  flex-direction: column;
+  flex-direction: row;
   margin: 9px 0px 11px 20px;
-  .presentPrice {
+  .likeBox {
     display: flex;
-    font-size: 14px;
-    color: #bcbcbc;
   }
-  .price {
+  .priceBox {
     display: flex;
-    font-size: 24px;
-    font-weight: 700;
+    flex-direction: column;
+    .presentPrice {
+      display: flex;
+      font-size: 14px;
+      color: #bcbcbc;
+    }
+    .price {
+      display: flex;
+      font-size: 24px;
+      font-weight: 700;
+    }
   }
 `;
 const FooterRightBox = styled.div`
