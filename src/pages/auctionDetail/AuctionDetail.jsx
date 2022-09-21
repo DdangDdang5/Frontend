@@ -32,6 +32,7 @@ const AuctionDetail = () => {
   const navigate = useNavigate();
 
   const params = useParams();
+
   const data = useSelector((state) => state.auction.auction);
   const bid = useSelector((state) => state.auction.bid);
 
@@ -40,9 +41,13 @@ const AuctionDetail = () => {
   const nickName = sessionStorage.getItem("memberNickname");
 
   const [joinVisible, setJoinVisible] = useState(false);
+
+  const [isMenuModal, setIsMenuModal] = useState(false);
+
   const [winBid, setWinBid] = useState(false);
 
   const [chatList, setChatList] = useState([]);
+
   const [userData, setUserData] = useState({
     type: "",
     roomId: data.bidRoomId,
@@ -62,8 +67,9 @@ const AuctionDetail = () => {
       });
 
       const date = new Date(data.createdAt);
+
       const deadline = new Date(
-        date.setDate(date.getDate() + data.auctionPeriod),
+        date.setDate(date.getDate() + data.auctionPeriod)
       );
 
       if (deadline <= Date.now()) {
@@ -88,15 +94,6 @@ const AuctionDetail = () => {
   if (!data) {
     return navigate(-1);
   }
-
-  const handleDelete = async () => {
-    try {
-      const response = await dispatch(deleteAuctionItem(data.id)).unwrap();
-      if (response) {
-        return navigate(-1, { replace: true });
-      }
-    } catch {}
-  };
 
   const onClickAuctionJoin = async () => {
     // 비로그인 -> 세션에 닉네임 없음
@@ -199,7 +196,7 @@ const AuctionDetail = () => {
           back={true}
           share={true}
           menu={true}
-          onClickBtn={handleDelete}
+          onClickBtn={() => setIsMenuModal(!isMenuModal)}
         />
 
         <DetailBodyWrap>
@@ -240,7 +237,11 @@ const AuctionDetail = () => {
           <CommentCountContainer
             onClick={() =>
               navigate(`/chat/${data.chatRoomId}`, {
-                state: { auctionId: params?.auctionId, isDetail: true, title: data.title },
+                state: {
+                  auctionId: params?.auctionId,
+                  isDetail: true,
+                  title: data.title,
+                },
               })
             }>
             <CommentCountWrap>
@@ -260,9 +261,24 @@ const AuctionDetail = () => {
           </DetailFooterTimeContainer>
           <DetailFooterContainer>
             <FooterLeftBox>
-              <div className="presentPrice">{`시작가 ${data.startPrice}원`}</div>
-              {/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
-              <div className="price">{`현재가 ${data.nowPrice}원`}</div>
+              <div className="likeBox">
+                <svg
+                  width="24"
+                  height="21"
+                  viewBox="0 0 24 21"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M12.005 21C11.8549 21 11.6949 20.96 11.5548 20.8801C11.0846 20.6202 0 14.4342 0 6.57918C0 2.9515 3.00124 0.00337233 6.68277 0.00337233C8.80365 0.00337233 10.7545 0.982745 12.005 2.59172C13.8057 0.273197 17.0271 -0.666201 19.8883 0.503054C22.3893 1.5224 24 3.91089 24 6.5692C24 14.4142 12.9154 20.6102 12.4452 20.8701C12.3151 20.96 12.1551 21 12.005 21ZM6.68277 1.8422C4.01166 1.8422 1.84078 3.97084 1.84078 6.58917C1.84078 12.5654 9.97417 17.822 11.995 19.0313C14.0158 17.822 22.1492 12.5554 22.1492 6.58917C22.1492 4.67039 20.9787 2.9415 19.168 2.20197C16.7069 1.19261 13.8658 2.34189 12.8354 4.76035C12.6953 5.10013 12.3551 5.31999 11.985 5.31999C11.6148 5.31999 11.2747 5.10013 11.1346 4.76035C10.3943 2.98148 8.64359 1.8422 6.68277 1.8422Z"
+                    fill="#A5A9B6"
+                  />
+                </svg>
+              </div>
+              <div className="priceBox">
+                <div className="presentPrice">{`시작가 ${data.startPrice}원`}</div>
+                {/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
+                <div className="price">{`현재가 ${data.nowPrice}원`}</div>
+              </div>
             </FooterLeftBox>
             {winBid ? (
               <FooterBidContainer>
@@ -279,9 +295,9 @@ const AuctionDetail = () => {
                   }}
                   style={{
                     width: "165px",
-										ft_weight: "500",
-										color: "#FFFFFF",
-										bg_color: "#1DC79A"
+                    ft_weight: "500",
+                    color: "#FFFFFF",
+                    bg_color: "#1DC79A",
                   }}
                 />
               </FooterBidContainer>
@@ -293,6 +309,20 @@ const AuctionDetail = () => {
           </DetailFooterContainer>
         </DetailFooterWrap>
       </AuctionDetailLayout>
+
+      {/* 경매 메뉴 모달 */}
+      <>
+        {isMenuModal ? (
+          <MenuModal
+            data={data}
+            isMenuModal={isMenuModal}
+            setIsMenuModal={setIsMenuModal}
+            id={params.auctionId}
+          />
+        ) : (
+          ""
+        )}
+      </>
 
       {/* 경매 입찰 모달 */}
       <AuctionJoinModal visible={joinVisible} setVisible={setJoinVisible}>
@@ -558,17 +588,24 @@ const FooterBidContainer = styled.div`
 const FooterLeftBox = styled.div`
   display: flex;
   align-items: flex-start;
-  flex-direction: column;
+  flex-direction: row;
   margin: 9px 0px 11px 20px;
-  .presentPrice {
+  .likeBox {
     display: flex;
-    font-size: 14px;
-    color: #bcbcbc;
   }
-  .price {
+  .priceBox {
     display: flex;
-    font-size: 24px;
-    font-weight: 700;
+    flex-direction: column;
+    .presentPrice {
+      display: flex;
+      font-size: 14px;
+      color: #bcbcbc;
+    }
+    .price {
+      display: flex;
+      font-size: 24px;
+      font-weight: 700;
+    }
   }
 `;
 const FooterRightBox = styled.div`

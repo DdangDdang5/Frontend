@@ -18,6 +18,7 @@ import Footer from "../../components/footer/Footer";
 import AuctionCategoryList from "../../components/auctionCategoryList/AuctionCategoryList";
 import SwipeImage from "../../components/swipeImage/SwipeImage";
 import { Next } from "../../shared/images";
+import PlusButton from "../../elements/button/PlusButton";
 
 // Style import
 import {
@@ -44,7 +45,6 @@ import {
   TagRegion,
   TagWrap,
 } from "./Main.styled";
-import PlusButton from "../../components/button/PlusButton";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -53,20 +53,41 @@ const Main = () => {
   const auctionAllList = useSelector((state) => state.auctionList.auctionList);
 
   const auctionHitList = useSelector(
-    (state) => state.auctionList.auctionHitList,
+    (state) => state.auctionList.auctionHitList
   );
   const auctionNewList = useSelector(
-    (state) => state.auctionList.auctionNewList,
+    (state) => state.auctionList.auctionNewList
   );
   const auctionDeadlineList = useSelector(
-    (state) => state.auctionList.auctionDeadlineList,
+    (state) => state.auctionList.auctionDeadlineList
   );
+
+  const auctionLastList = auctionHitList
+    ?.map((item) => {
+      const date = new Date(item.createdAt);
+      return {
+        ...item,
+        auctionPeriod: new Date(
+          date.setDate(date.getDate() + item.auctionPeriod)
+        ),
+      };
+    })
+    .sort(
+      (a, b) =>
+        new Date(a.auctionPeriod).valueOf() -
+        new Date(b.auctionPeriod).valueOf()
+    );
 
   useEffect(() => {
     dispatch(getAuctionHitList());
     dispatch(getAuctionNewList());
     dispatch(getAuctionDeadlineList());
-  }, [JSON.stringify(auctionAllList), JSON.stringify(auctionHitList), JSON.stringify(auctionNewList), JSON.stringify(auctionDeadlineList)]);
+  }, [
+    JSON.stringify(auctionAllList),
+    JSON.stringify(auctionHitList),
+    JSON.stringify(auctionNewList),
+    JSON.stringify(auctionDeadlineList),
+  ]);
 
   const moveAuctionDetail = (auctionId) => {
     navigate(`/auctionDetail/${auctionId}`);
@@ -94,8 +115,7 @@ const Main = () => {
             {auctionHitList?.map((item, idx) => (
               <PopularItem
                 key={item.auctionId}
-                onClick={() => moveAuctionDetail(item.auctionId)}
-              >
+                onClick={() => moveAuctionDetail(item.auctionId)}>
                 <img
                   src={item.multiImages[0]?.imgUrl}
                   alt="auction-popular-img"
@@ -125,7 +145,7 @@ const Main = () => {
             <span>따끈따끈 새로 올라온 경매!</span>
             <ListHeaderMore onClick={() => navigate("/auctionList")}>
               <span>전체 보기</span>
-							<Next />
+              <Next />
             </ListHeaderMore>
           </ListHeader>
 
@@ -159,7 +179,7 @@ const Main = () => {
             <span>서두르세요! 곧 경매가 끝나요</span>
             <ListHeaderMore onClick={() => navigate("/auctionList")}>
               <span>전체 보기</span>
-							<Next />
+              <Next />
             </ListHeaderMore>
           </ListHeader>
 

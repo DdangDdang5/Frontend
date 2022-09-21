@@ -16,7 +16,7 @@ import styled from "styled-components";
 // Component import
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
-import PlusButton from "../../components/button/PlusButton";
+import PlusButton from "../../elements/button/PlusButton";
 import AuctionColumn from "../../components/auction/AuctionColumn";
 
 // Shared import

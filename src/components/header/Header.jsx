@@ -1,8 +1,14 @@
 // React import
-import React from "react";
+import React, { useState } from "react";
+
+//Reducer import
+import { useDispatch } from "react-redux";
 
 // Package import
 import { useNavigate } from "react-router-dom";
+
+// Component import
+import OptionModal from "../modal/OptionModal";
 
 // Shared import
 import {
@@ -22,7 +28,7 @@ import {
   HeaderIconContainer,
   HeaderTitle,
   PageTitle,
-	SaveBtn,
+  SaveBtn,
 } from "./Header.styled";
 
 // props 정리
@@ -55,7 +61,9 @@ const Header = ({
         {/* left */}
         <HeaderTitle>
           {back ? <Back onClick={() => navigate(-1)} /> : null}
-          {close ? <Close className="close" onClick={() => navigate(-1)} /> : null}
+          {close ? (
+            <Close className="close" onClick={() => navigate(-1)} />
+          ) : null}
           {pageName ? <PageTitle>{pageName}</PageTitle> : null}
           {logo ? (
             <Logo className="logo" onClick={() => navigate("/")}>
@@ -70,7 +78,11 @@ const Header = ({
           {alarm ? <Alarm /> : null}
           {share ? <Share /> : null}
           {menu ? <Menu onClick={onClickBtn} /> : null}
-          {save ? <SaveBtn onClick={onClickSave} state={save.state}>{save.type}</SaveBtn> : null}
+          {save ? (
+            <SaveBtn onClick={onClickSave} state={save.state}>
+              {save.type}
+            </SaveBtn>
+          ) : null}
         </HeaderIconContainer>
       </HeaderContent>
     </HeaderContainer>
