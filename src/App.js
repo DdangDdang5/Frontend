@@ -62,7 +62,7 @@ function App() {
         <Route path="/auctionDone" element={<AuctionDone />} />
         <Route path="/auctionReview/:auctionId" element={<AuctionReview />} />
         <Route path="/member/kakao/callback" element={<Kakao />} />
-        <Route path="/myGrade" element={<MyGrade />} />
+        <Route path="/myGrade/:memberId" element={<MyGrade />} />
         <Route path="/myPageMyAuction" element={<MyPageMyAuction />} />
         <Route
           path="/myPageParticipationAuction"
@@ -72,7 +72,7 @@ function App() {
           path="/myPageInterestAuction"
           element={<MyPageInterestAuction />}
         />
-        <Route path="/userProfile" element={<UserProfile />} />
+        <Route path="/userProfile/:memberId" element={<UserProfile />} />
       </Routes>
       {modal && <CategoryModal />}
     </div>

@@ -1,7 +1,7 @@
 // React import
 import React, { useState } from "react";
 
-//Reducer import
+//Redux import
 import { useDispatch } from "react-redux";
 
 // Package import

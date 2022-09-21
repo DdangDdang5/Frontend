@@ -1,7 +1,7 @@
 // React import
 import React, { useEffect } from "react";
 
-// Reducer import
+// Redux import
 import {
   showModal,
   _categoryList,

@@ -1,7 +1,7 @@
 // React import
 import React from "react";
 
-// Reducer import
+// Redux import
 import { hideModal } from "../../redux/modules/ModalSlice";
 import {
   auctionCategoryList,

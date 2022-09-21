@@ -1,18 +1,17 @@
 // React import
-import React from "react";
+import React, { useEffect } from "react";
+
+// Package import
+import { useDispatch, useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 // Component import
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
+import { getMemberTrustPoint } from "../../redux/modules/MemberSlice";
 
 // Shared import
-import {
-  LogoClassic,
-  LogoGold,
-  LogoRainbow,
-  LogoSilver,
-  LogoWood,
-} from "../../shared/images";
+import { findGrade, findNextGrade } from "../../shared/Grade";
 
 // Style import
 import {
@@ -30,8 +29,11 @@ import {
 } from "./MyGrade.styled";
 
 const MyGrade = () => {
-  const point = 25;
-  let nextPoint = 0;
+  const dispatch = useDispatch();
+  const { memberId } = useParams();
+
+  const trustPoint = useSelector((state) => state.member.trustPoint);
+	const nextPoint = findNextGrade(trustPoint?.trustGrade);
 
   const nowState = (
     <svg
@@ -48,26 +50,9 @@ const MyGrade = () => {
     </svg>
   );
 
-  const checkLogo = (point) => {
-    if (point !== 0) {
-      if (point >= 50) {
-        nextPoint = 100;
-        return <LogoRainbow />;
-      } else if (point >= 25) {
-        nextPoint = 50;
-        return <LogoGold />;
-      } else if (point >= 10) {
-        nextPoint = 25;
-        return <LogoSilver />;
-      } else if (point >= -10) {
-        nextPoint = 10;
-        return <LogoClassic />;
-      } else {
-        nextPoint = -10;
-        return <LogoWood />;
-      }
-    }
-  };
+  useEffect(() => {
+    dispatch(getMemberTrustPoint(memberId));
+  }, []);
 
   const calcPoint = (point) => {
     return Math.round(((point + 20) / 70) * 100);
@@ -80,8 +65,7 @@ const MyGrade = () => {
       <MyGradeContent>
         <MyGradeImgWrap>
           <div></div>
-          {/* <LogoClassic /> */}
-          {checkLogo(point)}
+          {findGrade(trustPoint?.trustGrade)}
         </MyGradeImgWrap>
         <MyGradeInfo>
           <span>기본망치</span>
@@ -91,8 +75,8 @@ const MyGrade = () => {
         <MyGradeGrade>
           <p>신뢰도</p>
           <MyGradeBarWrap>
-            <MyGradeBar point={calcPoint(point)}>
-              <NowGrade point={calcPoint(point) - 2}>{nowState}</NowGrade>
+            <MyGradeBar point={calcPoint(trustPoint?.trustPoint)}>
+              <NowGrade point={calcPoint(trustPoint?.trustPoint) - 2}>{nowState}</NowGrade>
               <NextGrade nextPoint={calcPoint(nextPoint) - 8}>
                 <span>다음 등급</span>
                 {nowState}
