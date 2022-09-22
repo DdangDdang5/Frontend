@@ -10,6 +10,7 @@ const initialState = {
     multiImages: [{}],
   },
   bid: {},
+  favorite: {},
   review: "",
 };
 
@@ -22,7 +23,19 @@ export const auctionDetailData = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
+);
+
+export const auctionFavorite = createAsyncThunk(
+  "auctionFavorite",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.get(`/auction/${payload}/favorite`);
+      return thunkAPI.fulfillWithValue(response.data.data);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
 );
 
 export const winAuctionItem = createAsyncThunk(
@@ -34,7 +47,7 @@ export const winAuctionItem = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const doneAuction = createAsyncThunk(
@@ -42,6 +55,7 @@ export const doneAuction = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get(`/auction/${payload}/done`);
+      // console.log(response);
       return response.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -68,10 +82,19 @@ const auctionSlice = createSlice({
   name: "auction_",
   initialState,
   extraReducers: {
+    //경매 상세 조회
     [auctionDetailData.fulfilled]: (state, action) => {
       state.auction = action.payload;
     },
     [auctionDetailData.rejected]: (state, action) => {
+      console.log(action);
+    },
+
+    //옥션 좋아요 조회
+    [auctionFavorite.fulfilled]: (state, action) => {
+      state.favorite = action.payload;
+    },
+    [auctionFavorite.rejected]: (state, action) => {
       console.log(action);
     },
 
