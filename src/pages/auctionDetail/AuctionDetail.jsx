@@ -40,12 +40,15 @@ const AuctionDetail = () => {
 
   const imgList = data?.multiImages;
 
-  const nickName = sessionStorage.getItem("memberNickname").split("kakao")[0];
+  const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
 
-  const [favorite, setfavorite] = useState(favoriteState?.favoriteStatus);
+  // const [favorite, setFavorite] = useState(
+  //   JSON.stringify(favoriteState.favoriteStatus)
+  // );
 
-  console.log("디테일배돌", favorite);
+  console.log("디테일배돌", favoriteState);
+  // console.log("페이버리", favorite);
 
   const [joinVisible, setJoinVisible] = useState(false);
 
@@ -65,9 +68,11 @@ const AuctionDetail = () => {
 
   // memberId !== data.member.id
 
+  // 좋아요 기능
+
   useEffect(() => {
     dispatch(auctionFavorite(data.id));
-  }, [JSON.stringify(data.id), JSON.stringify(favorite)]);
+  }, [JSON.stringify(favoriteState.autionId)]);
 
   useEffect(() => {
     if (!params?.auctionId) {
@@ -273,9 +278,12 @@ const AuctionDetail = () => {
             {/* <Timer date={data.createdAt} /> */}
           </DetailFooterTimeContainer>
           <DetailFooterContainer>
+            {/* 좋아요 기능 */}
             <FooterLeftBox>
-              <div onClick={() => setfavorite(!favorite)} className="likeBox">
-                {favorite ? (
+              <div
+                onClick={() => dispatch(auctionFavorite(data.id))}
+                className="likeBox">
+                {favoriteState.favoriteStatus ? (
                   <svg
                     width="24"
                     height="22"
