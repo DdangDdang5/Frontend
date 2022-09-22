@@ -7,7 +7,6 @@ import { Cookies } from "react-cookie";
 // Shared import
 import api from "../../shared/Api";
 import { getCookie, setCookie } from "../../shared/Cookie";
-import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
 
 const cookies = new Cookies();
 
@@ -16,7 +15,7 @@ export const emailCheckThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/emailcheck`, payload);
     return thunkAPI.fulfillWithValue(resData.data.data);
-  }
+  },
 );
 
 export const nickNameCheckThunk = createAsyncThunk(
@@ -24,7 +23,7 @@ export const nickNameCheckThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/nicknamecheck`, payload);
     return thunkAPI.fulfillWithValue(resData.data.data);
-  }
+  },
 );
 
 export const signUpMemberThunk = createAsyncThunk(
@@ -41,7 +40,7 @@ export const signUpMemberThunk = createAsyncThunk(
       }
     });
     return thunkAPI.fulfillWithValue(resData.data.data);
-  }
+  },
 );
 
 export const loginMemberThunk = createAsyncThunk(
@@ -54,7 +53,7 @@ export const loginMemberThunk = createAsyncThunk(
         cookies.set(
           "accessToken",
           res.headers.authorization,
-          +res.headers.expires
+          +res.headers.expires,
         );
         cookies.set("memberId", res.data.data.memberId);
 
@@ -68,7 +67,7 @@ export const loginMemberThunk = createAsyncThunk(
       }
     });
     return thunkAPI.fulfillWithValue(resData.data);
-  }
+  },
 );
 
 export const kakaoOauthThunk = createAsyncThunk(
@@ -85,7 +84,7 @@ export const kakaoOauthThunk = createAsyncThunk(
           cookies.set(
             "accessToken",
             res.headers.authorization,
-            +res.headers.expires
+            +res.headers.expires,
           );
           cookies.set("memberId", res.data.data.memberId);
 
@@ -93,18 +92,35 @@ export const kakaoOauthThunk = createAsyncThunk(
           sessionStorage.setItem("memberId", res.data.data.memberId);
           sessionStorage.setItem("memberNickname", res.data.data.nickname);
           window.history.go(-2);
-          
+
           return res;
         } else {
           return res;
         }
       });
     return thunkAPI.fulfillWithValue(resData.data);
-  }
+  },
 );
+
+export const getMember = createAsyncThunk(
+  "getMember",
+  async (payload, thunkAPI) => {
+    const response = await api.get(`/member/${payload}/lookup`);
+    return thunkAPI.fulfillWithValue(response.data.data);
+  },
+);
+
+export const getMemberTrustPoint = createAsyncThunk(
+	"getMemberTrustPoint",
+	async (payload, thunkAPI) => {
+		const response = await api.get(`/member/${payload}/trust-point`);
+		return response.data.data;
+	}
+)
 
 const initialState = {
   member: "",
+	trustPoint: {},
   isLogin: false,
 };
 
@@ -129,6 +145,12 @@ export const memberSlice = createSlice({
     builder.addCase(kakaoOauthThunk.fulfilled, (state, action) => {
       state.member = action.payload;
     });
+    builder.addCase(getMember.fulfilled, (state, action) => {
+      state.member = action.payload;
+    });
+		builder.addCase(getMemberTrustPoint.fulfilled, (state, action) => {
+			state.trustPoint = action.payload;
+		})
   },
 });
 

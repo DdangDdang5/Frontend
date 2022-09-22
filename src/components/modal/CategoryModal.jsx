@@ -161,17 +161,20 @@ const CategoryModalBodyContainer = styled.div`
   }
 
   align-content: flex-start;
-  justify-content: flex-start;
+  justify-content: space-between;
   height: 460px;
   padding: 0px 20px;
-  gap: 26px 20px;
+  gap: 26px 0px;
 `;
 const CategoryModalBodyItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 48px;
-  width: 165px;
+  /* width: 165px; */
+	width: 165px;
+	min-width: 48%;
+	max-width: 48%;
 `;
 
 const CategoryModalBodyItemIn = styled.button`

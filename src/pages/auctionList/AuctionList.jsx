@@ -1,7 +1,7 @@
 // React import
 import React, { useEffect } from "react";
 
-// Reducer import
+// Redux import
 import {
   showModal,
   _categoryList,
@@ -18,7 +18,9 @@ import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import PlusButton from "../../elements/button/PlusButton";
 import AuctionColumn from "../../components/auction/AuctionColumn";
-import Auction from "../../components/auction/AuctionColumn";
+
+// Shared import
+import { Open } from "../../shared/images";
 
 const AuctionList = () => {
   const dispatch = useDispatch();
@@ -64,21 +66,30 @@ const AuctionList = () => {
     <AuctionListLayout>
       <Header back={true} pageName="경매 목록" search={true} alarm={true} />
       <ListCategoryWrap>
-        <CategoryBtn
-          onClick={() => dispatch(showModal("categoryList"), _categoryList())}>
-          <CategoryBtnText>{categoryName}</CategoryBtnText>
-          <CategoryBtnIcon>v</CategoryBtnIcon>
-        </CategoryBtn>
-        <CategoryBtn>
-          <CategoryBtnText
-            onClick={() => dispatch(showModal("regionList"), _regionList())}>
-            {regionName}
-          </CategoryBtnText>
-          <CategoryBtnIcon>v</CategoryBtnIcon>
-        </CategoryBtn>
-        <CategoryBtn>
-          <CategoryBtnTimeText>마감임박</CategoryBtnTimeText>
-        </CategoryBtn>
+        <CategoryWrap>
+          <CategoryBtn
+            onClick={() => dispatch(showModal("categoryList"), _categoryList())}
+          >
+            <CategoryBtnText>{categoryName}</CategoryBtnText>
+            <Open />
+          </CategoryBtn>
+        </CategoryWrap>
+
+        <CategoryWrap>
+          <CategoryBtn>
+            <CategoryBtnText
+              onClick={() => dispatch(showModal("regionList"), _regionList())}
+            >
+              {regionName}
+            </CategoryBtnText>
+            <Open />
+          </CategoryBtn>
+        </CategoryWrap>
+        <CategoryWrap>
+          <CategoryBtn>
+            <CategoryBtnTimeText>마감임박</CategoryBtnTimeText>
+          </CategoryBtn>
+        </CategoryWrap>
       </ListCategoryWrap>
       <ListContents onScroll={handleScroll}>
         {AuctionListData?.map((item, index) => {
@@ -108,17 +119,34 @@ const ListCategoryWrap = styled.div`
   height: 48px;
   margin-top: 70px;
   padding: 0px 20px;
+  gap: 8px;
+
+  color: ${(props) => props.theme.colors.Black};
+`;
+
+const CategoryWrap = styled.div`
+  width: fit-content;
+  border: 1px solid #dedede;
+  border-radius: 100px;
 `;
 
 const CategoryBtn = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px solid #dedede;
-  border-radius: 100px;
-  margin-right: 8px;
   height: 30px;
+
+  svg {
+    width: 12px;
+    height: 7px;
+    padding-right: 12px;
+
+    path {
+      fill: ${(props) => props.theme.colors.Gray3};
+    }
+  }
 `;
+
 const CategoryBtnIcon = styled.div`
   margin: 11.53px 11.53px 11.53px 4px;
   font-size: 12px;
@@ -127,6 +155,7 @@ const CategoryBtnIcon = styled.div`
 const CategoryBtnText = styled.div`
   font-size: 16px;
   margin: 4px 4px 4px 12px;
+  /* width: 100%; */
 `;
 
 const CategoryBtnTimeText = styled.div`

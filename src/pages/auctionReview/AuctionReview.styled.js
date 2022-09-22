@@ -30,6 +30,7 @@ export const ReviewItemWrapTitle = styled.span`
 `;
 
 export const ReviewItem = styled.div`
+	width: 100%;
   margin: 8px auto;
 
   display: flex;
