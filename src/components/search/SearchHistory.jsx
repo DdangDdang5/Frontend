@@ -16,16 +16,19 @@ const SearchHistory = ({ onClearKeyword }) => {
   const dispatch = useDispatch();
   // const [recent, setRecent] = useState("");
   // const [popular, setPopular] = useState("");
-  const recentSearch = useSelector((state) => console.log("bumsu", state.search));
-  const popularSearch = useSelector((state) => console.log("bumsu", state));
-  const searchList = useSelector((state) => state.search.data);
+  const recentSearch = useSelector((state) =>
+    console.log("bumsu", state.search.search)
+  );
+  const popularSearch = useSelector((state) =>
+    console.log("bumsu", state.search.search)
+  );
 
   useEffect(() => {
     dispatch(recentSearchThunk());
     dispatch(popularSearchThunk());
   }, [dispatch]);
 
-  useEffect(() => {}, [dispatch]);
+  // useEffect(() => {}, [dispatch]);
 
   // useEffect(() => {
   //   dispatch(popularSearch());
@@ -75,9 +78,7 @@ const SearchHistory = ({ onClearKeyword }) => {
                 searchWord={data.searchWord}
               ></PopularKeyword>;
             })} */}
-            {popularSearch?.map((value, idx)=> {
-              <p key={idx}>{value}</p>
-            })}
+            
           </HistoryWrap>
         </HeaderContent>
         <HistoryItemList></HistoryItemList>

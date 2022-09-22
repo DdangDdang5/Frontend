@@ -45,6 +45,7 @@ const initialState = {
   data: "",
   recentSearch: [],
   popularSearch: [],
+  search:[],
 };
 
 export const searchSlice = createSlice({

@@ -26,6 +26,7 @@ import MyGrade from "./pages/myGrade/MyGrade";
 import MyPageParticipationAuction from "./pages/myPage/MyPageParticipationAuction";
 import MyPageInterestAuction from "./pages/myPage/MyPageInterestAuction";
 import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
+import AuctionEdit from "./pages/auctionEdit/AuctionEdit";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
@@ -34,7 +35,6 @@ import CategoryModal from "./components/modal/CategoryModal";
 import UserProfile from "./pages/userProfile/UserProfile";
 
 function App() {
-  const dispatch = useDispatch();
   // const token = getCookie("accessToken");
   const modal = useSelector((state) => state.modal.show);
 
@@ -57,6 +57,7 @@ function App() {
         <Route path="/chatList" element={<ChatList />} />
         <Route path="/auctionList" element={<AuctionList />} />
         <Route path="/auctionWrite" element={<AuctionWrite />} />
+        <Route path="/auctionEdit/:auctionId" element={<AuctionEdit />} />
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
         <Route path="/auctionDone" element={<AuctionDone />} />
         <Route path="/auctionReview/:auctionId" element={<AuctionReview />} />

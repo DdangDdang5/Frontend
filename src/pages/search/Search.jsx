@@ -69,11 +69,6 @@ const Search = () => {
 
   useEffect(() => {}, [dispatch]);
 
-  // useEffect(()=> {
-  //   dispatch(popularSearch())
-  //   dispatch(recentSearch())
-  // }, [])
-
   const moveAuctionDetail = (auctionId) => {
     navigate(`/auctionDetail/${auctionId}`);
   };
