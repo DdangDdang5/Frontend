@@ -1,5 +1,5 @@
 // React import
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 // Redux import
 import { useDispatch } from "react-redux";
@@ -34,6 +34,11 @@ import { getCookie } from "./shared/Cookie";
 import CategoryModal from "./components/modal/CategoryModal";
 import UserProfile from "./pages/userProfile/UserProfile";
 
+// Notification import
+import { onMessageListener } from "./firebaseInit";
+import Notifications from "./components/notification/Notification";
+import ReactNotificationComponent from "./components/notification/ReactNotification";
+
 function App() {
   // const token = getCookie("accessToken");
   const modal = useSelector((state) => state.modal.show);
@@ -44,8 +49,33 @@ function App() {
   //   }
   // }, []);
 
+  const [show, setShow] = useState(false);
+  const [notification, setNotification] = useState({ title: "", body: "" });
+
+  onMessageListener()
+    .then((payload) => {
+      setShow(true);
+      setNotification({
+        title: payload.notification.title,
+        body: payload.notification.body,
+      });
+      console.log(payload);
+    })
+    .catch((err) => console.log("failed: ", err));
+
   return (
     <div className="App">
+			
+      {show ? (
+        <ReactNotificationComponent
+          title={notification.title}
+          body={notification.body}
+        />
+      ) : (
+        <></>
+      )}
+      <Notifications />
+
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
