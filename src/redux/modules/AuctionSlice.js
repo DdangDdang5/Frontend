@@ -60,7 +60,7 @@ export const doneAuction = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const reviewAuction = createAsyncThunk(
@@ -69,13 +69,13 @@ export const reviewAuction = createAsyncThunk(
     try {
       const response = await api.post(
         `/auction/${payload.auctionId}/review`,
-        payload.data,
+        payload.data
       );
       return response.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 const auctionSlice = createSlice({
@@ -92,7 +92,10 @@ const auctionSlice = createSlice({
 
     //옥션 좋아요 조회
     [auctionFavorite.fulfilled]: (state, action) => {
-      state.favorite = action.payload;
+      console.log("11111", action.payload);
+      // console.log("22222", state.favorite);
+      // if(action.payload.autionId ===  )
+      // if (action.payload.autionId == ) state.favorite = action.payload;
     },
     [auctionFavorite.rejected]: (state, action) => {
       console.log(action);

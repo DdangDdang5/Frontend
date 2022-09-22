@@ -11,6 +11,8 @@ const MyPageInterestAuction = () => {
   const data = useSelector((state) => state.myPage.myPageInterest);
   const [isAuction, setIsAuction] = useState(true);
 
+  console.log("111", data);
+
   useEffect(() => {
     dispatch(_MyPageInterestAuction());
   }, []);
@@ -21,7 +23,7 @@ const MyPageInterestAuction = () => {
       <AuctionStateNav isAuction={isAuction} setIsAuction={setIsAuction} />
       <MyAuctionBody>
         <AuctionLayout>
-          {data.data === null ? (
+          {data.length === 0 ? (
             <None>상품없음</None>
           ) : (
             <>
@@ -29,18 +31,27 @@ const MyPageInterestAuction = () => {
                 return (
                   <React.Fragment key={`${index}_${item.id}`}>
                     <Auction2Container>
-                      <ImgBox>{item.profileImgUrl}</ImgBox>
+                      <ImgBox>
+                        <img src={item.multiImages[0].imgUrl} alt="" />
+                      </ImgBox>
                       <ContentBox>
                         <div className="contentNavBox">
-                          <div className="delivery">택배</div>
-                          <div className="region">성산구</div>
+                          {item.delivery ? (
+                            <div className="delivery">택배</div>
+                          ) : (
+                            <></>
+                          )}
+                          {item.direct ? (
+                            <div className="delivery">직거래</div>
+                          ) : (
+                            <></>
+                          )}
+                          <div className="region">{item.region}</div>
                         </div>
-                        <div className="title">
-                          제목은 한 줄만 노출됩니다. 길어진다면 짤라야 겠죠
-                        </div>
+                        <div className="title">{item.content}</div>
                         <div className="priceBox">
                           <div>최근입찰가</div>
-                          <div className="price">5000원</div>
+                          <div className="price">{item.startPrice}</div>
                         </div>
                       </ContentBox>
                     </Auction2Container>

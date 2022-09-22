@@ -43,12 +43,12 @@ const AuctionDetail = () => {
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
 
-  // const [favorite, setFavorite] = useState(
-  //   JSON.stringify(favoriteState.favoriteStatus)
-  // );
+  const [favorite, setFavorite] = useState(false);
 
-  console.log("디테일배돌", favoriteState);
   // console.log("페이버리", favorite);
+  // console.log(data);
+  // console.log("data", data);
+  // console.log("디테일배돌", params?.auctionId);
 
   const [joinVisible, setJoinVisible] = useState(false);
   const [isMenuModal, setIsMenuModal] = useState(false);
@@ -67,9 +67,19 @@ const AuctionDetail = () => {
 
   // 좋아요 기능
 
-  useEffect(() => {
-    dispatch(auctionFavorite(data.id));
-  }, [JSON.stringify(favoriteState.autionId)]);
+  // useEffect(() => {
+  //   dispatch(auctionFavorite(data.id));
+  //   if (favoriteState.favoriteStatus === true) {
+  //     setFavorite(true);
+  //   }
+  // }, []);
+
+  const likeHandler = () => {
+    if (data.id == params?.auctionId) {
+      dispatch(auctionFavorite(data.id));
+      setFavorite(!favorite);
+    }
+  };
 
   useEffect(() => {
     if (!params?.auctionId) {
@@ -84,7 +94,7 @@ const AuctionDetail = () => {
       const date = new Date(data.createdAt);
 
       const deadline = new Date(
-        date.setDate(date.getDate() + data.auctionPeriod),
+        date.setDate(date.getDate() + data.auctionPeriod)
       );
 
       if (deadline <= Date.now()) {
@@ -142,7 +152,7 @@ const AuctionDetail = () => {
   const onConnected = () => {
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived,
+      onMessageReceived
     );
 
     // 채팅방 들어감
@@ -174,7 +184,7 @@ const AuctionDetail = () => {
       stompClient.send(
         "/app/chat/bid",
         {},
-        JSON.stringify({ ...chatMessage, type: "ENTER" }),
+        JSON.stringify({ ...chatMessage, type: "ENTER" })
       );
 
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
@@ -266,8 +276,7 @@ const AuctionDetail = () => {
                   title: data.title,
                 },
               })
-            }
-          >
+            }>
             <CommentCountWrap>
               <CommentCountTitle>실시간 채팅방</CommentCountTitle>
               <p>{data.participantCnt}명 참여중</p>
@@ -286,10 +295,8 @@ const AuctionDetail = () => {
           <DetailFooterContainer>
             {/* 좋아요 기능 */}
             <FooterLeftBox>
-              <div
-                onClick={() => dispatch(auctionFavorite(data.id))}
-                className="likeBox">
-                {favoriteState.favoriteStatus ? (
+              <div onClick={likeHandler} className="likeBox">
+                {favoriteState?.favoriteStatus ? (
                   <svg
                     width="24"
                     height="22"
