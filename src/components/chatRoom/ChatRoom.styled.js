@@ -6,7 +6,7 @@ export const ChatRoomContainer = styled.div`
   /* border-bottom: 1px solid gray; */
 
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 `;
 
 export const ChatRoomProfile = styled.img`
@@ -28,8 +28,14 @@ export const ChatRoomInfo = styled.div`
 `;
 
 export const ChatRoomNickname = styled.div`
+	width: 70%;
 	font-size: 16px;
 	font-weight: bold;
+
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const ChatRoomMessageWrap = styled.div`

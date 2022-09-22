@@ -2,10 +2,13 @@
 import React, { useEffect, useState } from "react";
 
 // React import
-import { auctionDetailData } from "../../redux/modules/AuctionSlice";
+import {
+  auctionDetailData,
+  reviewAuction,
+} from "../../redux/modules/AuctionSlice";
 
 // Package improt
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 // Component import
@@ -34,15 +37,16 @@ import {
 
 const AuctionReview = () => {
   const dispatch = useDispatch();
+	const navigate = useNavigate();
 
   const { auctionId } = useParams();
 
   const auction = useSelector((state) => state.auction.auction);
-	const [checkedAll, setCheckedAll] = useState(false);
+  const [checkedAll, setCheckedAll] = useState(false);
   const [checked, setChecked] = useState({
-		value: [0, 0, 0],
-		isCheck: [false, false, false]
-	});
+    value: [0, 0, 0],
+    isCheck: [false, false, false],
+  });
 
   const questionList = [
     "상대의 응답 속도는 어떠셨나요?",
@@ -79,24 +83,49 @@ const AuctionReview = () => {
         break;
     }
 
-		checked.value[name[name.length - 1]] = num;
-		checked.isCheck[name[name.length - 1]] = true;
+    checked.value[name[name.length - 1]] = num;
+    checked.isCheck[name[name.length - 1]] = true;
     setChecked(checked);
-		
-		if (!checked.isCheck.includes(false)) {
-			setCheckedAll(true);
-		}
+
+    if (!checked.isCheck.includes(false)) {
+      setCheckedAll(true);
+    }
   };
 
-	// 경매 평가 저장 버튼 클릭
-	const onClickSaveReview = () => {
-		const valueSum = checked.value.reduce((a, b) => a + b);
-		// console.log(valueSum);
-	}
+  // 경매 평가 저장 버튼 클릭
+  const onClickSaveReview = () => {
+    if (checkedAll) {
+      const valueSum = checked.value.reduce((a, b) => a + b);
+
+      dispatch(
+        reviewAuction({
+          auctionId: auctionId,
+          data: {
+            trustPoint: valueSum,
+          },
+        }),
+      ).then((res) => {
+				if (res.payload.statusCode === 200) {
+					if (res.payload.data.split("가")[0] === "판매자") {
+						navigate("/myPageMyAuction");
+					} else {
+						navigate("/myPageParticipationAuction");
+					}
+				}
+			});
+    } else {
+      window.alert("평가 항목을 전부 선택해주세요.");
+    }
+  };
 
   return (
     <AuctionReviewContainer>
-      <Header back={true} pageName="평가하기" save={{ type: "완료", state: checkedAll }} onClickSave={onClickSaveReview}/>
+      <Header
+        back={true}
+        pageName="평가하기"
+        save={{ type: "완료", state: checkedAll }}
+        onClickSave={onClickSaveReview}
+      />
 
       <AuctionReviewContent>
         {/* 평가 경매 */}
@@ -132,9 +161,7 @@ const AuctionReview = () => {
                       type="radio"
                       id={itemA}
                       name={`action-review-${idx}`}
-											// checked={checked.value[idx]}
                       onChange={(e) => onCheckRadioBtn(e)}
-											// onClick={(e) => onCheckRadioBtn(e)}
                     />
                     <span>{itemA}</span>
                   </AnswerItem>

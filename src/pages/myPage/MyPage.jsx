@@ -6,6 +6,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/exports";
 import { _MyPageData, _MyPageInAuction } from "../../redux/modules/MyPageSlice";
+import { findGrade } from "../../shared/Grade";
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -46,6 +47,7 @@ const MyPage = () => {
       navigate("/");
     }
   };
+
   return (
     <MyPageLayout>
       <Header pageName="마이페이지" alarm={true} />
@@ -69,11 +71,10 @@ const MyPage = () => {
               프로필 수정
             </div>
           </NickBox>
-          <LevelBox>
-            <div className="levelIcon" onClick={() => navigate("/myGrade")}>
-              등급
-            </div>
-          </LevelBox>
+					<MyGradeImgWrap onClick={() => navigate(`/myGrade/${memberId}`)}>
+	          <div></div>
+	          {findGrade(data?.trustGrade)}
+        	</MyGradeImgWrap>
         </MyNickContainer>
       </MyProfileWrap>
 
@@ -226,6 +227,35 @@ const LevelBox = styled.div`
     background-color: grey;
   }
 `;
+
+export const MyGradeImgWrap = styled.div`
+  position: relative;
+	right: 20px;
+
+  svg {
+    width: 38px;
+    height: 38px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  div {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: ${(props) => props.theme.colors.Gray2};
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -10;
+  }
+`;
+
 const MyStateWrap = styled.div`
   display: flex;
   position: relative;

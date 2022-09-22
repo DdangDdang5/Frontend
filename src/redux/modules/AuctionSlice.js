@@ -11,6 +11,7 @@ const initialState = {
   },
   bid: {},
   favorite: {},
+  review: "",
 };
 
 export const auctionDetailData = createAsyncThunk(
@@ -54,11 +55,27 @@ export const doneAuction = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get(`/auction/${payload}/done`);
-      console.log(response);
+      // console.log(response);
+      return response.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
+);
+
+export const reviewAuction = createAsyncThunk(
+  "reviewAuction",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.post(
+        `/auction/${payload.auctionId}/review`,
+        payload.data,
+      );
+      return response.data.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  },
 );
 
 const auctionSlice = createSlice({
@@ -96,6 +113,15 @@ const auctionSlice = createSlice({
       state.auction = action.payload;
     },
     [doneAuction.rejected]: (state, action) => {
+      console.log(action);
+    },
+
+    // 경매 평가(리뷰)
+    [reviewAuction.fulfilled]: (state, action) => {
+      // auction.paylod -> auction review result data("판매자가 낙찰자 평가하기 완료")
+      state.review = action.payload.data;
+    },
+    [reviewAuction.rejected]: (state, action) => {
       console.log(action);
     },
   },

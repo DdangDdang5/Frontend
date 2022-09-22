@@ -1,7 +1,7 @@
 // React import
 import React, { useEffect, useState } from "react";
 
-// Reducer import
+// Redux import
 import { useSelector, useDispatch } from "react-redux";
 import {
   auctionDetailData,
@@ -19,12 +19,12 @@ import styled from "styled-components";
 import Header from "../../components/header/Header";
 import Slider from "../../components/auction/Slider";
 import AuctionJoinModal from "../../components/modal/AuctionJoinModal";
+import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
+import MenuModal from "../../components/modal/MenuModal";
 
 // Element & Shared import
 import Button from "../../elements/button/Button";
 import { Close, Next } from "../../shared/images";
-import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
-import MenuModal from "../../components/modal/MenuModal";
 
 var stompClient = null;
 
@@ -51,13 +51,10 @@ const AuctionDetail = () => {
   // console.log("페이버리", favorite);
 
   const [joinVisible, setJoinVisible] = useState(false);
-
   const [isMenuModal, setIsMenuModal] = useState(false);
-
   const [winBid, setWinBid] = useState(false);
 
   const [chatList, setChatList] = useState([]);
-
   const [userData, setUserData] = useState({
     type: "",
     roomId: data.bidRoomId,
@@ -87,7 +84,7 @@ const AuctionDetail = () => {
       const date = new Date(data.createdAt);
 
       const deadline = new Date(
-        date.setDate(date.getDate() + data.auctionPeriod)
+        date.setDate(date.getDate() + data.auctionPeriod),
       );
 
       if (deadline <= Date.now()) {
@@ -125,6 +122,14 @@ const AuctionDetail = () => {
     }
   };
 
+  const onClickAuctionSeller = () => {
+    if (nickName && nickName === data?.member.nickName) {
+      navigate("/myPage");
+    } else {
+      navigate(`/userProfile/${data?.member.id}`);
+    }
+  };
+
   // 웹소켓 연결
   const registerUser = () => {
     var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
@@ -137,7 +142,7 @@ const AuctionDetail = () => {
   const onConnected = () => {
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived
+      onMessageReceived,
     );
 
     // 채팅방 들어감
@@ -169,7 +174,7 @@ const AuctionDetail = () => {
       stompClient.send(
         "/app/chat/bid",
         {},
-        JSON.stringify({ ...chatMessage, type: "ENTER" })
+        JSON.stringify({ ...chatMessage, type: "ENTER" }),
       );
 
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
@@ -224,7 +229,7 @@ const AuctionDetail = () => {
 
           <DetailBodyContainer>
             <DetailBodyProfileBox>
-              <DetailBodyProfileImg>
+              <DetailBodyProfileImg onClick={onClickAuctionSeller}>
                 <img src={data.member.profileImgUrl} alt="" />
               </DetailBodyProfileImg>
               <div className="DetailBodyProfile">
@@ -261,7 +266,8 @@ const AuctionDetail = () => {
                   title: data.title,
                 },
               })
-            }>
+            }
+          >
             <CommentCountWrap>
               <CommentCountTitle>실시간 채팅방</CommentCountTitle>
               <p>{data.participantCnt}명 참여중</p>
