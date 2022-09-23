@@ -60,6 +60,7 @@ const SignUp = () => {
   const nickNameSpanRef = useRef();
   const NickNameCheckef = useRef();
 
+  // 중복 체크 상태 관리
   const [check, setCheck] = useState({
     email: false,
     id: false,
@@ -68,13 +69,13 @@ const SignUp = () => {
     repassword: false,
   });
 
-  const [color, setColor] = useState({
-    email: "#dedede",
-    id: "#dedede",
-    nickName: "#dedede",
-    password: "#dedede",
-    repassword: "#dedede",
-  });
+  // const [color, setColor] = useState({
+  //   email: "#dedede",
+  //   id: "#dedede",
+  //   nickName: "#dedede",
+  //   password: "#dedede",
+  //   repassword: "#dedede",
+  // });
 
   const newMember = {
     email,
@@ -212,6 +213,7 @@ const SignUp = () => {
           nickNameRef.current.focus();
           nickNameRef.current.style.color = "#BCBCBC";
           nickNameRef.current.innerText = "중복되는 닉네임입니다.";
+          setCheck({ ...check, nickName: true })
         } else {
           if (password !== repassword) {
             passwordRef.current.style.innerText = "";
@@ -219,6 +221,8 @@ const SignUp = () => {
             nickNameRef.current.style.color = "#BCBCBC";
             rePasswordSpanRef.current.innerText =
               "비밀번호가 일치하지 않습니다.";
+              setCheck({ ...check, password: true, repassword: true })
+
           } else {
             dispatch(signUpMemberThunk(newMember));
           }

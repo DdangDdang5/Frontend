@@ -13,6 +13,8 @@ import { Cookies } from "react-cookie";
 // Component & Element & Shared import
 import Button from "../../elements/button/Button";
 import Header from "../../components/header/Header";
+import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
+import { Delete, Kakao, Logo } from "../../shared/images";
 
 // Style import
 import {
@@ -30,10 +32,6 @@ import {
   LoginBoxSignUpText,
   LoginBoxSignUpLink,
 } from "./Login.styled";
-
-// Shared import
-import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
-import { Delete, Kakao, Logo } from "../../shared/images";
 
 const Login = ({ location }) => {
   const [email, setEmail] = useState("");
@@ -55,6 +53,12 @@ const Login = ({ location }) => {
   useEffect(() => {
     // if (token) history.push("/");
   }, [isLogin]);
+
+  const [check, setCheck] = useState({
+    email: false,
+    id: false,
+    password: false,
+  });
 
   const emailRef = useRef();
   const emailIconRef = useRef();

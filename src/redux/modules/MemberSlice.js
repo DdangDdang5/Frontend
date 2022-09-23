@@ -16,7 +16,7 @@ export const emailCheckThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/emailcheck`, payload);
     return thunkAPI.fulfillWithValue(resData.data.data);
-  },
+  }
 );
 
 // 닉네임 중복 체크
@@ -25,7 +25,7 @@ export const nickNameCheckThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/nicknamecheck`, payload);
     return thunkAPI.fulfillWithValue(resData.data.data);
-  },
+  }
 );
 
 // 회원가입
@@ -43,15 +43,16 @@ export const signUpMemberThunk = createAsyncThunk(
       }
     });
     return thunkAPI.fulfillWithValue(resData.data.data);
-  },
+  }
 );
 
-// 로그인
+// 일반 로그인
 export const loginMemberThunk = createAsyncThunk(
   "member/loginMember",
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/login`, payload).then((res) => {
       if (res.data.statusCode === 200) {
+        // 쿠키로 토큰 저장
         // const tokeretn = getCookie("accessToken");
         // setCookie("accessToken", res.headers.authorization, +res.headers.expires);
 
@@ -72,7 +73,7 @@ export const loginMemberThunk = createAsyncThunk(
       }
     });
     return thunkAPI.fulfillWithValue(resData.data);
-  },
+  }
 );
 
 // 카카오 소셜 로그인
@@ -87,7 +88,7 @@ export const kakaoOauthThunk = createAsyncThunk(
       })
       .then((res) => {
         if (res.data.statusCode === 200) {
-
+          // 쿠키로 토큰 저장
           // cookies.set(
           //   "accessToken",
           //   res.headers.authorization,
@@ -106,7 +107,7 @@ export const kakaoOauthThunk = createAsyncThunk(
         }
       });
     return thunkAPI.fulfillWithValue(resData.data);
-  },
+  }
 );
 
 export const getMember = createAsyncThunk(
@@ -114,20 +115,20 @@ export const getMember = createAsyncThunk(
   async (payload, thunkAPI) => {
     const response = await api.get(`/member/${payload}/lookup`);
     return thunkAPI.fulfillWithValue(response.data.data);
-  },
+  }
 );
 
 export const getMemberTrustPoint = createAsyncThunk(
-	"getMemberTrustPoint",
-	async (payload, thunkAPI) => {
-		const response = await api.get(`/member/${payload}/trust-point`);
-		return response.data.data;
-	}
-)
+  "getMemberTrustPoint",
+  async (payload, thunkAPI) => {
+    const response = await api.get(`/member/${payload}/trust-point`);
+    return response.data.data;
+  }
+);
 
 const initialState = {
   member: "",
-	trustPoint: {},
+  trustPoint: {},
   isLogin: false,
 };
 
@@ -155,9 +156,9 @@ export const memberSlice = createSlice({
     builder.addCase(getMember.fulfilled, (state, action) => {
       state.member = action.payload;
     });
-		builder.addCase(getMemberTrustPoint.fulfilled, (state, action) => {
-			state.trustPoint = action.payload;
-		})
+    builder.addCase(getMemberTrustPoint.fulfilled, (state, action) => {
+      state.trustPoint = action.payload;
+    });
   },
 });
 
