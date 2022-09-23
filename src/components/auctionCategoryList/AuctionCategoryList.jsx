@@ -14,17 +14,7 @@ import { useNavigate } from "react-router-dom";
 // Component & Shared import
 import AuctionCategory from "../auctionCategory/AuctionCategory";
 import {
-  Accessory,
-  Beauty,
-  Digital,
-  Hobby,
-  HomeElectronics,
-  Interior,
-  LogoNormal,
-  ManFashion,
   Next,
-  Sport,
-  WomanFashion,
 } from "../../shared/images";
 
 // Style import

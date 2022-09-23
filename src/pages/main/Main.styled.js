@@ -143,6 +143,7 @@ export const TagWrap = styled.div`
   margin-bottom: 10px;
 
   display: flex;
+  flex-wrap: wrap;
   gap: 4px;
 
   span {
@@ -275,14 +276,14 @@ export const LastList = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
 
-  gap: 16px 20px;
+  gap: 16px 0px;
 `;
 
 export const LastItem = styled.div`
-  width: 100%;
-  max-width: 165px;
+  width: 165px;
+	max-width: 48%;
 
   img {
     width: 100%;

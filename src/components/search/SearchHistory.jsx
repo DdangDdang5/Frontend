@@ -1,6 +1,5 @@
 // React import
-import axios from "axios";
-import React, { Fragment, useCallback, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 
 // Redux import
 import { useDispatch, useSelector } from "react-redux";
@@ -14,74 +13,45 @@ import {
 
 const SearchHistory = ({ onClearKeyword }) => {
   const dispatch = useDispatch();
-  // const [recent, setRecent] = useState("");
-  // const [popular, setPopular] = useState("");
-  const recentSearch = useSelector((state) =>
-    console.log("bumsu", state.search.search)
-  );
-  const popularSearch = useSelector((state) =>
-    console.log("bumsu", state.search.search)
-  );
+  const recentSearch = useSelector((state) => state.search.recentSearch);
+  const popularSearch = useSelector((state) => state.search.popularSearch);
 
   useEffect(() => {
     dispatch(recentSearchThunk());
     dispatch(popularSearchThunk());
   }, [dispatch]);
 
-  // useEffect(() => {}, [dispatch]);
-
-  // useEffect(() => {
-  //   dispatch(popularSearch());
-  // },[]);
-
-  // useEffect(() => {
-  //   const popularSearchList = async () => {
-  //     await axios
-  //     .get(`/auction/popular-search`).then((res) => {
-  //       setPopular(res.data);
-  //     });
-  //   };
-  //   popularSearchList();
-  // }, []);
-
-  // const onsubmitHandler = useCallback(
-  //   async (event) => {
-  //     event.preventDefault();
-  //       dispatch(popularSearchThunk({ searchWord })).then((res) => {
-  //         if (res.payload.statusCode === 200) {
-  //           return res;
-  //         }
-  //     },
-  //   [searchWord]
-  // );
-  //   });
-
   return (
     <Fragment>
       <HistoryBox>
         <HeaderContent>
           <Title>최근 검색했어요</Title>
-          <HistoryWrap></HistoryWrap>
+          <RecentKeywordWrap>
+            {recentSearch?.map((item, idx) => (
+              <RecentKeyword>
+                <div key={idx}>
+                  <div>{item.searchWord}</div>
+                </div>
+              </RecentKeyword>
+            ))}
+          </RecentKeywordWrap>
           <ClearText onClick={onClearKeyword}>모두 지우기</ClearText>
         </HeaderContent>
         <HeaderContent>
           <Title>지금 인기있어요</Title>
-          <ClearText onClick={onClearKeyword}>모두 지우기</ClearText>
-          <HistoryWrap>
-            <div>{/* <b>{popularSearch[0].searchWord}</b> */}</div>
-            {/* {Array.from({ length: 10 }, (_, idx) => (
-              <PopularKeyword key={idx}></PopularKeyword>
-            ))} */}
-            {/* {popularSearch?.map((data, idx) => {
-              <PopularKeyword
-                key={data}
-                searchWord={data.searchWord}
-              ></PopularKeyword>;
-            })} */}
-            
-          </HistoryWrap>
+          <PopularKeywordWrap>
+            {popularSearch?.map((item, idx) => (
+              <div key={idx}>
+                <PopularNum>
+                  <div>{idx + 1}</div>
+                </PopularNum>
+                <PopularKeyword>
+                  <div>{item.searchWord}</div>
+                </PopularKeyword>
+              </div>
+            ))}
+          </PopularKeywordWrap>
         </HeaderContent>
-        <HistoryItemList></HistoryItemList>
       </HistoryBox>
     </Fragment>
   );
@@ -91,13 +61,16 @@ export default SearchHistory;
 
 export const HistoryBox = styled.div`
   padding: 18px;
+  padding-top: 32px;
+  padding-left: 20px;
+  box-sizing: border-box;
+  height: 70vh;
+  width: 100%;
 `;
 
 export const HeaderContent = styled.div`
   position: relative;
-  overflow: hidden;
-  height: 30vh;
-  /* border: 1px solid blue; */
+  height: 28vh;
 `;
 
 export const Title = styled.span`
@@ -106,12 +79,15 @@ export const Title = styled.span`
   color: ${(props) => props.theme.colors.Black};
 `;
 
-export const HistoryWrap = styled.div`
+export const RecentKeywordWrap = styled.div`
   position: absolute;
-  width: 100%;
-  height: 200px;
-  margin-top: 30px;
-  /* border: 1px solid red; */
+  margin-top: 36px;
+  width: 90%;
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  gap: 10px;
+  flex-wrap: wrap;
 `;
 
 export const ClearText = styled.span`
@@ -119,10 +95,7 @@ export const ClearText = styled.span`
   color: ${(props) => props.theme.colors.Gray2};
   font-weight: ${(props) => props.theme.fontWeights.normal};
   font-size: ${(props) => props.theme.fontSizes.sm};
-`;
-
-export const HistoryItemList = styled.ul`
-  margin: 10px 0;
+  line-height: 19.6px;
 `;
 
 export const KeywordContainer = styled.li`
@@ -132,7 +105,52 @@ export const KeywordContainer = styled.li`
   }
 `;
 
-export const PopularKeyword = styled.span`
+export const RecentKeyword = styled.div`
+  border-radius: 100px;
+  padding: 4px 12px;
+  font-family: "Spoqa Han Sans Neo";
+  height: 24px;
+  font-size: ${(props) => props.theme.fontSizes.ms};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
+  color: ${(props) => props.theme.colors.Black};
+  background-color: ${(props) => props.theme.colors.Gray1};
+  line-height: 24px;
+`;
+
+export const PopularKeywordWrap = styled.div`
+  position: relative;
+  height: 200px;
+  width: 350px;
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1 1 50%;
+  flex-direction: column;
+  box-sizing: border-box;
+  gap: 12px;
+  top: 20px;
+`;
+
+export const PopularNum = styled.div`
+  position: absolute;
+  width: 19px;
+  height: 24px;
+  font-size: ${(props) => props.theme.fontSizes.ms};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
+  color: ${(props) => props.theme.colors.Black};
+  text-align: center;
+  line-height: 24px;
+`;
+
+export const PopularKeyword = styled.div`
   font-size: ${(props) => props.theme.fontSizes.md};
   font-weight: ${(props) => props.theme.fontWeights.normal};
+  font-family: "Spoqa Han Sans Neo";
+  color: ${(props) => props.theme.colors.Black};
+  line-height: 25.2px;
+  width: 134px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  box-sizing: border-box;
+  margin-left: 30px;
 `;

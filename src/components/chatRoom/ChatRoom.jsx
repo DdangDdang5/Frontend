@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 // Style import
 import {
-  ChatRoomAlarm,
   ChatRoomContainer,
   ChatRoomContent,
   ChatRoomInfo,
@@ -34,14 +33,14 @@ const ChatRoom = ({ room }) => {
     <ChatRoomContainer
       onClick={() =>
         navigate(`/chat/${room.roomId}`, {
-          state: { isDetail: false, title: room.roomName },
+          state: { auctionId: room.auctionId, isDetail: false, title: room.roomName },
         })
       }
     >
-      <ChatRoomProfile src={room.profileImg ? room.profileImg : "maskable.png"} alt="profile" />
+      <ChatRoomProfile src={room.multiImages ? room.multiImages[0].imgUrl : "maskable.png"} alt="profile" />
       <ChatRoomContent>
         <ChatRoomInfo>
-          <ChatRoomNickname>{room.roomName}</ChatRoomNickname>
+          <ChatRoomNickname>{room.auctionTitle}</ChatRoomNickname>
           <span>{calcTime(room.createdAt)}</span>
         </ChatRoomInfo>
         <ChatRoomMessageWrap>

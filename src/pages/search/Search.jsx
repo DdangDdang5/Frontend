@@ -22,7 +22,6 @@ import {
   SearchInputWrap,
   SearchInput,
   SearchInputIcon,
-  SearchFilterTitleSpan,
   SearchFilterGroup,
   SearchFilterWrap,
   SearchItem,
@@ -31,8 +30,6 @@ import {
   SearchItemTitle,
   SearchItemPriceWrap,
   SearchItemPrice,
-  LoadingWrap,
-  Loadingtext,
   SearchItemList,
 } from "./Search.styled";
 
@@ -106,7 +103,7 @@ const Search = () => {
                         onClick={() => moveAuctionDetail(item.auctionId)}
                       >
                         <img
-                          src={item.multiImages[0].imgUrl}
+                          src={item?.multiImages[0]?.imgUrl}
                           alt="auction-popular-img"
                         />
                         <SearchItemContent>
@@ -133,9 +130,6 @@ const Search = () => {
             ) : (
               <SearchHistory
                 onClearKeyword={handleClearKeyword}
-                // value={popular}
-                // onChange={(e) => setPopular(e.target.value)}
-                // onClick={addSearchText}
               />
             )}
           </SearchFilterGroup>

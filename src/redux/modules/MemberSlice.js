@@ -7,7 +7,6 @@ import { Cookies } from "react-cookie";
 // Shared import
 import api from "../../shared/Api";
 import { getCookie, setCookie } from "../../shared/Cookie";
-import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
 
 const cookies = new Cookies();
 
@@ -17,7 +16,7 @@ export const emailCheckThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/emailcheck`, payload);
     return thunkAPI.fulfillWithValue(resData.data.data);
-  }
+  },
 );
 
 // 닉네임 중복 체크
@@ -26,7 +25,7 @@ export const nickNameCheckThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     const resData = await api.post(`/member/nicknamecheck`, payload);
     return thunkAPI.fulfillWithValue(resData.data.data);
-  }
+  },
 );
 
 // 회원가입
@@ -44,7 +43,7 @@ export const signUpMemberThunk = createAsyncThunk(
       }
     });
     return thunkAPI.fulfillWithValue(resData.data.data);
-  }
+  },
 );
 
 // 로그인
@@ -73,7 +72,7 @@ export const loginMemberThunk = createAsyncThunk(
       }
     });
     return thunkAPI.fulfillWithValue(resData.data);
-  }
+  },
 );
 
 // 카카오 소셜 로그인
@@ -88,6 +87,7 @@ export const kakaoOauthThunk = createAsyncThunk(
       })
       .then((res) => {
         if (res.data.statusCode === 200) {
+
           // cookies.set(
           //   "accessToken",
           //   res.headers.authorization,
@@ -99,18 +99,35 @@ export const kakaoOauthThunk = createAsyncThunk(
           sessionStorage.setItem("memberId", res.data.data.memberId);
           sessionStorage.setItem("memberNickname", res.data.data.nickname);
           window.history.go(-2);
-          
+
           return res;
         } else {
           return res;
         }
       });
     return thunkAPI.fulfillWithValue(resData.data);
-  }
+  },
 );
+
+export const getMember = createAsyncThunk(
+  "getMember",
+  async (payload, thunkAPI) => {
+    const response = await api.get(`/member/${payload}/lookup`);
+    return thunkAPI.fulfillWithValue(response.data.data);
+  },
+);
+
+export const getMemberTrustPoint = createAsyncThunk(
+	"getMemberTrustPoint",
+	async (payload, thunkAPI) => {
+		const response = await api.get(`/member/${payload}/trust-point`);
+		return response.data.data;
+	}
+)
 
 const initialState = {
   member: "",
+	trustPoint: {},
   isLogin: false,
 };
 
@@ -135,6 +152,12 @@ export const memberSlice = createSlice({
     builder.addCase(kakaoOauthThunk.fulfilled, (state, action) => {
       state.member = action.payload;
     });
+    builder.addCase(getMember.fulfilled, (state, action) => {
+      state.member = action.payload;
+    });
+		builder.addCase(getMemberTrustPoint.fulfilled, (state, action) => {
+			state.trustPoint = action.payload;
+		})
   },
 });
 

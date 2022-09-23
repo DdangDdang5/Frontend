@@ -36,7 +36,7 @@ const AuctionEdit = () => {
 
   const initialTag = {
     tag1: "",
-    tag2: "지구2",
+    tag2: "",
     tag3: "",
     tag4: "",
     tag5: "",
@@ -45,6 +45,8 @@ const AuctionEdit = () => {
 
   const img_ref = useRef();
   const [inputForm, setInputForm] = useState(auctionRequestDto);
+  const [tags, setTags] = useState([]);
+
   console.log("옥션수정", inputForm);
 
   // 기존 데이터 수정페이지에 데이터 업데이트
@@ -112,9 +114,22 @@ const AuctionEdit = () => {
 
   // 이미지, 태그 , 글 업로드
   const onTransmitHandler = () => {
+    // 태그 추가
+    let tagList = tags.split("#");
+    tagList = tagList.slice(1, tagList.length);
+
+    for (let i = 0; i < 6; i++) {
+      const tmp = "tag" + (i + 1);
+      if (tagList[i]) {
+        initialTag[tmp] = tagList[i];
+      } else {
+        delete initialTag[tmp];
+      }
+    }
+
     let formData = new FormData();
     formData.append(
-      "auctiontUpdateDto",
+      "auctionUpdateDto",
       new Blob([JSON.stringify(inputForm)], { type: "application/json" })
     );
 
@@ -277,6 +292,12 @@ const AuctionEdit = () => {
           name="content"
           onChange={onChangeHandler}
           placeholder="경매 물품에 대한 상세한 설명을 적어주세요."
+        />
+        <WriteTitleContainer>해시태그</WriteTitleContainer>
+        <WriteInputBox
+          placeholder="최대 6개까지 입력할 수 있습니다."
+          value={tags}
+          onChange={(e) => setTags(e.target.value)}
         />
         {/* <WritePostBtn type="button" onClick={onTransmitHandler}>
           버튼

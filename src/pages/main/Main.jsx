@@ -3,8 +3,6 @@ import React, { useEffect } from "react";
 
 // Redux import
 import {
-  auctionItemList,
-  auctionItemListNotPage,
   getAuctionDeadlineList,
   getAuctionHitList,
   getAuctionNewList,
@@ -81,7 +79,6 @@ const Main = () => {
     );
 
   useEffect(() => {
-    // dispatch(auctionItemListNotPage());
     dispatch(getAuctionHitList());
     dispatch(getAuctionNewList());
     dispatch(getAuctionDeadlineList());
@@ -120,7 +117,7 @@ const Main = () => {
                 key={item.auctionId}
                 onClick={() => moveAuctionDetail(item.auctionId)}>
                 <img
-                  src={item.multiImages[0].imgUrl}
+                  src={item.multiImages[0]?.imgUrl}
                   alt="auction-popular-img"
                 />
                 <PopularItemContent idx={idx}>
@@ -156,8 +153,9 @@ const Main = () => {
             {auctionNewList?.map((item) => (
               <NewItem
                 key={item.auctionId}
-                onClick={() => moveAuctionDetail(item.auctionId)}>
-                <img src={item.multiImages[0].imgUrl} alt="auction-new-img" />
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
+                <img src={item.multiImages[0]?.imgUrl} alt="auction-new-img" />
                 <NewItemContent>
                   <TagWrap>
                     {item.delivery ? <span>택배</span> : null}
@@ -189,8 +187,9 @@ const Main = () => {
             {auctionDeadlineList?.map((item) => (
               <LastItem
                 key={item.auctionId}
-                onClick={() => moveAuctionDetail(item.auctionId)}>
-                <img src={item.multiImages[0].imgUrl} alt="auction-last-img" />
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
+                <img src={item.multiImages[0]?.imgUrl} alt="auction-last-img" />
                 <TagWrap>
                   {item.delivery ? <span>택배</span> : null}
                   {item.direct ? <span>직거래</span> : null}

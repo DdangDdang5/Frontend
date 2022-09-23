@@ -17,17 +17,11 @@ export const auctionSearchThunk = createAsyncThunk(
 // 최근 검색어 API
 export const recentSearchThunk = createAsyncThunk(
   "auction/recentSearch",
-
   async (payload, thunkAPI) => {
     const resData = await api
-      .get(`/auction/recent-search`, payload)
-      .then((res) => {
-        sessionStorage("accessToken", res.headers.authorization);
-        sessionStorage("memberId", res.data.data.memberId);
-        axios.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${res.payload.accessToken}`;
-      });
+      .get(`/auction/recent-search`, payload)      
+      console.log(resData)
+
     return thunkAPI.fulfillWithValue(resData.data.data);
   }
 );
@@ -65,13 +59,11 @@ export const searchSlice = createSlice({
       state.data = action.payload;
     });
     builder.addCase(recentSearchThunk.fulfilled, (state, action) => {
-      state.data = action.payload;
-      state.search = action.payload;
+      state.recentSearch = action.payload;
       state.isLogin = true;
     });
     builder.addCase(popularSearchThunk.fulfilled, (state, action) => {
-      state.data = action.payload;
-      state.search = action.payload;
+      state.popularSearch = action.payload;
     });
   },
 });

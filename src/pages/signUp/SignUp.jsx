@@ -206,6 +206,7 @@ const SignUp = () => {
         emailRef.current.focus();
         emailRef.current.style.color = "#BCBCBC";
         emailRef.current.innerText = "중복되는 이메일입니다.";
+        setCheck({ ...check, email: true });
       } else {
         if (nickNameCheck === true) {
           nickNameRef.current.focus();
