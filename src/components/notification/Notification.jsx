@@ -12,6 +12,8 @@ const Notifications = (props) => {
 
     async function tokenFunc() {
       data = await getTokenFunc(setTokenFound);
+			console.log(data);
+
       if (data) {
         console.log("Token is", data);
       }
