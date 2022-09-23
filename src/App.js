@@ -1,12 +1,10 @@
 // React import
 import { useEffect, useState } from "react";
 
-// Redux import
-import { useDispatch } from "react-redux";
-
 // Package import
 import { Route, Routes } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { browserName } from "react-device-detect";
 
 // Page import
 import Main from "../src/pages/main/Main";
@@ -30,7 +28,6 @@ import AuctionEdit from "./pages/auctionEdit/AuctionEdit";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
-import { getCookie } from "./shared/Cookie";
 import CategoryModal from "./components/modal/CategoryModal";
 import UserProfile from "./pages/userProfile/UserProfile";
 
@@ -40,33 +37,27 @@ import Notifications from "./components/notification/Notification";
 import ReactNotificationComponent from "./components/notification/ReactNotification";
 
 function App() {
-  // const token = getCookie("accessToken");
   const modal = useSelector((state) => state.modal.show);
 
-  // useEffect(() => {
-  //   if (token) {
-  //     dispatch();
-  //   }
-  // }, []);
+	const [show, setShow] = useState(false);
+	const [notification, setNotification] = useState({ title: "", body: "" });
 
-  const [show, setShow] = useState(false);
-  const [notification, setNotification] = useState({ title: "", body: "" });
-
-  onMessageListener()
-    .then((payload) => {
-      setShow(true);
-      setNotification({
-        title: payload.notification.title,
-        body: payload.notification.body,
-      });
-      console.log(payload);
-    })
-    .catch((err) => console.log("failed: ", err));
+  if (browserName !== "Safari") {
+    onMessageListener()
+      .then((payload) => {
+        setShow(true);
+        setNotification({
+          title: payload.notification.title,
+          body: payload.notification.body,
+        });
+        console.log(payload);
+      })
+      .catch((err) => console.log("failed: ", err));
+  }
 
   return (
     <div className="App">
-			
-      {show ? (
+      {browserName !== "Safari" && show ? (
         <ReactNotificationComponent
           title={notification.title}
           body={notification.body}
@@ -74,7 +65,8 @@ function App() {
       ) : (
         <></>
       )}
-      <Notifications />
+      {browserName !== "Safari" ? <Notifications /> : <></>}
+			<div>{browserName}</div>
 
       <Routes>
         <Route path="/" element={<Main />} />
