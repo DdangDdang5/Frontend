@@ -12,13 +12,13 @@ import "firebase/messaging";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCF8C5DLLcyVdbWUV0ZSt_hhKNmIaJ8h-U",
-  authDomain: "ddangddang-d4a3f.firebaseapp.com",
-  projectId: "ddangddang-d4a3f",
-  storageBucket: "ddangddang-d4a3f.appspot.com",
-  messagingSenderId: "87953491272",
-  appId: "1:87953491272:web:03a1eb4bc63e5970ff1f7d",
-  measurementId: "G-CW6VVM753N"
+  apiKey: process.env.REACT_APP_FCM_API_KEY,
+  authDomain: process.env.REACT_APP_FCM_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FCM_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FCM_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FCM_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FCM_APP_ID,
+  measurementId: process.env.REACT_APP_FCM_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
@@ -28,32 +28,30 @@ const firebaseConfig = {
 // // Initialize Firebase Cloud Messaging and get a reference to the service
 // const messaging = getMessaging(app);
 
-
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
 export const requestPermission = () => {
   // [START messaging_request_permission]
   Notification.requestPermission().then((permission) => {
-    if (permission === 'granted') {
-      console.log('Notification permission granted.');
+    if (permission === "granted") {
+      console.log("Notification permission granted.");
       // TODO(developer): Retrieve a registration token for use with FCM.
       // ...
     } else {
-      console.log('Unable to get permission to notify.');
+      console.log("Unable to get permission to notify.");
     }
   });
   // [END messaging_request_permission]
-}
-
+};
 
 export const getTokenFunc = async (setTokenFound) => {
   let currentToken = "";
 
-  messaging.getToken({
-    vapidKey:
-      "BOp2VT-WEk4xZXWnAbtabpfTiVXGvM7xDown9s-n2cpUL9TACpLLbCxk_KtpEjBfdjtbOQgLFleHU5mCyrzqO00",
-  })
+  messaging
+    .getToken({
+      vapidKey: process.env.REACT_APP_FCM_VAPID_KEY,
+    })
     .then((token) => {
       console.log(token);
       if (token) {
