@@ -5,6 +5,8 @@ import styled from "styled-components";
 const Auction = ({ data }) => {
   const navigate = useNavigate();
 
+  console.log(data);
+
   if (!data || !data?.auctionId) {
     return <></>;
   }
@@ -23,6 +25,7 @@ const Auction = ({ data }) => {
           <ItemContentHeader>
             {data?.direct ? <div>택배</div> : ""}
             {data?.delivery ? <div>직거래</div> : ""}
+            <div className="region">{data.region}</div>
           </ItemContentHeader>
 
           {/* 줄에 표시되는 글자수 제한 */}
@@ -42,11 +45,14 @@ const AuctionItemWrap = styled.div`
   display: flex;
   width: 50%;
   height: 277px;
+  min-height: 277px;
+  margin-bottom: 16px;
 `;
 const AuctionItemContainer = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100%;
   margin: 12px 10px;
 `;
 const ItemPicture = styled.div`
@@ -55,44 +61,78 @@ const ItemPicture = styled.div`
   align-items: center;
   margin-bottom: 8px;
   img {
+    justify-content: center;
+    display: flex;
+    align-items: center;
     height: 160px;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     border-radius: 8px;
   }
 `;
 const ItemContentWrap = styled.div`
   display: flex;
-  border-radius: 10px;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 100%;
+  width: 165px;
   height: 117px;
+  border-radius: 10px;
 `;
 const ItemContentHeader = styled.div`
   display: flex;
   width: 100%;
   height: 20px;
   margin-bottom: 8px;
+  gap: 4px;
 
   div {
+    display: flex;
+    justify-content: center;
     align-items: center;
-    font-size: 14px;
-    margin-right: 5px;
-    padding: 1px 6px;
+    padding: 2px 6px;
+
     border-radius: 100px;
-    background-color: #dedede;
+
+    background-color: ${(props) => props.theme.colors.Blue1};
+
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.medium};
+    color: ${(props) => props.theme.colors.White};
+    line-height: 21px;
+  }
+  .region {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2px 6px;
+
+    border-radius: 100px;
+    border: 1px solid #4d71ff;
+
+    background-color: ${(props) => props.theme.colors.White};
+
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.medium};
+    color: ${(props) => props.theme.colors.Blue1};
+    line-height: 21px;
   }
 `;
 const ItemContentBody = styled.div`
-  display: flex;
   width: 100%;
-  word-break: break-all;
-  font-size: 18px;
-  margin-bottom: 8px;
+  max-height: 50px;
+  height: 50px;
+  margin-bottom: 2px;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal;
+
+  font-size: ${(props) => props.theme.fontSizes.md};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
+  line-height: 25.2px;
 `;
 const ItemContentFooter = styled.div`
   display: flex;
@@ -101,13 +141,13 @@ const ItemContentFooter = styled.div`
 `;
 const StartPrice = styled.div`
   display: flex;
-  font-size: 14px;
   margin-right: 4px;
-  color: #9b9b9b;
+  font-size: ${(props) => props.theme.fontSizes.sm};
+  color: ${(props) => props.theme.colors.Black};
 `;
 const PresentPrice = styled.div`
   display: flex;
-  font-size: 18px;
+  font-size: ${(props) => props.theme.fontSizes.md};
 `;
 
 export default Auction;

@@ -68,8 +68,9 @@ const AuctionList = () => {
       <ListCategoryWrap>
         <CategoryWrap>
           <CategoryBtn
-            onClick={() => dispatch(showModal("categoryList"), _categoryList())}
-          >
+            onClick={() =>
+              dispatch(showModal("categoryList"), _categoryList())
+            }>
             <CategoryBtnText>{categoryName}</CategoryBtnText>
             <Open />
           </CategoryBtn>
@@ -78,8 +79,7 @@ const AuctionList = () => {
         <CategoryWrap>
           <CategoryBtn>
             <CategoryBtnText
-              onClick={() => dispatch(showModal("regionList"), _regionList())}
-            >
+              onClick={() => dispatch(showModal("regionList"), _regionList())}>
               {regionName}
             </CategoryBtnText>
             <Open />
@@ -147,15 +147,12 @@ const CategoryBtn = styled.div`
   }
 `;
 
-const CategoryBtnIcon = styled.div`
-  margin: 11.53px 11.53px 11.53px 4px;
-  font-size: 12px;
-`;
-
 const CategoryBtnText = styled.div`
-  font-size: 16px;
   margin: 4px 4px 4px 12px;
-  /* width: 100%; */
+
+  font-size: ${(props) => props.theme.fontSizes.ms};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
+  line-height: 24px;
 `;
 
 const CategoryBtnTimeText = styled.div`

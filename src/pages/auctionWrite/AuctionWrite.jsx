@@ -560,7 +560,6 @@ const WriteTitleAuctionDay = styled.div`
       props.children[0].props.state === 1
         ? "1px solid #4D71FF"
         : "1px solid #a5a9b6"};
-    /* border: ${(props) => console.log(props.children[0].props.state)}; */
     background-color: ${(props) =>
       props.children[0].props.state === 1 ? "#E9F3FF" : "white"};
     color: ${(props) =>

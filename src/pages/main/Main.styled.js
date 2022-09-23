@@ -283,7 +283,7 @@ export const LastList = styled.div`
 
 export const LastItem = styled.div`
   width: 165px;
-	max-width: 48%;
+  max-width: 48%;
 
   img {
     width: 100%;
