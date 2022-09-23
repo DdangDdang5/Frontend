@@ -46,7 +46,8 @@ const AuctionList = () => {
     }
   }, [categoryName, regionName]);
 
-  const handleScroll = (e) => {
+  // 페이지 네이션
+  function handleScroll(e) {
     let scrollTopHandler = e.target.scrollTop;
     let clientHeightHandler = e.target.clientHeight;
     let scrollHeightHandler = e.target.scrollHeight;
@@ -57,7 +58,7 @@ const AuctionList = () => {
         }
       }
     }
-  };
+  }
 
   if (!AuctionListData) {
     return <></>;
@@ -117,10 +118,9 @@ const ListCategoryWrap = styled.div`
   display: flex;
   align-items: center;
   height: 48px;
-  margin-top: 70px;
+  margin: 70px 0px 12px 0px;
   padding: 0px 20px;
   gap: 8px;
-
   color: ${(props) => props.theme.colors.Black};
 `;
 
@@ -156,7 +156,7 @@ const CategoryBtnText = styled.div`
 `;
 
 const CategoryBtnTimeText = styled.div`
-  font-size: 16px;
+  font-size: ${(props) => props.theme.fontSizes.ms};
   padding: 4px 12px;
 `;
 

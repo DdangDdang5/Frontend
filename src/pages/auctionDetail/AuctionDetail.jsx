@@ -24,7 +24,7 @@ import MenuModal from "../../components/modal/MenuModal";
 
 // Element & Shared import
 import Button from "../../elements/button/Button";
-import { Close, Next } from "../../shared/images";
+import { Claim, Close, Next } from "../../shared/images";
 
 var stompClient = null;
 
@@ -35,6 +35,7 @@ const AuctionDetail = () => {
   const params = useParams();
 
   const data = useSelector((state) => state.auction.auction);
+  console.log(data);
   const bid = useSelector((state) => state.auction.bid);
   const favoriteState = useSelector((state) => state.auction.favorite);
 
@@ -46,8 +47,6 @@ const AuctionDetail = () => {
   const [favorite, setFavorite] = useState(false);
 
   // console.log("페이버리", favorite);
-  // console.log(data);
-  // console.log("data", data);
   // console.log("디테일배돌", params?.auctionId);
 
   const [joinVisible, setJoinVisible] = useState(false);
@@ -218,9 +217,18 @@ const AuctionDetail = () => {
       case 7:
         return dateTimeAfterSevenDays;
       default:
-        return <div>기간이 끝났습니다</div>;
+        return <div>경매가 종료되었습니다.</div>;
     }
   };
+
+  const tagsArray = [
+    data.tags?.tag2,
+    data.tags?.tag1,
+    data.tags?.tag3,
+    data.tags?.tag4,
+    data.tags?.tag5,
+    data.tags?.tag6,
+  ];
 
   return (
     <>
@@ -247,24 +255,36 @@ const AuctionDetail = () => {
                   <div className="nickName">{data.member.nickName}</div>
                   <div className="trustCount">신뢰도</div>
                 </DetailBodyProfileContent>
-                <div>신고</div>
+                <div>
+                  <Claim />
+                </div>
               </div>
             </DetailBodyProfileBox>
 
-            <DetailBodyTitle>{data.title}</DetailBodyTitle>
+            <DetailBodyBox>
+              <DetailBodyTitle>{data.title}</DetailBodyTitle>
 
-            <DetailBodySelectTag>
-              {data.direct ? <div>택배</div> : ""}
-              {data.delivery ? <div>직거래</div> : ""}
-              {data.region ? <div>{data.region}</div> : ""}
-            </DetailBodySelectTag>
+              <DetailBodySelectTag>
+                {data?.direct ? <div>택배</div> : ""}
+                {data?.delivery ? <div>직거래</div> : ""}
+                {data?.region ? (
+                  <div className="region">{data.region}</div>
+                ) : (
+                  ""
+                )}
+              </DetailBodySelectTag>
 
-            <DetailBodyContent>{data.content}</DetailBodyContent>
-            <DetailBodyViewTag>
-              <div>관심 10</div>
-              <div>조회 {data.viewerCnt}</div>
-            </DetailBodyViewTag>
-            <DetailBodyItemTag></DetailBodyItemTag>
+              <DetailBodyContent>{data.content}</DetailBodyContent>
+              <DetailBodyViewTag>
+                <div>관심 10</div>
+                <div>조회 {data.viewerCnt}</div>
+              </DetailBodyViewTag>
+              <DetailBodyItemTag>
+                {tagsArray?.map((item, index) =>
+                  item !== null ? <div key={index}>{item}</div> : ""
+                )}
+              </DetailBodyItemTag>
+            </DetailBodyBox>
           </DetailBodyContainer>
 
           <CommentCountContainer
@@ -286,11 +306,14 @@ const AuctionDetail = () => {
         </DetailBodyWrap>
 
         <DetailFooterWrap>
+          {/* 타이머 기능 */}
           <DetailFooterTimeContainer>
-            <p>남은 시간</p>
-
-            <CountdownTimer targetDate={timer(data.auctionPeriod)} />
-            {/* <Timer date={data.createdAt} /> */}
+            <span>남은 시간</span>
+            {data?.auctionStatus ? (
+              <CountdownTimer targetDate={timer(data.auctionPeriod)} />
+            ) : (
+              <div>경매가 마감되었습니다.</div>
+            )}
           </DetailFooterTimeContainer>
           <DetailFooterContainer>
             {/* 좋아요 기능 */}
@@ -434,14 +457,12 @@ const AuctionDetailLayout = styled.div`
 const DetailBodyWrap = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 70px;
-  height: calc(100vh - 185px);
+  height: calc(100vh - 115px);
   overflow: scroll;
 `;
 const ItemImgContainer = styled.div`
   display: flex;
   width: 100%;
-  margin-bottom: 20px;
   /* img {
     width: 100%;
     height: 390px;
@@ -450,23 +471,28 @@ const ItemImgContainer = styled.div`
 const DetailBodyContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0px 20px;
+  /* padding: 0px 20px; */
 `;
 const DetailBodyProfileBox = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 48px;
-  margin-bottom: 24px;
+  min-height: 97px;
+  height: 97px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ebeef3;
   .DetailBodyProfile {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    padding-right: 18px;
   }
 `;
 const DetailBodyProfileImg = styled.div`
   display: flex;
+  align-items: center;
+  padding-left: 18px;
   img {
     height: 48px;
     width: 48px;
@@ -482,70 +508,103 @@ const DetailBodyProfileContent = styled.div`
   justify-content: center;
   align-items: flex-start;
   .nickName {
-    font-size: 16px;
-    font-weight: 700;
+    font-size: ${(props) => props.theme.fontSizes.ms};
+    font-weight: ${(props) => props.theme.fontWeights.bold};
+    line-height: 24px;
   }
   .trustCount {
-    font-size: 16px;
-    font-weight: 400;
+    font-size: ${(props) => props.theme.fontSizes.ms};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+    color: ${(props) => props.theme.colors.Gray4};
+    line-height: 24px;
   }
 `;
 
+const DetailBodyBox = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 const DetailBodyTitle = styled.div`
   display: flex;
-  font-size: 20px;
-  font-weight: 700;
-  word-break: break-all;
+  padding: 0px 20px;
+  font-size: ${(props) => props.theme.fontSizes.lg};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
+  line-height: 30px;
   margin-bottom: 16px;
 `;
 const DetailBodySelectTag = styled.div`
   display: flex;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+  padding: 0px 20px;
   div {
     display: flex;
     border-radius: 20px;
-    background-color: #dedede;
     padding: 1px 6px;
     margin-right: 6px;
+
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.medium};
+    background-color: ${(props) => props.theme.colors.Blue1};
+    color: ${(props) => props.theme.colors.White};
+    line-height: 21px;
+  }
+  .region {
+    display: flex;
+    border-radius: 20px;
+    padding: 1px 6px;
+    margin-right: 6px;
+
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.medium};
+    background-color: ${(props) => props.theme.colors.White};
+    color: ${(props) => props.theme.colors.Blue1};
+    border: 1px solid #4d71ff;
+    line-height: 21px;
   }
 `;
 const DetailBodyContent = styled.div`
   display: flex;
+  padding: 0px 20px;
   word-break: break-all;
-  font-size: 20px;
+  font-size: ${(props) => props.theme.fontSizes.lg};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
+  line-height: 36px;
   height: 100%;
 `;
 const DetailBodyViewTag = styled.div`
   display: flex;
+  padding: 0px 20px;
   flex-direction: row;
   align-items: center;
   height: 49px;
   gap: 0 9px;
+  margin-bottom: 6px;
 
   div {
-    font-size: 16px;
-    font-weight: 400;
-    color: #9b9b9b;
+    font-size: ${(props) => props.theme.fontSizes.ms};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+    color: ${(props) => props.theme.colors.Gray3};
   }
 `;
 
 const DetailBodyItemTag = styled.div`
   display: flex;
+  padding: 0px 20px;
   flex-direction: row;
   align-items: center;
-  gap: 0 8px;
-  height: 22px;
+  height: 25px;
+  gap: 6px;
   margin-bottom: 40px;
   div {
     display: flex;
-    font-size: 14px;
-    font-weight: 500;
-    justify-content: center;
+    border-radius: 20px;
+    padding: 1px 6px;
 
-    padding: 2px 6px;
-    border-radius: 100px;
-    background-color: #9b9b9b;
-    color: white;
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.medium};
+    background-color: ${(props) => props.theme.colors.Blue1};
+    color: ${(props) => props.theme.colors.White};
+    line-height: 21px;
   }
 `;
 
@@ -559,12 +618,12 @@ const CommentCountContainer = styled.div`
   border-top: 1px solid #dedede;
   gap: 8px;
   h3 {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: ${(props) => props.theme.fontSizes.lg};
+    font-weight: ${(props) => props.theme.fontWeights.bold};
   }
   p {
-    font-size: 20px;
-    font-weight: 400;
+    font-size: ${(props) => props.theme.fontSizes.lg};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
     color: #9b9b9b;
   }
 
@@ -585,6 +644,11 @@ const CommentCountContainer = styled.div`
 const CommentCountWrap = styled.div`
   display: flex;
   gap: 12px;
+  p {
+    font-size: ${(props) => props.theme.fontSizes.lg};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+    color: ${(props) => props.theme.colors.Blue1};
+  }
 `;
 
 const CommentCountTitle = styled.p`
@@ -609,16 +673,18 @@ const DetailFooterTimeContainer = styled.div`
   justify-content: center;
   align-items: center;
   height: 42px;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: ${(props) => props.theme.colors.Red};
   color: white;
   gap: 0 8px;
-  p {
-    font-size: 14px;
-    font-weight: 400;
+  span {
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+    line-height: 20px;
   }
   h3 {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: ${(props) => props.theme.fontSizes.lg};
+    font-weight: ${(props) => props.theme.fontWeights.bold};
+    line-height: 30px;
   }
 `;
 const DetailFooterContainer = styled.div`
@@ -636,6 +702,7 @@ const FooterBidContainer = styled.div`
 const FooterLeftBox = styled.div`
   display: flex;
   align-items: flex-start;
+  justify-content: center;
   flex-direction: row;
   margin: 10px 0px 11px 20px;
   gap: 12px;
@@ -647,17 +714,18 @@ const FooterLeftBox = styled.div`
   }
   .priceBox {
     display: flex;
+    align-items: flex-start;
     flex-direction: column;
-    align-items: center;
     .presentPrice {
       display: flex;
-      font-size: 14px;
-      color: #bcbcbc;
+      font-size: ${(props) => props.theme.fontSizes.sm};
+      font-weight: ${(props) => props.theme.fontWeights.normal};
+      color: ${(props) => props.theme.colors.Gray3};
     }
     .price {
       display: flex;
-      font-size: 24px;
-      font-weight: 700;
+      font-size: ${(props) => props.theme.fontSizes.xxl};
+      font-weight: ${(props) => props.theme.fontWeights.bold};
     }
   }
 `;

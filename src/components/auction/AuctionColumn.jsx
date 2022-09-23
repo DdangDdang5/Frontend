@@ -46,6 +46,7 @@ const AuctionItemWrap = styled.div`
   width: 50%;
   height: 277px;
   min-height: 277px;
+
   margin-bottom: 16px;
 `;
 const AuctionItemContainer = styled.div`
@@ -53,7 +54,7 @@ const AuctionItemContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  margin: 12px 10px;
+  margin: 0px 10px;
 `;
 const ItemPicture = styled.div`
   display: flex;
@@ -143,7 +144,7 @@ const StartPrice = styled.div`
   display: flex;
   margin-right: 4px;
   font-size: ${(props) => props.theme.fontSizes.sm};
-  color: ${(props) => props.theme.colors.Black};
+  color: ${(props) => props.theme.colors.Gray3};
 `;
 const PresentPrice = styled.div`
   display: flex;
