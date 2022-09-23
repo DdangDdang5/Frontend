@@ -1,13 +1,8 @@
 // Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
-// import { getMessaging, getToken, onMessage } from "firebase/messaging";
-// import { onBackgroundMessage } from "firebase/messaging/sw";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
 import firebase from "firebase/app";
 import "firebase/messaging";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
@@ -22,27 +17,25 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
-
-// // Initialize Firebase Cloud Messaging and get a reference to the service
-// const messaging = getMessaging(app);
-
 firebase.initializeApp(firebaseConfig);
-const messaging = firebase.messaging();
+
+// Initialize Firebase Cloud Messaging and get a reference to the service
+let messaging = "";
+try {
+  messaging = firebase.messaging();
+} catch (err) {
+  console.log("An error occurred while initializing firebase messaging. ", err);
+}
 
 export const requestPermission = () => {
-  // [START messaging_request_permission]
   Notification.requestPermission().then((permission) => {
     if (permission === "granted") {
       console.log("Notification permission granted.");
       // TODO(developer): Retrieve a registration token for use with FCM.
-      // ...
     } else {
       console.log("Unable to get permission to notify.");
     }
   });
-  // [END messaging_request_permission]
 };
 
 export const getTokenFunc = async (setTokenFound) => {
