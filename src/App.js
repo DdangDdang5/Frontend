@@ -4,13 +4,7 @@ import { useEffect, useState } from "react";
 // Package import
 import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  browserName,
-  isIOS,
-  isMacOs,
-  isSafari,
-  osName,
-} from "react-device-detect";
+import { isIOS, isMacOs, isSafari } from "react-device-detect";
 
 // Page import
 import Main from "../src/pages/main/Main";
@@ -45,12 +39,9 @@ import ReactNotificationComponent from "./components/notification/ReactNotificat
 function App() {
   const modal = useSelector((state) => state.modal.show);
 
+  // 알림
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState({ title: "", body: "" });
-
-  // console.log(browserName);
-  // console.log(isMobileSafari, isSafari);
-  // console.log(isMobile, isBrowser, isIOS, isAndroid);
 
   if (!((isIOS || isMacOs) && isSafari)) {
     onMessageListener()
@@ -75,9 +66,7 @@ function App() {
       ) : (
         <></>
       )}
-      {!((isIOS || isMacOs) && isSafari) ? <Notifications /> : <></>}
-      <div>{browserName}</div>
-      <div>{osName}</div>
+      {!((isIOS || isMacOs) && isSafari) ? <Notifications /> : <></>} */}
 
       <Routes>
         <Route path="/" element={<Main />} />

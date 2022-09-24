@@ -62,21 +62,7 @@ const Main = () => {
     (state) => state.auctionList.auctionDeadlineList
   );
 
-  const auctionLastList = auctionHitList
-    ?.map((item) => {
-      const date = new Date(item.createdAt);
-      return {
-        ...item,
-        auctionPeriod: new Date(
-          date.setDate(date.getDate() + item.auctionPeriod)
-        ),
-      };
-    })
-    .sort(
-      (a, b) =>
-        new Date(a.auctionPeriod).valueOf() -
-        new Date(b.auctionPeriod).valueOf()
-    );
+	// console.log(auctionHitList);
 
   useEffect(() => {
     dispatch(getAuctionHitList());

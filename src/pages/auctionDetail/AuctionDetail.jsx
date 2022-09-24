@@ -43,6 +43,8 @@ const AuctionDetail = () => {
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
 
+	// const postPrice = post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
   // const [favorite, setFavorite] = useState(
   //   JSON.stringify(favoriteState.favoriteStatus)
   // );
@@ -68,8 +70,8 @@ const AuctionDetail = () => {
   // 좋아요 기능
 
   useEffect(() => {
-    dispatch(auctionFavorite(data.id));
-  }, [JSON.stringify(favoriteState.autionId)]);
+    dispatch(auctionFavorite(data?.auctionId));
+  }, [JSON.stringify(favoriteState?.auctionId)]);
 
   useEffect(() => {
     if (!params?.auctionId) {
@@ -84,9 +86,10 @@ const AuctionDetail = () => {
       const date = new Date(data.createdAt);
 
       const deadline = new Date(
-        date.setDate(date.getDate() + data.auctionPeriod),
-      );
-
+				date.setDate(date.getDate() + data.auctionPeriod),
+				);
+				
+			console.log(date, data.auctionPeriod, deadline);
       if (deadline <= Date.now()) {
         dispatch(winAuctionItem(params.auctionId));
         if (bid) {
@@ -156,7 +159,7 @@ const AuctionDetail = () => {
   const onMessageReceived = (payload) => {
     let payloadData = JSON.parse(payload.body);
 
-    if (payloadData.type === "ENTER" || payloadData.type === "TALK") {
+    if (payloadData.type === "TALK") {
       chatList.push(payloadData);
       setChatList([...chatList]);
     }
@@ -171,11 +174,11 @@ const AuctionDetail = () => {
         message: userData.message,
       };
 
-      stompClient.send(
-        "/app/chat/bid",
-        {},
-        JSON.stringify({ ...chatMessage, type: "ENTER" }),
-      );
+      // stompClient.send(
+      //   "/app/chat/bid",
+      //   {},
+      //   JSON.stringify({ ...chatMessage, type: "ENTER" }),
+      // );
 
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
       setUserData({ ...userData, message: "" });
@@ -230,11 +233,11 @@ const AuctionDetail = () => {
           <DetailBodyContainer>
             <DetailBodyProfileBox>
               <DetailBodyProfileImg onClick={onClickAuctionSeller}>
-                <img src={data.member.profileImgUrl} alt="" />
+                <img src={data.member?.profileImgUrl} alt="" />
               </DetailBodyProfileImg>
               <div className="DetailBodyProfile">
                 <DetailBodyProfileContent>
-                  <div className="nickName">{data.member.nickName}</div>
+                  <div className="nickName">{data.member?.nickName}</div>
                   <div className="trustCount">신뢰도</div>
                 </DetailBodyProfileContent>
                 <div>신고</div>
@@ -289,7 +292,7 @@ const AuctionDetail = () => {
               <div
                 onClick={() => dispatch(auctionFavorite(data.id))}
                 className="likeBox">
-                {favoriteState.favoriteStatus ? (
+                {data?.favoriteStatus ? (
                   <svg
                     width="24"
                     height="22"

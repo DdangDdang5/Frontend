@@ -162,7 +162,7 @@ const Chat = () => {
     stompClient.subscribe(`/topic/chat/room/${roomId}`, onMessageReceived);
 
     // 채팅방 들어감
-    userJoin();
+    // userJoin();
 
     scrollToBottom();
   };
@@ -185,7 +185,7 @@ const Chat = () => {
   const onMessageReceived = (payload) => {
     let payloadData = JSON.parse(payload.body);
 
-    if (payloadData.type === "ENTER" || payloadData.type === "TALK") {
+    if (payloadData.type === "TALK") {
       chatList.push(payloadData);
       setChatList([...chatList]);
     }
