@@ -17,6 +17,7 @@ function MyPageMyAuction() {
     paging,
     followingItem,
   } = useSelector((state) => state.myPage);
+
   const [shouldShownData, setShouldShownData] = useState([]);
 
   const auctionIng = myPageInData?.filter(

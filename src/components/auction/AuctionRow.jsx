@@ -5,23 +5,23 @@ import { useNavigate } from "react-router-dom";
 const AuctionRow = ({ data, isAuction }) => {
   const navigate = useNavigate();
 
-  const Img = <img src={data.multiImages[0].imgUrl} alt="" />;
+  const Img = <img src={data?.multiImages[0].imgUrl} alt="" />;
 
   return (
     // {data.data == '' ? }
     <AuctionLayout>
       <Auction2Container
         onClick={() => {
-          navigate(`/auctionDetail/${data.auctionId}`);
+          navigate(`/auctionDetail/${data?.auctionId}`);
         }}>
         <ImgBox>{Img}</ImgBox>
         <ContentBox>
           <div className="contentNavBox">
             {data?.direct ? <div className="delivery">택배</div> : ""}
             {data?.delivery ? <div className="region">직거래</div> : ""}
-            <div className="region">{data.region}</div>
+            <div className="region">{data?.region}</div>
           </div>
-          <div className="title">{data.title}</div>
+          <div className="title">{data?.title}</div>
           <div className="priceBox">
             <div>최근입찰가</div>
             <div className="price">5000원</div>

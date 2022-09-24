@@ -26,7 +26,7 @@ const MyPage = () => {
 
   useEffect(() => {
     dispatch(_MyPageData(memberId));
-  }, [memberId, data.myFavoriteCnt]);
+  }, [memberId, data?.myFavoriteCnt, data?.profileImgUrl, data?.nickname]);
 
   const handleLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까? ")) {
@@ -171,7 +171,13 @@ const MyPage = () => {
               <ProfileEdit />
             </div>
           </div>
-          <div className="listTitle">개인 정보 수정</div>
+          <div
+            className="listTitle"
+            onClick={() => {
+              navigate("/profileEdit");
+            }}>
+            개인 정보 수정
+          </div>
         </ListContainer>
 
         {memberId === null ? (

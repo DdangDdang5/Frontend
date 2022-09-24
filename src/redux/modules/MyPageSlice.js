@@ -5,7 +5,7 @@ const initialState = {
   myPage: [],
   myPageIn: [],
   myPageInterest: [],
-  myPageParticipati: [],
+  myPageParticipation: [],
   loading: false,
   followingItem: true,
   paging: 1,
@@ -90,7 +90,8 @@ export const editMyPage = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         }
       );
-      return thunkAPI.fulfillWithValue(response.data);
+      console.log("123", response.data);
+      return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -130,7 +131,10 @@ const myPageSlice = createSlice({
     },
 
     [_MyPageParticipationAuction.fulfilled]: (state, action) => {
-      state.myPageParticipati = [...state.myPageParticipati, ...action.payload];
+      state.myPageParticipation = [
+        ...state.myPageParticipation,
+        ...action.payload,
+      ];
       state.loading = false;
       state.paging = state.paging + 1;
     },
@@ -138,17 +142,7 @@ const myPageSlice = createSlice({
       console.log(action);
     },
     [editMyPage.fulfilled]: (state, action) => {
-      state.myPage = state.myPage.map((item, index) => {
-        if (item.auctionId === action.payload.postId) {
-          return {
-            ...item,
-            nickname: action.payload.nickname,
-            imgUrl: action.payload.profileImgUrl,
-          };
-        } else {
-          return { ...item };
-        }
-      });
+      state.myPage = action.payload;
     },
     [editMyPage.rejected]: (state, action) => {
       console.log(action);
