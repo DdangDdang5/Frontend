@@ -31,7 +31,6 @@ var stompClient = null;
 const AuctionDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const params = useParams();
 
   const data = useSelector((state) => state.auction.auction);
@@ -39,8 +38,6 @@ const AuctionDetail = () => {
 
   const bid = useSelector((state) => state.auction.bid);
   const favoriteState = useSelector((state) => state.auction.favorite);
-
-  const imgList = data?.multiImages;
 
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
@@ -53,7 +50,6 @@ const AuctionDetail = () => {
   const [joinVisible, setJoinVisible] = useState(false);
   const [isMenuModal, setIsMenuModal] = useState(false);
   const [winBid, setWinBid] = useState(false);
-
   const [chatList, setChatList] = useState([]);
   const [userData, setUserData] = useState({
     type: "",
@@ -62,6 +58,16 @@ const AuctionDetail = () => {
     message: data.nowPrice,
     createdAt: "",
   });
+
+  const imgList = data?.multiImages;
+  const tagsArray = [
+    data.tags?.tag2,
+    data.tags?.tag1,
+    data.tags?.tag3,
+    data.tags?.tag4,
+    data.tags?.tag5,
+    data.tags?.tag6,
+  ];
 
   // memberId !== data.member.id
 
@@ -75,7 +81,7 @@ const AuctionDetail = () => {
   // }, []);
 
   const likeHandler = () => {
-    dispatch(auctionFavorite(data.id));
+    dispatch(auctionFavorite(data.auctionId));
     // setFavorite(!favorite);
   };
 
@@ -220,15 +226,6 @@ const AuctionDetail = () => {
     }
   };
 
-  const tagsArray = [
-    data.tags?.tag2,
-    data.tags?.tag1,
-    data.tags?.tag3,
-    data.tags?.tag4,
-    data.tags?.tag5,
-    data.tags?.tag6,
-  ];
-
   return (
     <>
       <AuctionDetailLayout>
@@ -247,15 +244,15 @@ const AuctionDetail = () => {
           <DetailBodyContainer>
             <DetailBodyProfileBox>
               <DetailBodyProfileImg onClick={onClickAuctionSeller}>
-                {data.member.profileImgUrl === null ? (
+                {data?.profileImgUrl === null ? (
                   <BasicProfile className="noOneImg" />
                 ) : (
-                  <img src={data.member.profileImgUrl} alt="" />
+                  <img src={data?.profileImgUrl} alt="" />
                 )}
               </DetailBodyProfileImg>
               <div className="DetailBodyProfile">
                 <DetailBodyProfileContent>
-                  <div className="nickName">{data.member.nickName}</div>
+                  <div className="nickName">{data?.nickname}</div>
                   <div className="trustCount">신뢰도</div>
                 </DetailBodyProfileContent>
                 <div>
@@ -279,7 +276,7 @@ const AuctionDetail = () => {
 
               <DetailBodyContent>{data.content}</DetailBodyContent>
               <DetailBodyViewTag>
-                <div>관심 10</div>
+                <div>관심 {data.favoriteCnt}</div>
                 <div>조회 {data.viewerCnt}</div>
               </DetailBodyViewTag>
               <DetailBodyItemTag>
@@ -322,7 +319,7 @@ const AuctionDetail = () => {
             {/* 좋아요 기능 */}
             <FooterLeftBox>
               <div onClick={likeHandler} className="likeBox">
-                {favoriteState?.favoriteStatus ? (
+                {data?.favoriteStatus ? (
                   <svg
                     width="24"
                     height="22"

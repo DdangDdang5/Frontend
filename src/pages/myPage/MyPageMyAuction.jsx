@@ -20,7 +20,7 @@ function MyPageMyAuction() {
   const [shouldShownData, setShouldShownData] = useState([]);
 
   const auctionIng = myPageInData?.filter(
-    (myPageInData) => myPageInData.auctionStatus === true
+    (myPageInData) => myPageInData?.auctionStatus === true
   ).length;
   const auctionDone = myPageInData?.filter(
     (myPageInData) => myPageInData?.auctionStatus === false

@@ -7,7 +7,15 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/exports";
 import { _MyPageData, _MyPageInAuction } from "../../redux/modules/MyPageSlice";
 import { findGrade } from "../../shared/Grade";
-import { BasicProfile } from "../../shared/images";
+import {
+  Event,
+  BasicProfile,
+  Notice,
+  Questions,
+  ProfileEdit,
+  Login,
+  Logout,
+} from "../../shared/images";
 
 const MyPage = () => {
   const navigate = useNavigate();
@@ -18,7 +26,7 @@ const MyPage = () => {
 
   useEffect(() => {
     dispatch(_MyPageData(memberId));
-  }, [memberId]);
+  }, [memberId, data.myFavoriteCnt]);
 
   const handleLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까? ")) {
@@ -35,7 +43,7 @@ const MyPage = () => {
     }
   };
   const noOneImg = () => {
-    if (memberId === null) {
+    if (data?.profileImgUrl === null) {
       return <BasicProfile onClick={() => handleLogIn()} />;
     } else {
       return <img src={data?.profileImgUrl} alt="" />;
@@ -135,36 +143,60 @@ const MyPage = () => {
       <MyProfileListWrap>
         <ListContainer>
           <div className="listIcon">
-            <div></div>
+            <div>
+              <Event />
+            </div>
           </div>
           <div className="listTitle">이벤트</div>
         </ListContainer>
         <ListContainer>
           <div className="listIcon">
-            <div></div>
+            <div>
+              <Notice />
+            </div>
           </div>
           <div className="listTitle">공지사항</div>
         </ListContainer>
         <ListContainer>
           <div className="listIcon">
-            <div></div>
+            <div>
+              <Questions />
+            </div>
           </div>
           <div className="listTitle">자주 묻는 질문</div>
         </ListContainer>
         <ListContainer>
           <div className="listIcon">
-            <div></div>
+            <div>
+              <ProfileEdit />
+            </div>
           </div>
-          {memberId === null ? (
+          <div className="listTitle">개인 정보 수정</div>
+        </ListContainer>
+
+        {memberId === null ? (
+          <ListContainer>
+            <div className="listIcon">
+              <div>
+                <Login />
+              </div>
+            </div>
             <div className="listTitle" onClick={() => handleLogIn()}>
               로그인
             </div>
-          ) : (
+          </ListContainer>
+        ) : (
+          <ListContainer>
+            <div className="listIcon">
+              <div>
+                <Logout />
+              </div>
+            </div>
             <div className="listTitle" onClick={() => handleLogout()}>
               로그아웃
             </div>
-          )}
-        </ListContainer>
+          </ListContainer>
+        )}
       </MyProfileListWrap>
       <Footer myPage={true} />
     </MyPageLayout>
@@ -322,14 +354,13 @@ const MyStateWrap = styled.div`
 
       .title {
         display: flex;
-
-        font-size: 16px;
-        font-weight: 400px;
-        color: #6d6d6d;
+        font-size: ${(props) => props.theme.fontSizes.ms};
+        font-weight: ${(props) => props.theme.fontWeights.normal};
+        color: ${(props) => props.theme.colors.Black};
       }
       .count {
-        font-size: 20px;
-        font-weight: 700;
+        font-size: ${(props) => props.theme.fontSizes.lg};
+        font-weight: ${(props) => props.theme.fontWeights.bold};
       }
     }
   }
@@ -348,13 +379,13 @@ const StateBox = styled.div`
   .title {
     display: flex;
 
-    font-size: 16px;
-    font-weight: 400px;
+    font-size: ${(props) => props.theme.fontSizes.ms};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
     color: #6d6d6d;
   }
   .count {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: ${(props) => props.theme.fontSizes.lg};
+    font-weight: ${(props) => props.theme.fontWeights.bold};
   }
 `;
 const MyProfileListWrap = styled.div`
@@ -377,13 +408,13 @@ const ListContainer = styled.div`
       width: 100%;
       height: 100%;
       border-radius: 24px;
-      background-color: #d9d9d9;
+      background-color: ${(props) => props.theme.colors.SkyBlue};
     }
   }
   .listTitle {
     display: flex;
-    font-size: 16px;
-    font-weight: 400;
+    font-size: ${(props) => props.theme.fontSizes.ms};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
   }
 `;
 export default MyPage;
