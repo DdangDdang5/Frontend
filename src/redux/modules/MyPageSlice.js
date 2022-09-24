@@ -48,7 +48,7 @@ export const _MyPageInterestAuction = createAsyncThunk(
     try {
       const { paging } = thunkAPI.getState().myPage;
       const response = await api.get(
-        `/pagination/member/mypage/myauction?page=${paging}&size=6&sortBy=id&isAsc=false`
+        `/pagination/member/favorite?page=${paging}&size=6&sortBy=id&isAsc=false`
       );
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
@@ -69,6 +69,7 @@ export const _MyPageParticipationAuction = createAsyncThunk(
       const response = await api.get(
         `/pagination/member/mypage/participant?page=${paging}&size=6&sortBy=id&isAsc=false`
       );
+      console.log("슬라이스", response.data.data);
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
       }

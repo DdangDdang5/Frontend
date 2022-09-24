@@ -16,7 +16,9 @@ function MyPageMyAuction() {
     loading,
     paging,
     followingItem,
-  } = useSelector((state) => state.myPage);
+  } = useSelector((state) => state?.myPage);
+
+  console.log(myPageInData);
 
   const [shouldShownData, setShouldShownData] = useState([]);
 
@@ -63,7 +65,7 @@ function MyPageMyAuction() {
     return () => {
       setShouldShownData([]);
     };
-  }, [isAuction, JSON.stringify(myPageInData)]);
+  }, [isAuction, JSON.stringify(myPageInData), myPageInData.length]);
 
   if (!myPageInData) {
     return <></>;

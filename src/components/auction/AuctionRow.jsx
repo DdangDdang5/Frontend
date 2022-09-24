@@ -28,11 +28,7 @@ const AuctionRow = ({ data, isAuction }) => {
           </div>
         </ContentBox>
       </Auction2Container>
-      {isAuction ? (
-        <Action2Btn>거래 진행중</Action2Btn>
-      ) : (
-        <Action2Btn>거래 완료</Action2Btn>
-      )}
+      {isAuction ? "" : <Action2Btn>거래 완료</Action2Btn>}
     </AuctionLayout>
   );
 };
@@ -76,22 +72,22 @@ const ContentBox = styled.div`
       color: white;
       border-radius: 100px;
       padding: 2px 6px;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: ${(props) => props.theme.fontSizes.sm};
+      font-weight: ${(props) => props.theme.fontWeights.medium};
     }
     .region {
       border: 1px solid #4d71ff;
       color: #4d71ff;
       border-radius: 100px;
       padding: 2px 6px;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: ${(props) => props.theme.fontSizes.sm};
+      font-weight: ${(props) => props.theme.fontWeights.medium};
     }
   }
   .title {
     max-height: 25px;
-    font-size: 18px;
-    font-weight: 400;
+    font-size: ${(props) => props.theme.fontSizes.md};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
     align-items: center;
     overflow: hidden;
     white-space: nowrap;
@@ -104,13 +100,13 @@ const ContentBox = styled.div`
     align-items: center;
     gap: 4px;
     div {
-      font-size: 14px;
-      font-weight: 400;
+      font-size: ${(props) => props.theme.fontSizes.sm};
+      font-weight: ${(props) => props.theme.fontWeights.normal};
       color: #a5a9b6;
     }
     .price {
-      font-size: 18px;
-      font-weight: 500;
+      font-size: ${(props) => props.theme.fontSizes.md};
+      font-weight: ${(props) => props.theme.fontWeights.medium};
       color: black;
     }
   }

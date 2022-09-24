@@ -74,7 +74,7 @@ const ProfileEdit = () => {
       <MyProfile>
         <MyImgWrap>
           <MyImgBox>
-            {imagePreview === undefined ? (
+            {imagePreview === null ? (
               profileData?.profileImgUrl === null ? (
                 <BasicProfile />
               ) : (

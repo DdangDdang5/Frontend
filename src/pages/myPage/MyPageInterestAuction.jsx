@@ -5,23 +5,45 @@ import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
 import { _MyPageInterestAuction } from "../../redux/modules/MyPageSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const MyPageInterestAuction = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const data = useSelector((state) => state.myPage.myPageInterest);
   const [isAuction, setIsAuction] = useState(true);
 
+  const {
+    myPageInterest: myPageInData,
+    loading,
+    paging,
+    followingItem,
+  } = useSelector((state) => state?.myPage);
+
   console.log("111", data);
+
+  const handleScroll = (e) => {
+    let scrollTopHandler = e.target.scrollTop;
+    let clientHeightHandler = e.target.clientHeight;
+    let scrollHeightHandler = e.target.scrollHeight;
+    if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
+      if (!loading) {
+        if (followingItem) {
+          dispatch(_MyPageInterestAuction());
+        }
+      }
+    }
+  };
 
   useEffect(() => {
     dispatch(_MyPageInterestAuction());
-  }, []);
+  }, [data?.length]);
 
   return (
     <MyAuctionLayout>
       <Header back={true} pageName="관심 경매" alarm={true} />
       <AuctionStateNav isAuction={isAuction} setIsAuction={setIsAuction} />
-      <MyAuctionBody>
+      <MyAuctionBody onScroll={handleScroll}>
         <AuctionLayout>
           {data.length === 0 ? (
             <None>상품없음</None>
@@ -30,7 +52,10 @@ const MyPageInterestAuction = () => {
               {data.map((item, index) => {
                 return (
                   <React.Fragment key={`${index}_${item.id}`}>
-                    <Auction2Container>
+                    <Auction2Container
+                      onClick={() => {
+                        navigate(`/auctionDetail/${item?.auctionId}`);
+                      }}>
                       <ImgBox>
                         <img src={item.multiImages[0].imgUrl} alt="" />
                       </ImgBox>
