@@ -7,44 +7,38 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/exports";
 import { _MyPageData, _MyPageInAuction } from "../../redux/modules/MyPageSlice";
 import { findGrade } from "../../shared/Grade";
+import { BasicProfile } from "../../shared/images";
 
 const MyPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const data = useSelector((state) => state.myPage?.myPage);
   const memberId = sessionStorage?.getItem("memberId");
+  console.log("22222", data);
 
   useEffect(() => {
     dispatch(_MyPageData(memberId));
   }, [memberId]);
 
-  const Img = (
-    <img
-      src={
-        data?.profileImgUrl == null ? (
-          <svg
-            width="120"
-            height="120"
-            viewBox="0 0 120 120"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M120 60C120 76.99 112.94 92.32 101.6 103.24C100.35 104.44 99.05 105.59 97.69 106.68C97.5 106.84 97.31 106.99 97.12 107.14C96.24 107.84 95.33 108.51 94.41 109.16C84.66 115.99 72.8 120 60 120C47.2 120 35.34 115.99 25.59 109.16C24.67 108.52 23.76 107.85 22.88 107.15C22.69 107 22.5 106.85 22.31 106.69C20.95 105.6 19.65 104.45 18.4 103.25C7.06 92.32 0 76.99 0 60C0 26.86 26.86 0 60 0C93.14 0 120 26.86 120 60Z"
-              fill="#C5D0E1"
-            />
-          </svg>
-        ) : (
-          data?.profileImgUrl
-        )
-      }
-      alt=""
-    />
-  );
-
   const handleLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까? ")) {
       sessionStorage.clear();
       navigate("/");
+    }
+  };
+
+  const handleLogIn = () => {
+    if (window.confirm("로그인 하시겠습니까? ")) {
+      navigate("/login");
+    } else {
+      navigate("/myPage");
+    }
+  };
+  const noOneImg = () => {
+    if (memberId === null) {
+      return <BasicProfile onClick={() => handleLogIn()} />;
+    } else {
+      return <img src={data?.profileImgUrl} alt="" />;
     }
   };
 
@@ -54,53 +48,89 @@ const MyPage = () => {
 
       <MyProfileWrap>
         <MyImgContainer>
-          <MyImgBox>
-            {Img}
-            {/* <div>사진</div> */}
-          </MyImgBox>
+          <MyImgBox>{noOneImg()}</MyImgBox>
         </MyImgContainer>
 
         <MyNickContainer>
           <NickBox>
-            <div className="nickName">{data?.nickname}</div>
-            <div
-              className="profileEdit"
-              onClick={() => {
-                navigate("/profileEdit");
-              }}>
-              프로필 수정
-            </div>
+            {memberId !== null ? (
+              <>
+                <div className="nickName">{data?.nickname}</div>
+                <div
+                  className="profileEdit"
+                  onClick={() => {
+                    navigate("/profileEdit");
+                  }}>
+                  프로필 수정
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="needNickName" onClick={() => handleLogIn()}>
+                  로그인이 필요합니다.
+                </div>
+              </>
+            )}
           </NickBox>
-					<MyGradeImgWrap onClick={() => navigate(`/myGrade/${memberId}`)}>
-	          <div></div>
-	          {findGrade(data?.trustGrade)}
-        	</MyGradeImgWrap>
+          <MyGradeImgWrap onClick={() => navigate(`/myGrade/${memberId}`)}>
+            <div></div>
+            {findGrade(data?.trustGrade)}
+          </MyGradeImgWrap>
         </MyNickContainer>
       </MyProfileWrap>
 
       <MyStateWrap>
-        <div className="MyStateWrap">
-          <div
-            className="stateBox"
-            onClick={() => navigate("/myPageMyAuction")}>
-            <div className="title">나의 경매</div>
-            <div className="count">{data?.myAuctionCnt}</div>
-          </div>
-          <StateBox>
-            <div
-              className="title"
-              onClick={() => navigate("/myPageParticipationAuction")}>
-              참여 경매
+        {memberId === null ? (
+          <>
+            <div className="MyStateWrap" onClick={() => handleLogIn()}>
+              <div
+                className="stateBox"
+                onClick={() => navigate("/myPageMyAuction")}>
+                <div className="title">나의 경매</div>
+                <div className="count">0</div>
+              </div>
+              <StateBox>
+                <div
+                  className="title"
+                  onClick={() => navigate("/myPageParticipationAuction")}>
+                  참여 경매
+                </div>
+                <div className="count">0</div>
+              </StateBox>
+              <div
+                className="stateBox"
+                onClick={() => navigate("/MyPageInterestAuction")}>
+                <div className="title">관심 경매</div>
+                <div className="count">0</div>
+              </div>
+            </div>{" "}
+          </>
+        ) : (
+          <>
+            <div className="MyStateWrap">
+              <div
+                className="stateBox"
+                onClick={() => navigate("/myPageMyAuction")}>
+                <div className="title">나의 경매</div>
+                <div className="count">{data?.myAuctionCnt}</div>
+              </div>
+              <StateBox>
+                <div
+                  className="title"
+                  onClick={() => navigate("/myPageParticipationAuction")}>
+                  참여 경매
+                </div>
+                <div className="count">{data?.myParticipantCnt}</div>
+              </StateBox>
+              <div
+                className="stateBox"
+                onClick={() => navigate("/MyPageInterestAuction")}>
+                <div className="title">관심 경매</div>
+                <div className="count">{data?.myFavoriteCnt}</div>
+              </div>
             </div>
-            <div className="count">{data?.myParticipantCnt}</div>
-          </StateBox>
-          <div
-            className="stateBox"
-            onClick={() => navigate("/MyPageInterestAuction")}>
-            <div className="title">관심 경매</div>
-            <div className="count">{data?.myFavoriteCnt}</div>
-          </div>
-        </div>
+          </>
+        )}
       </MyStateWrap>
       <MyProfileListWrap>
         <ListContainer>
@@ -126,7 +156,7 @@ const MyPage = () => {
             <div></div>
           </div>
           {memberId === null ? (
-            <div onClick={() => navigate("/login")} className="listTitle">
+            <div className="listTitle" onClick={() => handleLogIn()}>
               로그인
             </div>
           ) : (
@@ -160,7 +190,6 @@ const MyImgContainer = styled.div`
   justify-content: center;
   align-items: center;
   width: 73px;
-
   height: 73px;
 `;
 const MyImgBox = styled.div`
@@ -169,6 +198,12 @@ const MyImgBox = styled.div`
   height: 100%;
 
   img {
+    display: flex;
+    width: 73px;
+    height: 100%;
+    border-radius: 120px;
+  }
+  svg {
     display: flex;
     width: 73px;
     height: 100%;
@@ -202,13 +237,19 @@ const NickBox = styled.div`
   align-items: flex-start;
   gap: 1px;
   .nickName {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: ${(props) => props.theme.fontSizes.lg};
+    font-weight: ${(props) => props.theme.fontWeights.bold};
+    line-height: 28px;
   }
   .profileEdit {
     font-size: 14px;
     font-weight: 400;
     color: #9b9b9b;
+  }
+  .needNickName {
+    font-size: ${(props) => props.theme.fontSizes.lg};
+    font-weight: ${(props) => props.theme.fontWeights.bold};
+    line-height: 28px;
   }
 `;
 const LevelBox = styled.div`
@@ -230,7 +271,7 @@ const LevelBox = styled.div`
 
 export const MyGradeImgWrap = styled.div`
   position: relative;
-	right: 20px;
+  right: 20px;
 
   svg {
     width: 38px;

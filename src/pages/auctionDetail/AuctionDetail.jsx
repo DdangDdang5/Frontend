@@ -24,7 +24,7 @@ import MenuModal from "../../components/modal/MenuModal";
 
 // Element & Shared import
 import Button from "../../elements/button/Button";
-import { Claim, Close, Next } from "../../shared/images";
+import { Claim, Close, Next, BasicProfile } from "../../shared/images";
 
 var stompClient = null;
 
@@ -35,7 +35,8 @@ const AuctionDetail = () => {
   const params = useParams();
 
   const data = useSelector((state) => state.auction.auction);
-  console.log(data);
+  console.log("11111", data);
+
   const bid = useSelector((state) => state.auction.bid);
   const favoriteState = useSelector((state) => state.auction.favorite);
 
@@ -44,7 +45,7 @@ const AuctionDetail = () => {
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
 
-  const [favorite, setFavorite] = useState(false);
+  const [favorite, setFavorite] = useState(favoriteState?.favoriteStatus);
 
   // console.log("페이버리", favorite);
   // console.log("디테일배돌", params?.auctionId);
@@ -74,10 +75,8 @@ const AuctionDetail = () => {
   // }, []);
 
   const likeHandler = () => {
-    if (data.id == params?.auctionId) {
-      dispatch(auctionFavorite(data.id));
-      setFavorite(!favorite);
-    }
+    dispatch(auctionFavorite(data.id));
+    // setFavorite(!favorite);
   };
 
   useEffect(() => {
@@ -248,7 +247,11 @@ const AuctionDetail = () => {
           <DetailBodyContainer>
             <DetailBodyProfileBox>
               <DetailBodyProfileImg onClick={onClickAuctionSeller}>
-                <img src={data.member.profileImgUrl} alt="" />
+                {data.member.profileImgUrl === null ? (
+                  <BasicProfile className="noOneImg" />
+                ) : (
+                  <img src={data.member.profileImgUrl} alt="" />
+                )}
               </DetailBodyProfileImg>
               <div className="DetailBodyProfile">
                 <DetailBodyProfileContent>
@@ -493,6 +496,14 @@ const DetailBodyProfileImg = styled.div`
   display: flex;
   align-items: center;
   padding-left: 18px;
+  .noOneImg {
+    height: 48px;
+    width: 48px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    margin-right: 11px;
+  }
   img {
     height: 48px;
     width: 48px;
@@ -778,15 +789,6 @@ const AuctionJoinIcon = styled.div`
     border-radius: 50%;
   }
 `;
-
-// const AuctionWrap = styled.div`
-// 	background-color: aliceblue;
-// 	height: fit-content;
-// 	position: absolute;
-// 	bottom: 50%;
-// 	left: 0;
-// 	right: 0;
-// `;
 
 const AuctionJoinModalContent = styled.div`
   padding: 20px;

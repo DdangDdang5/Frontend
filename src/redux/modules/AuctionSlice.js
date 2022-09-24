@@ -96,6 +96,7 @@ const auctionSlice = createSlice({
       // console.log("22222", state.favorite);
       // if(action.payload.autionId ===  )
       // if (action.payload.autionId == ) state.favorite = action.payload;
+      state.favorite = action.payload;
     },
     [auctionFavorite.rejected]: (state, action) => {
       console.log(action);
