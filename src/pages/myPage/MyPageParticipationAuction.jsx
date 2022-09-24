@@ -10,10 +10,12 @@ import { _MyPageParticipationAuction } from "../../redux/modules/MyPageSlice";
 const MyPageParticipationAuction = () => {
   const dispatch = useDispatch();
   const [isAuction, setIsAuction] = useState(true);
-  const data = useSelector((state) => state.myPage.myPageParticipati);
+  const data = useSelector((state) => state.myPage.myPageParticipation);
+
+  // console.log(data);
 
   const {
-    myPageParticipati: myPageParticipatiData,
+    myPageParticipation: myPageParticipationData,
     loading,
     paging,
     followingItem,
@@ -23,27 +25,27 @@ const MyPageParticipationAuction = () => {
   useEffect(() => {
     dispatch(_MyPageParticipationAuction());
 
-    if (myPageParticipatiData && myPageParticipatiData.length > 0) {
-      myPageParticipatiData?.map((item, index) => {
-        if (isAuction) {
-          if (item?.auctionStatus === true) {
-            setShouldShownData((prev) => {
-              return [...prev, item];
-            });
-          }
-        } else {
-          if (item?.auctionStatus === false) {
-            setShouldShownData((prev) => {
-              return [...prev, item];
-            });
-          }
-        }
-      });
-    }
-    return () => {
-      setShouldShownData([]);
-    };
-  }, [isAuction, JSON.stringify(myPageParticipatiData)]);
+    //   if (myPageParticipationData && myPageParticipationData.length > 0) {
+    //     myPageParticipationData?.map((item, index) => {
+    //       if (isAuction) {
+    //         if (item?.auctionStatus === true) {
+    //           setShouldShownData((prev) => {
+    //             return [...prev, item];
+    //           });
+    //         }
+    //       } else {
+    //         if (item?.auctionStatus === false) {
+    //           setShouldShownData((prev) => {
+    //             return [...prev, item];
+    //           });
+    //         }
+    //       }
+    //     });
+    //   }
+    //   return () => {
+    //     setShouldShownData([]);
+    //   };
+  }, [isAuction, JSON.stringify(myPageParticipationData)]);
 
   const handleScroll = (e) => {
     let scrollTopHandler = e.target.scrollTop;

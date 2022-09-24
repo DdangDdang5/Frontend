@@ -5,42 +5,78 @@ import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
 import { _MyPageInterestAuction } from "../../redux/modules/MyPageSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 const MyPageInterestAuction = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const data = useSelector((state) => state.myPage.myPageInterest);
   const [isAuction, setIsAuction] = useState(true);
 
+  const {
+    myPageInterest: myPageInData,
+    loading,
+    paging,
+    followingItem,
+  } = useSelector((state) => state?.myPage);
+
+  console.log("111", data);
+
+  const handleScroll = (e) => {
+    let scrollTopHandler = e.target.scrollTop;
+    let clientHeightHandler = e.target.clientHeight;
+    let scrollHeightHandler = e.target.scrollHeight;
+    if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
+      if (!loading) {
+        if (followingItem) {
+          dispatch(_MyPageInterestAuction());
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     dispatch(_MyPageInterestAuction());
-  }, []);
+  }, [data?.length]);
 
   return (
     <MyAuctionLayout>
       <Header back={true} pageName="관심 경매" alarm={true} />
       <AuctionStateNav isAuction={isAuction} setIsAuction={setIsAuction} />
-      <MyAuctionBody>
+      <MyAuctionBody onScroll={handleScroll}>
         <AuctionLayout>
-          {data.data === null ? (
+          {data.length === 0 ? (
             <None>상품없음</None>
           ) : (
             <>
               {data.map((item, index) => {
                 return (
                   <React.Fragment key={`${index}_${item.id}`}>
-                    <Auction2Container>
-                      <ImgBox>{item.profileImgUrl}</ImgBox>
+                    <Auction2Container
+                      onClick={() => {
+                        navigate(`/auctionDetail/${item?.auctionId}`);
+                      }}>
+                      <ImgBox>
+                        <img src={item.multiImages[0].imgUrl} alt="" />
+                      </ImgBox>
                       <ContentBox>
                         <div className="contentNavBox">
-                          <div className="delivery">택배</div>
-                          <div className="region">성산구</div>
+                          {item.delivery ? (
+                            <div className="delivery">택배</div>
+                          ) : (
+                            <></>
+                          )}
+                          {item.direct ? (
+                            <div className="delivery">직거래</div>
+                          ) : (
+                            <></>
+                          )}
+                          <div className="region">{item.region}</div>
                         </div>
-                        <div className="title">
-                          제목은 한 줄만 노출됩니다. 길어진다면 짤라야 겠죠
-                        </div>
+                        <div className="title">{item.content}</div>
                         <div className="priceBox">
                           <div>최근입찰가</div>
-                          <div className="price">5000원</div>
+                          <div className="price">{item.startPrice}</div>
                         </div>
                       </ContentBox>
                     </Auction2Container>

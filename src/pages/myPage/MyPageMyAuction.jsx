@@ -16,11 +16,14 @@ function MyPageMyAuction() {
     loading,
     paging,
     followingItem,
-  } = useSelector((state) => state.myPage);
+  } = useSelector((state) => state?.myPage);
+
+  console.log(myPageInData);
+
   const [shouldShownData, setShouldShownData] = useState([]);
 
   const auctionIng = myPageInData?.filter(
-    (myPageInData) => myPageInData.auctionStatus === true
+    (myPageInData) => myPageInData?.auctionStatus === true
   ).length;
   const auctionDone = myPageInData?.filter(
     (myPageInData) => myPageInData?.auctionStatus === false
@@ -62,7 +65,7 @@ function MyPageMyAuction() {
     return () => {
       setShouldShownData([]);
     };
-  }, [isAuction, JSON.stringify(myPageInData)]);
+  }, [isAuction, JSON.stringify(myPageInData), myPageInData.length]);
 
   if (!myPageInData) {
     return <></>;

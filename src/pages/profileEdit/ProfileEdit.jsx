@@ -3,8 +3,9 @@ import Header from "../../components/header/Header";
 import styled from "styled-components";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux/es/exports";
-import { editMyPage, myPageData } from "../../redux/modules/MyPageSlice";
+import { editMyPage, _MyPageData } from "../../redux/modules/MyPageSlice";
 import { useNavigate } from "react-router-dom";
+import { BasicProfile, Camera, Delete } from "../../shared/images";
 
 const ProfileEdit = () => {
   const dispatch = useDispatch();
@@ -14,18 +15,17 @@ const ProfileEdit = () => {
     nickName: "",
   };
 
-  const profileData = useSelector((state) => state.myPage.myPage);
+  const profileData = useSelector((state) => state?.myPage?.myPage);
+  console.log("data", profileData);
+
   const img_ref = useRef(null);
 
   const [inputForm, setInputForm] = useState(data);
   const [imgFile, setImgFile] = useState([]);
-  const [imagePreview, setImagePreview] = useState(profileData.profileImgUrl);
-  const memberId = sessionStorage?.getItem("memberId");
+  const [imagePreview, setImagePreview] = useState(profileData?.profileImgUrl);
+  console.log("preview", imagePreview);
 
-  // console.log("memberId", memberId);
-  // useEffect(() => {
-  //   dispatch(editMyPage(memberId));
-  // }, []);
+  const memberId = sessionStorage?.getItem("memberId");
 
   const onLoadFile = (e) => {
     const reader = new FileReader();
@@ -43,7 +43,7 @@ const ProfileEdit = () => {
     setInputForm({ ...inputForm, [name]: value });
   };
 
-  const onSubmitHandler = () => {
+  const onSubmitHandler = async () => {
     let formData = new FormData();
     let uploadImg = img_ref.current;
 
@@ -53,11 +53,19 @@ const ProfileEdit = () => {
     );
     formData.append("profileImg", uploadImg.files[0]);
 
-    dispatch(editMyPage({ memberId: memberId, formData: formData }));
-    window.alert("새 게시물 만들기 완료");
-    // 포스팅 완료후 새로고침
-    navigate(-1, { replace: true });
+    const data = dispatch(
+      editMyPage({ memberId: memberId, formData: formData })
+    ).unwrap();
+    if (data) {
+      window.alert("새 게시물 만들기 완료");
+      // 포스팅 완료후 새로고침
+      navigate(-1, { replace: true });
+    }
   };
+
+  useEffect(() => {
+    dispatch(_MyPageData(memberId));
+  }, [imagePreview]);
 
   return (
     <ProfileEditLayout>
@@ -66,8 +74,24 @@ const ProfileEdit = () => {
       <MyProfile>
         <MyImgWrap>
           <MyImgBox>
-            <img src={imagePreview} alt="" />
-            <label htmlFor="img_UpFile">사진</label>
+            {imagePreview === null ? (
+              profileData?.profileImgUrl === null ? (
+                <BasicProfile />
+              ) : (
+                <img src={profileData?.profileImgUrl} alt="" />
+              )
+            ) : (
+              <img src={imagePreview} alt="" />
+            )}
+            {/* {profileData?.profileImgUrl === null ? (
+              <BasicProfile />
+            ) : (
+              <img src={imagePreview} alt="" />
+            )} */}
+
+            <label htmlFor="img_UpFile">
+              <Camera />
+            </label>
             <input
               ref={img_ref}
               type="file"
@@ -89,7 +113,8 @@ const ProfileEdit = () => {
               onChange={onChangeHandler}
               placeholder="닉네임을 입력해주세요."
             />
-            <button>X</button>
+
+            <Delete />
           </div>
           <div className="MyTextCheck">사용할 수 없는 닉네임입니다.</div>
         </MyTextWrap>
@@ -144,7 +169,7 @@ const MyImgBox = styled.div`
     border-radius: 36px;
     align-items: center;
     justify-content: center;
-    background-color: yellow;
+    background-color: ${(props) => props.theme.colors.White};
   }
 `;
 
@@ -156,8 +181,8 @@ const MyTextWrap = styled.div`
   .MyTextNick {
     display: flex;
     align-items: center;
-    font-size: 16px;
-    font-weight: 700;
+    font-size: ${(props) => props.theme.fontSizes.ms};
+    font-weight: ${(props) => props.theme.fontWeights.bold};
   }
   .MyTextInputWrap {
     display: flex;
@@ -166,14 +191,13 @@ const MyTextWrap = styled.div`
     height: 56px;
     position: relative;
     input {
-      padding-right: 30px;
-
       width: 100%;
-      padding: 17px 9px 14px 9px;
+      padding: 17px 30px 14px 9px;
       border-radius: 8px;
-      font-size: 18px;
+      border: 1px solid #1dc79a;
+      font-size: ${(props) => props.theme.fontSizes.md};
     }
-    button {
+    svg {
       position: absolute;
       top: 19px;
       right: 8px;
@@ -188,9 +212,9 @@ const MyTextWrap = styled.div`
   .MyTextCheck {
     display: flex;
     margin-top: 12px;
-    font-weight: 400;
-    font-size: 14px;
-    color: #bcbcbc;
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+    color: ${(props) => props.theme.colors.Red};
   }
 `;
 const MyDoneBtnWrap = styled.div`
@@ -204,7 +228,7 @@ const MyDoneBtn = styled.button`
   height: 56px;
   justify-content: center;
   align-items: center;
-  font-size: 18px;
+  font-size: ${(props) => props.theme.fontSizes.md};
   background-color: #dedede;
   border: none;
   border-radius: 8px;
