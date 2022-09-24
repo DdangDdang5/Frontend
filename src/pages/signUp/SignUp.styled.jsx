@@ -66,7 +66,7 @@ export const SignUpBoxInput = styled.input`
   padding-left: 10px;
   font-size: ${(props) => props.theme.fontSizes.md};
   background-color: ${(props) => props.theme.colors.White};
-  color: ${(props) => props.theme.colors.Black};
+  color: ${(props) => console.log(props)};
   border: 1px solid ${(props) => props.theme.colors.Gray2};
   border-radius: 8px;
   &:focus {
