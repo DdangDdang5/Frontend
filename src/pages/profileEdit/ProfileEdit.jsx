@@ -228,7 +228,7 @@ const MyDoneBtn = styled.button`
   height: 56px;
   justify-content: center;
   align-items: center;
-  font-size: 18px;
+  font-size: ${(props) => props.theme.fontSizes.md};
   background-color: #dedede;
   border: none;
   border-radius: 8px;
