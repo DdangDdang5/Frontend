@@ -53,23 +53,20 @@ const Main = () => {
   const auctionAllList = useSelector((state) => state.auctionList.auctionList);
 
   const auctionHitList = useSelector(
-    (state) => state.auctionList.auctionHitList
+    (state) => state.auctionList.auctionHitList,
   );
   const auctionNewList = useSelector(
-    (state) => state.auctionList.auctionNewList
+    (state) => state.auctionList.auctionNewList,
   );
   const auctionDeadlineList = useSelector(
-    (state) => state.auctionList.auctionDeadlineList
+    (state) => state.auctionList.auctionDeadlineList,
   );
-
-	// console.log(auctionHitList);
 
   useEffect(() => {
     dispatch(getAuctionHitList());
     dispatch(getAuctionNewList());
     dispatch(getAuctionDeadlineList());
   }, [
-    JSON.stringify(auctionAllList),
     JSON.stringify(auctionHitList),
     JSON.stringify(auctionNewList),
     JSON.stringify(auctionDeadlineList),
@@ -101,7 +98,8 @@ const Main = () => {
             {auctionHitList?.map((item, idx) => (
               <PopularItem
                 key={item.auctionId}
-                onClick={() => moveAuctionDetail(item.auctionId)}>
+                onClick={() => moveAuctionDetail(item.auctionId)}
+              >
                 <img
                   src={item.multiImages[0]?.imgUrl}
                   alt="auction-popular-img"

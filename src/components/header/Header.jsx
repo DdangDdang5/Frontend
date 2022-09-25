@@ -75,7 +75,7 @@ const Header = ({
         {/* right */}
         <HeaderIconContainer>
           {search ? <Search onClick={() => navigate("/search")} /> : null}
-          {alarm ? <Alarm /> : null}
+          {alarm ? <Alarm onClick={() => navigate("/notification")}/> : null}
           {share ? <Share /> : null}
           {menu ? <Menu onClick={onClickBtn} /> : null}
           {save ? (

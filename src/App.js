@@ -25,6 +25,7 @@ import MyPageParticipationAuction from "./pages/myPage/MyPageParticipationAuctio
 import MyPageInterestAuction from "./pages/myPage/MyPageInterestAuction";
 import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
 import AuctionEdit from "./pages/auctionEdit/AuctionEdit";
+import Notification from "./pages/notification/Notification";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
@@ -35,6 +36,7 @@ import UserProfile from "./pages/userProfile/UserProfile";
 import { onMessageListener } from "./firebaseInit";
 import Notifications from "./components/notification/Notification";
 import ReactNotificationComponent from "./components/notification/ReactNotification";
+import { ToastNotification } from "./pages/notification/ToastNotification";
 
 function App() {
   const modal = useSelector((state) => state.modal.show);
@@ -43,22 +45,82 @@ function App() {
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState({ title: "", body: "" });
 
-  if (!((isIOS || isMacOs) && isSafari)) {
-    onMessageListener()
-      .then((payload) => {
-        setShow(true);
-        setNotification({
-          title: payload.notification.title,
-          body: payload.notification.body,
-        });
-        console.log(payload);
-      })
-      .catch((err) => console.log("failed: ", err));
-  }
+  // if (!((isIOS || isMacOs) && isSafari)) {
+  //   onMessageListener()
+  //     .then((payload) => {
+  //       setShow(true);
+  //       setNotification({
+  //         title: payload.notification.title,
+  //         body: payload.notification.body,
+  //       });
+  //       console.log(payload);
+  //     })
+  //     .catch((err) => console.log("failed: ", err));
+  // }
+
+  // useEffect(() => {
+  //   // 경매 생성 시 알림!!!!
+  //   let url = process.env.REACT_APP_URL + "/auction/stream";
+  //   const sse = new EventSource(url);
+  // 	console.log(sse);
+
+  // 	sse.onmessage = (event) => {
+  // 		console.log(event);
+  // 	}
+
+  //   sse.addEventListener("post-list-event", (event) => {
+  //     const data = JSON.parse(event.data);
+  // 		console.log(event);
+  //   });
+
+  //   sse.onerror = (error) => {
+  // 		console.log('error post-list-event');
+  // 		console.log(error)
+  //     sse.close();
+  //   };
+
+  //   return () => {
+  //     sse.close();
+  //   };
+  // }, []);
+
+  const notifToastList = useSelector(
+    (state) => state.notification.notifToastList,
+  );
+
+  console.log(notifToastList);
+
+  useEffect(() => {
+    let url =
+      process.env.REACT_APP_URL +
+      "/push-notifications/" +
+      sessionStorage.getItem("memberId");
+    const sse = new EventSource(url);
+    console.log(sse);
+
+    sse.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      console.log(data);
+    };
+
+    sse.addEventListener("user-list-event", (event) => {
+      const data = JSON.parse(event.data);
+      console.log(event);
+      console.log(data);
+      // dispatch(add({ newNotifs: data }));
+    });
+
+    sse.onerror = (error) => {
+      sse.close();
+    };
+    return () => {
+      sse.close();
+    };
+  }, []);
 
   return (
     <div className="App">
-      {!((isIOS || isMacOs) && isSafari) && show ? (
+      {/* {!((isIOS || isMacOs) && isSafari) && show ? (
         <ReactNotificationComponent
           title={notification.title}
           body={notification.body}
@@ -67,6 +129,10 @@ function App() {
         <></>
       )}
       {!((isIOS || isMacOs) && isSafari) ? <Notifications /> : <></>} */}
+
+      {notifToastList?.map((item) => (
+        <ToastNotification notif={item} />
+      ))}
 
       <Routes>
         <Route path="/" element={<Main />} />
@@ -95,6 +161,7 @@ function App() {
           element={<MyPageInterestAuction />}
         />
         <Route path="/userProfile/:memberId" element={<UserProfile />} />
+        <Route path="/notification" element={<Notification />} />
       </Routes>
       {modal && <CategoryModal />}
     </div>

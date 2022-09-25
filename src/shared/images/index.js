@@ -1,6 +1,7 @@
 // Icon import
 import { ReactComponent as add } from "./icon/Add.svg";
 import { ReactComponent as alarm } from "./icon/Alarm.svg";
+import { ReactComponent as alarmNone } from "./icon/AlarmNone.svg";
 import { ReactComponent as alarmNum } from "./icon/AlarmNum.svg";
 import { ReactComponent as back } from "./icon/Back.svg";
 import { ReactComponent as basicProfile } from "./icon/BasicProfile.svg";
@@ -46,6 +47,7 @@ import { ReactComponent as logoRainbow } from "./logo/LogoRainbow.svg";
 // icon
 export const Add = add;
 export const Alarm = alarm;
+export const AlarmNone = alarmNone;
 export const AlarmNum = alarmNum;
 export const Back = back;
 export const BasicProfile = basicProfile;
