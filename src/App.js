@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { isIOS, isMacOs, isSafari } from "react-device-detect";
+import styled from "styled-components";
 
 // Page import
 import Main from "../src/pages/main/Main";
@@ -26,19 +27,26 @@ import MyPageInterestAuction from "./pages/myPage/MyPageInterestAuction";
 import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
 import AuctionEdit from "./pages/auctionEdit/AuctionEdit";
 import Notification from "./pages/notification/Notification";
+import NotFound from "./pages/notFound/NotFound";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
 import CategoryModal from "./components/modal/CategoryModal";
 import UserProfile from "./pages/userProfile/UserProfile";
 
+// Style import
+import { FontRegular } from "./shared/fonts/font";
+
 // Notification import
 import { onMessageListener } from "./firebaseInit";
 import Notifications from "./components/notification/Notification";
 import ReactNotificationComponent from "./components/notification/ReactNotification";
 import { ToastNotification } from "./pages/notification/ToastNotification";
+import { add } from "./redux/modules/NotificationSlice";
 
 function App() {
+	const dispatch = useDispatch();
+
   const modal = useSelector((state) => state.modal.show);
 
   // 알림
@@ -93,21 +101,25 @@ function App() {
   useEffect(() => {
     let url =
       process.env.REACT_APP_URL +
-      "/push-notifications/" +
+      "/subscribe/" +
       sessionStorage.getItem("memberId");
     const sse = new EventSource(url);
     console.log(sse);
+
+		sse.onopen = (event) => {
+			console.log("connection opened", event);
+		}
 
     sse.onmessage = (event) => {
       const data = JSON.parse(event.data);
       console.log(data);
     };
 
-    sse.addEventListener("user-list-event", (event) => {
+    sse.addEventListener("sse", (event) => {
       const data = JSON.parse(event.data);
       console.log(event);
       console.log(data);
-      // dispatch(add({ newNotifs: data }));
+      dispatch(add({ newNotifs: data }));
     });
 
     sse.onerror = (error) => {
@@ -119,7 +131,9 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <AppContainer>
+			<FontRegular />
+			<div></div>
       {/* {!((isIOS || isMacOs) && isSafari) && show ? (
         <ReactNotificationComponent
           title={notification.title}
@@ -135,6 +149,7 @@ function App() {
       ))}
 
       <Routes>
+        <Route path="*" element={<NotFound />} />
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<SignUp />} />
@@ -164,8 +179,12 @@ function App() {
         <Route path="/notification" element={<Notification />} />
       </Routes>
       {modal && <CategoryModal />}
-    </div>
+    </AppContainer>
   );
 }
+
+const AppContainer = styled.div`
+	font-family: "SpoqaHanSansNeo-Regular";
+`;
 
 export default App;

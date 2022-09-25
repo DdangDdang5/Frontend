@@ -40,16 +40,9 @@ export const SwipeImg = styled.img`
   object-fit: contain;
 `;
 
-export const SwipeImgLayer = styled.div`
-  height: 140px;
-  background-color: #dedede;
-
-  position: absolute;
-`;
-
 export const SwipeContent = styled.div`
   height: 20%;
-  min-height: 140px;
+  min-height: 160px;
   padding: 20px;
 
   background: linear-gradient(
@@ -75,8 +68,37 @@ export const BannerContent = styled.div`
 `;
 
 export const BannerTime = styled.span`
-  font-size: ${(props) => props.theme.fontSizes.md};
+	width: fit-content;
+	padding: 2px 8px;
+
+	background-color: aqua;
+	border-radius: 100px;
+
+  font-size: ${(props) => props.theme.fontSizes.sm};
   font-weight: ${(props) => props.theme.fontWeights.normal};
+	
+  ${(props) => {
+    switch (props.idx) {
+      case 0:
+        return css`
+          background: ${(props) => props.theme.colors.Green1};
+        `;
+      case 1:
+        return css`
+          background: ${(props) => props.theme.colors.Yellow};
+        `;
+      case 2:
+        return css`
+          background: ${(props) => props.theme.colors.Blue1};
+        `;
+      case 3:
+        return css`
+          background: ${(props) => props.theme.colors.Red};
+        `;
+      default:
+        return;
+    }
+  }};
 `;
 
 export const BannerTitle = styled.span`
@@ -108,8 +130,10 @@ export const BannerCircle = styled.div`
   z-index: -5;
 
   position: absolute;
-  bottom: -100px;
-  right: -50px;
+	left: 61.28%;
+	right: -16.15%;
+	top: 45.59%;
+	bottom: -50.49%;
 	
   ${(props) => {
     switch (props.idx) {

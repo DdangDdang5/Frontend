@@ -7,7 +7,7 @@ import {
   getAllNotificationList,
   readNotification,
 } from "../../redux/modules/NotificationSlice";
-import { AlarmNone, LogoClassic } from "../../shared/images";
+import { LogoClassic, NoAlarm } from "../../shared/images";
 import {
   NotifContainer,
   NotifContent,
@@ -73,7 +73,7 @@ const Notification = () => {
       ) : (
         <NotifContent>
           <NotifNone>
-            <AlarmNone />
+            <NoAlarm />
             <div>아직 도착한 알림이 없어요</div>
           </NotifNone>
         </NotifContent>

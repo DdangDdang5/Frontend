@@ -24,6 +24,92 @@ export const BannerContainer = styled.div`
   height: fit-content;
 `;
 
+export const EventBanner = styled.div`
+  background-color: #3e5acc;
+  position: relative;
+
+  overflow: hidden;
+
+  svg {
+    position: absolute;
+    top: 10px;
+    /* bottom: 10px; */
+    right: 10px;
+
+    z-index: 10;
+  }
+`;
+
+export const EventContent = styled.div`
+  height: 160px;
+  padding: 20px;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.8) 0%,
+    rgba(0, 0, 0, 0.2) 100%
+  );
+
+  color: ${(props) => props.theme.colors.White};
+
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`;
+
+export const EventDate = styled.span`
+  width: fit-content;
+  padding: 2px 10px;
+
+  background: ${(props) => props.theme.colors.Blue1};
+  border-radius: 100px;
+
+  font-size: ${(props) => props.theme.fontSizes.sm};
+  text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+  line-height: 150%;
+`;
+
+export const EventTitle = styled.span`
+  width: 130px;
+
+  font-weight: ${(props) => props.theme.fontWeights.bold};
+  font-size: ${(props) => props.theme.fontSizes.lg};
+  text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
+  line-height: 125%;
+
+	font-family: "GmarketSansMedium";
+`;
+
+export const EventText = styled.div`
+  width: 160px;
+
+  font-weight: ${(props) => props.theme.fontWeights.normal};
+  font-size: 12px;
+  line-height: 140%;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  /* white-space: pre-wrap; */
+`;
+
+export const EventCircle = styled.div`
+  width: 214px;
+  height: 214px;
+
+  background: linear-gradient(
+    140.57deg,
+    #fdb024 17.64%,
+    rgba(253, 176, 36, 0) 63.63%
+  );
+  border-radius: 200px;
+
+  position: absolute;
+  left: 61.28%;
+  right: -16.15%;
+  top: 45.59%;
+  bottom: -50.49%;
+`;
+
 export const ListContainer = styled.div`
   margin: 32px 20px;
 `;
@@ -77,7 +163,6 @@ export const PopularItem = styled.div`
     height: 100%;
 
     border-radius: 8px;
-    z-index: -5;
 
     position: absolute;
 
@@ -94,6 +179,8 @@ export const PopularItemContent = styled.div`
   color: ${(props) => props.theme.colors.White};
   border-radius: 8px;
   background: linear-gradient(180deg, #4d71ff 22.5%, rgba(0, 0, 0, 0.4) 91.9%);
+
+  position: inherit;
 
   display: flex;
   flex-direction: column;
@@ -283,7 +370,7 @@ export const LastList = styled.div`
 
 export const LastItem = styled.div`
   width: 165px;
-	max-width: 48%;
+  max-width: 48%;
 
   img {
     width: 100%;

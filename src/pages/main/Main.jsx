@@ -12,17 +12,23 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-// Component & Shared import
+// Component & Element & Shared import
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import AuctionCategoryList from "../../components/auctionCategoryList/AuctionCategoryList";
 import SwipeImage from "../../components/swipeImage/SwipeImage";
-import { Next } from "../../shared/images";
+import { EventImg, Next } from "../../shared/images";
 import PlusButton from "../../elements/button/PlusButton";
 
 // Style import
 import {
   BannerContainer,
+  EventBanner,
+  EventCircle,
+  EventContent,
+  EventDate,
+  EventText,
+  EventTitle,
   LastItem,
   LastList,
   ListContainer,
@@ -45,6 +51,7 @@ import {
   TagRegion,
   TagWrap,
 } from "./Main.styled";
+import { FontEvent, FontRegular } from "../../shared/fonts/font";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -67,9 +74,10 @@ const Main = () => {
     dispatch(getAuctionNewList());
     dispatch(getAuctionDeadlineList());
   }, [
-    JSON.stringify(auctionHitList),
-    JSON.stringify(auctionNewList),
-    JSON.stringify(auctionDeadlineList),
+		JSON.stringify(auctionAllList),
+    // JSON.stringify(auctionHitList),
+    // JSON.stringify(auctionNewList),
+    // JSON.stringify(auctionDeadlineList),
   ]);
 
   const moveAuctionDetail = (auctionId) => {
@@ -83,7 +91,23 @@ const Main = () => {
       <MainContent>
         {/* 배너 */}
         <BannerContainer>
-          <SwipeImage isMain={true} data={auctionDeadlineList} height="100%" />
+					{/* 마감임박 경매 배너 */}
+          {/* <SwipeImage isMain={true} data={auctionDeadlineList} height="100%" /> */}
+
+					{/* 이벤트 배너 */}
+					<EventBanner>
+						<FontEvent />
+						<EventContent>
+							<EventDate>09.26 ~ 10.02</EventDate>
+            	<EventTitle>소중한 의견을 들려주세요!</EventTitle>
+							<EventText>
+								<span>추첨을 통해 총 5분께</span>
+								<span>교촌치킨 기프티콘을 드려요</span>
+							</EventText>
+						</EventContent>
+						<EventImg />
+            <EventCircle/>
+					</EventBanner>
         </BannerContainer>
 
         {/* 카테고리별, 지역별 TOP 6 */}

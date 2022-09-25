@@ -1,7 +1,6 @@
 // Icon import
 import { ReactComponent as add } from "./icon/Add.svg";
 import { ReactComponent as alarm } from "./icon/Alarm.svg";
-import { ReactComponent as alarmNone } from "./icon/AlarmNone.svg";
 import { ReactComponent as alarmNum } from "./icon/AlarmNum.svg";
 import { ReactComponent as back } from "./icon/Back.svg";
 import { ReactComponent as basicProfile } from "./icon/BasicProfile.svg";
@@ -24,6 +23,8 @@ import { ReactComponent as share } from "./icon/Share.svg";
 import { ReactComponent as write } from "./icon/Write.svg";
 import { ReactComponent as kakao } from "./icon/Kakao.svg";
 import { ReactComponent as noSearch } from "./icon/NoSearch.svg";
+import { ReactComponent as noAlarm } from "./icon/NoAlarm.svg";
+import { ReactComponent as notPage } from "./icon/NotPage.svg";
 
 // Category import
 import { ReactComponent as accessory } from "./category/Accessory.svg";
@@ -43,11 +44,12 @@ import { ReactComponent as logoSilver } from "./logo/LogoSliver.svg";
 import { ReactComponent as logoGold } from "./logo/LogoGold.svg";
 import { ReactComponent as logoRainbow } from "./logo/LogoRainbow.svg";
 
+import {ReactComponent as eventImg } from "./EventImg.svg";
+
 
 // icon
 export const Add = add;
 export const Alarm = alarm;
-export const AlarmNone = alarmNone;
 export const AlarmNum = alarmNum;
 export const Back = back;
 export const BasicProfile = basicProfile;
@@ -70,6 +72,8 @@ export const Share = share;
 export const Write = write;
 export const Kakao = kakao;
 export const NoSearch = noSearch;
+export const NoAlarm = noAlarm;
+export const NotPage = notPage;
 
 // category
 export const Accessory = accessory;
@@ -88,3 +92,5 @@ export const LogoWood = logoWood;
 export const LogoSilver = logoSilver;
 export const LogoGold = logoGold;
 export const LogoRainbow = logoRainbow;
+
+export const EventImg = eventImg;

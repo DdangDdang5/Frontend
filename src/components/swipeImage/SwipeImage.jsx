@@ -58,7 +58,7 @@ const SwipeImage = ({
   useEffect(() => {
     var timeout;
     // 메인화면 5초마다 슬라이드 움직임
-    if (isMain) {
+    if (isMain && data.length > 1) {
       timeout = setTimeout(() => {
         if (currentImgIndex !== data.length - 1) {
           nextSlide();
@@ -99,7 +99,7 @@ const SwipeImage = ({
                 {/* 메인화면 배너 */}
                 <SwipeContent>
                   <BannerContent>
-                    <BannerTime>{auctionPeriodDiff}</BannerTime>
+                    <BannerTime idx={idx}>{auctionPeriodDiff}</BannerTime>
                     <BannerTitle>{item.title}</BannerTitle>
                   </BannerContent>
                   <BannerPriceWrap>
