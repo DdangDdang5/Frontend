@@ -16,8 +16,7 @@ function MyPageMyAuction() {
     loading,
     paging,
     followingItem,
-  } = useSelector((state) => state?.myPage);
-
+  } = useSelector((state) => state.myPage);
   console.log(myPageInData);
 
   const [shouldShownData, setShouldShownData] = useState([]);
@@ -65,7 +64,7 @@ function MyPageMyAuction() {
     return () => {
       setShouldShownData([]);
     };
-  }, [isAuction, JSON.stringify(myPageInData), myPageInData.length]);
+  }, [isAuction, JSON.stringify(myPageInData)]);
 
   if (!myPageInData) {
     return <></>;
@@ -79,17 +78,24 @@ function MyPageMyAuction() {
         auctionIng={auctionIng}
         auctionDone={auctionDone}
       />
-      <MyAuctionBody onScroll={handleScroll}>
-        {shouldShownData?.map((item, index) => {
-          return (
-            <AuctionRow
-              isAuction={isAuction}
-              key={`${item.auctionId}-${index}-${item.title}`}
-              data={item}
-            />
-          );
-        })}
-      </MyAuctionBody>
+      {shouldShownData?.length === 0 ? (
+        <None>상품없음</None>
+      ) : (
+        <>
+          <MyAuctionBody onScroll={handleScroll}>
+            {shouldShownData?.map((item, index) => {
+              return (
+                <AuctionRow
+                  isAuction={isAuction}
+                  key={`${item.auctionId}-${index}-${item.title}`}
+                  data={item}
+                />
+              );
+            })}
+          </MyAuctionBody>
+        </>
+      )}
+
       <Footer />
     </MyAuctionLayout>
   );
@@ -105,6 +111,12 @@ const MyAuctionBody = styled.div`
   height: calc(100vh - 180px);
   flex-direction: column;
   overflow: scroll;
+`;
+const None = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default MyPageMyAuction;
