@@ -21,7 +21,6 @@ const AuctionEdit = () => {
   const navigate = useNavigate();
   const data = useSelector((state) => state.auction.auction);
   console.log("배돌배돌", data);
-
   const auctionRequestDto = {
     title: data.title,
     content: data.content,
