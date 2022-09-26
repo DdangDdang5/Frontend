@@ -15,7 +15,6 @@ import {
   Title,
   RecentKeywordWrap,
   RecentKeyword,
-  ClearText,
   PopularKeywordWrap,
   PopularNum,
   PopularKeyword,
@@ -25,7 +24,8 @@ const SearchHistory = ({ onClearKeyword }) => {
   const dispatch = useDispatch();
   const recentSearch = useSelector((state) => state.search.recentSearch);
   const popularSearch = useSelector((state) => state.search.popularSearch);
-
+  console.log(recentSearch);
+  console.log(popularSearch)
   useEffect(() => {
     dispatch(recentSearchThunk());
     dispatch(popularSearchThunk());

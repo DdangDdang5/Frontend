@@ -34,7 +34,6 @@ import {
 } from "./Search.styled";
 import { NoSearch } from "../../shared/images";
 import styled from "styled-components";
-
 const Search = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -125,10 +124,8 @@ const Search = () => {
               </div>
             ) : (
               <SearchHistory
-              // onClearKeyword={handleClearKeyword}
               />
             )}
-            {console.log(isSearch)}
           </SearchFilterGroup>
         </>
       </SearchBox>

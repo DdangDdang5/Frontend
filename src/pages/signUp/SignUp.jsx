@@ -60,7 +60,7 @@ const SignUp = () => {
   const nickNameSpanRef = useRef();
   const NickNameCheckef = useRef();
 
-  // 중복 체크 상태 관리
+  // 인풋 상태 관리
   const [check, setCheck] = useState({
     email: false,
     id: false,
@@ -83,8 +83,25 @@ const SignUp = () => {
     nickName,
   };
 
+  // 비밀번호 정규식
   const passwordRegExp =
     /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+
+  // 이메일 Input
+  // const checkLoginEmail = (e) => {
+  //   const email = e.target.value;
+  //   setEmail(email);
+
+  //   if (email.length <= 0) {
+  //     setCheck({ ...check, email: false });
+  //   }
+
+  //   if (email !== emailCheck) {
+  //     setEmailCheck(false);
+  //   } else {
+  //     setEmailCheck(true);
+  //   }
+  // };
 
   const checkLoginEmail = useCallback(
     debounce((email) => {
@@ -133,31 +150,40 @@ const SignUp = () => {
       passwordSpanRef.current.innerText = "";
       passwordIconRef.current.style.color = "#1DC79A";
     } else if (password === "") {
-      rePasswordSpanRef.current.style.color = "";
+      rePasswordSpanRef.current.style.color = "#FF664D";
       rePasswordSpanRef.current.innerText = "";
       passwordSpanRef.current.style.color = "#FF664D";
       passwordRef.current.style.borderColor = "#FF664D";
       passwordSpanRef.current.innerText =
         "비밀번호는 영문 대소문자, 숫자, 특수문자(`!@#$%)를 혼합하여 8~20자로 입력해주세요.";
-    } else if (repassword === "") {
-      rePasswordSpanRef.current.style.color = "";
+    }
+    if (repassword && password === true) {
       passwordSpanRef.current.style.color = "";
+      rePasswordSpanRef.current.innerText = "비밀번호가 일치합니다";
+      rePasswordSpanRef.current.style.color = "#1DC79A";
+      rePasswordRef.current.style.borderColor = "#1DC79A";
+      rePasswordIconRef.current.style.color = "#1DC79A";
+      passwordIconRef.current.style.color = "#1DC79A";
+      passwordRef.current.style.borderColor = "#1DC79A";
     } else {
-      if (password !== repassword) {
+      if (repassword !== password) {
         passwordSpanRef.current.style.color = "";
         rePasswordSpanRef.current.style.color = "#FF664D";
         rePasswordSpanRef.current.innerText = "비밀번호가 일치하지 않습니다.";
         passwordRef.current.style.borderColor = "#FF664D";
+        rePasswordRef.current.style.borderColor = "#FF664D";
         passwordIconRef.current.style.color = "#FF664D";
-      } else {
-        passwordSpanRef.current.style.color = "";
-        rePasswordSpanRef.current.innerText = "비밀번호가 일치합니다";
-        rePasswordSpanRef.current.style.color = "#1DC79A";
-        rePasswordRef.current.style.borderColor = "#1DC79A";
-        rePasswordIconRef.current.style.color = "#1DC79A";
-        passwordIconRef.current.style.color = "#1DC79A";
-        passwordRef.current.style.borderColor = "#1DC79A";
+        rePasswordIconRef.current.style.color = "#FF664D";
       }
+      // else {
+      //   passwordSpanRef.current.style.color = "";
+      //   rePasswordSpanRef.current.innerText = "비밀번호가 일치합니다";
+      //   rePasswordSpanRef.current.style.color = "#1DC79A";
+      //   rePasswordRef.current.style.borderColor = "#1DC79A";
+      //   rePasswordIconRef.current.style.color = "#1DC79A";
+      //   passwordIconRef.current.style.color = "#1DC79A";
+      //   passwordRef.current.style.borderColor = "#1DC79A";
+      // }
     }
   }, [password, repassword]);
 
@@ -213,7 +239,7 @@ const SignUp = () => {
           nickNameRef.current.focus();
           nickNameRef.current.style.color = "#BCBCBC";
           nickNameRef.current.innerText = "중복되는 닉네임입니다.";
-          setCheck({ ...check, nickName: true })
+          setCheck({ ...check, nickName: true });
         } else {
           if (password !== repassword) {
             passwordRef.current.style.innerText = "";
@@ -221,8 +247,7 @@ const SignUp = () => {
             nickNameRef.current.style.color = "#BCBCBC";
             rePasswordSpanRef.current.innerText =
               "비밀번호가 일치하지 않습니다.";
-              setCheck({ ...check, password: true, repassword: true })
-
+            setCheck({ ...check, password: true, repassword: true });
           } else {
             dispatch(signUpMemberThunk(newMember));
           }
@@ -285,7 +310,9 @@ const SignUp = () => {
                 maxLength="20"
                 ref={rePasswordRef}
                 required
-              ></SignUpBoxInput>
+              >
+                {/* {passwordCheck.length > 0 && <div></div>} */}
+              </SignUpBoxInput>
               <SignUpBoxInputIcon ref={rePasswordIconRef}>
                 <BsFillCheckCircleFill className="icon" />
               </SignUpBoxInputIcon>
@@ -296,7 +323,6 @@ const SignUp = () => {
             닉네임
             <SignUpBoxInputWrap>
               <SignUpBoxInput
-                setColor="green"
                 type="text"
                 value={nickName}
                 onChange={(e) => setNickName(e.target.value)}
@@ -313,17 +339,31 @@ const SignUp = () => {
             <SignUpBoxSpan ref={nickNameSpanRef}></SignUpBoxSpan>
           </SignUpBoxInputGroup>
           <SignUpButtonGroup>
-            <Button
-              type={"submit"}
-              text={"회원가입"}
-              style={{
-                width: "100%",
-                height: "56px",
-                ft_size: "18px",
-                color: "#6D6D6D",
-                bg_color: "#DEDEDE",
-              }}
-            />
+            {email && password && repassword && nickName ? (
+              <Button
+                type={"submit"}
+                text={"회원가입"}
+                style={{
+                  width: "100%",
+                  height: "56px",
+                  ft_size: "18px",
+                  color: "#FFFFFF",
+                  bg_color: "#4D71FF",
+                }}
+              />
+            ) : (
+              <Button
+                type={"submit"}
+                text={"회원가입"}
+                style={{
+                  width: "100%",
+                  height: "56px",
+                  ft_size: "18px",
+                  color: "#6D6D6D",
+                  bg_color: "#dedede",
+                }}
+              />
+            )}
           </SignUpButtonGroup>
         </SignUpBoxForm>
       </SignUpBox>
