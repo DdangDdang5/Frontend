@@ -4,6 +4,9 @@ import React from "react";
 // Component import
 import DateTimeDisplay from "./DateTimeDisplay";
 
+// Package import
+import styled from "styled-components";
+
 //Hook
 import { useCountdown } from "../hooks/UseCountDown";
 
@@ -18,7 +21,7 @@ const ExpiredNotice = () => {
 
 const ShowCounter = ({ days, hours, minutes, seconds }) => {
   return (
-    <div style={{ display: "flex", color: "white" }}>
+    <Time style={{ display: "flex", color: "white" }}>
       {days === 0 ? (
         ""
       ) : (
@@ -53,7 +56,7 @@ const ShowCounter = ({ days, hours, minutes, seconds }) => {
         isDanger={minutes < 5 ? seconds < 60 : false}
       />
       <p>초</p>
-    </div>
+    </Time>
   );
 };
 
@@ -73,5 +76,11 @@ const CountdownTimer = ({ targetDate }) => {
     );
   }
 };
+
+const Time = styled.div`
+  font-size: ${(props) => props.theme.fontSizes.lg};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
+  line-height: 30px;
+`;
 
 export default CountdownTimer;

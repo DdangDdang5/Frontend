@@ -32,9 +32,13 @@ const MyPage = () => {
   const memberId = sessionStorage?.getItem("memberId");
 
   console.log(data);
-  useEffect(() => {
-    dispatch(_MyPageData(memberId));
-  }, [memberId, JSON.stringify[data]]);
+  useEffect(
+    () => {
+      dispatch(_MyPageData(memberId));
+    },
+    [memberId, JSON.stringify[data]],
+    navigate
+  );
 
   const handleLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까? ")) {
