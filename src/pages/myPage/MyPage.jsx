@@ -22,11 +22,11 @@ const MyPage = () => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.myPage?.myPage);
   const memberId = sessionStorage?.getItem("memberId");
-  console.log("22222", data);
 
+  console.log(data);
   useEffect(() => {
     dispatch(_MyPageData(memberId));
-  }, [memberId, data?.myFavoriteCnt, data?.profileImgUrl, data?.nickname]);
+  }, [memberId, JSON.stringify[data]]);
 
   const handleLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까? ")) {

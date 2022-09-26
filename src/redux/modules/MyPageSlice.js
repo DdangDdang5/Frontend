@@ -91,7 +91,6 @@ export const editMyPage = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         }
       );
-      console.log("123", response.data);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

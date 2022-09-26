@@ -16,7 +16,6 @@ const ProfileEdit = () => {
   };
 
   const profileData = useSelector((state) => state?.myPage?.myPage);
-  console.log("data", profileData);
 
   const img_ref = useRef(null);
 
@@ -127,6 +126,7 @@ const ProfileEdit = () => {
     </ProfileEditLayout>
   );
 };
+
 const ProfileEditLayout = styled.div`
   display: flex;
   width: 100%;

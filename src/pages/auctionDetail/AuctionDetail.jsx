@@ -73,18 +73,15 @@ const AuctionDetail = () => {
 
   // 좋아요 기능
 
-  // useEffect(() => {
-  //   dispatch(auctionFavorite(data.id));
-  //   if (favoriteState.favoriteStatus === true) {
-  //     setFavorite(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    dispatch(auctionFavorite(data.id));
+  }, [data?.auctionFavorite]);
 
   const likeHandler = () => {
     dispatch(auctionFavorite(data.auctionId));
-    // setFavorite(!favorite);
   };
 
+  console.log(favorite);
   useEffect(() => {
     if (!params?.auctionId) {
       return <></>;

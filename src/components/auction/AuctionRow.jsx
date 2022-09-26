@@ -18,7 +18,7 @@ const AuctionRow = ({ data, isAuction }) => {
         <ContentBox>
           <div className="contentNavBox">
             {data?.direct ? <div className="delivery">택배</div> : ""}
-            {data?.delivery ? <div className="region">직거래</div> : ""}
+            {data?.delivery ? <div className="delivery">직거래</div> : ""}
             <div className="region">{data?.region}</div>
           </div>
           <div className="title">{data?.title}</div>
@@ -66,10 +66,11 @@ const ContentBox = styled.div`
     display: flex;
     flex-direction: row;
     gap: 5px;
+    align-items: center;
 
     .delivery {
       background-color: #4d71ff;
-      color: white;
+      color: ${(props) => props.theme.colors.White};
       border-radius: 100px;
       padding: 2px 6px;
       font-size: ${(props) => props.theme.fontSizes.sm};
