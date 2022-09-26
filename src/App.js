@@ -28,6 +28,8 @@ import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
 import AuctionEdit from "./pages/auctionEdit/AuctionEdit";
 import Notification from "./pages/notification/Notification";
 import NotFound from "./pages/notFound/NotFound";
+import Event from "./pages/event/Event";
+import EventList from "./pages/eventList/EventList";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
@@ -96,7 +98,7 @@ function App() {
     (state) => state.notification.notifToastList,
   );
 
-  console.log(notifToastList);
+  // console.log(notifToastList);
 
   useEffect(() => {
     let url =
@@ -104,7 +106,7 @@ function App() {
       "/subscribe/" +
       sessionStorage.getItem("memberId");
     const sse = new EventSource(url);
-    console.log(sse);
+    // console.log(sse);
 
 		sse.onopen = (event) => {
 			console.log("connection opened", event);
@@ -177,6 +179,8 @@ function App() {
         />
         <Route path="/userProfile/:memberId" element={<UserProfile />} />
         <Route path="/notification" element={<Notification />} />
+        <Route path="/event/:eventId" element={<Event />} />
+        <Route path="/eventList" element={<EventList />} />
       </Routes>
       {modal && <CategoryModal />}
     </AppContainer>

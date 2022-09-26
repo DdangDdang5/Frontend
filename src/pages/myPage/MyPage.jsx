@@ -27,7 +27,8 @@ const MyPage = () => {
             height="120"
             viewBox="0 0 120 120"
             fill="none"
-            xmlns="http://www.w3.org/2000/svg">
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M120 60C120 76.99 112.94 92.32 101.6 103.24C100.35 104.44 99.05 105.59 97.69 106.68C97.5 106.84 97.31 106.99 97.12 107.14C96.24 107.84 95.33 108.51 94.41 109.16C84.66 115.99 72.8 120 60 120C47.2 120 35.34 115.99 25.59 109.16C24.67 108.52 23.76 107.85 22.88 107.15C22.69 107 22.5 106.85 22.31 106.69C20.95 105.6 19.65 104.45 18.4 103.25C7.06 92.32 0 76.99 0 60C0 26.86 26.86 0 60 0C93.14 0 120 26.86 120 60Z"
               fill="#C5D0E1"
@@ -67,14 +68,17 @@ const MyPage = () => {
               className="profileEdit"
               onClick={() => {
                 navigate("/profileEdit");
-              }}>
+              }}
+            >
               프로필 수정
             </div>
           </NickBox>
-					<MyGradeImgWrap onClick={() => navigate(`/myGrade/${memberId}`)}>
-	          <div></div>
-	          {findGrade(data?.trustGrade)}
-        	</MyGradeImgWrap>
+          <MyGradeImgWrap
+            onClick={() => memberId && navigate(`/myGrade/${memberId}`)}
+          >
+            <div></div>
+            {findGrade(data?.trustGrade)}
+          </MyGradeImgWrap>
         </MyNickContainer>
       </MyProfileWrap>
 
@@ -82,21 +86,24 @@ const MyPage = () => {
         <div className="MyStateWrap">
           <div
             className="stateBox"
-            onClick={() => navigate("/myPageMyAuction")}>
+            onClick={() => navigate("/myPageMyAuction")}
+          >
             <div className="title">나의 경매</div>
             <div className="count">{data?.myAuctionCnt}</div>
           </div>
           <StateBox>
             <div
               className="title"
-              onClick={() => navigate("/myPageParticipationAuction")}>
+              onClick={() => navigate("/myPageParticipationAuction")}
+            >
               참여 경매
             </div>
             <div className="count">{data?.myParticipantCnt}</div>
           </StateBox>
           <div
             className="stateBox"
-            onClick={() => navigate("/MyPageInterestAuction")}>
+            onClick={() => navigate("/MyPageInterestAuction")}
+          >
             <div className="title">관심 경매</div>
             <div className="count">{data?.myFavoriteCnt}</div>
           </div>
@@ -107,7 +114,9 @@ const MyPage = () => {
           <div className="listIcon">
             <div></div>
           </div>
-          <div className="listTitle">이벤트</div>
+          <div className="listTitle" onClick={() => navigate("/eventList")}>
+            이벤트
+          </div>
         </ListContainer>
         <ListContainer>
           <div className="listIcon">
@@ -230,7 +239,7 @@ const LevelBox = styled.div`
 
 export const MyGradeImgWrap = styled.div`
   position: relative;
-	right: 20px;
+  right: 20px;
 
   svg {
     width: 38px;

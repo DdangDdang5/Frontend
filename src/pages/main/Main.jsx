@@ -74,7 +74,7 @@ const Main = () => {
     dispatch(getAuctionNewList());
     dispatch(getAuctionDeadlineList());
   }, [
-		JSON.stringify(auctionAllList),
+    JSON.stringify(auctionAllList),
     // JSON.stringify(auctionHitList),
     // JSON.stringify(auctionNewList),
     // JSON.stringify(auctionDeadlineList),
@@ -91,23 +91,23 @@ const Main = () => {
       <MainContent>
         {/* 배너 */}
         <BannerContainer>
-					{/* 마감임박 경매 배너 */}
+          {/* 마감임박 경매 배너 */}
           {/* <SwipeImage isMain={true} data={auctionDeadlineList} height="100%" /> */}
 
-					{/* 이벤트 배너 */}
-					<EventBanner>
-						<FontEvent />
-						<EventContent>
-							<EventDate>09.26 ~ 10.02</EventDate>
-            	<EventTitle>소중한 의견을 들려주세요!</EventTitle>
-							<EventText>
-								<span>추첨을 통해 총 5분께</span>
-								<span>교촌치킨 기프티콘을 드려요</span>
-							</EventText>
-						</EventContent>
-						<EventImg />
-            <EventCircle/>
-					</EventBanner>
+          {/* 이벤트 배너 */}
+          <EventBanner isMain={true}>
+            <FontEvent />
+            <EventContent isMain={true}>
+              <EventDate isMain={true}>09.26 ~ 10.02</EventDate>
+              <EventTitle isMain={true}>소중한 의견을 들려주세요!</EventTitle>
+              <EventText isMain={true}>
+                <span>추첨을 통해 총 5분께</span>
+                <span>교촌치킨 기프티콘을 드려요</span>
+              </EventText>
+            </EventContent>
+            <EventImg />
+            <EventCircle />
+          </EventBanner>
         </BannerContainer>
 
         {/* 카테고리별, 지역별 TOP 6 */}
@@ -182,36 +182,41 @@ const Main = () => {
         </ListContainer>
 
         {/* 마감임박 경매 */}
-        <ListContainer>
-          <ListHeader isLast={true}>
-            <span>서두르세요! 곧 경매가 끝나요</span>
-            <ListHeaderMore onClick={() => navigate("/auctionList")}>
-              <span>전체 보기</span>
-              <Next />
-            </ListHeaderMore>
-          </ListHeader>
+        {auctionDeadlineList.length > 0 && (
+          <ListContainer>
+            <ListHeader isLast={true}>
+              <span>서두르세요! 곧 경매가 끝나요</span>
+              <ListHeaderMore onClick={() => navigate("/auctionList")}>
+                <span>전체 보기</span>
+                <Next />
+              </ListHeaderMore>
+            </ListHeader>
 
-          <LastList>
-            {auctionDeadlineList?.map((item) => (
-              <LastItem
-                key={item.auctionId}
-                onClick={() => moveAuctionDetail(item.auctionId)}
-              >
-                <img src={item.multiImages[0]?.imgUrl} alt="auction-last-img" />
-                <TagWrap>
-                  {item.delivery ? <span>택배</span> : null}
-                  {item.direct ? <span>직거래</span> : null}
-                  <TagRegion>{item.region}</TagRegion>
-                </TagWrap>
-                <NewItemTitle>{item.title}</NewItemTitle>
-                <NewItemPriceWrap>
-                  <span>최고입찰가</span>
-                  <NewItemPrice>{item.nowPrice}원</NewItemPrice>
-                </NewItemPriceWrap>
-              </LastItem>
-            ))}
-          </LastList>
-        </ListContainer>
+            <LastList>
+              {auctionDeadlineList?.map((item) => (
+                <LastItem
+                  key={item.auctionId}
+                  onClick={() => moveAuctionDetail(item.auctionId)}
+                >
+                  <img
+                    src={item.multiImages[0]?.imgUrl}
+                    alt="auction-last-img"
+                  />
+                  <TagWrap>
+                    {item.delivery ? <span>택배</span> : null}
+                    {item.direct ? <span>직거래</span> : null}
+                    <TagRegion>{item.region}</TagRegion>
+                  </TagWrap>
+                  <NewItemTitle>{item.title}</NewItemTitle>
+                  <NewItemPriceWrap>
+                    <span>최고입찰가</span>
+                    <NewItemPrice>{item.nowPrice}원</NewItemPrice>
+                  </NewItemPriceWrap>
+                </LastItem>
+              ))}
+            </LastList>
+          </ListContainer>
+        )}
       </MainContent>
 
       <PlusButton />

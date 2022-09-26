@@ -32,13 +32,7 @@ const ChatList = () => {
     // dispatch(makeChatRoom());
     // dispatch(getChatRoomList());
 
-    if (!nickName) {
-      if (window.confirm("로그인이 필요합니다. 로그인하시겠습니까?")) {
-        navigate("/login");
-      }
-    } else {
-      dispatch(getChatRoomListByMember(nickName));
-    }
+    dispatch(getChatRoomListByMember(nickName));
   }, [JSON.stringify(chatRoomList)]);
 
   return (

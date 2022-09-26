@@ -50,7 +50,7 @@ const Notification = () => {
       {notifList.length > 0 ? (
         <NotifContent data={true}>
           {notifList?.map((item) => (
-            <NotifItem key={item.notifId} read={item.read}>
+            <NotifItem key={item.notifId} read={item.isRead}>
               {
                 {
                   COMMENT: <LogoClassic />,
@@ -59,11 +59,11 @@ const Notification = () => {
               }
 
               <NotifInfo
-                read={item.read}
-                onClick={() => onClickReadBtn(item.notifId)}
+                read={item.isRead}
+                onClick={() => onClickReadBtn(item.notificationId)}
               >
-                <NotifTitle>글 제목입니다 글 제목입니다</NotifTitle>
-                <span>내용입니다 내용입니다 내용입니다 내용입니다</span>
+                <NotifTitle>{item.title}</NotifTitle>
+                <span>{item.content}</span>
               </NotifInfo>
 
               <NotifTime>Time</NotifTime>

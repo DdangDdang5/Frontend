@@ -21,33 +21,38 @@ export const MainContent = styled.div`
 
 export const BannerContainer = styled.div`
   width: 100%;
-  height: fit-content;
+  height: 200px;
 `;
 
 export const EventBanner = styled.div`
-  background-color: #3e5acc;
+  height: 100%;
   position: relative;
 
+  background-color: #3e5acc;
+  border-radius: ${(props) => (props.isMain ? null : "8px")};
   overflow: hidden;
 
   svg {
     position: absolute;
-    top: 10px;
-    /* bottom: 10px; */
-    right: 10px;
+    top: ${(props) => (props.children[1].props.isMain ? "10px" : "5px")};
+    right: ${(props) => (props.children[1].props.isMain ? "10px" : "-8px")};
 
     z-index: 10;
+
+    transform: ${(props) =>
+      props.children[1].props.isMain ? null : "scale(0.9)"};
   }
 `;
 
 export const EventContent = styled.div`
-  height: 160px;
+  height: calc(100% - 40px);
   padding: 20px;
   background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0.8) 0%,
     rgba(0, 0, 0, 0.2) 100%
   );
+  border-radius: ${(props) => (props.isMain ? null : "8px")};
 
   color: ${(props) => props.theme.colors.White};
 
@@ -63,7 +68,7 @@ export const EventDate = styled.span`
   background: ${(props) => props.theme.colors.Blue1};
   border-radius: 100px;
 
-  font-size: ${(props) => props.theme.fontSizes.sm};
+  font-size: ${(props) => (props.isMain ? props.theme.fontSizes.sm : "12px")};
   text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
   line-height: 150%;
 `;
@@ -72,18 +77,19 @@ export const EventTitle = styled.span`
   width: 130px;
 
   font-weight: ${(props) => props.theme.fontWeights.bold};
-  font-size: ${(props) => props.theme.fontSizes.lg};
+  font-size: ${(props) =>
+    props.isMain ? props.theme.fontSizes.lg : props.theme.fontSizes.md};
   text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
   line-height: 125%;
 
-	font-family: "GmarketSansMedium";
+  font-family: "GmarketSansMedium";
 `;
 
 export const EventText = styled.div`
   width: 160px;
 
   font-weight: ${(props) => props.theme.fontWeights.normal};
-  font-size: 12px;
+  font-size: ${(props) => (props.isMain ? "12px" : "10px")};
   line-height: 140%;
 
   display: flex;

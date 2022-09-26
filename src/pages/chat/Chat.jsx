@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
+import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -47,11 +48,12 @@ const Chat = () => {
   const dispatch = useDispatch();
 
   const { roomId } = useParams();
-  const { auctionId, isDetail, title } = useLocation().state;
+  const { auctionId, auctionCreatedAt, auctionPeriod, isDetail, title } =
+    useLocation().state;
   const nickName = sessionStorage.getItem("memberNickname");
 
   const chatMessageList = useSelector(
-    (state) => state.chat.chatMessageList
+    (state) => state.chat.chatMessageList,
   ).filter((item) => item.roomId === roomId);
 
   const [visible, setVisible] = useState(false); // 채팅 메뉴 모달
@@ -85,6 +87,28 @@ const Chat = () => {
     scrollToBottom();
   }, [chatList]);
 
+  // 타이머 기능
+  const timer = (countDown) => {
+    const oneDay = 1 * 24 * 60 * 60 * 1000;
+    const fiveDay = oneDay * 5;
+    const sevenDay = oneDay * 7;
+    const startTime = Date.parse(auctionCreatedAt);
+    const dateTimeAfterOneDays = startTime + oneDay;
+    const dateTimeAfterFiveDays = startTime + fiveDay;
+    const dateTimeAfterSevenDays = startTime + sevenDay;
+
+    switch (countDown) {
+      case 1:
+        return dateTimeAfterOneDays;
+      case 5:
+        return dateTimeAfterFiveDays;
+      case 7:
+        return dateTimeAfterSevenDays;
+      default:
+        return <div>기간이 끝났습니다</div>;
+    }
+  };
+
   // 채팅 입력창 클릭
   const onClickInput = () => {
     // 비로그인 -> 세션에 닉네임 없음
@@ -100,17 +124,17 @@ const Chat = () => {
     setVisible(true);
   };
 
-	// 채팅 메뉴 모달 중 "거래 완료하기" 클릭
-	const onClickFinishMenu = () => {
+  // 채팅 메뉴 모달 중 "거래 완료하기" 클릭
+  const onClickFinishMenu = () => {
     setVisible(false);
     setOptionVisible(true);
-	}
+  };
 
-	// 경매 거래 완료
-	const onClickFinishAuction = () => {
-		dispatch(doneAuction(auctionId));
-		navigate(`/auctionReview/${auctionId}`);
-	}
+  // 경매 거래 완료
+  const onClickFinishAuction = () => {
+    dispatch(doneAuction(auctionId));
+    navigate(`/auctionReview/${auctionId}`);
+  };
 
   const calcTime = (createdAt) => {
     const date = new Date(createdAt);
@@ -131,15 +155,11 @@ const Chat = () => {
   };
 
   const scrollToBottom = () => {
-    // #root > div > div.sc-dUWWNf > div.sc-hsOonA.jcBIja
     window.document.body
-      .querySelector("#root > div > div.sc-eXBvqI > div.sc-iFwKgL.jXXPEx")
-      ?.scrollTo(
-        0,
-        document.body.querySelector(
-          "#root > div > div.sc-eXBvqI > div.sc-iFwKgL.jXXPEx",
-        ).scrollHeight,
-      );
+      .querySelector("#chat-content")
+      ?.scrollTo(0, document.body.querySelector("#chat-content").scrollHeight);
+
+    // scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' });
   };
 
   const handleValue = (event) => {
@@ -162,7 +182,7 @@ const Chat = () => {
     stompClient.subscribe(`/topic/chat/room/${roomId}`, onMessageReceived);
 
     // 채팅방 들어감
-    // userJoin();
+    userJoin();
 
     scrollToBottom();
   };
@@ -231,56 +251,67 @@ const Chat = () => {
           pageName={title}
           menu={true}
           onClickBtn={onClickMenu}
+          onClickTitle={() => navigate(`/auctionDetail/${auctionId}`)}
         />
 
         {/* 경매 남은 시간 */}
         {isDetail ? (
           <AuctionTimeWrap>
-            <span>남은시간</span>
-            <AuctionTime>5일 03:37</AuctionTime>
+            <span>남은 시간</span>
+            {/* <AuctionTime>5일 03:37</AuctionTime> */}
+
+            <CountdownTimer targetDate={timer(auctionPeriod)} />
           </AuctionTimeWrap>
         ) : null}
 
-        <ChatContent isDetail={isDetail}>
+        {/* 채팅 내역 */}
+        <ChatContent id="chat-content" isDetail={isDetail}>
           <ChatMessageList>
-            {chatList?.map((chat, idx) => (
-              <div key={idx}>
-                {chat.sender !== nickName ? (
-                  <ChatMessage>
-                    <MessageProfile
-                      src={
-                        chat.profileImgUrl
-                          ? chat.profileImgUrl
-                          : "/maskable.png"
-                      }
-                      alt="chat-profile"
-                    />
-                    <MessageWrap>
-                      <span>{checkNickname(chat.sender)}</span>
-                      <Message>
-                        <div>{chat.message}</div>
-                      </Message>
-                    </MessageWrap>
-                    <MessageInfo>
-                      {/* <MessageChecked>1</MessageChecked> */}
-                      <MessageTime>{calcTime(chat.createdAt)}</MessageTime>
-                    </MessageInfo>
-                  </ChatMessage>
-                ) : (
-                  <ChatMessage isMe={true}>
-                    <MessageInfo isMe={true}>
-                      {/* <MessageChecked>1</MessageChecked> */}
-                      <MessageTime>{calcTime(chat.createdAt)}</MessageTime>
-                    </MessageInfo>
-                    <MessageWrap>
-                      <Message isMe={true}>
-                        <div>{chat.message}</div>
-                      </Message>
-                    </MessageWrap>
-                  </ChatMessage>
-                )}
-              </div>
-            ))}
+            {chatList?.map(
+              (chat, idx) =>
+                chat.type === "TALK" && (
+                  <div key={idx}>
+                    {chat.sender !== nickName ? (
+                      <ChatMessage>
+                        <MessageProfile
+                          src={
+                            chat.profileImgUrl
+                              ? chat.profileImgUrl
+                              : "/maskable.png"
+                          }
+                          alt="chat-profile"
+                        />
+                        <MessageWrap>
+                          <span>{checkNickname(chat.sender)}</span>
+                          <Message>
+                            <div>{chat.message}</div>
+                          </Message>
+                        </MessageWrap>
+                        <MessageInfo>
+                          {/* <MessageChecked>1</MessageChecked> */}
+                          <MessageTime>
+                            {calcTime(chat.createdAtString)}
+                          </MessageTime>
+                        </MessageInfo>
+                      </ChatMessage>
+                    ) : (
+                      <ChatMessage isMe={true}>
+                        <MessageInfo isMe={true}>
+                          {/* <MessageChecked>1</MessageChecked> */}
+                          <MessageTime>
+                            {calcTime(chat.createdAtString)}
+                          </MessageTime>
+                        </MessageInfo>
+                        <MessageWrap>
+                          <Message isMe={true}>
+                            <div>{chat.message}</div>
+                          </Message>
+                        </MessageWrap>
+                      </ChatMessage>
+                    )}
+                  </div>
+                ),
+            )}
           </ChatMessageList>
         </ChatContent>
 
@@ -325,7 +356,7 @@ const Chat = () => {
           <ModalBtnWrap>
             <Button
               text="완료할래요"
-							_onClick={onClickFinishAuction}
+              _onClick={onClickFinishAuction}
               style={{
                 width: "100%",
                 ft_weight: "500",
@@ -334,7 +365,7 @@ const Chat = () => {
             />
             <Button
               text="취소"
-							_onClick={() => setOptionVisible(false)}
+              _onClick={() => setOptionVisible(false)}
               style={{
                 width: "100%",
                 color: "#646778",
