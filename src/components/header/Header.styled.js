@@ -26,7 +26,7 @@ export const HeaderContent = styled.div`
     height: 24px;
 
     path {
-      fill: ${(props) => props.theme.colors.Black};
+      fill: ${(props) => props.color ? props.color : props.theme.colors.Black};
     }
   }
 `;

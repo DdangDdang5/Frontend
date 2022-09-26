@@ -1,5 +1,5 @@
 // React import
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 // Redux import
 import {
@@ -19,6 +19,7 @@ import AuctionCategoryList from "../../components/auctionCategoryList/AuctionCat
 import SwipeImage from "../../components/swipeImage/SwipeImage";
 import { EventImg, Next } from "../../shared/images";
 import PlusButton from "../../elements/button/PlusButton";
+import Loading from "../loading/Loading";
 
 // Style import
 import {
@@ -57,6 +58,9 @@ const Main = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(true);
+  console.log(loading);
+
   const auctionAllList = useSelector((state) => state.auctionList.auctionList);
 
   const auctionHitList = useSelector(
@@ -69,10 +73,15 @@ const Main = () => {
     (state) => state.auctionList.auctionDeadlineList,
   );
 
+  const getAuctionData = async () => {
+    await dispatch(getAuctionHitList());
+    await dispatch(getAuctionNewList());
+    await dispatch(getAuctionDeadlineList());
+    await setLoading(false);
+  };
+
   useEffect(() => {
-    dispatch(getAuctionHitList());
-    dispatch(getAuctionNewList());
-    dispatch(getAuctionDeadlineList());
+    getAuctionData();
   }, [
     JSON.stringify(auctionAllList),
     // JSON.stringify(auctionHitList),
@@ -86,142 +95,153 @@ const Main = () => {
 
   return (
     <MainContainer>
-      <Header logo={true} search={true} alarm={true} />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <Header logo={true} search={true} alarm={true} />
 
-      <MainContent>
-        {/* 배너 */}
-        <BannerContainer>
-          {/* 마감임박 경매 배너 */}
-          {/* <SwipeImage isMain={true} data={auctionDeadlineList} height="100%" /> */}
+          <MainContent>
+            {/* 배너 */}
+            <BannerContainer>
+              {/* 마감임박 경매 배너 */}
+              {/* <SwipeImage isMain={true} data={auctionDeadlineList} height="100%" /> */}
 
-          {/* 이벤트 배너 */}
-          <EventBanner isMain={true}>
-            <FontEvent />
-            <EventContent isMain={true}>
-              <EventDate isMain={true}>09.26 ~ 10.02</EventDate>
-              <EventTitle isMain={true}>소중한 의견을 들려주세요!</EventTitle>
-              <EventText isMain={true}>
-                <span>추첨을 통해 총 5분께</span>
-                <span>교촌치킨 기프티콘을 드려요</span>
-              </EventText>
-            </EventContent>
-            <EventImg />
-            <EventCircle />
-          </EventBanner>
-        </BannerContainer>
+              {/* 이벤트 배너 */}
+              <EventBanner isMain={true} onClick={() => navigate("/event/1")}>
+                <FontEvent />
+                <EventContent isMain={true}>
+                  <EventDate isMain={true}>09.26 ~ 10.02</EventDate>
+                  <EventTitle isMain={true}>
+                    소중한 의견을 들려주세요!
+                  </EventTitle>
+                  <EventText isMain={true}>
+                    <span>추첨을 통해 총 5분께</span>
+                    <span>교촌치킨 기프티콘을 드려요</span>
+                  </EventText>
+                </EventContent>
+                <EventImg />
+                <EventCircle />
+              </EventBanner>
+            </BannerContainer>
 
-        {/* 카테고리별, 지역별 TOP 6 */}
-        <AuctionCategoryList isCategory={true} />
-        <AuctionCategoryList isCategory={false} />
+            {/* 카테고리별, 지역별 TOP 6 */}
+            <AuctionCategoryList isCategory={true} />
+            <AuctionCategoryList isCategory={false} />
 
-        {/* 인기 경매 */}
-        <ListContainer>
-          <ListHeader>지금 관심 폭발 중!</ListHeader>
+            {/* 인기 경매 */}
+            <ListContainer>
+              <ListHeader>지금 관심 폭발 중!</ListHeader>
 
-          <PopularList>
-            {auctionHitList?.map((item, idx) => (
-              <PopularItem
-                key={item.auctionId}
-                onClick={() => moveAuctionDetail(item.auctionId)}
-              >
-                <img
-                  src={item.multiImages[0]?.imgUrl}
-                  alt="auction-popular-img"
-                />
-                <PopularItemContent idx={idx}>
-                  <div>
-                    <TagWrap isPopular={true} idx={idx}>
-                      {item.delivery ? <span>택배</span> : null}
-                      {item.direct ? <span>직거래</span> : null}
-                      <span>{item.region}</span>
-                    </TagWrap>
-                    <PopularTitle>{item.title}</PopularTitle>
-                  </div>
-                  <PopularPriceWrap>
-                    <span>현재 입찰가</span>
-                    <PopularPrice>{item.nowPrice}원</PopularPrice>
-                  </PopularPriceWrap>
-                </PopularItemContent>
-              </PopularItem>
-            ))}
-          </PopularList>
-        </ListContainer>
+              <PopularList>
+                {auctionHitList?.map((item, idx) => (
+                  <PopularItem
+                    key={item.auctionId}
+                    onClick={() => moveAuctionDetail(item.auctionId)}
+                  >
+                    <img
+                      src={item.multiImages[0]?.imgUrl}
+                      alt="auction-popular-img"
+                    />
+                    <PopularItemContent idx={idx}>
+                      <div>
+                        <TagWrap isPopular={true} idx={idx}>
+                          {item.delivery ? <span>택배</span> : null}
+                          {item.direct ? <span>직거래</span> : null}
+                          <span>{item.region}</span>
+                        </TagWrap>
+                        <PopularTitle>{item.title}</PopularTitle>
+                      </div>
+                      <PopularPriceWrap>
+                        <span>현재 입찰가</span>
+                        <PopularPrice>{item.nowPrice}원</PopularPrice>
+                      </PopularPriceWrap>
+                    </PopularItemContent>
+                  </PopularItem>
+                ))}
+              </PopularList>
+            </ListContainer>
 
-        {/* 새로운 경매 */}
-        <ListContainer>
-          <ListHeader>
-            <span>따끈따끈 새로 올라온 경매!</span>
-            <ListHeaderMore onClick={() => navigate("/auctionList")}>
-              <span>전체 보기</span>
-              <Next />
-            </ListHeaderMore>
-          </ListHeader>
+            {/* 새로운 경매 */}
+            <ListContainer>
+              <ListHeader>
+                <span>따끈따끈 새로 올라온 경매!</span>
+                <ListHeaderMore onClick={() => navigate("/auctionList")}>
+                  <span>전체 보기</span>
+                  <Next />
+                </ListHeaderMore>
+              </ListHeader>
 
-          <NewList>
-            {auctionNewList?.map((item) => (
-              <NewItem
-                key={item.auctionId}
-                onClick={() => moveAuctionDetail(item.auctionId)}
-              >
-                <img src={item.multiImages[0]?.imgUrl} alt="auction-new-img" />
-                <NewItemContent>
-                  <TagWrap>
-                    {item.delivery ? <span>택배</span> : null}
-                    {item.direct ? <span>직거래</span> : null}
-                    <TagRegion>{item.region}</TagRegion>
-                  </TagWrap>
-                  <NewItemTitle>{item.title}</NewItemTitle>
-                  <NewItemPriceWrap>
-                    <span>입찰시작가</span>
-                    <NewItemPrice>{item.nowPrice}원</NewItemPrice>
-                  </NewItemPriceWrap>
-                </NewItemContent>
-              </NewItem>
-            ))}
-          </NewList>
-        </ListContainer>
+              <NewList>
+                {auctionNewList?.map((item) => (
+                  <NewItem
+                    key={item.auctionId}
+                    onClick={() => moveAuctionDetail(item.auctionId)}
+                  >
+                    <img
+                      src={item.multiImages[0]?.imgUrl}
+                      alt="auction-new-img"
+                    />
+                    <NewItemContent>
+                      <TagWrap>
+                        {item.delivery ? <span>택배</span> : null}
+                        {item.direct ? <span>직거래</span> : null}
+                        <TagRegion>{item.region}</TagRegion>
+                      </TagWrap>
+                      <NewItemTitle>{item.title}</NewItemTitle>
+                      <NewItemPriceWrap>
+                        <span>입찰시작가</span>
+                        <NewItemPrice>{item.nowPrice}원</NewItemPrice>
+                      </NewItemPriceWrap>
+                    </NewItemContent>
+                  </NewItem>
+                ))}
+              </NewList>
+            </ListContainer>
 
-        {/* 마감임박 경매 */}
-        {auctionDeadlineList.length > 0 && (
-          <ListContainer>
-            <ListHeader isLast={true}>
-              <span>서두르세요! 곧 경매가 끝나요</span>
-              <ListHeaderMore onClick={() => navigate("/auctionList")}>
-                <span>전체 보기</span>
-                <Next />
-              </ListHeaderMore>
-            </ListHeader>
+            {/* 마감임박 경매 */}
+            {auctionDeadlineList.length > 0 && (
+              <ListContainer>
+                <ListHeader isLast={true}>
+                  <span>서두르세요! 곧 경매가 끝나요</span>
+                  <ListHeaderMore onClick={() => navigate("/auctionList")}>
+                    <span>전체 보기</span>
+                    <Next />
+                  </ListHeaderMore>
+                </ListHeader>
 
-            <LastList>
-              {auctionDeadlineList?.map((item) => (
-                <LastItem
-                  key={item.auctionId}
-                  onClick={() => moveAuctionDetail(item.auctionId)}
-                >
-                  <img
-                    src={item.multiImages[0]?.imgUrl}
-                    alt="auction-last-img"
-                  />
-                  <TagWrap>
-                    {item.delivery ? <span>택배</span> : null}
-                    {item.direct ? <span>직거래</span> : null}
-                    <TagRegion>{item.region}</TagRegion>
-                  </TagWrap>
-                  <NewItemTitle>{item.title}</NewItemTitle>
-                  <NewItemPriceWrap>
-                    <span>최고입찰가</span>
-                    <NewItemPrice>{item.nowPrice}원</NewItemPrice>
-                  </NewItemPriceWrap>
-                </LastItem>
-              ))}
-            </LastList>
-          </ListContainer>
-        )}
-      </MainContent>
+                <LastList>
+                  {auctionDeadlineList?.map((item) => (
+                    <LastItem
+                      key={item.auctionId}
+                      onClick={() => moveAuctionDetail(item.auctionId)}
+                    >
+                      <img
+                        src={item.multiImages[0]?.imgUrl}
+                        alt="auction-last-img"
+                      />
+                      <TagWrap>
+                        {item.delivery ? <span>택배</span> : null}
+                        {item.direct ? <span>직거래</span> : null}
+                        <TagRegion>{item.region}</TagRegion>
+                      </TagWrap>
+                      <NewItemTitle>{item.title}</NewItemTitle>
+                      <NewItemPriceWrap>
+                        <span>최고입찰가</span>
+                        <NewItemPrice>{item.nowPrice}원</NewItemPrice>
+                      </NewItemPriceWrap>
+                    </LastItem>
+                  ))}
+                </LastList>
+              </ListContainer>
+            )}
+          </MainContent>
 
-      <PlusButton />
+          <PlusButton />
 
-      <Footer home={true} />
+          <Footer home={true} />
+        </>
+      )}
     </MainContainer>
   );
 };

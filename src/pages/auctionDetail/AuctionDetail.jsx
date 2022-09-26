@@ -171,10 +171,10 @@ const AuctionDetail = () => {
   };
 
   const onClickAuctionSeller = () => {
-    if (nickName && nickName === data?.member.nickName) {
+    if (nickName && nickName === data?.nickName) {
       navigate("/myPage");
     } else {
-      navigate(`/userProfile/${data?.member.id}`);
+      navigate(`/userProfile/${data?.memberId}`);
     }
   };
 
@@ -268,6 +268,7 @@ const AuctionDetail = () => {
           share={true}
           menu={true}
           onClickBtn={() => setIsMenuModal(!isMenuModal)}
+					color="#ffffff"
         />
 
         <DetailBodyWrap>

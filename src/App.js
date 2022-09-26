@@ -30,6 +30,7 @@ import Notification from "./pages/notification/Notification";
 import NotFound from "./pages/notFound/NotFound";
 import Event from "./pages/event/Event";
 import EventList from "./pages/eventList/EventList";
+import Loading from "./pages/loading/Loading";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
@@ -45,6 +46,7 @@ import Notifications from "./components/notification/Notification";
 import ReactNotificationComponent from "./components/notification/ReactNotification";
 import { ToastNotification } from "./pages/notification/ToastNotification";
 import { add } from "./redux/modules/NotificationSlice";
+
 
 function App() {
 	const dispatch = useDispatch();
@@ -99,6 +101,7 @@ function App() {
   );
 
   // console.log(notifToastList);
+	// const EventSource = NativeEventSource || EventSourcePolyfill;
 
   useEffect(() => {
     let url =
@@ -106,7 +109,7 @@ function App() {
       "/subscribe/" +
       sessionStorage.getItem("memberId");
     const sse = new EventSource(url);
-    // console.log(sse);
+    console.log(sse);
 
 		sse.onopen = (event) => {
 			console.log("connection opened", event);
@@ -181,6 +184,7 @@ function App() {
         <Route path="/notification" element={<Notification />} />
         <Route path="/event/:eventId" element={<Event />} />
         <Route path="/eventList" element={<EventList />} />
+        <Route path="/loading" element={<Loading />} />
       </Routes>
       {modal && <CategoryModal />}
     </AppContainer>

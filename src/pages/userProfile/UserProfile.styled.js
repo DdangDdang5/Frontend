@@ -8,6 +8,9 @@ export const UserProfileContent = styled.div`
 
   position: absolute;
   top: 70px;
+	bottom: 0;
+
+	overflow: scroll;
 `;
 
 export const UserProfileWrap = styled.div`

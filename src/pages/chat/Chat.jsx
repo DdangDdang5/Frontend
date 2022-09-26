@@ -16,6 +16,7 @@ import Button from "../../elements/button/Button";
 import { doneAuction } from "../../redux/modules/AuctionSlice";
 import { getChatMessageList } from "../../redux/modules/ChatSlice";
 import { Add, Send } from "../../shared/images";
+import Loading from "../loading/Loading";
 
 // Style import
 import {
@@ -56,6 +57,9 @@ const Chat = () => {
     (state) => state.chat.chatMessageList,
   ).filter((item) => item.roomId === roomId);
 
+  const [loading, setLoading] = useState(true);
+  // console.log(loading);
+
   const [visible, setVisible] = useState(false); // 채팅 메뉴 모달
   const [optionVisible, setOptionVisible] = useState(false);
 
@@ -68,14 +72,22 @@ const Chat = () => {
     createdAt: "",
   });
 
-  useEffect(() => {
-    registerUser();
+	const initialChat = async () => {
+		await setLoading(true);
+		await registerUser();
+		await scrollToBottom();
+		await setLoading(false);
+	}
 
-    scrollToBottom();
+  useEffect(() => {
+    // registerUser();
+
+    // scrollToBottom();
+		initialChat();
   }, []);
-
+	
   useEffect(() => {
-    dispatch(getChatMessageList(roomId));
+		dispatch(getChatMessageList(roomId));
 
     if (chatMessageList[0]?.data.length > 0) {
       chatList.push(...chatMessageList[0].data);
@@ -169,6 +181,7 @@ const Chat = () => {
 
   // 웹소켓 연결
   const registerUser = () => {
+		setLoading(true);
     var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
     stompClient = Stomp.over(sockJS);
     // stompClient.debug = null; // stompJS console.log 막기
@@ -246,98 +259,104 @@ const Chat = () => {
   return (
     <>
       <ChatContainer>
-        <Header
-          back={true}
-          pageName={title}
-          menu={true}
-          onClickBtn={onClickMenu}
-          onClickTitle={() => navigate(`/auctionDetail/${auctionId}`)}
-        />
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <Header
+              back={true}
+              pageName={title}
+              menu={true}
+              onClickBtn={onClickMenu}
+              onClickTitle={() => navigate(`/auctionDetail/${auctionId}`)}
+            />
 
-        {/* 경매 남은 시간 */}
-        {isDetail ? (
-          <AuctionTimeWrap>
-            <span>남은 시간</span>
-            {/* <AuctionTime>5일 03:37</AuctionTime> */}
+            {/* 경매 남은 시간 */}
+            {isDetail ? (
+              <AuctionTimeWrap>
+                <span>남은 시간</span>
+                {/* <AuctionTime>5일 03:37</AuctionTime> */}
 
-            <CountdownTimer targetDate={timer(auctionPeriod)} />
-          </AuctionTimeWrap>
-        ) : null}
+                <CountdownTimer targetDate={timer(auctionPeriod)} />
+              </AuctionTimeWrap>
+            ) : null}
 
-        {/* 채팅 내역 */}
-        <ChatContent id="chat-content" isDetail={isDetail}>
-          <ChatMessageList>
-            {chatList?.map(
-              (chat, idx) =>
-                chat.type === "TALK" && (
-                  <div key={idx}>
-                    {chat.sender !== nickName ? (
-                      <ChatMessage>
-                        <MessageProfile
-                          src={
-                            chat.profileImgUrl
-                              ? chat.profileImgUrl
-                              : "/maskable.png"
-                          }
-                          alt="chat-profile"
-                        />
-                        <MessageWrap>
-                          <span>{checkNickname(chat.sender)}</span>
-                          <Message>
-                            <div>{chat.message}</div>
-                          </Message>
-                        </MessageWrap>
-                        <MessageInfo>
-                          {/* <MessageChecked>1</MessageChecked> */}
-                          <MessageTime>
-                            {calcTime(chat.createdAtString)}
-                          </MessageTime>
-                        </MessageInfo>
-                      </ChatMessage>
-                    ) : (
-                      <ChatMessage isMe={true}>
-                        <MessageInfo isMe={true}>
-                          {/* <MessageChecked>1</MessageChecked> */}
-                          <MessageTime>
-                            {calcTime(chat.createdAtString)}
-                          </MessageTime>
-                        </MessageInfo>
-                        <MessageWrap>
-                          <Message isMe={true}>
-                            <div>{chat.message}</div>
-                          </Message>
-                        </MessageWrap>
-                      </ChatMessage>
-                    )}
-                  </div>
-                ),
-            )}
-          </ChatMessageList>
-        </ChatContent>
+            {/* 채팅 내역 */}
+            <ChatContent id="chat-content" isDetail={isDetail}>
+              <ChatMessageList>
+                {chatList?.map(
+                  (chat, idx) =>
+                    chat.type === "TALK" && (
+                      <div key={idx}>
+                        {chat.sender !== nickName ? (
+                          <ChatMessage>
+                            <MessageProfile
+                              src={
+                                chat.profileImgUrl
+                                  ? chat.profileImgUrl
+                                  : "/maskable.png"
+                              }
+                              alt="chat-profile"
+                            />
+                            <MessageWrap>
+                              <span>{checkNickname(chat.sender)}</span>
+                              <Message>
+                                <div>{chat.message}</div>
+                              </Message>
+                            </MessageWrap>
+                            <MessageInfo>
+                              {/* <MessageChecked>1</MessageChecked> */}
+                              <MessageTime>
+                                {calcTime(chat.createdAtString)}
+                              </MessageTime>
+                            </MessageInfo>
+                          </ChatMessage>
+                        ) : (
+                          <ChatMessage isMe={true}>
+                            <MessageInfo isMe={true}>
+                              {/* <MessageChecked>1</MessageChecked> */}
+                              <MessageTime>
+                                {calcTime(chat.createdAtString)}
+                              </MessageTime>
+                            </MessageInfo>
+                            <MessageWrap>
+                              <Message isMe={true}>
+                                <div>{chat.message}</div>
+                              </Message>
+                            </MessageWrap>
+                          </ChatMessage>
+                        )}
+                      </div>
+                    ),
+                )}
+              </ChatMessageList>
+            </ChatContent>
 
-        {/* 채팅 보내기 */}
-        <ChatFooter>
-          <Add className="add" />
-          <MessageInput
-            type="text"
-            placeholder="enter public message"
-            value={userData.message}
-            onChange={(event) => handleValue(event)}
-            onKeyDown={(event) => onKeyPress(event)}
-            onClick={onClickInput}
-          />
-          <SendBtn onClick={sendMessage}>
-            <Send />
-          </SendBtn>
-        </ChatFooter>
+            {/* 채팅 보내기 */}
+            <ChatFooter>
+              <Add className="add" />
+              <MessageInput
+                type="text"
+                placeholder="enter public message"
+                value={userData.message}
+                onChange={(event) => handleValue(event)}
+                onKeyDown={(event) => onKeyPress(event)}
+                onClick={onClickInput}
+              />
+              <SendBtn onClick={sendMessage}>
+                <Send />
+              </SendBtn>
+            </ChatFooter>
+          </>
+        )}
       </ChatContainer>
 
       {/* 메뉴 모달 */}
-      <OptionModal minHeight="200px" visible={visible} setVisible={setVisible}>
+      <OptionModal minHeight="100px" visible={visible} setVisible={setVisible}>
         <MenuItemList>
-          <MenuItem onClick={onClickFinishMenu}>거래 완료하기</MenuItem>
-          <MenuItem>차단하기</MenuItem>
-          <MenuItem>신고하기</MenuItem>
+          <MenuItem onClick={onClickFinishMenu}>평가하기</MenuItem>
+          {/* <MenuItem>차단하기</MenuItem>
+          <MenuItem>신고하기</MenuItem> */}
           <MenuItem onClick={onDisconnected}>채팅방 나가기</MenuItem>
         </MenuItemList>
       </OptionModal>
