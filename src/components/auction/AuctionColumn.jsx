@@ -5,8 +5,6 @@ import styled from "styled-components";
 const Auction = ({ data }) => {
   const navigate = useNavigate();
 
-  console.log(data);
-
   if (!data || !data?.auctionId) {
     return <></>;
   }

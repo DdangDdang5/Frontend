@@ -5,7 +5,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 //components import
-
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 

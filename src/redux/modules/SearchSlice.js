@@ -1,6 +1,5 @@
 // Redux import
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 
 // Shared import
 import api from "../../shared/Api";
@@ -20,8 +19,6 @@ export const recentSearchThunk = createAsyncThunk(
   async (payload, thunkAPI) => {
     const resData = await api
       .get(`/auction/recent-search`, payload)      
-      console.log(resData)
-
     return thunkAPI.fulfillWithValue(resData.data.data);
   }
 );

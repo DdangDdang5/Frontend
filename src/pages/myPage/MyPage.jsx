@@ -1,11 +1,19 @@
+// React import
 import React, { useEffect } from "react";
+
+// Redux import
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { _MyPageData } from "../../redux/modules/MyPageSlice";
+
+// Package import
+
+// Component import
 import Header from "../../components/header/Header";
 import styled from "styled-components";
 import Footer from "../../components/footer/Footer";
-import { useNavigate, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux/es/exports";
-import { _MyPageData, _MyPageInAuction } from "../../redux/modules/MyPageSlice";
+
+// Element & Shared import
 import { findGrade } from "../../shared/Grade";
 import {
   Event,
@@ -24,32 +32,12 @@ const MyPage = () => {
   const memberId = sessionStorage?.getItem("memberId");
 
   console.log(data);
-  useEffect(() => {
-    dispatch(_MyPageData(memberId));
-  }, [memberId]);
-
-  const Img = (
-    <img
-      src={
-        data?.profileImgUrl == null ? (
-          <svg
-            width="120"
-            height="120"
-            viewBox="0 0 120 120"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M120 60C120 76.99 112.94 92.32 101.6 103.24C100.35 104.44 99.05 105.59 97.69 106.68C97.5 106.84 97.31 106.99 97.12 107.14C96.24 107.84 95.33 108.51 94.41 109.16C84.66 115.99 72.8 120 60 120C47.2 120 35.34 115.99 25.59 109.16C24.67 108.52 23.76 107.85 22.88 107.15C22.69 107 22.5 106.85 22.31 106.69C20.95 105.6 19.65 104.45 18.4 103.25C7.06 92.32 0 76.99 0 60C0 26.86 26.86 0 60 0C93.14 0 120 26.86 120 60Z"
-              fill="#C5D0E1"
-            />
-          </svg>
-        ) : (
-          data?.profileImgUrl
-        )
-      }
-      alt=""
-    />
+  useEffect(
+    () => {
+      dispatch(_MyPageData(memberId));
+    },
+    [memberId, JSON.stringify[data]],
+    navigate
   );
 
   const handleLogout = () => {
@@ -435,7 +423,7 @@ const ListContainer = styled.div`
   .listIcon {
     display: flex;
     width: 24px;
-    height: 24px;
+    height: 30px;
     div {
       width: 100%;
       height: 100%;

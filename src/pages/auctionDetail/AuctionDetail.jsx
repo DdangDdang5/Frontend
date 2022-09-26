@@ -71,8 +71,6 @@ const AuctionDetail = () => {
     data.tags?.tag6,
   ];
 
-  // memberId !== data.member.id
-
   // 좋아요 기능
 
   useEffect(() => {
@@ -345,11 +343,13 @@ const AuctionDetail = () => {
         <DetailFooterWrap>
           {/* 타이머 기능 */}
           <DetailFooterTimeContainer>
-            <span>남은 시간</span>
             {data?.auctionStatus ? (
-              <CountdownTimer targetDate={timer(data.auctionPeriod)} />
+              <>
+                <span>남은 시간</span>
+                <CountdownTimer targetDate={timer(data.auctionPeriod)} />
+              </>
             ) : (
-              <div>경매가 마감되었습니다.</div>
+              <div className="auctionState">경매가 마감되었습니다.</div>
             )}
           </DetailFooterTimeContainer>
           <DetailFooterContainer>
@@ -740,7 +740,7 @@ const DetailFooterTimeContainer = styled.div`
     font-weight: ${(props) => props.theme.fontWeights.normal};
     line-height: 20px;
   }
-  h3 {
+  .auctionState {
     font-size: ${(props) => props.theme.fontSizes.lg};
     font-weight: ${(props) => props.theme.fontWeights.bold};
     line-height: 30px;

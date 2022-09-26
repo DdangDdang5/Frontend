@@ -2,10 +2,9 @@ import styled from "styled-components";
 
 export const SearchBox = styled.div`
   width: 100%;
-  height: fit-content;
   box-sizing: border-box;
   position: absolute;
-  margin-top: 47px;
+  margin-top: 20px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
@@ -56,7 +55,7 @@ export const SearchInputIcon = styled.div`
     position: absolute;
     color: ${(props) => props.theme.colors.Gray3};
     top: 50%;
-    left: 29px;
+    left: 40px;
     transform: translate(-50%, -50%);
   }
 `;
@@ -70,27 +69,10 @@ export const SearchFilterGroup = styled.div`
   margin-top: 36px;
 `;
 
-export const SearchFilterTitleSpan = styled.span`
-  width: 100%;
-  font-size: ${(props) => props.theme.fontSizes.md};
-  font-weight: ${(props) => props.theme.fontWeights.normal};
-  line-height: 140%;
-  margin-left: 5%;
-`;
-
 export const SearchFilterWrap = styled.div`
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-`;
-
-export const LoadingWrap = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-export const Loadingtext = styled.div`
-  margin-left: 5%;
 `;
 
 export const SearchItemList = styled.div`
@@ -146,4 +128,30 @@ export const SearchItemPriceWrap = styled.div`
 
 export const SearchItemPrice = styled.div`
   font-size: ${(props) => props.theme.fontSizes.md};
+`;
+
+export const SearchResultContainer = styled.div`
+  width: 100%;
+`;
+
+export const SearchResultBox = styled.div`
+  position: absolute;
+  box-sizing: border-box;
+  left: 2%;
+  right: 2.5%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 45%;
+  gap: 5px;
+`;
+
+export const SearchResultLogo = styled.div`
+  margin-bottom: 25px;
+`;
+export const SearchResultSpan = styled.span`
+  font-size: ${(props) => props.theme.fontSizes.md};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
+  font-family: "SpoqaHanSansNeo-Medium";
+  text-align: center;
 `;

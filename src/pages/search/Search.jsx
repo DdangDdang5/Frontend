@@ -32,22 +32,17 @@ import {
   SearchItemPrice,
   SearchItemList,
 } from "./Search.styled";
-
+import { NoSearch } from "../../shared/images";
+import styled from "styled-components";
 const Search = () => {
   const dispatch = useDispatch();
-  const searchList = useSelector((state) => state.search.data);
-
-  //최근 검색어 조회
-  // const recentSearch = useSelector((state) => console.log(state.search));
-
-  //인기검색어 조회
-  // const popularSearch = useSelector((state) => console.log(state.search));
-
   const navigate = useNavigate();
-  const token = getCookie("accessToken");
+  const searchList = useSelector((state) => state.search.data);
   const [keyword, setKeyword] = useState("");
   const [isSearch, setIsSearch] = useState(false);
+  const token = getCookie("accessToken");
 
+  // 검색 Enter
   const onKeyPress = (e) => {
     if (e.key === "Enter") {
       if (keyword === "") {
@@ -60,17 +55,15 @@ const Search = () => {
       setIsSearch(false);
     }
   };
-  // const addSearchText = useCallback(() => {
-  //   setPopular("");
-  // }, [popular]);
 
   useEffect(() => {}, [dispatch]);
 
+  // 경매 상세로 페이지 이동
   const moveAuctionDetail = (auctionId) => {
     navigate(`/auctionDetail/${auctionId}`);
   };
 
-  // 모두 지우기 버튼
+  // 검색어 모두 지우기
   const handleClearKeyword = () => {
     setKeyword([]);
   };
@@ -126,10 +119,11 @@ const Search = () => {
                 );
               })
             ) : isSearch ? (
-              <SearchResult></SearchResult>
+              <div>
+               <SearchResult/>
+              </div>
             ) : (
               <SearchHistory
-                onClearKeyword={handleClearKeyword}
               />
             )}
           </SearchFilterGroup>

@@ -1,3 +1,4 @@
+// React import
 import React from "react";
 
 const DateTimeDisplay = ({ value, type, isDanger }) => {
