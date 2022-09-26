@@ -10,7 +10,7 @@ const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
 
   const modalRef = useRef();
   const memberId = parseInt(sessionStorage?.getItem("memberId"));
-
+  console.log(data);
   // 모달 닫기
   const handleModalHide = (e) => {
     if (modalRef.current === e.target) {
@@ -22,7 +22,9 @@ const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
   const handleDelete = async () => {
     if (window.confirm("경매글을 삭제하시겠습니까?"))
       try {
-        const response = await dispatch(deleteAuctionItem(data.id)).unwrap();
+        const response = await dispatch(
+          deleteAuctionItem(data.auctionId)
+        ).unwrap();
         if (response) {
           return navigate(-1, { replace: true });
         }
@@ -39,7 +41,7 @@ const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
   return (
     <MenuModalLayout ref={modalRef} onClick={handleModalHide}>
       <MenuModalWrap>
-        {memberId === data.member.id ? (
+        {memberId === data.memberId ? (
           <>
             <div onClick={() => handleEdit()}>경매글 수정하기</div>
             <div onClick={() => handleDelete()}>경매글 삭제하기</div>

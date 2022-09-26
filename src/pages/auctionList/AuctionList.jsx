@@ -46,7 +46,8 @@ const AuctionList = () => {
     }
   }, [categoryName, regionName]);
 
-  const handleScroll = (e) => {
+  // 페이지 네이션
+  function handleScroll(e) {
     let scrollTopHandler = e.target.scrollTop;
     let clientHeightHandler = e.target.clientHeight;
     let scrollHeightHandler = e.target.scrollHeight;
@@ -57,7 +58,7 @@ const AuctionList = () => {
         }
       }
     }
-  };
+  }
 
   if (!AuctionListData) {
     return <></>;
@@ -68,8 +69,9 @@ const AuctionList = () => {
       <ListCategoryWrap>
         <CategoryWrap>
           <CategoryBtn
-            onClick={() => dispatch(showModal("categoryList"), _categoryList())}
-          >
+            onClick={() =>
+              dispatch(showModal("categoryList"), _categoryList())
+            }>
             <CategoryBtnText>{categoryName}</CategoryBtnText>
             <Open />
           </CategoryBtn>
@@ -78,8 +80,7 @@ const AuctionList = () => {
         <CategoryWrap>
           <CategoryBtn>
             <CategoryBtnText
-              onClick={() => dispatch(showModal("regionList"), _regionList())}
-            >
+              onClick={() => dispatch(showModal("regionList"), _regionList())}>
               {regionName}
             </CategoryBtnText>
             <Open />
@@ -117,10 +118,9 @@ const ListCategoryWrap = styled.div`
   display: flex;
   align-items: center;
   height: 48px;
-  margin-top: 70px;
+  margin: 70px 0px 12px 0px;
   padding: 0px 20px;
   gap: 8px;
-
   color: ${(props) => props.theme.colors.Black};
 `;
 
@@ -147,19 +147,16 @@ const CategoryBtn = styled.div`
   }
 `;
 
-const CategoryBtnIcon = styled.div`
-  margin: 11.53px 11.53px 11.53px 4px;
-  font-size: 12px;
-`;
-
 const CategoryBtnText = styled.div`
-  font-size: 16px;
   margin: 4px 4px 4px 12px;
-  /* width: 100%; */
+
+  font-size: ${(props) => props.theme.fontSizes.ms};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
+  line-height: 24px;
 `;
 
 const CategoryBtnTimeText = styled.div`
-  font-size: 16px;
+  font-size: ${(props) => props.theme.fontSizes.ms};
   padding: 4px 12px;
 `;
 

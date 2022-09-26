@@ -5,34 +5,30 @@ import { useNavigate } from "react-router-dom";
 const AuctionRow = ({ data, isAuction }) => {
   const navigate = useNavigate();
 
-  const Img = <img src={data.multiImages[0].imgUrl} alt="" />;
+  const Img = <img src={data?.multiImages[0].imgUrl} alt="" />;
 
   return (
     // {data.data == '' ? }
     <AuctionLayout>
       <Auction2Container
         onClick={() => {
-          navigate(`/auctionDetail/${data.auctionId}`);
+          navigate(`/auctionDetail/${data?.auctionId}`);
         }}>
         <ImgBox>{Img}</ImgBox>
         <ContentBox>
           <div className="contentNavBox">
             {data?.direct ? <div className="delivery">택배</div> : ""}
-            {data?.delivery ? <div className="region">직거래</div> : ""}
-            <div className="region">{data.region}</div>
+            {data?.delivery ? <div className="delivery">직거래</div> : ""}
+            <div className="region">{data?.region}</div>
           </div>
-          <div className="title">{data.title}</div>
+          <div className="title">{data?.title}</div>
           <div className="priceBox">
             <div>최근입찰가</div>
             <div className="price">5000원</div>
           </div>
         </ContentBox>
       </Auction2Container>
-      {isAuction ? (
-        <Action2Btn>거래 진행중</Action2Btn>
-      ) : (
-        <Action2Btn>거래 완료</Action2Btn>
-      )}
+      {isAuction ? "" : <Action2Btn>거래 완료</Action2Btn>}
     </AuctionLayout>
   );
 };
@@ -70,28 +66,29 @@ const ContentBox = styled.div`
     display: flex;
     flex-direction: row;
     gap: 5px;
+    align-items: center;
 
     .delivery {
       background-color: #4d71ff;
-      color: white;
+      color: ${(props) => props.theme.colors.White};
       border-radius: 100px;
       padding: 2px 6px;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: ${(props) => props.theme.fontSizes.sm};
+      font-weight: ${(props) => props.theme.fontWeights.medium};
     }
     .region {
       border: 1px solid #4d71ff;
       color: #4d71ff;
       border-radius: 100px;
       padding: 2px 6px;
-      font-size: 14px;
-      font-weight: 500;
+      font-size: ${(props) => props.theme.fontSizes.sm};
+      font-weight: ${(props) => props.theme.fontWeights.medium};
     }
   }
   .title {
     max-height: 25px;
-    font-size: 18px;
-    font-weight: 400;
+    font-size: ${(props) => props.theme.fontSizes.md};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
     align-items: center;
     overflow: hidden;
     white-space: nowrap;
@@ -104,13 +101,13 @@ const ContentBox = styled.div`
     align-items: center;
     gap: 4px;
     div {
-      font-size: 14px;
-      font-weight: 400;
+      font-size: ${(props) => props.theme.fontSizes.sm};
+      font-weight: ${(props) => props.theme.fontWeights.normal};
       color: #a5a9b6;
     }
     .price {
-      font-size: 18px;
-      font-weight: 500;
+      font-size: ${(props) => props.theme.fontSizes.md};
+      font-weight: ${(props) => props.theme.fontWeights.medium};
       color: black;
     }
   }

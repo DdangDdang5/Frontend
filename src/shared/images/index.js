@@ -25,6 +25,12 @@ import { ReactComponent as kakao } from "./icon/Kakao.svg";
 import { ReactComponent as noSearch } from "./icon/NoSearch.svg";
 import { ReactComponent as noAlarm } from "./icon/NoAlarm.svg";
 import { ReactComponent as notPage } from "./icon/NotPage.svg";
+import { ReactComponent as event } from "./icon/Event.svg";
+import { ReactComponent as notice } from "./icon/Notice.svg";
+import { ReactComponent as questions } from "./icon/Questions.svg";
+import { ReactComponent as profileEdit } from "./icon/ProfileEdit.svg";
+import { ReactComponent as login } from "./icon/Login.svg";
+import { ReactComponent as logout } from "./icon/Logout.svg";
 
 // Category import
 import { ReactComponent as accessory } from "./category/Accessory.svg";
@@ -74,6 +80,12 @@ export const Kakao = kakao;
 export const NoSearch = noSearch;
 export const NoAlarm = noAlarm;
 export const NotPage = notPage;
+export const Event = event;
+export const Notice = notice;
+export const Questions = questions;
+export const ProfileEdit = profileEdit;
+export const Login = login;
+export const Logout = logout;
 
 // category
 export const Accessory = accessory;
