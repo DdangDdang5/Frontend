@@ -3,7 +3,7 @@ import React from "react";
 
 // Package import
 import { useNavigate } from "react-router-dom";
-import { isIOS13 } from "react-device-detect";
+import { isIOS } from "react-device-detect";
 
 // Shared import
 import { Chat, Home, MyPage, Search } from "../../shared/images";
@@ -31,7 +31,7 @@ const Footer = ({ home, search, chat, myPage }) => {
   };
 
   return (
-    <FooterContainer isIOS={isIOS13}>
+    <FooterContainer isIOS={isIOS}>
       <FooterItemContainer>
         <FooterIcon onClick={() => navigate("/")}>
           {home ? <Home nowpage="true" /> : <Home />}

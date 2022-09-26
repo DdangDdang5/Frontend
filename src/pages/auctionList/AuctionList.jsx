@@ -12,7 +12,7 @@ import { auctionItemList } from "../../redux/modules/AuctionListSlice";
 // Package import
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { isIOS13 } from "react-device-detect";
+import { isIOS } from "react-device-detect";
 
 // Component import
 import Footer from "../../components/footer/Footer";
@@ -96,7 +96,7 @@ const AuctionList = () => {
           </CategoryBtn>
         </CategoryWrap>
       </ListCategoryWrap>
-      <ListContents onScroll={handleScroll} isIOS13={isIOS13}>
+      <ListContents onScroll={handleScroll} isIOS={isIOS}>
         {AuctionListData?.map((item, index) => {
           return (
             <AuctionColumn
@@ -171,7 +171,7 @@ const ListContents = styled.div`
   align-content: flex-start;
   justify-content: flex-start;
   height: ${(props) =>
-    props.isIOS13 ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
+    props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   overflow: auto;
   padding: 0px 10px;
 `;

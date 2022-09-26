@@ -7,14 +7,13 @@ import { _MyPageInAuction } from "../../redux/modules/MyPageSlice";
 
 // Package import
 import styled from "styled-components";
-import { isIOS13 } from "react-device-detect";
+import { isIOS } from "react-device-detect";
 
 // Component import
 import Header from "../../components/header/Header";
 import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
 import AuctionRow from "../../components/auction/AuctionRow";
-import AuctionBox from "../../components/auction/AuctionBox";
 
 function MyPageMyAuction() {
   const dispatch = useDispatch();
@@ -87,7 +86,7 @@ function MyPageMyAuction() {
         auctionIng={auctionIng}
         auctionDone={auctionDone}
       />
-      <MyAuctionBody onScroll={handleScroll} isIOS13={isIOS13}>
+      <MyAuctionBody onScroll={handleScroll} isIOS={isIOS}>
         <AuctionLayout>
           {shouldShownData?.length === 0 ? (
             <None>상품없음</None>
@@ -96,7 +95,7 @@ function MyPageMyAuction() {
               {shouldShownData?.map((item, index) => {
                 return (
                   <React.Fragment key={`${index}_${item.id}`}>
-                    <AuctionBox
+                    <AuctionRow
                       item={item}
                       index={index}
                       isAuction={isAuction}
@@ -122,7 +121,7 @@ const MyAuctionLayout = styled.div`
 const MyAuctionBody = styled.div`
   display: flex;
   height: ${(props) =>
-    props.isIOS13 ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
+    props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   flex-direction: column;
   overflow: scroll;
 `;

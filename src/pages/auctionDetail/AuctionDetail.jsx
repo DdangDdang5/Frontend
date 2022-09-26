@@ -98,8 +98,6 @@ const AuctionDetail = () => {
         date.setDate(date.getDate() + data.auctionPeriod)
       );
 
-      // console.log(data);
-      // console.log(date, data.auctionPeriod, deadline);
       if (deadline <= Date.now()) {
         dispatch(winAuctionItem(params.auctionId));
         console.log(bid);
@@ -772,7 +770,9 @@ const FooterLeftBox = styled.div`
   .priceBox {
     display: flex;
     align-items: flex-start;
+    justify-content: center;
     flex-direction: column;
+    height: 100%;
     .presentPrice {
       display: flex;
       font-size: ${(props) => props.theme.fontSizes.sm};

@@ -4,7 +4,7 @@ import React from "react";
 // Package import
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { isIOS13 } from "react-device-detect";
+import { isIOS13, isIPhone13, isIOS } from "react-device-detect";
 
 const PlusButton = () => {
   // const dispatch = useDispatch();
@@ -22,7 +22,7 @@ const PlusButton = () => {
   };
 
   return (
-    <PlusBtn onClick={() => handleWriteLogin()} isIOS13={isIOS13}>
+    <PlusBtn onClick={() => handleWriteLogin()} isIOS={isIOS}>
       <svg
         width="32"
         height="32"
@@ -42,7 +42,7 @@ const PlusBtn = styled.button`
   display: flex;
   position: absolute;
   z-index: 10;
-  bottom: ${(props) => (isIOS13 ? `100px` : `90px`)};
+  bottom: ${(props) => (isIOS ? `100px` : `90px`)};
   right: 20px;
 
   justify-content: center;

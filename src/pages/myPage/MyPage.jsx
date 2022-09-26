@@ -12,6 +12,7 @@ import { _MyPageData } from "../../redux/modules/MyPageSlice";
 import Header from "../../components/header/Header";
 import styled from "styled-components";
 import Footer from "../../components/footer/Footer";
+import MyPageList from "../../components/pageElement/MyPageList";
 
 // Element & Shared import
 import { findGrade } from "../../shared/Grade";
@@ -154,67 +155,39 @@ const MyPage = () => {
         )}
       </MyStateWrap>
       <MyProfileListWrap>
-        <ListContainer>
-          <div className="listIcon">
-            <div></div>
-          </div>
-          <div className="listTitle" onClick={() => navigate("/eventList")}>
-            이벤트
-          </div>
-        </ListContainer>
-        <ListContainer>
-          <div className="listIcon">
-            <div>
-              <Notice />
-            </div>
-          </div>
-          <div className="listTitle">공지사항</div>
-        </ListContainer>
-        <ListContainer>
-          <div className="listIcon">
-            <div>
-              <Questions />
-            </div>
-          </div>
-          <div className="listTitle">자주 묻는 질문</div>
-        </ListContainer>
-        <ListContainer>
-          <div className="listIcon">
-            <div>
-              <ProfileEdit />
-            </div>
-          </div>
-          <div
-            className="listTitle"
-            onClick={() => {
-              navigate("/profileEdit");
-            }}>
-            개인 정보 수정
-          </div>
-        </ListContainer>
+        <MyPageList
+          icon={<Notice />}
+          listName={`이벤트`}
+          onClick={() => navigate(`/eventList`)}
+        />
+        <MyPageList
+          icon={<Notice />}
+          listName={`공지사항`}
+          onClick={() => navigate(`/eventList`)}
+        />
+        <MyPageList
+          icon={<Questions />}
+          listName={`자주 묻는 질문`}
+          onClick={() => navigate(`/eventList`)}
+        />
+        <MyPageList
+          icon={<ProfileEdit />}
+          listName={`개인 정보 수정`}
+          onClick={() => navigate(`/profileEdit`)}
+        />
 
         {memberId === null ? (
-          <ListContainer>
-            <div className="listIcon">
-              <div>
-                <Login />
-              </div>
-            </div>
-            <div className="listTitle" onClick={() => handleLogIn()}>
-              로그인
-            </div>
-          </ListContainer>
+          <MyPageList
+            icon={<Login />}
+            listName={`로그인`}
+            onClick={() => handleLogIn()}
+          />
         ) : (
-          <ListContainer>
-            <div className="listIcon">
-              <div>
-                <Logout />
-              </div>
-            </div>
-            <div className="listTitle" onClick={() => handleLogout()}>
-              로그아웃
-            </div>
-          </ListContainer>
+          <MyPageList
+            icon={<Logout />}
+            listName={`로그아웃`}
+            onClick={() => handleLogout()}
+          />
         )}
       </MyProfileListWrap>
       <Footer myPage={true} />
@@ -413,27 +386,5 @@ const MyProfileListWrap = styled.div`
   margin: 0px 20px;
   gap: 40px;
 `;
-const ListContainer = styled.div`
-  display: flex;
-  gap: 8px;
-  justify-content: flex-start;
-  align-items: center;
 
-  .listIcon {
-    display: flex;
-    width: 24px;
-    height: 30px;
-    div {
-      width: 100%;
-      height: 100%;
-      border-radius: 24px;
-      background-color: ${(props) => props.theme.colors.SkyBlue};
-    }
-  }
-  .listTitle {
-    display: flex;
-    font-size: ${(props) => props.theme.fontSizes.ms};
-    font-weight: ${(props) => props.theme.fontWeights.normal};
-  }
-`;
 export default MyPage;
