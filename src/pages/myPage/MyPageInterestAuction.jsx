@@ -1,33 +1,36 @@
+// React import
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Header from "../../components/header/Header";
-import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
-import Footer from "../../components/footer/Footer";
+
+// Redux import
 import { _MyPageInterestAuction } from "../../redux/modules/MyPageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+// Package import
+import styled from "styled-components";
+
+// Component import
+import Header from "../../components/header/Header";
+import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
+import Footer from "../../components/footer/Footer";
 
 const MyPageInterestAuction = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
-    myPageInterest: myPageInterest,
+    myPageInterest: data,
     loading,
     paging,
     followingItem,
-  } = useSelector((state) => state?.myPage);
-  const data = myPageInterest;
+  } = useSelector((state) => state.myPage);
+  console.log("관심 데이터", data);
   const [isAuction, setIsAuction] = useState(true);
-
-  console.log(data);
 
   const [shouldShownData, setShouldShownData] = useState([]);
 
-  const auctionIng = data?.filter(
-    (data) => data?.auctionStatus === true
-  ).length;
+  const auctionIng = data?.filter((data) => data.auctionStatus === true).length;
   const auctionDone = data?.filter(
-    (data) => data?.auctionStatus === false
+    (data) => data.auctionStatus === false
   ).length;
 
   const handleScroll = (e) => {

@@ -1,10 +1,18 @@
+// React import
 import React, { useEffect, useRef, useState } from "react";
-import Header from "../../components/header/Header";
-import styled from "styled-components";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux/es/exports";
+
+// Redux import
 import { editMyPage, _MyPageData } from "../../redux/modules/MyPageSlice";
+import { useDispatch, useSelector } from "react-redux";
+
+// Package import
+import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+
+// Component import
+import Header from "../../components/header/Header";
+
+// Element & Shared import
 import { BasicProfile, Camera, Delete } from "../../shared/images";
 
 const ProfileEdit = () => {

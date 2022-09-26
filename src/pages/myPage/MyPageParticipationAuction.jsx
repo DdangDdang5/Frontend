@@ -1,51 +1,64 @@
+// React import
 import React, { useEffect, useState } from "react";
+
+// Redux import
+import { useDispatch, useSelector } from "react-redux";
+import { _MyPageParticipationAuction } from "../../redux/modules/MyPageSlice";
+
+// Package import
 import styled from "styled-components";
+
+// Component import
 import Header from "../../components/header/Header";
 import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux/es/exports";
-import { _MyPageParticipationAuction } from "../../redux/modules/MyPageSlice";
 
 const MyPageParticipationAuction = () => {
   const dispatch = useDispatch();
   const [isAuction, setIsAuction] = useState(true);
-  const data = useSelector((state) => state.myPage.myPageParticipation);
-
-  // console.log(data);
 
   const {
-    myPageParticipation: myPageParticipationData,
+    myPageParticipation: data,
     loading,
     paging,
     followingItem,
   } = useSelector((state) => state.myPage);
+
   const [shouldShownData, setShouldShownData] = useState([]);
+
+  const auctionIng = data?.filter(
+    (data) => data?.auctionStatus === true
+  ).length;
+  const auctionDone = data?.filter(
+    (data) => data?.auctionStatus === false
+  ).length;
+
+  console.log(data);
 
   useEffect(() => {
     dispatch(_MyPageParticipationAuction());
 
-    //   if (myPageParticipationData && myPageParticipationData.length > 0) {
-    //     myPageParticipationData?.map((item, index) => {
-    //       if (isAuction) {
-    //         if (item?.auctionStatus === true) {
-    //           setShouldShownData((prev) => {
-    //             return [...prev, item];
-    //           });
-    //         }
-    //       } else {
-    //         if (item?.auctionStatus === false) {
-    //           setShouldShownData((prev) => {
-    //             return [...prev, item];
-    //           });
-    //         }
-    //       }
-    //     });
-    //   }
-    //   return () => {
-    //     setShouldShownData([]);
-    //   };
-  }, [isAuction, JSON.stringify(myPageParticipationData)]);
+    if (data && data?.length > 0) {
+      data?.map((item, index) => {
+        if (isAuction) {
+          if (item?.auctionStatus === true) {
+            setShouldShownData((prev) => {
+              return [...prev, item];
+            });
+          }
+        } else {
+          if (item?.auctionStatus === false) {
+            setShouldShownData((prev) => {
+              return [...prev, item];
+            });
+          }
+        }
+      });
+    }
+    return () => {
+      setShouldShownData([]);
+    };
+  }, [isAuction, JSON.stringify(data)]);
 
   const handleScroll = (e) => {
     let scrollTopHandler = e.target.scrollTop;
@@ -63,10 +76,15 @@ const MyPageParticipationAuction = () => {
   return (
     <MyAuctionLayout>
       <Header back={true} pageName="참여 경매" alarm={true} />
-      <AuctionStateNav isAuction={isAuction} setIsAuction={setIsAuction} />
+      <AuctionStateNav
+        isAuction={isAuction}
+        setIsAuction={setIsAuction}
+        auctionIng={auctionIng}
+        auctionDone={auctionDone}
+      />
       <MyAuctionBody>
         <AuctionLayout onScroll={handleScroll}>
-          {data.data == null ? (
+          {data.length === 0 ? (
             <None>상품없음</None>
           ) : (
             <>
@@ -90,9 +108,9 @@ const MyPageParticipationAuction = () => {
                       </ContentBox>
                     </Auction2Container>
                     {isAuction ? (
-                      <Action2Btn>거래 진행중</Action2Btn>
+                      <></>
                     ) : (
-                      <Action2Btn>거래 완료</Action2Btn>
+                      <Action2Btn>채팅방 입장하기</Action2Btn>
                     )}
                   </React.Fragment>
                 );

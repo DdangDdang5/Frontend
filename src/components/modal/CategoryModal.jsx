@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 // Redux import
-import { hideModal, _regionList } from "../../redux/modules/ModalSlice";
+import { hideModal } from "../../redux/modules/ModalSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +12,6 @@ import styled from "styled-components";
 import {
   auctionCategoryList,
   auctionCategoryRegionList,
-  auctionItemList,
   auctionItemListNotPage,
   auctionRegionList,
 } from "../../redux/modules/AuctionListSlice";
@@ -172,9 +171,9 @@ const CategoryModalBodyItem = styled.div`
   align-items: center;
   height: 48px;
   /* width: 165px; */
-	width: 165px;
-	min-width: 48%;
-	max-width: 48%;
+  width: 165px;
+  min-width: 48%;
+  max-width: 48%;
 `;
 
 const CategoryModalBodyItemIn = styled.button`

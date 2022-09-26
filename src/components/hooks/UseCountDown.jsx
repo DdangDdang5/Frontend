@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+// React import
+import { useEffect, useState } from "react";
 
 const useCountdown = (targetDate) => {
   const countDownDate = new Date(targetDate).getTime();

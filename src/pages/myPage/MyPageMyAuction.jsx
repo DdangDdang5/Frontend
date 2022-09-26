@@ -1,12 +1,18 @@
+// React import
 import React, { useEffect, useState } from "react";
+
+// Redux import
+import { useDispatch, useSelector } from "react-redux";
+import { _MyPageInAuction } from "../../redux/modules/MyPageSlice";
+
+// Package import
 import styled from "styled-components";
+
+// Component import
 import Header from "../../components/header/Header";
 import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
 import AuctionRow from "../../components/auction/AuctionRow";
-import { useSelector } from "react-redux/es/exports";
-import { useDispatch } from "react-redux";
-import { _MyPageInAuction } from "../../redux/modules/MyPageSlice";
 
 function MyPageMyAuction() {
   const dispatch = useDispatch();
@@ -17,7 +23,8 @@ function MyPageMyAuction() {
     paging,
     followingItem,
   } = useSelector((state) => state.myPage);
-  console.log(myPageInData);
+
+  console.log("나의 데이터", myPageInData);
 
   const [shouldShownData, setShouldShownData] = useState([]);
 
