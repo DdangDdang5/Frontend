@@ -93,8 +93,7 @@ const MyPage = () => {
             )}
           </NickBox>
           <MyGradeImgWrap
-            onClick={() => memberId && navigate(`/myGrade/${memberId}`)}
-          >
+            onClick={() => memberId && navigate(`/myGrade/${memberId}`)}>
             <div></div>
             {findGrade(data?.trustGrade)}
           </MyGradeImgWrap>

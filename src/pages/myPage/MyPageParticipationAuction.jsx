@@ -7,6 +7,7 @@ import { _MyPageParticipationAuction } from "../../redux/modules/MyPageSlice";
 
 // Package import
 import styled from "styled-components";
+import { isIOS13 } from "react-device-detect";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -84,7 +85,7 @@ const MyPageParticipationAuction = () => {
         auctionDone={auctionDone}
       />
       <MyAuctionBody>
-        <AuctionLayout onScroll={handleScroll}>
+        <AuctionLayout onScroll={handleScroll} isIOS13={isIOS13}>
           {data.length === 0 ? (
             <None>상품없음</None>
           ) : (
@@ -112,7 +113,8 @@ const MyAuctionLayout = styled.div`
 `;
 const MyAuctionBody = styled.div`
   display: flex;
-  height: calc(100vh - 190px);
+  height: ${(props) =>
+    props.isIOS13 ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   flex-direction: column;
   overflow: scroll;
 `;

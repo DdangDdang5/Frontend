@@ -12,6 +12,7 @@ import { auctionItemList } from "../../redux/modules/AuctionListSlice";
 // Package import
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { isIOS13 } from "react-device-detect";
 
 // Component import
 import Footer from "../../components/footer/Footer";
@@ -36,6 +37,8 @@ const AuctionList = () => {
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
 
+  console.log("페이지", loading, paging, followingItem);
+
   useEffect(() => {
     dispatch(_categoryList());
 
@@ -51,6 +54,7 @@ const AuctionList = () => {
     let scrollTopHandler = e.target.scrollTop;
     let clientHeightHandler = e.target.clientHeight;
     let scrollHeightHandler = e.target.scrollHeight;
+    console.log(clientHeightHandler);
     if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
       if (!loading) {
         if (followingItem) {
@@ -92,7 +96,7 @@ const AuctionList = () => {
           </CategoryBtn>
         </CategoryWrap>
       </ListCategoryWrap>
-      <ListContents onScroll={handleScroll}>
+      <ListContents onScroll={handleScroll} isIOS13={isIOS13}>
         {AuctionListData?.map((item, index) => {
           return (
             <AuctionColumn
@@ -166,10 +170,10 @@ const ListContents = styled.div`
   flex-wrap: wrap;
   align-content: flex-start;
   justify-content: flex-start;
-  height: calc(100vh - 200px);
+  height: ${(props) =>
+    props.isIOS13 ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   overflow: auto;
   padding: 0px 10px;
-  /* border-bottom: ${({ category }) => (category ? "solid 2px blue;" : "")}; */
 `;
 
 export default AuctionList;

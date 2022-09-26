@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 // Package import
 import styled from "styled-components";
+import { isIOS13 } from "react-device-detect";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -24,7 +25,7 @@ const MyPageInterestAuction = () => {
     paging,
     followingItem,
   } = useSelector((state) => state.myPage);
-  console.log("관심 데이터", data);
+  console.log("관심 데이터", loading, paging, followingItem);
   const [isAuction, setIsAuction] = useState(true);
 
   const [shouldShownData, setShouldShownData] = useState([]);
@@ -36,8 +37,10 @@ const MyPageInterestAuction = () => {
 
   const handleScroll = (e) => {
     let scrollTopHandler = e.target.scrollTop;
+
     let clientHeightHandler = e.target.clientHeight;
     let scrollHeightHandler = e.target.scrollHeight;
+    console.log(scrollHeightHandler);
     if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
       if (!loading) {
         if (followingItem) {
@@ -81,7 +84,7 @@ const MyPageInterestAuction = () => {
         auctionIng={auctionIng}
         auctionDone={auctionDone}
       />
-      <MyAuctionBody onScroll={handleScroll}>
+      <MyAuctionBody onScroll={handleScroll} isIOS13={isIOS13}>
         <AuctionLayout>
           {shouldShownData?.length === 0 ? (
             <None>상품없음</None>
@@ -115,7 +118,8 @@ const MyAuctionLayout = styled.div`
 `;
 const MyAuctionBody = styled.div`
   display: flex;
-  height: calc(100vh - 190px);
+  height: ${(props) =>
+    props.isIOS13 ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   flex-direction: column;
   overflow: scroll;
 `;
