@@ -1,8 +1,13 @@
+// React import
 import React, { useRef } from "react";
-import styled from "styled-components";
+
+// Redux import
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
+
+// Package import
+import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
   const dispatch = useDispatch();

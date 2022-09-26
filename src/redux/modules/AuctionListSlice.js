@@ -85,6 +85,8 @@ export const editAuctionItem = createAsyncThunk(
 export const deleteAuctionItem = createAsyncThunk(
   "deleteAuctionItem",
   async (payload, thunkAPI) => {
+    console.log("111", payload);
+
     try {
       const response = await api.delete(`auction/${payload}`);
       return thunkAPI.fulfillWithValue(payload);

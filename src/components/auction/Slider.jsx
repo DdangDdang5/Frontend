@@ -1,4 +1,7 @@
+// React import
 import React, { useRef, useState } from "react";
+
+// Package import
 import styled from "styled-components";
 
 const Slider = ({ data }) => {

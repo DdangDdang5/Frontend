@@ -1,4 +1,7 @@
+// React import
 import React from "react";
+
+// Package import
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
@@ -28,7 +31,7 @@ const AuctionRow = ({ data, isAuction }) => {
           </div>
         </ContentBox>
       </Auction2Container>
-      {isAuction ? "" : <Action2Btn>거래 완료</Action2Btn>}
+      {isAuction ? "" : <Action2Btn>채팅방 입장하기</Action2Btn>}
     </AuctionLayout>
   );
 };

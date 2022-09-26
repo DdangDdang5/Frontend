@@ -31,6 +31,7 @@ export const _MyPageInAuction = createAsyncThunk(
       const response = await api.get(
         `/pagination/member/mypage/myauction?page=${paging}&size=6&sortBy=id&isAsc=false`
       );
+      console.log("나의 리스폰", response.data);
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
       }
@@ -50,6 +51,8 @@ export const _MyPageInterestAuction = createAsyncThunk(
       const response = await api.get(
         `/pagination/member/favorite?page=${paging}&size=6&sortBy=id&isAsc=false`
       );
+      console.log("관심 리스폰", response.data);
+
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
       }
@@ -69,7 +72,7 @@ export const _MyPageParticipationAuction = createAsyncThunk(
       const response = await api.get(
         `/pagination/member/mypage/participant?page=${paging}&size=6&sortBy=id&isAsc=false`
       );
-      console.log("슬라이스", response.data.data);
+      console.log("참여 리스폰", response.data);
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
       }
@@ -114,6 +117,7 @@ const myPageSlice = createSlice({
       console.log(action);
     },
     [_MyPageInAuction.fulfilled]: (state, action) => {
+      console.log("나의 액션", action);
       state.myPageIn = [...state.myPageIn, ...action.payload];
       state.loading = false;
       state.paging = state.paging + 1;
@@ -122,6 +126,7 @@ const myPageSlice = createSlice({
       console.log(action);
     },
     [_MyPageInterestAuction.fulfilled]: (state, action) => {
+      console.log("관심 액션", action);
       state.myPageInterest = [...state.myPageInterest, ...action.payload];
       state.loading = false;
       state.paging = state.paging + 1;
@@ -131,6 +136,7 @@ const myPageSlice = createSlice({
     },
 
     [_MyPageParticipationAuction.fulfilled]: (state, action) => {
+      console.log("참여 액션", action);
       state.myPageParticipation = [
         ...state.myPageParticipation,
         ...action.payload,

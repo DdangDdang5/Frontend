@@ -1,15 +1,18 @@
+// React import
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import styled from "styled-components";
-import Header from "../../components/header/Header";
-import { useSelector } from "react-redux/es/exports";
-import { useNavigate, useParams } from "react-router-dom";
-import { auctionDetailData } from "../../redux/modules/AuctionSlice";
+
+// Redux import
+import { useDispatch, useSelector } from "react-redux";
+import { editAuctionItem } from "../../redux/modules/AuctionListSlice";
 import { showModal, _regionList } from "../../redux/modules/ModalSlice";
-import {
-  addAuctionItem,
-  editAuctionItem,
-} from "../../redux/modules/AuctionListSlice";
+import { auctionDetailData } from "../../redux/modules/AuctionSlice";
+
+// Package import
+import styled from "styled-components";
+import { useNavigate, useParams } from "react-router-dom";
+
+// Component import
+import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 
 const AuctionEdit = () => {
@@ -18,7 +21,6 @@ const AuctionEdit = () => {
   const navigate = useNavigate();
   const data = useSelector((state) => state.auction.auction);
   console.log("배돌배돌", data);
-
   const auctionRequestDto = {
     title: data.title,
     content: data.content,

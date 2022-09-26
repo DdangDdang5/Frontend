@@ -20,7 +20,6 @@ import ChatList from "../src/pages/chatList/ChatList";
 import AuctionList from "../src/pages/auctionList/AuctionList";
 import AuctionWrite from "../src/pages/auctionWrite/AuctionWrite";
 import AuctionDetail from "../src/pages/auctionDetail/AuctionDetail";
-import AuctionDone from "../src/pages/auctionDone/AuctionDone";
 import AuctionReview from "./pages/auctionReview/AuctionReview";
 import MyGrade from "./pages/myGrade/MyGrade";
 import MyPageParticipationAuction from "./pages/myPage/MyPageParticipationAuction";
@@ -59,7 +58,6 @@ function App() {
         <Route path="/auctionWrite" element={<AuctionWrite />} />
         <Route path="/auctionEdit/:auctionId" element={<AuctionEdit />} />
         <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
-        <Route path="/auctionDone" element={<AuctionDone />} />
         <Route path="/auctionReview/:auctionId" element={<AuctionReview />} />
         <Route path="/member/kakao/callback" element={<Kakao />} />
         <Route path="/myGrade/:memberId" element={<MyGrade />} />

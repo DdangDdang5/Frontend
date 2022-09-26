@@ -1,12 +1,19 @@
+// React import
 import React, { useEffect, useState } from "react";
+
+// Redux import
+import { useDispatch, useSelector } from "react-redux";
+import { _MyPageInAuction } from "../../redux/modules/MyPageSlice";
+
+// Package import
 import styled from "styled-components";
+
+// Component import
 import Header from "../../components/header/Header";
 import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
 import AuctionRow from "../../components/auction/AuctionRow";
-import { useSelector } from "react-redux/es/exports";
-import { useDispatch } from "react-redux";
-import { _MyPageInAuction } from "../../redux/modules/MyPageSlice";
+import AuctionBox from "../../components/auction/AuctionBox";
 
 function MyPageMyAuction() {
   const dispatch = useDispatch();
@@ -17,7 +24,8 @@ function MyPageMyAuction() {
     paging,
     followingItem,
   } = useSelector((state) => state.myPage);
-  console.log(myPageInData);
+
+  console.log("나의 데이터", myPageInData);
 
   const [shouldShownData, setShouldShownData] = useState([]);
 
@@ -78,24 +86,28 @@ function MyPageMyAuction() {
         auctionIng={auctionIng}
         auctionDone={auctionDone}
       />
-      {shouldShownData?.length === 0 ? (
-        <None>상품없음</None>
-      ) : (
-        <>
-          <MyAuctionBody onScroll={handleScroll}>
-            {shouldShownData?.map((item, index) => {
-              return (
-                <AuctionRow
-                  isAuction={isAuction}
-                  key={`${item.auctionId}-${index}-${item.title}`}
-                  data={item}
-                />
-              );
-            })}
-          </MyAuctionBody>
-        </>
-      )}
-
+      <MyAuctionBody onScroll={handleScroll}>
+        <AuctionLayout>
+          {shouldShownData?.length === 0 ? (
+            <None>상품없음</None>
+          ) : (
+            <>
+              {shouldShownData?.map((item, index) => {
+                return (
+                  <React.Fragment key={`${index}_${item.id}`}>
+                    <AuctionBox
+                      item={item}
+                      index={index}
+                      isAuction={isAuction}
+                    />
+                    {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
+                  </React.Fragment>
+                );
+              })}
+            </>
+          )}
+        </AuctionLayout>
+      </MyAuctionBody>
       <Footer />
     </MyAuctionLayout>
   );
@@ -108,15 +120,38 @@ const MyAuctionLayout = styled.div`
 `;
 const MyAuctionBody = styled.div`
   display: flex;
-  height: calc(100vh - 180px);
+  height: calc(100vh - 190px);
   flex-direction: column;
   overflow: scroll;
 `;
+const AuctionLayout = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 0px 20px;
+  height: 100%;
+`;
+
 const None = styled.div`
   display: flex;
   width: 100%;
   justify-content: center;
   align-items: center;
+`;
+
+const ActionBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 40px;
+  margin-bottom: 32px;
+  background-color: white;
+  border: 1px solid #4d71ff;
+  border-radius: 8px;
+  color: #4d71ff;
 `;
 
 export default MyPageMyAuction;
