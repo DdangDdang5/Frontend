@@ -44,7 +44,7 @@ const actionDivisionSlice = createSlice({
 
   extraReducers: {
     [categoryHitList.fulfilled]: (state, action) => {
-      state.categoryList = action.payload.map((item) => {
+      state.categoryList = action.payload?.map((item) => {
         switch (item.categoryName) {
 					case "전체품목":
 						return {...item, categoryName: "전체 품목"};
@@ -70,7 +70,7 @@ const actionDivisionSlice = createSlice({
     },
 
     [regionHitList.fulfilled]: (state, action) => {
-      state.regionList = action.payload.map((item) => {
+      state.regionList = action.payload?.map((item) => {
         switch (item.regionName) {
 					case "서울전체":
 						return {...item, regionName: "서울 전체"};

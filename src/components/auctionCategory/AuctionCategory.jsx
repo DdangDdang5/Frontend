@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 // Shared import
 import { ReactComponent as LogoClassic } from "../../shared/images/logo/LogoClassic.svg";
 
+
 import Accessory from "../../shared/images/category/Accessory.svg";
 import Beauty from "../../shared/images/category/Beauty.svg";
 import Digital from "../../shared/images/category/Digital.svg";
@@ -56,7 +57,7 @@ import Yongsan from "../../shared/images/region/Yongsan.svg";
 
 
 // Style import
-import { CategoryItem } from "./AuctionCategory.styled";
+import { CategoryItem, CategoryName } from "./AuctionCategory.styled";
 
 const AuctionCategory = ({ division, divisionName }) => {
   const navigate = useNavigate();
@@ -147,7 +148,7 @@ const AuctionCategory = ({ division, divisionName }) => {
 				"용산구": <img src={Yongsan} />,
 			}[divisionName]}
 
-      <span>{divisionName}</span>
+      <CategoryName length={divisionName.length}>{divisionName}</CategoryName>
     </CategoryItem>
   );
 };

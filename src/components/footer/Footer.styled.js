@@ -7,9 +7,9 @@ export const FooterContainer = styled.div`
 
   background-color: white;
   border-top: 1px solid gray;
-  
-	position: absolute;
-  bottom: 0;
+
+  position: absolute;
+  bottom: ${(props) => (props.isIOS ? "20px" : "0")};
   z-index: 1;
 `;
 
@@ -26,26 +26,32 @@ export const FooterIcon = styled.div`
   height: 90%;
   margin: auto;
 
-	color: ${(props) => props.theme.colors.Gray3};
-	font-size: 12px;
-	font-weight: ${(props) => props.theme.fontWeights.normal};
+  color: ${(props) => props.theme.colors.Gray3};
+  font-size: 12px;
+  font-weight: ${(props) => props.theme.fontWeights.normal};
 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-	gap: 3px;
+  gap: 3px;
 
-	svg {
-		width: 24px;
-		height: 24px;
+  svg {
+    width: 24px;
+    height: 24px;
 
-		path {
-			fill: ${(props) => props.children[0].props.nowpage ? props.theme.colors.Blue1 : props.theme.colors.Gray3} !important;
-		}
-	}
+    path {
+      fill: ${(props) =>
+        props.children[0].props.nowpage
+          ? props.theme.colors.Blue1
+          : props.theme.colors.Gray3} !important;
+    }
+  }
 
-	span {
-		color: ${(props) => props.children[0].props.nowpage ? props.theme.colors.Blue1 : props.theme.colors.Gray3} !important;
-	}
+  span {
+    color: ${(props) =>
+      props.children[0].props.nowpage
+        ? props.theme.colors.Blue1
+        : props.theme.colors.Gray3} !important;
+  }
 `;

@@ -37,7 +37,7 @@ import {
 
 const AuctionReview = () => {
   const dispatch = useDispatch();
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { auctionId } = useParams();
 
@@ -95,24 +95,26 @@ const AuctionReview = () => {
   // 경매 평가 저장 버튼 클릭
   const onClickSaveReview = () => {
     if (checkedAll) {
-      const valueSum = checked.value.reduce((a, b) => a + b);
+      if (window.confirm("평가를 완료하시겠습니까?")) {
+        const valueSum = checked.value.reduce((a, b) => a + b);
 
-      dispatch(
-        reviewAuction({
-          auctionId: auctionId,
-          data: {
-            trustPoint: valueSum,
-          },
-        }),
-      ).then((res) => {
-				if (res.payload.statusCode === 200) {
-					if (res.payload.data.split("가")[0] === "판매자") {
-						navigate("/myPageMyAuction");
-					} else {
-						navigate("/myPageParticipationAuction");
-					}
-				}
-			});
+        dispatch(
+          reviewAuction({
+            auctionId: auctionId,
+            data: {
+              trustPoint: valueSum,
+            },
+          }),
+        ).then((res) => {
+          if (res.payload.statusCode === 200) {
+            if (res.payload.data.split("가")[0] === "판매자") {
+              navigate("/myPageMyAuction");
+            } else {
+              navigate("/myPageParticipationAuction");
+            }
+          }
+        });
+      }
     } else {
       window.alert("평가 항목을 전부 선택해주세요.");
     }

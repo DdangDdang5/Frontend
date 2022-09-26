@@ -92,7 +92,9 @@ const MyPage = () => {
               </>
             )}
           </NickBox>
-          <MyGradeImgWrap onClick={() => navigate(`/myGrade/${memberId}`)}>
+          <MyGradeImgWrap
+            onClick={() => memberId && navigate(`/myGrade/${memberId}`)}
+          >
             <div></div>
             {findGrade(data?.trustGrade)}
           </MyGradeImgWrap>
@@ -155,11 +157,11 @@ const MyPage = () => {
       <MyProfileListWrap>
         <ListContainer>
           <div className="listIcon">
-            <div>
-              <Event />
-            </div>
+            <div></div>
           </div>
-          <div className="listTitle">이벤트</div>
+          <div className="listTitle" onClick={() => navigate("/eventList")}>
+            이벤트
+          </div>
         </ListContainer>
         <ListContainer>
           <div className="listIcon">

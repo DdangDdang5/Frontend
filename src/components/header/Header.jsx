@@ -52,19 +52,23 @@ const Header = ({
   save,
   onClickBtn,
   onClickSave,
+  onClickTitle,
+	color
 }) => {
   const navigate = useNavigate();
 
   return (
     <HeaderContainer>
-      <HeaderContent>
+      <HeaderContent color={color}>
         {/* left */}
         <HeaderTitle>
           {back ? <Back onClick={() => navigate(-1)} /> : null}
           {close ? (
             <Close className="close" onClick={() => navigate(-1)} />
           ) : null}
-          {pageName ? <PageTitle>{pageName}</PageTitle> : null}
+          {pageName ? (
+            <PageTitle onClick={onClickTitle}>{pageName}</PageTitle>
+          ) : null}
           {logo ? (
             <Logo className="logo" onClick={() => navigate("/")}>
               땅땅
@@ -75,7 +79,7 @@ const Header = ({
         {/* right */}
         <HeaderIconContainer>
           {search ? <Search onClick={() => navigate("/search")} /> : null}
-          {alarm ? <Alarm /> : null}
+          {alarm ? <Alarm onClick={() => navigate("/notification")} /> : null}
           {share ? <Share /> : null}
           {menu ? <Menu onClick={onClickBtn} /> : null}
           {save ? (

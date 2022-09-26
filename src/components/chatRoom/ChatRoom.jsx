@@ -14,6 +14,7 @@ import {
   ChatRoomMessageWrap,
   ChatRoomNickname,
   ChatRoomProfile,
+  ChatRoomTime,
 } from "./ChatRoom.styled";
 
 const ChatRoom = ({ room }) => {
@@ -33,15 +34,22 @@ const ChatRoom = ({ room }) => {
     <ChatRoomContainer
       onClick={() =>
         navigate(`/chat/${room.roomId}`, {
-          state: { auctionId: room.auctionId, isDetail: false, title: room.roomName },
+          state: {
+            auctionId: room.auctionId,
+            isDetail: false,
+            title: room.auctionTitle,
+          },
         })
       }
     >
-      <ChatRoomProfile src={room.multiImages ? room.multiImages[0].imgUrl : "maskable.png"} alt="profile" />
+      <ChatRoomProfile
+        src={room.multiImages ? room.multiImages[0].imgUrl : "maskable.png"}
+        alt="profile"
+      />
       <ChatRoomContent>
         <ChatRoomInfo>
           <ChatRoomNickname>{room.auctionTitle}</ChatRoomNickname>
-          <span>{calcTime(room.createdAt)}</span>
+          <ChatRoomTime>{calcTime(room.createdAt)}</ChatRoomTime>
         </ChatRoomInfo>
         <ChatRoomMessageWrap>
           <ChatRoomMessage>

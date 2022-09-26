@@ -14,12 +14,22 @@ export const CategoryItem = styled.div`
   svg {
     width: 56px;
     height: 56px;
-    /* border-radius: 30px; */
   }
+	
+  img {
+    width: 60px;
+    height: 56px;
+  }
+`;
 
-  span {
-    width: 70px;
-    font-size: ${(props) => props.theme.fontSizes.sm};
-		font-weight: ${(props) => props.theme.fontWeights.normal};
-  }
+export const CategoryName = styled.span`
+	width: 76px;
+	height: 20px;
+
+	font-size: ${(props) => props.length > 6 ? "12px" : props.theme.fontSizes.sm};
+	font-weight: ${(props) => props.theme.fontWeights.normal};
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 `;
