@@ -1,57 +1,50 @@
-// React import
 import React from "react";
-
-// Package import
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const AuctionRow = ({ data, isAuction }) => {
+const AuctionRow = ({ item, index, isAuction }) => {
   const navigate = useNavigate();
+  console.log("22222", item);
 
-  const Img = <img src={data?.multiImages[0].imgUrl} alt="" />;
-
+  if (!item || !item?.auctionId) {
+    return <></>;
+  }
   return (
-    // {data.data == '' ? }
-    <AuctionLayout>
-      <Auction2Container
-        onClick={() => {
-          navigate(`/auctionDetail/${data?.auctionId}`);
-        }}>
-        <ImgBox>{Img}</ImgBox>
-        <ContentBox>
-          <div className="contentNavBox">
-            {data?.direct ? <div className="delivery">택배</div> : ""}
-            {data?.delivery ? <div className="delivery">직거래</div> : ""}
-            <div className="region">{data?.region}</div>
-          </div>
-          <div className="title">{data?.title}</div>
-          <div className="priceBox">
-            <div>최근입찰가</div>
-            <div className="price">5000원</div>
-          </div>
-        </ContentBox>
-      </Auction2Container>
-      {isAuction ? "" : <Action2Btn>채팅방 입장하기</Action2Btn>}
-    </AuctionLayout>
+    <AuctionContainer
+      state={isAuction}
+      onClick={() => {
+        navigate(`/auctionDetail/${item?.auctionId}`);
+      }}>
+      <ImgBox>
+        <img src={item.multiImages[0].imgUrl} alt="" />
+      </ImgBox>
+      <ContentBox>
+        <div className="contentNavBox">
+          {item.delivery ? <div className="delivery">택배</div> : <></>}
+          {item.direct ? <div className="delivery">직거래</div> : <></>}
+          <div className="region">{item.region}</div>
+        </div>
+        <div className="title">{item.content}</div>
+        <div className="priceBox">
+          <div>최근입찰가</div>
+          <div className="price">{item.startPrice}</div>
+        </div>
+      </ContentBox>
+    </AuctionContainer>
   );
 };
 
-const AuctionLayout = styled.div`
+const AuctionContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
-  padding: 0px 20px;
-`;
-const Auction2Container = styled.div`
-  display: flex;
-  width: 350px;
+  flex-direction: row;
   gap: 18px;
-  margin-bottom: 15px;
+  width: 100%;
+  margin-bottom: ${(props) => (props.state ? `32px` : `20px`)};
 `;
 
 const ImgBox = styled.div`
   display: flex;
+
   img {
     width: 75px;
     height: 75px;
@@ -61,43 +54,43 @@ const ImgBox = styled.div`
 const ContentBox = styled.div`
   display: flex;
   flex-direction: column;
-  min-width: 277px;
-  height: 75px;
+  width: 100%;
   gap: 4px;
 
   .contentNavBox {
     display: flex;
     flex-direction: row;
     gap: 5px;
-    align-items: center;
 
     .delivery {
-      background-color: #4d71ff;
-      color: ${(props) => props.theme.colors.White};
-      border-radius: 100px;
       padding: 2px 6px;
+      border-radius: 100px;
+      background-color: ${(props) => props.theme.colors.Blue1};
+      color: ${(props) => props.theme.colors.White};
       font-size: ${(props) => props.theme.fontSizes.sm};
       font-weight: ${(props) => props.theme.fontWeights.medium};
     }
     .region {
-      border: 1px solid #4d71ff;
-      color: #4d71ff;
-      border-radius: 100px;
       padding: 2px 6px;
+      border: 1px solid #4d71ff;
+      border-radius: 100px;
+      color: ${(props) => props.theme.colors.Blue1};
       font-size: ${(props) => props.theme.fontSizes.sm};
       font-weight: ${(props) => props.theme.fontWeights.medium};
     }
   }
   .title {
     max-height: 25px;
-    font-size: ${(props) => props.theme.fontSizes.md};
-    font-weight: ${(props) => props.theme.fontWeights.normal};
     align-items: center;
+
     overflow: hidden;
     white-space: nowrap;
     -webkit-line-clamp: 1;
     max-lines: 1;
     text-overflow: ellipsis;
+
+    font-size: ${(props) => props.theme.fontSizes.md};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
   }
   .priceBox {
     display: flex;
@@ -106,26 +99,14 @@ const ContentBox = styled.div`
     div {
       font-size: ${(props) => props.theme.fontSizes.sm};
       font-weight: ${(props) => props.theme.fontWeights.normal};
-      color: #a5a9b6;
+      color: ${(props) => props.theme.colors.Gray3};
     }
     .price {
       font-size: ${(props) => props.theme.fontSizes.md};
       font-weight: ${(props) => props.theme.fontWeights.medium};
-      color: black;
+      color: ${(props) => props.theme.colors.Black};
     }
   }
 `;
-const Action2Btn = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  box-sizing: border-box;
-  height: 40px;
-  margin-bottom: 20px;
-  background-color: white;
-  border: 1px solid #4d71ff;
-  border-radius: 8px;
-  color: #4d71ff;
-`;
+
 export default AuctionRow;

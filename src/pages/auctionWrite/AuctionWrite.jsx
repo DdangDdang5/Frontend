@@ -3,6 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 
 // Package import
 import { useNavigate } from "react-router-dom";
+import { isIOS } from "react-device-detect";
 
 //components import
 import Footer from "../../components/footer/Footer";
@@ -169,7 +170,7 @@ const AuctionWrite = () => {
         onClickSave={onTransmitHandler}
       />
 
-      <AuctionWriteWrap>
+      <AuctionWriteWrap isIOS={isIOS}>
         <WriteImgContainer>
           <ImgBoxBtn>
             <label className="inBoxBtnContainer" htmlFor="img_UpFile">
@@ -369,7 +370,8 @@ const AuctionWriteWrap = styled.div`
   margin-top: 70px;
   padding: 0px 20px;
 
-  height: calc(100vh - 140px);
+  height: ${(props) =>
+    props.isIOS ? `calc(100vh - 160px)` : `calc(100vh - 150px)`};
   overflow: scroll;
   .form {
     display: flex;

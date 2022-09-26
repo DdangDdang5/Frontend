@@ -64,7 +64,7 @@ const ProfileEdit = () => {
       editMyPage({ memberId: memberId, formData: formData })
     ).unwrap();
     if (data) {
-      window.alert("새 게시물 만들기 완료");
+      window.alert("프로필 변경이 완료되었습니다");
       // 포스팅 완료후 새로고침
       navigate(-1, { replace: true });
     }

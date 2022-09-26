@@ -9,7 +9,7 @@ export const FooterContainer = styled.div`
   border-top: 1px solid gray;
 
   position: absolute;
-  bottom: ${(props) => (props.isIOS ? "20px" : "0")};
+  bottom: ${(props) => (props.isIOS ? "10px" : "0")};
   z-index: 1;
 `;
 
