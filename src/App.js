@@ -200,66 +200,6 @@ function App() {
 
 const AppContainer = styled.div`
   font-family: "SpoqaHanSansNeo-Regular";
-<<<<<<< HEAD
-`;
-
-const AppContent = styled.div`
-  @media all and (max-width: 359px) {
-    display: none;
-  }
-`;
-
-const SmallApp = styled.div`
-	@media all and (min-width: 360px) {
-    display: none;
-  }
-
-	@media all and (max-width: 359px) {
-    width: 100%;
-		height: 100vh;
-
-		color: #3A3A3A;
-		background-color: #EBEEF3;
-		font-weight: 400;
-		font-size: 18px;
-		line-height: 140%;
-
-		position: relative;
-
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		gap: 70px;
-  }
-`;
-
-const SmallAppContent = styled.div`
-	position: relative;
-
-	div {
-		width: 74px;
-		height: 74px;
-		background-color: #FFFFFF;
-		border-radius: 50%;
-
-		position: absolute;
-		top: 40%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
-
-	img {
-		width: 100px;
-		height: 100px;
-
-		position: absolute;
-		top: 40%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
-=======
->>>>>>> dev
 `;
 
 const AppContent = styled.div`
