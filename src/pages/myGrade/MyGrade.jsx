@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 // Package import
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { isIOS } from "react-device-detect";
 
 // Component import
 import Footer from "../../components/footer/Footer";
@@ -62,7 +63,7 @@ const MyGrade = () => {
     <MyGradeContainer>
       <Header close={true} pageName="신뢰도 안내" />
 
-      <MyGradeContent>
+      <MyGradeContent isIOS={isIOS}>
         <MyGradeImgWrap>
           <div></div>
           {findGrade(trustPoint?.trustGrade)}

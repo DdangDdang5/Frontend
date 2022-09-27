@@ -186,6 +186,9 @@ const auctionListSlice = createSlice({
     noFollowingItem: (state, action) => {
       state.followingItem = false;
     },
+		initialPaging: (state, action) => {
+			state.paging = 1;
+		}
   },
   extraReducers: {
     [auctionItemListNotPage.fulfilled]: (state, action) => {
@@ -293,6 +296,6 @@ const auctionListSlice = createSlice({
   },
 });
 
-const { noFollowingItem } = auctionListSlice.actions;
+export const { noFollowingItem, initialPaging } = auctionListSlice.actions;
 
 export default auctionListSlice.reducer;

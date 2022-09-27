@@ -10,6 +10,7 @@ import {
 // Package improt
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { isIOS } from "react-device-detect";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -47,6 +48,8 @@ const AuctionReview = () => {
     value: [0, 0, 0],
     isCheck: [false, false, false],
   });
+
+	const finialPrice = auction.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   const questionList = [
     "상대의 응답 속도는 어떠셨나요?",
@@ -129,7 +132,7 @@ const AuctionReview = () => {
         onClickSave={onClickSaveReview}
       />
 
-      <AuctionReviewContent>
+      <AuctionReviewContent isIOS={isIOS}>
         {/* 평가 경매 */}
         <ReviewItemWrap>
           <ReviewItemWrapTitle>평가하는 경매</ReviewItemWrapTitle>
@@ -144,7 +147,7 @@ const AuctionReview = () => {
               <ReviewItemTitle>{auction.title}</ReviewItemTitle>
               <ReviewItemPriceWrap>
                 <span>최종낙찰가</span>
-                <ReviewItemPrice>{auction.nowPrice}원</ReviewItemPrice>
+                <ReviewItemPrice>{finialPrice}원</ReviewItemPrice>
               </ReviewItemPriceWrap>
             </ReviewItemContent>
           </ReviewItem>

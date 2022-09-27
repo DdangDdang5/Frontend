@@ -107,7 +107,7 @@ const AuctionCategory = ({ division, divisionName }) => {
   };
 
   return (
-    <CategoryItem onClick={onClickAuctionDivision}>
+    <CategoryItem division={division} onClick={onClickAuctionDivision}>
       {{
 				"전체 품목": <LogoClassic />,
 				"가전": <img src={HomeElectronics} />,
@@ -119,7 +119,7 @@ const AuctionCategory = ({ division, divisionName }) => {
 				"스포츠/레저": <img src={Sport} />,
 				"취미/게임/악기": <img src={Hobby} />,
 				"뷰티/미용": <img src={Beauty} />,
-
+				
 				"서울 전체": <img src={Seoul} />,
 				"도봉구": <img src={Dobong} />,
 				"동대문구": <img src={Dongdaemun} />,
@@ -148,7 +148,7 @@ const AuctionCategory = ({ division, divisionName }) => {
 				"용산구": <img src={Yongsan} />,
 			}[divisionName]}
 
-      <CategoryName length={divisionName.length}>{divisionName}</CategoryName>
+      <CategoryName division={division}>{divisionName}</CategoryName>
     </CategoryItem>
   );
 };

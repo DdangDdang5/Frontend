@@ -4,6 +4,8 @@ import styled from "styled-components";
 
 const Auction = ({ data }) => {
   const navigate = useNavigate();
+	
+	const nowPrice = data?.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   if (!data || !data?.auctionId) {
     return <></>;
@@ -31,7 +33,7 @@ const Auction = ({ data }) => {
 
           <ItemContentFooter>
             <StartPrice>최고입찰가</StartPrice>
-            <PresentPrice>{data?.nowPrice ? data?.nowPrice : 0}원</PresentPrice>
+            <PresentPrice>{nowPrice ? nowPrice : 0}원</PresentPrice>
           </ItemContentFooter>
         </ItemContentWrap>
       </AuctionItemContainer>

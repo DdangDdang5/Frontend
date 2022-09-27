@@ -11,6 +11,7 @@ import {
 // Package import
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { isIOS } from "react-device-detect";
 
 // Component & Element & Shared import
 import Header from "../../components/header/Header";
@@ -101,7 +102,7 @@ const Main = () => {
         <>
           <Header logo={true} search={true} alarm={true} />
 
-          <MainContent>
+          <MainContent isIOS={isIOS}>
             {/* 배너 */}
             <BannerContainer>
               {/* 마감임박 경매 배너 */}

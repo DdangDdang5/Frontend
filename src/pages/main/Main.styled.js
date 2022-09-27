@@ -10,7 +10,7 @@ export const MainContent = styled.div`
 
   position: absolute;
   top: 70px;
-  bottom: 70px;
+  bottom: ${(props) => props.isIOS ? "80px" : "70px"};
 
   overflow-y: scroll;
 
