@@ -11,9 +11,9 @@ import { isIOS } from "react-device-detect";
 
 // Component import
 import Header from "../../components/header/Header";
-import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
+import AuctionStateNav from "../../components/auctionBody/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
-import AuctionRow from "../../components/auction/AuctionRow";
+import AuctionRow from "../../components/auctionBody/AuctionRow";
 
 const MyPageParticipationAuction = () => {
   const dispatch = useDispatch();

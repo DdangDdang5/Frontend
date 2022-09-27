@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 // Redux import
 import { useDispatch, useSelector } from "react-redux";
-import { _MyPageInAuction } from "../../redux/modules/MyPageSlice";
+import { resetPaging, _MyPageInAuction } from "../../redux/modules/MyPageSlice";
 
 // Package import
 import styled from "styled-components";
@@ -11,9 +11,9 @@ import { isIOS } from "react-device-detect";
 
 // Component import
 import Header from "../../components/header/Header";
-import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
+import AuctionStateNav from "../../components/auctionBody/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
-import AuctionRow from "../../components/auction/AuctionRow";
+import AuctionRow from "../../components/auctionBody/AuctionRow";
 
 function MyPageMyAuction() {
   const dispatch = useDispatch();
@@ -69,10 +69,15 @@ function MyPageMyAuction() {
         }
       });
     }
+    return () => {};
+  }, [isAuction, JSON.stringify(myPageInData)]);
+
+  useEffect(() => {
     return () => {
       setShouldShownData([]);
+      dispatch(resetPaging());
     };
-  }, [isAuction, JSON.stringify(myPageInData)]);
+  }, []);
 
   if (!myPageInData) {
     return <></>;

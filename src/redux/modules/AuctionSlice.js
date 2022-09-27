@@ -84,6 +84,7 @@ const auctionSlice = createSlice({
   extraReducers: {
     //경매 상세 조회
     [auctionDetailData.fulfilled]: (state, action) => {
+      // console.log(action.payload.favoriteStatus);
       state.auction = action.payload;
     },
     [auctionDetailData.rejected]: (state, action) => {
@@ -92,10 +93,6 @@ const auctionSlice = createSlice({
 
     //옥션 좋아요 조회
     [auctionFavorite.fulfilled]: (state, action) => {
-      console.log("11111", action.payload);
-      // console.log("22222", state.favorite);
-      // if(action.payload.autionId ===  )
-      // if (action.payload.autionId == ) state.favorite = action.payload;
       state.favorite = action.payload;
     },
     [auctionFavorite.rejected]: (state, action) => {

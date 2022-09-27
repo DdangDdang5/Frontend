@@ -31,6 +31,8 @@ import { ReactComponent as questions } from "./icon/Questions.svg";
 import { ReactComponent as profileEdit } from "./icon/ProfileEdit.svg";
 import { ReactComponent as login } from "./icon/Login.svg";
 import { ReactComponent as logout } from "./icon/Logout.svg";
+import { ReactComponent as heartFull } from "./icon/HeartFull.svg";
+import { ReactComponent as heartEmpty } from "./icon/HeartEmpty.svg";
 
 // Category import
 import { ReactComponent as accessory } from "./category/Accessory.svg";
@@ -50,8 +52,7 @@ import { ReactComponent as logoSilver } from "./logo/LogoSliver.svg";
 import { ReactComponent as logoGold } from "./logo/LogoGold.svg";
 import { ReactComponent as logoRainbow } from "./logo/LogoRainbow.svg";
 
-import {ReactComponent as eventImg } from "./EventImg.svg";
-
+import { ReactComponent as eventImg } from "./EventImg.svg";
 
 // icon
 export const Add = add;
@@ -86,6 +87,8 @@ export const Questions = questions;
 export const ProfileEdit = profileEdit;
 export const Login = login;
 export const Logout = logout;
+export const HeartFull = heartFull;
+export const HeartEmpty = heartEmpty;
 
 // category
 export const Accessory = accessory;

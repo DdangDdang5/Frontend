@@ -2,7 +2,10 @@
 import React, { useEffect, useState } from "react";
 
 // Redux import
-import { _MyPageInterestAuction } from "../../redux/modules/MyPageSlice";
+import {
+  resetPaging,
+  _MyPageInterestAuction,
+} from "../../redux/modules/MyPageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
@@ -12,9 +15,9 @@ import { isIOS } from "react-device-detect";
 
 // Component import
 import Header from "../../components/header/Header";
-import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
+import AuctionStateNav from "../../components/auctionBody/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
-import AuctionRow from "../../components/auction/AuctionRow";
+import AuctionRow from "../../components/auctionBody/AuctionRow";
 
 const MyPageInterestAuction = () => {
   const dispatch = useDispatch();
@@ -50,9 +53,13 @@ const MyPageInterestAuction = () => {
     }
   };
 
+  console.log("자 드가자");
+  console.log(shouldShownData);
+
   useEffect(() => {
     dispatch(_MyPageInterestAuction());
-
+    console.log("zezeze");
+    console.log(data);
     if (data && data?.length > 0) {
       data?.map((item, index) => {
         if (isAuction) {
@@ -71,9 +78,16 @@ const MyPageInterestAuction = () => {
       });
     }
     return () => {
+      console.log("컴퍼넌트 끝났다잉");
       setShouldShownData([]);
     };
   }, [isAuction, JSON.stringify(data)]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetPaging());
+    };
+  }, []);
 
   return (
     <MyAuctionLayout>

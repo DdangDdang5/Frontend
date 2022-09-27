@@ -51,6 +51,7 @@ export const _MyPageInterestAuction = createAsyncThunk(
       const response = await api.get(
         `/pagination/member/favorite?page=${paging}&size=6&sortBy=id&isAsc=false`
       );
+      console.log(paging);
       console.log("관심 리스폰", response.data);
 
       if (response?.data?.data && response?.data?.data <= 0) {
@@ -73,6 +74,7 @@ export const _MyPageParticipationAuction = createAsyncThunk(
         `/pagination/member/mypage/participant?page=${paging}&size=6&sortBy=id&isAsc=false`
       );
       console.log("참여 리스폰", response.data);
+      console.log(paging);
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
       }
@@ -107,6 +109,9 @@ const myPageSlice = createSlice({
   reducers: {
     noFollowingItem: (state, action) => {
       state.followingItem = false;
+    },
+    resetPaging: (state, action) => {
+      state.paging = 1;
     },
   },
   extraReducers: {
@@ -155,6 +160,6 @@ const myPageSlice = createSlice({
     },
   },
 });
-const { noFollowingItem } = myPageSlice.actions;
+export const { noFollowingItem, resetPaging } = myPageSlice.actions;
 
 export default myPageSlice.reducer;

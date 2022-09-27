@@ -33,15 +33,6 @@ const MyPage = () => {
   const data = useSelector((state) => state.myPage?.myPage);
   const memberId = sessionStorage?.getItem("memberId");
 
-  console.log("마이페이지", data);
-  useEffect(
-    () => {
-      dispatch(_MyPageData(memberId));
-    },
-    [memberId, JSON.stringify[data]],
-    navigate
-  );
-
   const handleLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까? ")) {
       sessionStorage.clear();
@@ -56,13 +47,22 @@ const MyPage = () => {
       navigate("/myPage");
     }
   };
-  const noOneImg = () => {
-    if (data?.profileImgUrl == (null || undefined)) {
+
+  const basicProfileImg = () => {
+    if (
+      data?.profileImgUrl === null ||
+      data?.profileImgUrl === undefined ||
+      memberId === null
+    ) {
       return <BasicProfile onClick={() => handleLogIn()} />;
     } else {
       return <img src={data?.profileImgUrl} alt="" />;
     }
   };
+
+  useEffect(() => {
+    dispatch(_MyPageData(memberId));
+  }, [memberId, JSON.stringify[data]]);
 
   return (
     <MyPageLayout>
@@ -71,7 +71,7 @@ const MyPage = () => {
       <MyPageWrap isIOS={isIOS}>
         <MyProfileWrap>
           <MyImgContainer>
-            <MyImgBox>{noOneImg()}</MyImgBox>
+            <MyImgBox>{basicProfileImg()}</MyImgBox>
           </MyImgContainer>
 
           <MyNickContainer>
