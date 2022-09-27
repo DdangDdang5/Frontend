@@ -11,19 +11,18 @@ import {
 
 // Package import
 import { useNavigate } from "react-router-dom";
-import { BsFillCheckCircleFill } from "react-icons/bs";
-import { MdOutlineArrowBackIos } from "react-icons/md";
 import { debounce } from "lodash";
 
 // Component & Element import
 import Button from "../../elements/button/Button";
 import Header from "../../components/header/Header";
 
+// Shared import
+import { Delete, Ok } from "../../shared/images";
+
 //Style import
 import {
   SignUpBox,
-  SignUpBoxTitle,
-  SignUpBoxTitleSpan,
   SignUpBoxForm,
   SignUpBoxInputGroup,
   SignUpBoxInputWrap,
@@ -85,11 +84,7 @@ const SignUp = () => {
     nickName,
   };
 
-  // 비밀번호 정규식
-  const passwordRegExp =
-    /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
-
-  // 이메일 Input
+  // 이메일 체크
   const checkLoginEmail = useCallback(
     debounce((email) => {
       const emailRegExp =
@@ -99,7 +94,7 @@ const SignUp = () => {
         emailSpanRef.current.style.color = "#FF664D";
         emailRef.current.style.borderColor = "#FF664D";
         emailIconRef.current.style.color = "#FF664D";
-        setCheck({ ...check, email: true });
+        // setCheck({ ...check, email: true });
         setEmailCheck(false);
       } else {
         dispatch(emailCheckThunk({ email })).then((res) => {
@@ -122,6 +117,11 @@ const SignUp = () => {
     [email]
   );
 
+  // 비밀번호 정규식
+  const passwordRegExp =
+    /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
+
+  // 비밀번호 체크
   useEffect(() => {
     if (password === "" && repassword === "") {
       passwordSpanRef.current.innerText = "";
@@ -137,40 +137,40 @@ const SignUp = () => {
       passwordSpanRef.current.innerText = "";
       passwordIconRef.current.style.color = "#1DC79A";
     } else if (password === "") {
-      rePasswordSpanRef.current.style.color = "#FF664D";
-      rePasswordSpanRef.current.innerText = "";
       passwordSpanRef.current.style.color = "#FF664D";
       passwordRef.current.style.borderColor = "#FF664D";
       passwordSpanRef.current.innerText =
         "비밀번호는 영문 대소문자, 숫자, 특수문자(`!@#$%)를 혼합하여 8~20자로 입력해주세요.";
     }
-    if (repassword && password === true) {
-      passwordSpanRef.current.style.color = "";
-      rePasswordSpanRef.current.innerText = "비밀번호가 일치합니다";
-      rePasswordSpanRef.current.style.color = "#1DC79A";
-      rePasswordRef.current.style.borderColor = "#1DC79A";
-      rePasswordIconRef.current.style.color = "#1DC79A";
-      passwordIconRef.current.style.color = "#1DC79A";
-      passwordRef.current.style.borderColor = "#1DC79A";
-    } else {
-      if (repassword !== password) {
-        passwordSpanRef.current.style.color = "";
-        rePasswordSpanRef.current.style.color = "#FF664D";
-        rePasswordSpanRef.current.innerText = "비밀번호가 일치하지 않습니다.";
-        passwordRef.current.style.borderColor = "#FF664D";
-        rePasswordRef.current.style.borderColor = "#FF664D";
-        passwordIconRef.current.style.color = "#FF664D";
-        rePasswordIconRef.current.style.color = "#FF664D";
-      }
-      // else {
+    if (
+      // (repassword || password === true) {
       //   passwordSpanRef.current.style.color = "";
       //   rePasswordSpanRef.current.innerText = "비밀번호가 일치합니다";
       //   rePasswordSpanRef.current.style.color = "#1DC79A";
       //   rePasswordRef.current.style.borderColor = "#1DC79A";
       //   rePasswordIconRef.current.style.color = "#1DC79A";
-      //   passwordIconRef.current.style.color = "#1DC79A";
-      //   passwordRef.current.style.borderColor = "#1DC79A";
+      //   // passwordIconRef.current.style.color = "#1DC79A";
+      //   // passwordRef.current.style.borderColor = "#1DC79A";
       // }
+      // else {
+      //   if
+      repassword !== password && repassword.length > 0 
+    ) {
+      // passwordSpanRef.current.style.color = "#FF664D";
+      rePasswordSpanRef.current.style.color = "#FF664D";
+      rePasswordSpanRef.current.innerText = "비밀번호가 일치하지 않습니다.";
+      // passwordRef.current.style.borderColor = "#FF664D";
+      rePasswordRef.current.style.borderColor = "#FF664D";
+      // passwordIconRef.current.style.color = "#FF664D";
+      rePasswordIconRef.current.style.color = "#FF664D";
+    } else if (repassword.length > 0) {
+      // passwordSpanRef.current.style.color = "";
+      rePasswordSpanRef.current.innerText = "비밀번호가 일치합니다.";
+      rePasswordSpanRef.current.style.color = "#1DC79A";
+      rePasswordRef.current.style.borderColor = "#1DC79A";
+      rePasswordIconRef.current.style.color = "#1DC79A";
+      // passwordIconRef.current.style.color = "#1DC79A";
+      // passwordRef.current.style.borderColor = "#1DC79A";
     }
   }, [password, repassword]);
 
@@ -183,24 +183,34 @@ const SignUp = () => {
     }
   }, [nickName]);
 
-  // 닉네임 중복체크
+  // 닉네임 체크
   const checkNickName = useCallback(
     debounce((nickName) => {
-      dispatch(nickNameCheckThunk({ nickName })).then((res) => {
-        if (!res.payload) {
-          nickNameSpanRef.current.innerText = "중복되는 닉네임입니다";
-          nickNameSpanRef.current.style.color = "#FF664D";
-          nickNameIconRef.current.style.color = "#FF664D";
-          nickNameRef.current.style.borderColor = "#FF664D";
-          setNickNameCheck(true);
-        } else {
-          nickNameSpanRef.current.innerText = "사용가능한 닉네임입니다";
-          nickNameSpanRef.current.style.color = "#1DC79A";
-          nickNameIconRef.current.style.color = "#1DC79A";
-          nickNameRef.current.style.borderColor = "#1DC79A";
-          setNickNameCheck(false);
-        }
-      });
+      const nickNameRegExp = /^([a-z0-9가-힣])[a-z0-9가-힣]{3,7}$/i;
+      if (!nickNameRegExp.test(nickName)) {
+        nickNameSpanRef.current.innerText =
+          "닉네임은 공백 없이 4~6자 이내의 한글, 영문, 숫자를 이용하여 입력해주세요.";
+        nickNameSpanRef.current.style.color = "#EF664D";
+        nickNameRef.current.style.borderColor = "#EF664D";
+        // nickNameIconRef.current.style.color = "#EF664D";
+        setNickNameCheck(true);
+      } else {
+        dispatch(nickNameCheckThunk({ nickName })).then((res) => {
+          if (!res.payload) {
+            nickNameSpanRef.current.innerText = "중복되는 닉네임입니다.";
+            nickNameSpanRef.current.style.color = "#FF664D";
+            // nickNameIconRef.current.style.color = "#FF664D";
+            nickNameRef.current.style.borderColor = "#FF664D";
+            setNickNameCheck(true);
+          } else {
+            nickNameSpanRef.current.innerText = "사용가능한 닉네임입니다.";
+            nickNameSpanRef.current.style.color = "#1DC79A";
+            // nickNameIconRef.current.style.color = "#1DC79A";
+            nickNameRef.current.style.borderColor = "#1DC79A";
+            setNickNameCheck(false);
+          }
+        });
+      }
     }, 500),
     [nickName]
   );
@@ -221,13 +231,13 @@ const SignUp = () => {
         emailRef.current.focus();
         emailRef.current.style.color = "#BCBCBC";
         emailRef.current.innerText = "중복되는 이메일입니다.";
-        setCheck({ ...check, email: true });
+        // setCheck({ ...check, email: true });
       } else {
         if (nickNameCheck === true) {
           nickNameRef.current.focus();
           nickNameRef.current.style.color = "#BCBCBC";
           nickNameRef.current.innerText = "중복되는 닉네임입니다.";
-          setCheck({ ...check, nickName: true });
+          // setCheck({ ...check, nickName: true });
         } else {
           if (password !== repassword) {
             passwordRef.current.style.innerText = "";
@@ -235,7 +245,7 @@ const SignUp = () => {
             nickNameRef.current.style.color = "#BCBCBC";
             rePasswordSpanRef.current.innerText =
               "비밀번호가 일치하지 않습니다.";
-            setCheck({ ...check, password: true, repassword: true });
+            // setCheck({ ...check, password: true, repassword: true });
           } else {
             dispatch(signUpMemberThunk(newMember));
           }
@@ -263,7 +273,13 @@ const SignUp = () => {
                 required
               ></SignUpBoxInput>
               <SignUpBoxInputIcon ref={emailIconRef}>
-                <BsFillCheckCircleFill className="icon" />
+                {/* {email === checkLoginEmail ? (
+                  <Ok
+                  state={true}/>
+                ) : (
+                  <Delete
+                  />
+                )} */}
               </SignUpBoxInputIcon>
             </SignUpBoxInputWrap>
             <SignUpBoxSpan ref={emailSpanRef}></SignUpBoxSpan>
@@ -282,7 +298,7 @@ const SignUp = () => {
                 required
               ></SignUpBoxInput>
               <SignUpBoxInputIcon ref={passwordIconRef}>
-                <BsFillCheckCircleFill className="icon" />
+                {/* <Ok className="icon" /> */}
               </SignUpBoxInputIcon>
             </SignUpBoxInputWrap>
             <SignUpBoxSpan ref={passwordSpanRef}></SignUpBoxSpan>
@@ -298,11 +314,9 @@ const SignUp = () => {
                 maxLength="20"
                 ref={rePasswordRef}
                 required
-              >
-                {/* {passwordCheck.length > 0 && <div></div>} */}
-              </SignUpBoxInput>
+              ></SignUpBoxInput>
               <SignUpBoxInputIcon ref={rePasswordIconRef}>
-                <BsFillCheckCircleFill className="icon" />
+                {/* <Ok className="icon" /> */}
               </SignUpBoxInputIcon>
             </SignUpBoxInputWrap>
             <SignUpBoxSpan ref={rePasswordSpanRef}></SignUpBoxSpan>
@@ -321,7 +335,7 @@ const SignUp = () => {
                 required
               />
               <SignUpBoxInputIcon ref={nickNameIconRef}>
-                <BsFillCheckCircleFill className="icon" />
+                {/* <Ok className="icon" /> */}
               </SignUpBoxInputIcon>
             </SignUpBoxInputWrap>
             <SignUpBoxSpan ref={nickNameSpanRef}></SignUpBoxSpan>

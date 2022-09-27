@@ -24,7 +24,7 @@ const SearchHistory = () => {
   const dispatch = useDispatch();
   const recentSearch = useSelector((state) => state.search.recentSearch);
   const popularSearch = useSelector((state) => state.search.popularSearch);
-  console.log(recentSearch);
+  
   useEffect(() => {
     dispatch(recentSearchThunk());
     dispatch(popularSearchThunk());
