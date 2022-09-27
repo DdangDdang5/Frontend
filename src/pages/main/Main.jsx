@@ -18,19 +18,13 @@ import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import AuctionCategoryList from "../../components/auctionCategoryList/AuctionCategoryList";
 import SwipeImage from "../../components/swipeImage/SwipeImage";
-import { EventImg, Next } from "../../shared/images";
+import { EventImg, InfoImg, Next } from "../../shared/images";
 import PlusButton from "../../elements/button/PlusButton";
 import Loading from "../loading/Loading";
 
 // Style import
 import {
   BannerContainer,
-  EventBanner,
-  EventCircle,
-  EventContent,
-  EventDate,
-  EventText,
-  EventTitle,
   LastItem,
   LastList,
   ListContainer,
@@ -105,24 +99,9 @@ const Main = () => {
             {/* 배너 */}
             <BannerContainer>
               {/* 마감임박 경매 배너 */}
-              {/* <SwipeImage isMain={true} data={auctionDeadlineList} height="100%" /> */}
+              {/* <SwipeImage isMain={true} data={auctionNewList} height="100%" /> */}
 
-              {/* 이벤트 배너 */}
-              <EventBanner isMain={true} onClick={() => navigate("/event/1")}>
-                <FontEvent />
-                <EventContent isMain={true}>
-                  <EventDate isMain={true}>09.27 ~ 10.02</EventDate>
-                  <EventTitle isMain={true}>
-                    소중한 의견을 들려주세요!
-                  </EventTitle>
-                  <EventText isMain={true}>
-                    <span>추첨을 통해 총 5분께</span>
-                    <span>교촌치킨 기프티콘을 드려요</span>
-                  </EventText>
-                </EventContent>
-                <EventImg />
-                <EventCircle />
-              </EventBanner>
+              <SwipeImage isMain={true} data={undefined} height="100%" width="100%"/>
             </BannerContainer>
 
             {/* 카테고리별, 지역별 TOP 6 */}

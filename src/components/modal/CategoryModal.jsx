@@ -14,6 +14,7 @@ import {
   auctionCategoryRegionList,
   auctionItemList,
   auctionRegionList,
+	clearAuctionList,
 	initialPaging,
 } from "../../redux/modules/AuctionListSlice";
 
@@ -55,6 +56,7 @@ const CategoryModal = () => {
 		dispatch(initialPaging());
 
     if (categoryNameCheck === "전체품목" && regionNameCheck === "서울전체") {
+			dispatch(clearAuctionList());
 			dispatch(auctionItemList());
     } else if (
       categoryNameCheck !== "전체품목" &&

@@ -10,7 +10,7 @@ export const MainContent = styled.div`
 
   position: absolute;
   top: 70px;
-  bottom: ${(props) => props.isIOS ? "80px" : "70px"};
+  bottom: ${(props) => (props.isIOS ? "80px" : "70px")};
 
   overflow-y: scroll;
 
@@ -24,34 +24,35 @@ export const BannerContainer = styled.div`
   height: 200px;
 `;
 
+export const EventBannerList = styled.div`
+	height: 100%;
+`;
+
 export const EventBanner = styled.div`
+	width: 100%;
   height: 100%;
   position: relative;
 
-  background-color: #3e5acc;
+  background-color: #4d71ff;
   border-radius: ${(props) => (props.isMain ? null : "8px")};
   overflow: hidden;
 
   svg {
     position: absolute;
-    top: ${(props) => (props.children[1].props.isMain ? "10px" : "5px")};
-    right: ${(props) => (props.children[1].props.isMain ? "10px" : "-8px")};
+    top: ${(props) => (props.isMain ? "10px" : "5px")};
+    right: ${(props) => (props.isMain ? "10px" : "-8px")};
 
     z-index: 10;
 
     transform: ${(props) =>
-      props.children[1].props.isMain ? null : "scale(0.9)"};
+      props.isMain ? null : "scale(0.9)"};
   }
 `;
 
 export const EventContent = styled.div`
   height: calc(100% - 40px);
   padding: 20px;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.8) 0%,
-    rgba(0, 0, 0, 0.2) 100%
-  );
+  background: linear-gradient(180deg, #344485 0%, rgba(52, 68, 133, 0) 100%);
   border-radius: ${(props) => (props.isMain ? null : "8px")};
 
   color: ${(props) => props.theme.colors.White};

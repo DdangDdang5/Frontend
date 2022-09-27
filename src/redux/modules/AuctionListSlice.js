@@ -188,6 +188,9 @@ const auctionListSlice = createSlice({
     },
 		initialPaging: (state, action) => {
 			state.paging = 1;
+		},
+		clearAuctionList: (state, action) => {
+			state.auctionList = [];
 		}
   },
   extraReducers: {
@@ -197,8 +200,8 @@ const auctionListSlice = createSlice({
     },
 
     [auctionItemList.fulfilled]: (state, action) => {
-      // state.auctionList = [...state.auctionList, ...action.payload];
-      state.auctionList = action.payload;
+      state.auctionList = [...state.auctionList, ...action.payload];
+      // state.auctionList = action.payload;
       state.loading = false;
       state.paging = state.paging + 1;
     },
@@ -296,6 +299,6 @@ const auctionListSlice = createSlice({
   },
 });
 
-export const { noFollowingItem, initialPaging } = auctionListSlice.actions;
+export const { noFollowingItem, initialPaging, clearAuctionList } = auctionListSlice.actions;
 
 export default auctionListSlice.reducer;

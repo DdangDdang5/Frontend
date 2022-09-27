@@ -9,13 +9,13 @@ import { FontEvent } from "../../shared/fonts/font";
 import { EventImg } from "../../shared/images";
 
 import {
-  EventBanner,
-  EventCircle,
-  EventContent,
-  EventDate,
-  EventText,
-  EventTitle,
-} from "../main/Main.styled";
+	  EventBanner,
+	  EventCircle,
+	  EventContent,
+	  EventDate,
+	  EventText,
+	  EventTitle,
+	} from "../../components/swipeImage/SwipeImage.styled";
 import {
   EventBtnWrap,
   EventContentTitle,
@@ -51,12 +51,12 @@ const Event = () => {
           </div>
 
           <EventImgWrap>
-            <EventBanner>
+            <EventBanner idx={1} isMain={false}>
               <FontEvent />
-              <EventContent>
-                <EventDate>09.27 ~ 10.02</EventDate>
-                <EventTitle>소중한 의견을 들려주세요!</EventTitle>
-                <EventText>
+              <EventContent idx={1}>
+                <EventDate idx={1}>09.27 ~ 10.02</EventDate>
+                <EventTitle idx={1}>소중한 의견을 들려주세요!</EventTitle>
+                <EventText idx={1}>
                   <span>추첨을 통해 총 5분께</span>
                   <span>교촌치킨 기프티콘을 드려요</span>
                 </EventText>
