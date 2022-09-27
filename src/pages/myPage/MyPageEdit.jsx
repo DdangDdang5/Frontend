@@ -15,7 +15,7 @@ import Header from "../../components/header/Header";
 // Element & Shared import
 import { BasicProfile, Camera, Delete } from "../../shared/images";
 
-const ProfileEdit = () => {
+const MyPageEdit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -64,7 +64,7 @@ const ProfileEdit = () => {
       editMyPage({ memberId: memberId, formData: formData })
     ).unwrap();
     if (data) {
-      window.alert("새 게시물 만들기 완료");
+      window.alert("프로필 변경이 완료되었습니다");
       // 포스팅 완료후 새로고침
       navigate(-1, { replace: true });
     }
@@ -246,4 +246,4 @@ const MyDoneBtn = styled.button`
   transform: translate(-50%);
 `;
 
-export default ProfileEdit;
+export default MyPageEdit;

@@ -3,37 +3,40 @@ import React, { useEffect, useState } from "react";
 
 // Redux import
 import { useDispatch, useSelector } from "react-redux";
-import { _MyPageInAuction } from "../../redux/modules/MyPageSlice";
+import {
+  resetList,
+  resetPaging,
+  _MyPageInAuction,
+} from "../../redux/modules/MyPageSlice";
 
 // Package import
 import styled from "styled-components";
+import { isIOS } from "react-device-detect";
 
 // Component import
 import Header from "../../components/header/Header";
-import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
+import AuctionStateNav from "../../components/auctionBody/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
-import AuctionRow from "../../components/auction/AuctionRow";
-import AuctionBox from "../../components/auction/AuctionBox";
+import AuctionRow from "../../components/auctionBody/AuctionRow";
 
 function MyPageMyAuction() {
   const dispatch = useDispatch();
   const [isAuction, setIsAuction] = useState(true);
   const {
-    myPageIn: myPageInData,
+    myPageList: data,
     loading,
     paging,
     followingItem,
   } = useSelector((state) => state.myPage);
 
-  console.log("나의 데이터", myPageInData);
-
   const [shouldShownData, setShouldShownData] = useState([]);
 
-  const auctionIng = myPageInData?.filter(
-    (myPageInData) => myPageInData?.auctionStatus === true
+  console.log("내 옥션 데이터", data);
+  const auctionIng = data?.filter(
+    (data) => data?.auctionStatus === true
   ).length;
-  const auctionDone = myPageInData?.filter(
-    (myPageInData) => myPageInData?.auctionStatus === false
+  const auctionDone = data?.filter(
+    (data) => data?.auctionStatus === false
   ).length;
 
   const handleScroll = (e) => {
@@ -52,8 +55,8 @@ function MyPageMyAuction() {
   useEffect(() => {
     dispatch(_MyPageInAuction());
 
-    if (myPageInData && myPageInData.length > 0) {
-      myPageInData?.map((item, index) => {
+    if (data && data.length > 0) {
+      data?.map((item, index) => {
         if (isAuction) {
           if (item?.auctionStatus === true) {
             setShouldShownData((prev) => {
@@ -72,9 +75,17 @@ function MyPageMyAuction() {
     return () => {
       setShouldShownData([]);
     };
-  }, [isAuction, JSON.stringify(myPageInData)]);
+  }, [isAuction, JSON.stringify(data)]);
 
-  if (!myPageInData) {
+  useEffect(() => {
+    return () => {
+      setShouldShownData([]);
+      dispatch(resetPaging());
+      dispatch(resetList());
+    };
+  }, []);
+
+  if (!data) {
     return <></>;
   }
   return (
@@ -86,26 +97,16 @@ function MyPageMyAuction() {
         auctionIng={auctionIng}
         auctionDone={auctionDone}
       />
-      <MyAuctionBody onScroll={handleScroll}>
+      <MyAuctionBody onScroll={handleScroll} isIOS={isIOS}>
         <AuctionLayout>
-          {shouldShownData?.length === 0 ? (
-            <None>상품없음</None>
-          ) : (
-            <>
-              {shouldShownData?.map((item, index) => {
-                return (
-                  <React.Fragment key={`${index}_${item.id}`}>
-                    <AuctionBox
-                      item={item}
-                      index={index}
-                      isAuction={isAuction}
-                    />
-                    {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
-                  </React.Fragment>
-                );
-              })}
-            </>
-          )}
+          {shouldShownData?.map((item, index) => {
+            return (
+              <React.Fragment key={`${index}_${item.id}`}>
+                <AuctionRow item={item} index={index} isAuction={isAuction} />
+                {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
+              </React.Fragment>
+            );
+          })}
         </AuctionLayout>
       </MyAuctionBody>
       <Footer />
@@ -120,7 +121,8 @@ const MyAuctionLayout = styled.div`
 `;
 const MyAuctionBody = styled.div`
   display: flex;
-  height: calc(100vh - 190px);
+  height: ${(props) =>
+    props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   flex-direction: column;
   overflow: scroll;
 `;

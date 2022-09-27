@@ -2,9 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-const AuctionBox = ({ item, index, isAuction }) => {
+const AuctionRow = ({ item, index, isAuction }) => {
   const navigate = useNavigate();
 
+  const postPrice = item.startPrice
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  if (!item || !item?.auctionId) {
+    return <></>;
+  }
   return (
     <AuctionContainer
       state={isAuction}
@@ -23,7 +30,7 @@ const AuctionBox = ({ item, index, isAuction }) => {
         <div className="title">{item.content}</div>
         <div className="priceBox">
           <div>최근입찰가</div>
-          <div className="price">{item.startPrice}</div>
+          <div className="price">{postPrice}</div>
         </div>
       </ContentBox>
     </AuctionContainer>
@@ -105,4 +112,4 @@ const ContentBox = styled.div`
   }
 `;
 
-export default AuctionBox;
+export default AuctionRow;

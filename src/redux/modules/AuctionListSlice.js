@@ -25,7 +25,7 @@ export const auctionItemListNotPage = createAsyncThunk(
     } catch (err) {
       return thunkAPI.rejectWithValue(err);
     }
-  },
+  }
 );
 
 export const auctionItemList = createAsyncThunk(
@@ -35,7 +35,7 @@ export const auctionItemList = createAsyncThunk(
       // auctionList는 스토어에 있는 리덕스
       const { paging } = thunkAPI.getState().auctionList;
       const response = await api.get(
-        `/pagination/auction?page=${paging}&size=6&sortBy=id&isAsc=false`,
+        `/pagination/auction?page=${paging}&size=6&sortBy=id&isAsc=false`
       );
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
@@ -44,7 +44,7 @@ export const auctionItemList = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const addAuctionItem = createAsyncThunk(
@@ -59,7 +59,7 @@ export const addAuctionItem = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const editAuctionItem = createAsyncThunk(
@@ -72,14 +72,14 @@ export const editAuctionItem = createAsyncThunk(
         payload.formData,
         {
           "Content-Type": "multipart/form-data",
-        },
+        }
       );
       console.log("editAuctionItem리스폰", response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const deleteAuctionItem = createAsyncThunk(
@@ -93,7 +93,7 @@ export const deleteAuctionItem = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const auctionCategoryList = createAsyncThunk(
@@ -105,7 +105,7 @@ export const auctionCategoryList = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const auctionRegionList = createAsyncThunk(
@@ -117,7 +117,7 @@ export const auctionRegionList = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const auctionCategoryRegionList = createAsyncThunk(
@@ -125,13 +125,13 @@ export const auctionCategoryRegionList = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get(
-        `/auction/category/${payload.categoryName}/region/${payload.regionName}`,
+        `/auction/category/${payload.categoryName}/region/${payload.regionName}`
       );
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const getAuctionHitList = createAsyncThunk(
@@ -143,7 +143,7 @@ export const getAuctionHitList = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const getAuctionNewList = createAsyncThunk(
@@ -155,7 +155,7 @@ export const getAuctionNewList = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const getAuctionDeadlineList = createAsyncThunk(
@@ -167,7 +167,7 @@ export const getAuctionDeadlineList = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 const auctionListSlice = createSlice({
@@ -201,7 +201,6 @@ const auctionListSlice = createSlice({
 
     [auctionItemList.fulfilled]: (state, action) => {
       state.auctionList = [...state.auctionList, ...action.payload];
-      // state.auctionList = action.payload;
       state.loading = false;
       state.paging = state.paging + 1;
     },
@@ -239,7 +238,7 @@ const auctionListSlice = createSlice({
 
     [deleteAuctionItem.fulfilled]: (state, action) => {
       state.auctionList = state.auctionList.filter(
-        (post) => post.auctionId !== action.payload,
+        (post) => post.auctionId !== action.payload
       );
     },
     [deleteAuctionItem.rejected]: (state, action) => {

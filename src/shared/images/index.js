@@ -31,6 +31,10 @@ import { ReactComponent as questions } from "./icon/Questions.svg";
 import { ReactComponent as profileEdit } from "./icon/ProfileEdit.svg";
 import { ReactComponent as login } from "./icon/Login.svg";
 import { ReactComponent as logout } from "./icon/Logout.svg";
+import { ReactComponent as heartFull } from "./icon/HeartFull.svg";
+import { ReactComponent as heartEmpty } from "./icon/HeartEmpty.svg";
+import { ReactComponent as imgPlus } from "./icon/ImgPlus.svg";
+import { ReactComponent as imgDelete } from "./icon/ImgDelete.svg";
 
 // Category import
 import { ReactComponent as accessory } from "./category/Accessory.svg";
@@ -114,6 +118,10 @@ export const Questions = questions;
 export const ProfileEdit = profileEdit;
 export const Login = login;
 export const Logout = logout;
+export const HeartFull = heartFull;
+export const HeartEmpty = heartEmpty;
+export const ImgPlus = imgPlus;
+export const ImgDelete = imgDelete;
 
 // category
 export const Accessory = accessory;

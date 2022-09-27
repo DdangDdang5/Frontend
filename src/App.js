@@ -12,7 +12,7 @@ import Main from "../src/pages/main/Main";
 import Login from "../src/pages/login/Login";
 import SignUp from "../src/pages/signUp/SignUp";
 import MyPage from "./pages/myPage/MyPage";
-import ProfileEdit from "../src/pages/profileEdit/ProfileEdit";
+import MyPageEdit from "./pages/myPage/MyPageEdit";
 import Search from "../src/pages/search/Search";
 import Chat from "../src/pages/chat/Chat";
 import ChatList from "../src/pages/chatList/ChatList";
@@ -45,6 +45,7 @@ import Notifications from "./components/notification/Notification";
 import ReactNotificationComponent from "./components/notification/ReactNotification";
 import { ToastNotification } from "./pages/notification/ToastNotification";
 import { add } from "./redux/modules/NotificationSlice";
+import MypageEdit from "./pages/myPage/MyPageEdit";
 
 function App() {
   const dispatch = useDispatch();
@@ -95,7 +96,7 @@ function App() {
   // }, []);
 
   const notifToastList = useSelector(
-    (state) => state.notification.notifToastList,
+    (state) => state.notification.notifToastList
   );
 
   // console.log(notifToastList);
@@ -157,7 +158,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/myPage" element={<MyPage />} />
-          <Route path="/profileEdit" element={<ProfileEdit />} />
+          <Route path="/myPageEdit" element={<MyPageEdit />} />
           <Route path="/search" element={<Search />} />
           <Route path="/chat/:roomId" element={<Chat />} />
           <Route path="/chatList" element={<ChatList />} />
@@ -199,6 +200,66 @@ function App() {
 
 const AppContainer = styled.div`
   font-family: "SpoqaHanSansNeo-Regular";
+<<<<<<< HEAD
+`;
+
+const AppContent = styled.div`
+  @media all and (max-width: 359px) {
+    display: none;
+  }
+`;
+
+const SmallApp = styled.div`
+	@media all and (min-width: 360px) {
+    display: none;
+  }
+
+	@media all and (max-width: 359px) {
+    width: 100%;
+		height: 100vh;
+
+		color: #3A3A3A;
+		background-color: #EBEEF3;
+		font-weight: 400;
+		font-size: 18px;
+		line-height: 140%;
+
+		position: relative;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 70px;
+  }
+`;
+
+const SmallAppContent = styled.div`
+	position: relative;
+
+	div {
+		width: 74px;
+		height: 74px;
+		background-color: #FFFFFF;
+		border-radius: 50%;
+
+		position: absolute;
+		top: 40%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	img {
+		width: 100px;
+		height: 100px;
+
+		position: absolute;
+		top: 40%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+=======
+>>>>>>> dev
 `;
 
 const AppContent = styled.div`

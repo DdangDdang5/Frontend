@@ -2,29 +2,36 @@
 import React, { useEffect, useState } from "react";
 
 // Redux import
-import { _MyPageInterestAuction } from "../../redux/modules/MyPageSlice";
+import {
+  resetList,
+  resetPaging,
+  _MyPageInterestAuction,
+} from "../../redux/modules/MyPageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 // Package import
 import styled from "styled-components";
+import { isIOS } from "react-device-detect";
 
 // Component import
 import Header from "../../components/header/Header";
-import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
+import AuctionStateNav from "../../components/auctionBody/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
-import AuctionBox from "../../components/auction/AuctionBox";
+import AuctionRow from "../../components/auctionBody/AuctionRow";
 
 const MyPageInterestAuction = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
-    myPageInterest: data,
+    myPageList: data,
     loading,
     paging,
     followingItem,
   } = useSelector((state) => state.myPage);
-  console.log("관심 데이터", data);
+
+  console.log("관심 옥션 데이터", data);
+
   const [isAuction, setIsAuction] = useState(true);
 
   const [shouldShownData, setShouldShownData] = useState([]);
@@ -36,8 +43,10 @@ const MyPageInterestAuction = () => {
 
   const handleScroll = (e) => {
     let scrollTopHandler = e.target.scrollTop;
+
     let clientHeightHandler = e.target.clientHeight;
     let scrollHeightHandler = e.target.scrollHeight;
+    console.log(scrollHeightHandler);
     if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
       if (!loading) {
         if (followingItem) {
@@ -69,8 +78,16 @@ const MyPageInterestAuction = () => {
     }
     return () => {
       setShouldShownData([]);
+      // dispatch(resetPaging());
     };
   }, [isAuction, JSON.stringify(data)]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetPaging());
+      dispatch(resetList());
+    };
+  }, []);
 
   return (
     <MyAuctionLayout>
@@ -81,26 +98,16 @@ const MyPageInterestAuction = () => {
         auctionIng={auctionIng}
         auctionDone={auctionDone}
       />
-      <MyAuctionBody onScroll={handleScroll}>
+      <MyAuctionBody onScroll={handleScroll} isIOS={isIOS}>
         <AuctionLayout>
-          {shouldShownData?.length === 0 ? (
-            <None>상품없음</None>
-          ) : (
-            <>
-              {shouldShownData?.map((item, index) => {
-                return (
-                  <React.Fragment key={`${index}_${item.id}`}>
-                    <AuctionBox
-                      item={item}
-                      index={index}
-                      isAuction={isAuction}
-                    />
-                    {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
-                  </React.Fragment>
-                );
-              })}
-            </>
-          )}
+          {shouldShownData?.map((item, index) => {
+            return (
+              <React.Fragment key={`${index}_${item.id}`}>
+                <AuctionRow item={item} index={index} isAuction={isAuction} />
+                {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
+              </React.Fragment>
+            );
+          })}
         </AuctionLayout>
       </MyAuctionBody>
       <Footer />
@@ -115,7 +122,8 @@ const MyAuctionLayout = styled.div`
 `;
 const MyAuctionBody = styled.div`
   display: flex;
-  height: calc(100vh - 190px);
+  height: ${(props) =>
+    props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   flex-direction: column;
   overflow: scroll;
 `;

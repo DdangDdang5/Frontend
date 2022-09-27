@@ -12,12 +12,13 @@ import { auctionItemList, clearAuctionList, initialPaging } from "../../redux/mo
 // Package import
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { isIOS } from "react-device-detect";
 
 // Component import
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import PlusButton from "../../elements/button/PlusButton";
-import AuctionColumn from "../../components/auction/AuctionColumn";
+import AuctionColumn from "../../components/auctionBody/AuctionColumn";
 
 // Shared import
 import { Open } from "../../shared/images";
@@ -52,6 +53,7 @@ const AuctionList = () => {
     let scrollTopHandler = e.target.scrollTop;
     let clientHeightHandler = e.target.clientHeight;
     let scrollHeightHandler = e.target.scrollHeight;
+    console.log(clientHeightHandler);
     if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
       if (!loading) {
         if (followingItem) {
@@ -93,7 +95,7 @@ const AuctionList = () => {
           </CategoryBtn>
         </CategoryWrap>
       </ListCategoryWrap>
-      <ListContents onScroll={handleScroll}>
+      <ListContents onScroll={handleScroll} isIOS={isIOS}>
         {AuctionListData?.map((item, index) => {
           return (
             <AuctionColumn
@@ -167,10 +169,10 @@ const ListContents = styled.div`
   flex-wrap: wrap;
   align-content: flex-start;
   justify-content: flex-start;
-  height: calc(100vh - 200px);
+  height: ${(props) =>
+    props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   overflow: auto;
   padding: 0px 10px;
-  /* border-bottom: ${({ category }) => (category ? "solid 2px blue;" : "")}; */
 `;
 
 export default AuctionList;
