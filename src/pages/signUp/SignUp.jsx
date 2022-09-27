@@ -34,13 +34,24 @@ import {
 } from "./SignUp.styled";
 
 const SignUp = () => {
-  const [email, setEmail] = useState("");
+  // 인풋 상태 관리
+  const [check, setCheck] = useState({
+    email: false,
+    id: false,
+    nickName: false,
+    password: false,
+    repassword: false,
+  });
+
+  // 중복 검사
   const [emailCheck, setEmailCheck] = useState(false);
-  const [password, setPassword] = useState("");
   const [passwordCheck, setPasswordCheck] = useState(false);
+  const [nickNameCheck, setNickNameCheck] = useState(false);
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [repassword, setRePassword] = useState("");
   const [nickName, setNickName] = useState("");
-  const [nickNameCheck, setNickNameCheck] = useState(false);
   const [passwordMessage, setPasswordMessage] = useState("");
 
   const navigate = useNavigate();
@@ -59,15 +70,6 @@ const SignUp = () => {
   const nickNameIconRef = useRef();
   const nickNameSpanRef = useRef();
   const NickNameCheckef = useRef();
-
-  // 인풋 상태 관리
-  const [check, setCheck] = useState({
-    email: false,
-    id: false,
-    nickName: false,
-    password: false,
-    repassword: false,
-  });
 
   // const [color, setColor] = useState({
   //   email: "#dedede",
@@ -88,21 +90,6 @@ const SignUp = () => {
     /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/;
 
   // 이메일 Input
-  // const checkLoginEmail = (e) => {
-  //   const email = e.target.value;
-  //   setEmail(email);
-
-  //   if (email.length <= 0) {
-  //     setCheck({ ...check, email: false });
-  //   }
-
-  //   if (email !== emailCheck) {
-  //     setEmailCheck(false);
-  //   } else {
-  //     setEmailCheck(true);
-  //   }
-  // };
-
   const checkLoginEmail = useCallback(
     debounce((email) => {
       const emailRegExp =
@@ -196,6 +183,7 @@ const SignUp = () => {
     }
   }, [nickName]);
 
+  // 닉네임 중복체크
   const checkNickName = useCallback(
     debounce((nickName) => {
       dispatch(nickNameCheckThunk({ nickName })).then((res) => {

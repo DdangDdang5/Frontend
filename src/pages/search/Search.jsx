@@ -32,11 +32,11 @@ import {
   SearchItemPrice,
   SearchItemList,
 } from "./Search.styled";
-import { NoSearch } from "../../shared/images";
-import styled from "styled-components";
+
 const Search = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const searchList = useSelector((state) => state.search.data);
   const [keyword, setKeyword] = useState("");
   const [isSearch, setIsSearch] = useState(false);
@@ -58,18 +58,13 @@ const Search = () => {
 
   useEffect(() => {}, [dispatch]);
 
-  // 경매 상세로 페이지 이동
+  // 경매 상세페이지로 이동
   const moveAuctionDetail = (auctionId) => {
     navigate(`/auctionDetail/${auctionId}`);
   };
 
-  // 검색어 모두 지우기
-  const handleClearKeyword = () => {
-    setKeyword([]);
-  };
-
   return (
-    <Fragment>
+    <Fragment >
       <SearchBox>
         <SearchInputGroup>
           <SearchInputWrap>
@@ -120,11 +115,10 @@ const Search = () => {
               })
             ) : isSearch ? (
               <div>
-               <SearchResult/>
+                <SearchResult />
               </div>
             ) : (
-              <SearchHistory
-              />
+              <SearchHistory />
             )}
           </SearchFilterGroup>
         </>
