@@ -154,7 +154,8 @@ const SignUp = () => {
       // }
       // else {
       //   if
-      repassword !== password && repassword.length > 0 
+      repassword !== password &&
+      repassword.length > 0
     ) {
       // passwordSpanRef.current.style.color = "#FF664D";
       rePasswordSpanRef.current.style.color = "#FF664D";
@@ -233,7 +234,7 @@ const SignUp = () => {
         emailRef.current.innerText = "중복되는 이메일입니다.";
         // setCheck({ ...check, email: true });
       } else {
-        if (nickNameCheck === true) {
+        if (nickNameCheck === false) {
           nickNameRef.current.focus();
           nickNameRef.current.style.color = "#BCBCBC";
           nickNameRef.current.innerText = "중복되는 닉네임입니다.";
@@ -252,14 +253,14 @@ const SignUp = () => {
         }
       }
     },
-    [email, password, repassword, nickName]
+    [email, nickName, password, repassword]
   );
 
   return (
     <Fragment>
       <Header back={true} pageName="회원가입" />
       <SignUpBox>
-        <SignUpBoxForm onSubmit={(event) => onsubmitHandler(event)}>
+        <SignUpBoxForm>
           <SignUpBoxInputGroup>
             이메일
             <SignUpBoxInputWrap>
@@ -343,6 +344,7 @@ const SignUp = () => {
           <SignUpButtonGroup>
             {email && password && repassword && nickName ? (
               <Button
+                _onClick={(e) => onsubmitHandler(e)}
                 type={"submit"}
                 text={"회원가입"}
                 style={{

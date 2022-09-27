@@ -38,7 +38,8 @@ export const signUpMemberThunk = createAsyncThunk(
       } else {
         return (
           window.alert(`${res.data.data.nickName}님 회원가입을 축하드립니다!`),
-          window.location.replace("/login")
+          // window.location.replace("/login")
+          window.history.back()
         );
       }
     });

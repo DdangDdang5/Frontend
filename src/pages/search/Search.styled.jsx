@@ -60,18 +60,20 @@ export const SearchInputIcon = styled.div`
 
 export const SearchFilterGroup = styled.div`
   width: 100%;
-  height: 20%;
+  /* position: relative; */
   display: flex;
-  flex-direction: row;
   margin-top: 36px;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
+  border: 1px solid blue;
+  box-sizing: border-box;
 `;
 
 export const SearchFilterWrap = styled.div`
   width: 100%;
-  height: 100%;
   box-sizing: border-box;
+  border: 1px solid red;
+  display: flex;
 `;
 
 export const SearchItemList = styled.div`
@@ -101,7 +103,7 @@ export const SearchTagWrap = styled.div`
   display: flex;
   gap: 4px;
   span {
-    padding: 2px 6px;
+    padding: 2px 4px;
     font-weight: ${(props) => props.theme.fontWeights.bold};
     color: ${(props) => props.theme.colors.White};
     background-color: ${(props) => props.theme.colors.Blue1};
