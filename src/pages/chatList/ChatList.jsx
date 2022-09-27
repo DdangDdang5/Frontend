@@ -10,6 +10,7 @@ import {
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
+import { isIOS } from "react-device-detect";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -51,7 +52,7 @@ const ChatList = () => {
       ) : (
         <>
           <Header pageName="채팅" alarm={true} />
-          <ChatRoomList>
+          <ChatRoomList isIOS={isIOS}>
             {chatRoomList.length > 0 ? (
               chatRoomList?.map((item) => (
                 <ChatRoom key={item.roomId} room={item} />

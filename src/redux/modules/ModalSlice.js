@@ -24,7 +24,7 @@ export const _categoryList = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 export const _regionList = createAsyncThunk(
   "getRegionList",
@@ -35,7 +35,7 @@ export const _regionList = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const modalSlice = createSlice({
@@ -84,13 +84,20 @@ export const modalSlice = createSlice({
             default:
               return item;
           }
-        })
+        }),
       );
-      state.categoryList = [...setCategoryList];
+      state.categoryList = [...setCategoryList]
+        .filter((item) => item.categoryName === "전체 품목")
+        .concat(
+          [...setCategoryList].filter(
+            (item) => item.categoryName !== "전체 품목",
+          ),
+        );
     },
     [_categoryList.rejected]: (state, action) => {
       console.log(action);
     },
+
     [_regionList.fulfilled]: (state, action) => {
       const setRegionList = new Set(
         action.payload.map((item) => {
@@ -100,9 +107,15 @@ export const modalSlice = createSlice({
             default:
               return item;
           }
-        })
+        }),
       );
-      state.regionList = [...setRegionList];
+      state.regionList = [...setRegionList]
+        .filter((item) => item.region === "서울 전체")
+        .concat(
+          [...setRegionList].filter(
+            (item) => item.region !== "서울 전체",
+          ),
+        );
     },
     [_regionList.rejected]: (state, action) => {
       console.log(action);

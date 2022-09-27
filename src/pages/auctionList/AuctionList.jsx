@@ -7,7 +7,7 @@ import {
   _categoryList,
   _regionList,
 } from "../../redux/modules/ModalSlice";
-import { auctionItemList } from "../../redux/modules/AuctionListSlice";
+import { auctionItemList, clearAuctionList, initialPaging } from "../../redux/modules/AuctionListSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
@@ -39,11 +39,12 @@ const AuctionList = () => {
 
   useEffect(() => {
     dispatch(_categoryList());
-
     dispatch(_regionList());
 
     if (categoryName === "전체 품목" && regionName === "서울 전체") {
-      dispatch(auctionItemList());
+			dispatch(initialPaging());
+			dispatch(clearAuctionList());
+			dispatch(auctionItemList());
     }
   }, [categoryName, regionName]);
 

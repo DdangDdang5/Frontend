@@ -13,7 +13,7 @@ export const AuctionReviewContent = styled.div`
 
   position: absolute;
   top: 70px;
-  bottom: 70px;
+  bottom: ${(props) => props.isIOS ? "80px" : "70px"};
 `;
 
 export const ReviewItemWrap = styled.div`

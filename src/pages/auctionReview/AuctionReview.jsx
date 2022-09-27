@@ -10,6 +10,7 @@ import {
 // Package improt
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { isIOS } from "react-device-detect";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -48,6 +49,8 @@ const AuctionReview = () => {
     isCheck: [false, false, false],
   });
 
+	const finialPrice = auction?.nowPrice?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
   const questionList = [
     "상대의 응답 속도는 어떠셨나요?",
     "상대의 매너는 어떠셨나요?",
@@ -58,6 +61,10 @@ const AuctionReview = () => {
   useEffect(() => {
     dispatch(auctionDetailData(auctionId));
   }, []);
+
+	useEffect(() => {
+
+	}, [auction]);
 
   const onCheckRadioBtn = (event) => {
     const { id, name } = event.target;
@@ -106,6 +113,7 @@ const AuctionReview = () => {
             },
           }),
         ).then((res) => {
+					console.log(res);
           if (res.payload.statusCode === 200) {
             if (res.payload.data.split("가")[0] === "판매자") {
               navigate("/myPageMyAuction");
@@ -129,12 +137,12 @@ const AuctionReview = () => {
         onClickSave={onClickSaveReview}
       />
 
-      <AuctionReviewContent>
+      <AuctionReviewContent isIOS={isIOS}>
         {/* 평가 경매 */}
         <ReviewItemWrap>
           <ReviewItemWrapTitle>평가하는 경매</ReviewItemWrapTitle>
           <ReviewItem>
-            <img src={auction?.multiImages[0].imgUrl} alt="auction-new-img" />
+            <img src={auction.multiImages ? auction.multiImages[0].imgUrl : ""} alt="auction-new-img" onClick={() => navigate(`/auctionDetail/${auctionId}`)}/>
             <ReviewItemContent>
               <TagWrap>
                 {auction?.delivery ? <span>택배</span> : null}
@@ -144,7 +152,7 @@ const AuctionReview = () => {
               <ReviewItemTitle>{auction.title}</ReviewItemTitle>
               <ReviewItemPriceWrap>
                 <span>최종낙찰가</span>
-                <ReviewItemPrice>{auction.nowPrice}원</ReviewItemPrice>
+                <ReviewItemPrice>{finialPrice}원</ReviewItemPrice>
               </ReviewItemPriceWrap>
             </ReviewItemContent>
           </ReviewItem>

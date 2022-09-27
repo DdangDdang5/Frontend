@@ -6,7 +6,7 @@ export const FooterContainer = styled.div`
   height: 70px;
 
   background-color: white;
-  border-top: 1px solid gray;
+  border-top: 1px solid  #EBEEF3;
 
   position: absolute;
   bottom: ${(props) => (props.isIOS ? "10px" : "0")};

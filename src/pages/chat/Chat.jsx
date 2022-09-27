@@ -15,7 +15,7 @@ import OptionModal from "../../components/modal/OptionModal";
 import Button from "../../elements/button/Button";
 import { doneAuction } from "../../redux/modules/AuctionSlice";
 import { getChatMessageList } from "../../redux/modules/ChatSlice";
-import { Add, Send } from "../../shared/images";
+import { Add, BasicProfile, Send } from "../../shared/images";
 import Loading from "../loading/Loading";
 
 // Style import
@@ -49,8 +49,15 @@ const Chat = () => {
   const dispatch = useDispatch();
 
   const { roomId } = useParams();
-  const { auctionId, auctionCreatedAt, auctionPeriod, isDetail, title } =
-    useLocation().state;
+  const {
+    auctionId,
+    auctionCreatedAt,
+    auctionPeriod,
+    auctionStatus,
+    isDetail,
+    title,
+    chatOther,
+  } = useLocation().state;
   const nickName = sessionStorage.getItem("memberNickname");
 
   const chatMessageList = useSelector(
@@ -72,26 +79,38 @@ const Chat = () => {
     createdAt: "",
   });
 
-	const initialChat = async () => {
-		await setLoading(true);
-		await registerUser();
-		await scrollToBottom();
-		await setLoading(false);
-	}
+  const initialChat = async () => {
+    await setLoading(true);
+    await registerUser();
+    await scrollToBottom();
+  };
 
   useEffect(() => {
-    // registerUser();
-
-    // scrollToBottom();
-		initialChat();
+    initialChat();
   }, []);
-	
-  useEffect(() => {
-		dispatch(getChatMessageList(roomId));
 
-    if (chatMessageList[0]?.data.length > 0) {
-      chatList.push(...chatMessageList[0].data);
-      setChatList(chatList);
+  // useEffect(() => {
+  //   var timeout;
+  //   // 5초 이상 로딩시 새로고침
+  //   if (loading) {
+  //     timeout = setInterval(() => {
+  // 			initialChat();
+  //     }, 5000);
+  //   }
+
+  //   return () => {
+  //     if (loading) {
+  //       setTimeout(timeout);
+  //     }
+  //   };
+  // }, []);
+
+  useEffect(() => {
+    dispatch(getChatMessageList(roomId));
+
+    if (chatMessageList[0]?.data?.length > 0) {
+      // chatList.push(...chatMessageList[0].data);
+      setChatList(chatMessageList[0].data);
     }
   }, [JSON.stringify(chatMessageList)]);
 
@@ -138,6 +157,7 @@ const Chat = () => {
 
   // 채팅 메뉴 모달 중 "거래 완료하기" 클릭
   const onClickFinishMenu = () => {
+		dispatch(doneAuction(auctionId))
     setVisible(false);
     setOptionVisible(true);
   };
@@ -181,7 +201,7 @@ const Chat = () => {
 
   // 웹소켓 연결
   const registerUser = () => {
-		setLoading(true);
+    setLoading(true);
     var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
     stompClient = Stomp.over(sockJS);
     // stompClient.debug = null; // stompJS console.log 막기
@@ -213,6 +233,15 @@ const Chat = () => {
     };
 
     stompClient.send("/app/chat/message", {}, JSON.stringify(chatMessage));
+
+    if (chatOther) {
+      stompClient.send(
+        "/app/chat/message",
+        {},
+        JSON.stringify({ ...chatMessage, sender: chatOther }),
+      );
+    }
+    setLoading(false);
   };
 
   const onMessageReceived = (payload) => {
@@ -258,11 +287,11 @@ const Chat = () => {
 
   return (
     <>
-      <ChatContainer>
-        {loading ? (
-          <Loading />
-        ) : (
-          <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <ChatContainer>
             <Header
               back={true}
               pageName={title}
@@ -274,10 +303,14 @@ const Chat = () => {
             {/* 경매 남은 시간 */}
             {isDetail ? (
               <AuctionTimeWrap>
-                <span>남은 시간</span>
-                {/* <AuctionTime>5일 03:37</AuctionTime> */}
-
-                <CountdownTimer targetDate={timer(auctionPeriod)} />
+                {auctionStatus ? (
+                  <>
+                    <span>남은 시간</span>
+                    <CountdownTimer targetDate={timer(auctionPeriod)} />
+                  </>
+                ) : (
+                  <AuctionTime>경매가 마감되었습니다.</AuctionTime>
+                )}
               </AuctionTimeWrap>
             ) : null}
 
@@ -290,14 +323,14 @@ const Chat = () => {
                       <div key={idx}>
                         {chat.sender !== nickName ? (
                           <ChatMessage>
-                            <MessageProfile
-                              src={
-                                chat.profileImgUrl
-                                  ? chat.profileImgUrl
-                                  : "/maskable.png"
-                              }
-                              alt="chat-profile"
-                            />
+                            {chat.profileImgUrl ? (
+                              <MessageProfile
+                                src={chat.profileImgUrl}
+                                alt="chat-profile"
+                              />
+                            ) : (
+                              <BasicProfile />
+                            )}
                             <MessageWrap>
                               <span>{checkNickname(chat.sender)}</span>
                               <Message>
@@ -347,53 +380,57 @@ const Chat = () => {
                 <Send />
               </SendBtn>
             </ChatFooter>
-          </>
-        )}
-      </ChatContainer>
+          </ChatContainer>
 
-      {/* 메뉴 모달 */}
-      <OptionModal minHeight="100px" visible={visible} setVisible={setVisible}>
-        <MenuItemList>
-          <MenuItem onClick={onClickFinishMenu}>평가하기</MenuItem>
-          {/* <MenuItem>차단하기</MenuItem>
+          {/* 메뉴 모달 */}
+          <OptionModal
+            minHeight="50px"
+            visible={visible}
+            setVisible={setVisible}
+          >
+            <MenuItemList>
+              <MenuItem onClick={onClickFinishMenu}>거래 완료하기</MenuItem>
+              {/* <MenuItem>차단하기</MenuItem>
           <MenuItem>신고하기</MenuItem> */}
-          <MenuItem onClick={onDisconnected}>채팅방 나가기</MenuItem>
-        </MenuItemList>
-      </OptionModal>
+              {/* <MenuItem onClick={onDisconnected}>채팅방 나가기</MenuItem> */}
+            </MenuItemList>
+          </OptionModal>
 
-      {/* 메뉴 모달의 옵션 클릭 모달 */}
-      <ChatOptionModal
-        minHeight="260px"
-        visible={optionVisible}
-        setVisible={setOptionVisible}
-      >
-        <OptionModalContainer>
-          <ModalTextWrap>
-            <span>거래가 완료되었나요?</span>
-            <span>마이페이지에서 상대방 평가를 할 수 있어요.</span>
-          </ModalTextWrap>
-          <ModalBtnWrap>
-            <Button
-              text="완료할래요"
-              _onClick={onClickFinishAuction}
-              style={{
-                width: "100%",
-                ft_weight: "500",
-                color: "#FFFFFF",
-              }}
-            />
-            <Button
-              text="취소"
-              _onClick={() => setOptionVisible(false)}
-              style={{
-                width: "100%",
-                color: "#646778",
-                bg_color: "#EBEEF3",
-              }}
-            />
-          </ModalBtnWrap>
-        </OptionModalContainer>
-      </ChatOptionModal>
+          {/* 메뉴 모달의 옵션 클릭 모달 */}
+          <ChatOptionModal
+            minHeight="260px"
+            visible={optionVisible}
+            setVisible={setOptionVisible}
+          >
+            <OptionModalContainer>
+              <ModalTextWrap>
+                <span>거래가 완료되었나요?</span>
+                <span>마이페이지에서 상대방 평가를 할 수 있어요.</span>
+              </ModalTextWrap>
+              <ModalBtnWrap>
+                <Button
+                  text="완료할래요"
+                  _onClick={onClickFinishAuction}
+                  style={{
+                    width: "100%",
+                    ft_weight: "500",
+                    color: "#FFFFFF",
+                  }}
+                />
+                <Button
+                  text="취소"
+                  _onClick={() => setOptionVisible(false)}
+                  style={{
+                    width: "100%",
+                    color: "#646778",
+                    bg_color: "#EBEEF3",
+                  }}
+                />
+              </ModalBtnWrap>
+            </OptionModalContainer>
+          </ChatOptionModal>
+        </>
+      )}
     </>
   );
 };

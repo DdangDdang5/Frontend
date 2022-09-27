@@ -32,7 +32,6 @@ const ModalLayout = styled.div`
   right: 0;
 
   display: ${(props) => (props.visible ? "block" : "none")};
-  /* z-index: 20; */
 `;
 
 const ModalWrapper = styled.div`
@@ -42,7 +41,7 @@ const ModalWrapper = styled.div`
   box-sizing: border-box;
 
   position: absolute;
-  top: 0;
+  top: 70px;
   right: 0;
 
   display: ${(props) => (props.visible ? "block" : "none")};

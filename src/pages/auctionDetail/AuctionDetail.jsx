@@ -55,6 +55,8 @@ const AuctionDetail = () => {
     createdAt: "",
   });
 
+  let chatOther = "";
+
   const imgList = data?.multiImages;
 
   const tagsArray = [
@@ -81,56 +83,16 @@ const AuctionDetail = () => {
         }
       });
 
-      const date = new Date(data.createdAt);
-
-      const deadline = new Date(
-        date.setDate(date.getDate() + data.auctionPeriod)
-      );
-
-      if (deadline <= Date.now()) {
+      if (!data.auctionStatus) {
         dispatch(winAuctionItem(params.auctionId));
-        console.log(bid);
+
         if (bid) {
           if (bid.seller === nickName || bid.bidder === nickName) {
             setWinBid(true);
-            console.log("me is win the auction");
-
-            // var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
-            // stompClient = Stomp.over(sockJS);
-            // // console.log(stompClient);
-            // stompClient.connect(
-            //   {},
-            //   () =>
-            //     stompClient.subscribe(
-            //       `/topic/chat/room/${bid.roomId}`,
-            //       () => {},
-            //     ),
-            //   onError,
-            // );
-
-            // let chatMessage = {
-            //   type: "ENTER",
-            //   roomId: bid.roomId,
-            //   sender: "",
-            //   message: "",
-            // };
-
-            // stompClient.send(
-            //   "/app/chat/bid",
-            //   {},
-            //   JSON.stringify({ ...chatMessage, sender: bid.seller }),
-            // );
-
-            // stompClient.send(
-            //   "/app/chat/bid",
-            //   {},
-            //   JSON.stringify({ ...chatMessage, sender: bid.bidder }),
-            // );
+						chatOther = [bid.seller, bid.bidder].filter((item) => item !== nickName).join('');
+						console.log(chatOther);
           }
         }
-      } else {
-        // console.log("not finish auction", params);
-        // console.log(bid);
       }
     }
   }, [JSON.stringify(data), JSON.stringify(bid.auctionId)]);
@@ -175,7 +137,7 @@ const AuctionDetail = () => {
   const onConnected = () => {
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived
+      onMessageReceived,
     );
 
     // 채팅방 들어감
@@ -207,7 +169,7 @@ const AuctionDetail = () => {
       stompClient.send(
         "/app/chat/bid",
         {},
-        JSON.stringify({ ...chatMessage, type: "ENTER" })
+        JSON.stringify({ ...chatMessage, type: "ENTER" }),
       );
 
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
@@ -314,11 +276,13 @@ const AuctionDetail = () => {
                   auctionId: params?.auctionId,
                   auctionCreatedAt: data?.createdAt,
                   auctionPeriod: data?.auctionPeriod,
+									audtionStatus: data?.auctionStatus,
                   isDetail: true,
                   title: data.title,
                 },
               })
-            }>
+            }
+          >
             <CommentCountWrap>
               <CommentCountTitle>실시간 채팅방</CommentCountTitle>
               <p>{data.participantCnt}명 참여중</p>
@@ -365,6 +329,7 @@ const AuctionDetail = () => {
                         auctionId: params.auctionId,
                         isDetail: false,
                         title: data.title,
+                        chatOther: chatOther
                       },
                     });
                   }}

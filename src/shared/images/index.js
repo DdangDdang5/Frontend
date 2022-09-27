@@ -47,6 +47,33 @@ import { ReactComponent as manFashion } from "./category/ManFashion.svg";
 import { ReactComponent as sport } from "./category/Sport.svg";
 import { ReactComponent as womanFashion } from "./category/WomanFashion.svg";
 
+import { ReactComponent as dobong } from "./region/Dobong.svg";
+import { ReactComponent as dongdaemun } from "./region/Dongdaemun.svg";
+import { ReactComponent as dongjak } from "./region/Dongjak.svg";
+import { ReactComponent as eunpyeong } from "./region/Eunpyeong.svg";
+import { ReactComponent as gangbuk } from "./region/Gangbuk.svg";
+import { ReactComponent as gangdong } from "./region/Gangdong.svg";
+import { ReactComponent as gangnam } from "./region/Gangnam.svg";
+import { ReactComponent as gangseo } from "./region/Gangseo.svg";
+import { ReactComponent as geumcheon } from "./region/Geumcheon.svg";
+import { ReactComponent as guro } from "./region/Guro.svg";
+import { ReactComponent as gwanak } from "./region/Gwanak.svg";
+import { ReactComponent as gwangjin } from "./region/Gwangjin.svg";
+import { ReactComponent as jongno } from "./region/Jongno.svg";
+import { ReactComponent as jung } from "./region/Jung.svg";
+import { ReactComponent as jungnang } from "./region/Jungnang.svg";
+import { ReactComponent as mapo } from "./region/Mapo.svg";
+import { ReactComponent as nowon } from "./region/Nowon.svg";
+import { ReactComponent as seocho } from "./region/Seocho.svg";
+import { ReactComponent as seodaemun } from "./region/Seodaemun.svg";
+import { ReactComponent as seongbuk } from "./region/Seongbuk.svg";
+import { ReactComponent as seongdong } from "./region/Seongdong.svg";
+import { ReactComponent as seoul } from "./region/Seoul.svg";
+import { ReactComponent as songpa } from "./region/Songpa.svg";
+import { ReactComponent as yangcheon } from "./region/Yangcheon.svg";
+import { ReactComponent as yeoungdeongpo } from "./region/Yeoungdeongpo.svg";
+import { ReactComponent as yongsan } from "./region/Yongsan.svg";
+
 // Logo import
 import { ReactComponent as logoClassic } from "./logo/LogoClassic.svg";
 import { ReactComponent as logoWood } from "./logo/LogoWood.svg";
@@ -55,6 +82,8 @@ import { ReactComponent as logoGold } from "./logo/LogoGold.svg";
 import { ReactComponent as logoRainbow } from "./logo/LogoRainbow.svg";
 
 import { ReactComponent as eventImg } from "./EventImg.svg";
+import { ReactComponent as infoImg } from "./InfoImg.svg";
+import { ReactComponent as loadingImg } from "./icon/LoadingImg.svg";
 
 // icon
 export const Add = add;
@@ -105,6 +134,34 @@ export const ManFashion = manFashion;
 export const Sport = sport;
 export const WomanFashion = womanFashion;
 
+// region
+export const Seoul = seoul;
+export const Dobong = dobong;
+export const Dongdaemun = dongdaemun;
+export const Dongjak = dongjak;
+export const Eunpyeong = eunpyeong;
+export const Gangbuk = gangbuk;
+export const Gangdong = gangdong;
+export const Gangnam = gangnam;
+export const Gangseo = gangseo;
+export const Geumcheon = geumcheon;
+export const Guro = guro;
+export const Gwanak = gwanak;
+export const Gwangjin = gwangjin;
+export const Jongno = jongno;
+export const Jung = jung;
+export const Jungnang = jungnang;
+export const Mapo = mapo;
+export const Nowon = nowon;
+export const Seocho = seocho;
+export const Seodaemun = seodaemun;
+export const Seongbuk = seongbuk;
+export const Seongdong = seongdong;
+export const Songpa = songpa;
+export const Yangcheon = yangcheon;
+export const Yeoungdeongpo = yeoungdeongpo;
+export const Yongsan = yongsan;
+
 // 3d hammer
 export const LogoClassic = logoClassic;
 export const LogoWood = logoWood;
@@ -113,3 +170,5 @@ export const LogoGold = logoGold;
 export const LogoRainbow = logoRainbow;
 
 export const EventImg = eventImg;
+export const InfoImg = infoImg;
+export const LoadingImg = loadingImg;

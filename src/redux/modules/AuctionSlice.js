@@ -55,7 +55,6 @@ export const doneAuction = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get(`/auction/${payload}/done`);
-      // console.log(response);
       return response.data.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -71,7 +70,8 @@ export const reviewAuction = createAsyncThunk(
         `/auction/${payload.auctionId}/review`,
         payload.data
       );
-      return response.data.data;
+			console.log(response);
+      return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }

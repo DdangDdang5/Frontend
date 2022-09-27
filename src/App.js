@@ -102,42 +102,43 @@ function App() {
   // console.log(notifToastList);
   // const EventSource = NativeEventSource || EventSourcePolyfill;
 
-  useEffect(() => {
-    let url =
-      process.env.REACT_APP_URL +
-      "/subscribe/" +
-      sessionStorage.getItem("memberId");
-    const sse = new EventSource(url);
+  // useEffect(() => {
+  //   let url =
+  //     process.env.REACT_APP_URL +
+  //     "/subscribe/" +
+  //     sessionStorage.getItem("memberId");
+  //   const sse = new EventSource(url);
+  //   console.log(sse);
 
-    sse.onopen = (event) => {
-      console.log("connection opened", event);
-    };
+  //   sse.onopen = (event) => {
+  //     console.log("connection opened", event);
+  //   };
 
-    sse.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      console.log(data);
-    };
+  //   sse.onmessage = (event) => {
+  //     const data = JSON.parse(event.data);
+  //     console.log(data);
+  //   };
 
-    sse.addEventListener("sse", (event) => {
-      const data = JSON.parse(event.data);
-      console.log(event);
-      console.log(data);
-      dispatch(add({ newNotifs: data }));
-    });
+  //   sse.addEventListener("sse", (event) => {
+  //     const data = JSON.parse(event.data);
+  //     console.log(event);
+  //     console.log(data);
+  //     dispatch(add({ newNotifs: data }));
+  //   });
 
-    sse.onerror = (error) => {
-      sse.close();
-    };
-    return () => {
-      sse.close();
-    };
-  }, []);
+  //   sse.onerror = (error) => {
+  //     sse.close();
+  //   };
+  //   return () => {
+  //     sse.close();
+  //   };
+  // }, []);
 
   return (
     <AppContainer>
       <FontRegular />
-      <div></div>
-      {/* {!((isIOS || isMacOs) && isSafari) && show ? (
+      <AppContent>
+        {/* {!((isIOS || isMacOs) && isSafari) && show ? (
         <ReactNotificationComponent
           title={notification.title}
           body={notification.body}
@@ -147,49 +148,175 @@ function App() {
       )}
       {!((isIOS || isMacOs) && isSafari) ? <Notifications /> : <></>} */}
 
-      {notifToastList?.map((item) => (
-        <ToastNotification notif={item} />
-      ))}
+        {notifToastList?.map((item) => (
+          <ToastNotification notif={item} />
+        ))}
 
-      <Routes>
-        <Route path="*" element={<NotFound />} />
-        <Route path="/" element={<Main />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/signUp" element={<SignUp />} />
-        <Route path="/myPage" element={<MyPage />} />
-        <Route path="/myPageEdit" element={<MyPageEdit />} />
-        <Route path="/search" element={<Search />} />
-        <Route path="/chat/:roomId" element={<Chat />} />
-        <Route path="/chatList" element={<ChatList />} />
-        <Route path="/auctionList" element={<AuctionList />} />
-        <Route path="/auctionWrite" element={<AuctionWrite />} />
-        <Route path="/auctionEdit/:auctionId" element={<AuctionEdit />} />
-        <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
-        <Route path="/auctionReview/:auctionId" element={<AuctionReview />} />
-        <Route path="/member/kakao/callback" element={<Kakao />} />
-        <Route path="/myGrade/:memberId" element={<MyGrade />} />
-        <Route path="/myPageMyAuction" element={<MyPageMyAuction />} />
-        <Route
-          path="/myPageParticipationAuction"
-          element={<MyPageParticipationAuction />}
-        />
-        <Route
-          path="/myPageInterestAuction"
-          element={<MyPageInterestAuction />}
-        />
-        <Route path="/userProfile/:memberId" element={<UserProfile />} />
-        <Route path="/notification" element={<Notification />} />
-        <Route path="/event/:eventId" element={<Event />} />
-        <Route path="/eventList" element={<EventList />} />
-        <Route path="/loading" element={<Loading />} />
-      </Routes>
-      {modal && <CategoryModal />}
+        <Routes>
+          <Route path="*" element={<NotFound />} />
+          <Route path="/" element={<Main />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signUp" element={<SignUp />} />
+          <Route path="/myPage" element={<MyPage />} />
+          <Route path="/myPageEdit" element={<MyPageEdit />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/chat/:roomId" element={<Chat />} />
+          <Route path="/chatList" element={<ChatList />} />
+          <Route path="/auctionList" element={<AuctionList />} />
+          <Route path="/auctionWrite" element={<AuctionWrite />} />
+          <Route path="/auctionEdit/:auctionId" element={<AuctionEdit />} />
+          <Route path="/auctionDetail/:auctionId" element={<AuctionDetail />} />
+          <Route path="/auctionReview/:auctionId" element={<AuctionReview />} />
+          <Route path="/member/kakao/callback" element={<Kakao />} />
+          <Route path="/myGrade/:memberId" element={<MyGrade />} />
+          <Route path="/myPageMyAuction" element={<MyPageMyAuction />} />
+          <Route
+            path="/myPageParticipationAuction"
+            element={<MyPageParticipationAuction />}
+          />
+          <Route
+            path="/myPageInterestAuction"
+            element={<MyPageInterestAuction />}
+          />
+          <Route path="/userProfile/:memberId" element={<UserProfile />} />
+          <Route path="/notification" element={<Notification />} />
+          <Route path="/event/:eventId" element={<Event />} />
+          <Route path="/eventList" element={<EventList />} />
+          <Route path="/loading" element={<Loading />} />
+        </Routes>
+        {modal && <CategoryModal />}
+      </AppContent>
+
+      <SmallApp>
+        <SmallAppContent>
+          <div id="none-background"></div>
+          <img src="/logo192.png" alt="logo"></img>
+        </SmallAppContent>
+      	<span>지원하지 않는 디바이스입니다.</span>
+      </SmallApp>
     </AppContainer>
   );
 }
 
 const AppContainer = styled.div`
   font-family: "SpoqaHanSansNeo-Regular";
+<<<<<<< HEAD
+`;
+
+const AppContent = styled.div`
+  @media all and (max-width: 359px) {
+    display: none;
+  }
+`;
+
+const SmallApp = styled.div`
+	@media all and (min-width: 360px) {
+    display: none;
+  }
+
+	@media all and (max-width: 359px) {
+    width: 100%;
+		height: 100vh;
+
+		color: #3A3A3A;
+		background-color: #EBEEF3;
+		font-weight: 400;
+		font-size: 18px;
+		line-height: 140%;
+
+		position: relative;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 70px;
+  }
+`;
+
+const SmallAppContent = styled.div`
+	position: relative;
+
+	div {
+		width: 74px;
+		height: 74px;
+		background-color: #FFFFFF;
+		border-radius: 50%;
+
+		position: absolute;
+		top: 40%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	img {
+		width: 100px;
+		height: 100px;
+
+		position: absolute;
+		top: 40%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+=======
+>>>>>>> dev
+`;
+
+const AppContent = styled.div`
+  @media all and (max-width: 359px) {
+    display: none;
+  }
+`;
+
+const SmallApp = styled.div`
+	@media all and (min-width: 360px) {
+    display: none;
+  }
+
+	@media all and (max-width: 359px) {
+    width: 100%;
+		height: 100vh;
+
+		color: #3A3A3A;
+		background-color: #EBEEF3;
+		font-weight: 400;
+		font-size: 18px;
+		line-height: 140%;
+
+		position: relative;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 70px;
+  }
+`;
+
+const SmallAppContent = styled.div`
+	position: relative;
+
+	div {
+		width: 74px;
+		height: 74px;
+		background-color: #FFFFFF;
+		border-radius: 50%;
+
+		position: absolute;
+		top: 40%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	img {
+		width: 100px;
+		height: 100px;
+
+		position: absolute;
+		top: 40%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
 `;
 
 export default App;

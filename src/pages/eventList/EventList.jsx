@@ -9,13 +9,13 @@ import { EventImg } from "../../shared/images";
 
 // Style import
 import {
-  EventBanner,
-  EventCircle,
-  EventContent,
-  EventDate,
-  EventText,
-  EventTitle,
-} from "../main/Main.styled";
+	EventBanner,
+	EventCircle,
+	EventContent,
+	EventDate,
+	EventText,
+	EventTitle,
+} from "../../components/swipeImage/SwipeImage.styled";
 import {
   EventItem,
   EventListContainer,
@@ -30,13 +30,13 @@ const EventList = () => {
       <Header back={true} pageName="이벤트" alarm={true} />
 
       <EventListContent>
-        {Array.from({ length: 1 }, () => (
-          <EventItem onClick={() => navigate("/event/1")}>
-            <EventBanner>
+        {Array.from({ length: 1 }, (_, idx) => (
+          <EventItem key={idx} onClick={() => navigate("/event/1")}>
+            <EventBanner idx={1} isMain={false}>
               <FontEvent />
-              <EventContent>
-                <EventDate>09.26 ~ 10.02</EventDate>
-                <EventTitle>소중한 의견을 들려주세요!</EventTitle>
+              <EventContent idx={1}>
+                <EventDate idx={1}>09.27 ~ 10.02</EventDate>
+                <EventTitle idx={1}>소중한 의견을 들려주세요!</EventTitle>
                 <EventText>
                   <span>추첨을 통해 총 5분께</span>
                   <span>교촌치킨 기프티콘을 드려요</span>

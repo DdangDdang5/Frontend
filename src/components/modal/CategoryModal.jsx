@@ -12,8 +12,10 @@ import styled from "styled-components";
 import {
   auctionCategoryList,
   auctionCategoryRegionList,
-  auctionItemListNotPage,
+  auctionItemList,
   auctionRegionList,
+	clearAuctionList,
+	initialPaging,
 } from "../../redux/modules/AuctionListSlice";
 
 const CategoryModal = () => {
@@ -51,9 +53,11 @@ const CategoryModal = () => {
   const onCheckCategoryRegion = (categoryName, regionName) => {
     const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
     const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
+		dispatch(initialPaging());
 
     if (categoryNameCheck === "전체품목" && regionNameCheck === "서울전체") {
-      dispatch(auctionItemListNotPage());
+			dispatch(clearAuctionList());
+			dispatch(auctionItemList());
     } else if (
       categoryNameCheck !== "전체품목" &&
       regionNameCheck !== "서울전체"

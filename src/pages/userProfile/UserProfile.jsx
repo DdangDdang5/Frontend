@@ -75,7 +75,7 @@ const UserProfile = () => {
             )}
             <span>{member?.nickname}</span>
           </UserProfileInfo>
-          <MyGradeImgWrap onClick={() => navigate(`/myGrade/${memberId}`)}>
+          <MyGradeImgWrap>
             <div></div>
             {findGrade(member?.trustGrade)}
           </MyGradeImgWrap>
@@ -118,7 +118,7 @@ const UserProfile = () => {
                     <ReviewItemTitle>{item.title}</ReviewItemTitle>
                     <ReviewItemPriceWrap>
                       <span>최근입찰가</span>
-                      <ReviewItemPrice>{item.nowPrice}원</ReviewItemPrice>
+                      <ReviewItemPrice>{item.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</ReviewItemPrice>
                     </ReviewItemPriceWrap>
                   </ReviewItemContent>
                 </ReviewItem>
@@ -147,7 +147,7 @@ const UserProfile = () => {
                     <ReviewItemTitle>{item.title}</ReviewItemTitle>
                     <ReviewItemPriceWrap>
                       <span>최근입찰가</span>
-                      <ReviewItemPrice>{item.nowPrice}원</ReviewItemPrice>
+                      <ReviewItemPrice>{item.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</ReviewItemPrice>
                     </ReviewItemPriceWrap>
                   </ReviewItemContent>
                 </ReviewItem>
