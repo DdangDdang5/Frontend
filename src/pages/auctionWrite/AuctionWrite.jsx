@@ -21,7 +21,7 @@ import {
 
 // Style import
 import styled from "styled-components";
-import { ImgPlus } from "../../shared/images";
+import { ImgDelete, ImgPlus } from "../../shared/images";
 
 const AuctionWrite = () => {
   const dispatch = useDispatch();
@@ -178,7 +178,7 @@ const AuctionWrite = () => {
               <div>
                 <ImgPlus />
               </div>
-              <div className="imgCount">1/10</div>
+              <div className="imgCount">{`${imagePreview.length}/10`}</div>
             </label>
             <input
               ref={img_ref}
@@ -196,7 +196,7 @@ const AuctionWrite = () => {
                 <ImgBox key={index}>
                   <img src={item.img} id={index} alt="" />
                   <div className="deleteBox" onClick={() => onRemove(index)}>
-                    <div>x</div>
+                    <ImgDelete />
                   </div>
                 </ImgBox>
               );
@@ -391,12 +391,13 @@ const ImgBoxBtn = styled.button`
   min-width: 93px;
   border: 1px solid #4d71ff;
   border-radius: 5px;
-
   background-color: ${(props) => props.theme.colors.SkyBlue};
   .inBoxBtnContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    margin-top: 10px;
     gap: 5px;
     width: 100%;
     height: 100%;
@@ -442,14 +443,6 @@ const ImgBox = styled.div`
     width: 14px;
     height: 14px;
     border-radius: 14px;
-    background-color: #3a3a3a;
-    div {
-      position: relative;
-      top: -3px;
-      right: -3px;
-      color: white;
-      display: flex;
-    }
   }
 `;
 const WriteTitleContainer = styled.div`
@@ -588,12 +581,15 @@ const WriteTitleAuctionDay = styled.div`
   }
 `;
 const WriteTextArea = styled.textarea`
+  padding: 10px;
   display: flex;
   width: 100%;
   min-height: 192px;
   box-sizing: border-box;
   resize: none;
   border: 1px solid #c5d0e1;
+  font-size: ${(props) => props.theme.fontSizes.ms};
+  font-weight: ${(props) => props.theme.fontWeights.fontWeights};
 `;
 
 export default AuctionWrite;
