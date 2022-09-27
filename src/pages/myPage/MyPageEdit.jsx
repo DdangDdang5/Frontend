@@ -15,7 +15,7 @@ import Header from "../../components/header/Header";
 // Element & Shared import
 import { BasicProfile, Camera, Delete } from "../../shared/images";
 
-const ProfileEdit = () => {
+const MyPageEdit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -246,4 +246,4 @@ const MyDoneBtn = styled.button`
   transform: translate(-50%);
 `;
 
-export default ProfileEdit;
+export default MyPageEdit;

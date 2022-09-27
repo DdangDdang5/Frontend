@@ -255,6 +255,9 @@ const AuctionDetail = () => {
         return <div>경매가 종료되었습니다.</div>;
     }
   };
+  const postPrice = data?.nowPrice
+    ?.toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   return (
     <>
@@ -383,7 +386,7 @@ const AuctionDetail = () => {
               <div className="priceBox">
                 <div className="presentPrice">최근 입찰가</div>
                 {/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
-                <div className="price">{`${data.nowPrice}원`}</div>
+                <div className="price">{`${postPrice}원`}</div>
               </div>
             </FooterLeftBox>
             {data?.auctionStatus ? (

@@ -86,20 +86,14 @@ const MyPageParticipationAuction = () => {
       />
       <MyAuctionBody>
         <AuctionLayout onScroll={handleScroll} isIOS={isIOS}>
-          {data.length === 0 ? (
-            <None>상품없음</None>
-          ) : (
-            <>
-              {shouldShownData.map((item, index) => {
-                return (
-                  <React.Fragment key={`${index}_${item.id}`}>
-                    <AuctionRow item={item} index={index} />
-                    {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
-                  </React.Fragment>
-                );
-              })}
-            </>
-          )}
+          {shouldShownData.map((item, index) => {
+            return (
+              <React.Fragment key={`${index}_${item.id}`}>
+                <AuctionRow item={item} index={index} />
+                {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
+              </React.Fragment>
+            );
+          })}
         </AuctionLayout>
       </MyAuctionBody>
       <Footer />

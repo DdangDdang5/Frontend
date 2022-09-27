@@ -12,7 +12,7 @@ import Main from "../src/pages/main/Main";
 import Login from "../src/pages/login/Login";
 import SignUp from "../src/pages/signUp/SignUp";
 import MyPage from "./pages/myPage/MyPage";
-import ProfileEdit from "../src/pages/profileEdit/ProfileEdit";
+import MyPageEdit from "./pages/myPage/MyPageEdit";
 import Search from "../src/pages/search/Search";
 import Chat from "../src/pages/chat/Chat";
 import ChatList from "../src/pages/chatList/ChatList";
@@ -45,10 +45,10 @@ import Notifications from "./components/notification/Notification";
 import ReactNotificationComponent from "./components/notification/ReactNotification";
 import { ToastNotification } from "./pages/notification/ToastNotification";
 import { add } from "./redux/modules/NotificationSlice";
-
+import MypageEdit from "./pages/myPage/MyPageEdit";
 
 function App() {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const modal = useSelector((state) => state.modal.show);
 
@@ -96,11 +96,11 @@ function App() {
   // }, []);
 
   const notifToastList = useSelector(
-    (state) => state.notification.notifToastList,
+    (state) => state.notification.notifToastList
   );
 
   // console.log(notifToastList);
-	// const EventSource = NativeEventSource || EventSourcePolyfill;
+  // const EventSource = NativeEventSource || EventSourcePolyfill;
 
   useEffect(() => {
     let url =
@@ -108,11 +108,10 @@ function App() {
       "/subscribe/" +
       sessionStorage.getItem("memberId");
     const sse = new EventSource(url);
-    console.log(sse);
 
-		sse.onopen = (event) => {
-			console.log("connection opened", event);
-		}
+    sse.onopen = (event) => {
+      console.log("connection opened", event);
+    };
 
     sse.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -136,8 +135,8 @@ function App() {
 
   return (
     <AppContainer>
-			<FontRegular />
-			<div></div>
+      <FontRegular />
+      <div></div>
       {/* {!((isIOS || isMacOs) && isSafari) && show ? (
         <ReactNotificationComponent
           title={notification.title}
@@ -158,7 +157,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signUp" element={<SignUp />} />
         <Route path="/myPage" element={<MyPage />} />
-        <Route path="/profileEdit" element={<ProfileEdit />} />
+        <Route path="/myPageEdit" element={<MyPageEdit />} />
         <Route path="/search" element={<Search />} />
         <Route path="/chat/:roomId" element={<Chat />} />
         <Route path="/chatList" element={<ChatList />} />
@@ -190,7 +189,7 @@ function App() {
 }
 
 const AppContainer = styled.div`
-	font-family: "SpoqaHanSansNeo-Regular";
+  font-family: "SpoqaHanSansNeo-Regular";
 `;
 
 export default App;
