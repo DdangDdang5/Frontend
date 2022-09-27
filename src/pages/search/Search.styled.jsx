@@ -2,9 +2,7 @@ import styled from "styled-components";
 
 export const SearchBox = styled.div`
   width: 100%;
-  box-sizing: border-box;
-  position: absolute;
-  margin-top: 20px;
+  padding-top: 20px;
   overflow-y: scroll;
   &::-webkit-scrollbar {
     display: none;
@@ -12,16 +10,16 @@ export const SearchBox = styled.div`
 `;
 
 export const SearchInputGroup = styled.div`
-  width: 100%;
-  height: 36px;
   position: relative;
+  width: 100%;
+  height: 52px;
   box-sizing: border-box;
+  margin-top: 5%;
 `;
 
 export const SearchInputWrap = styled.div`
   width: 100%;
   height: 52px;
-  margin-top: 5%;
   padding: 4px 20px 4px 20px;
   gap: 10px;
   position: absolute;
@@ -32,8 +30,7 @@ export const SearchInputWrap = styled.div`
 `;
 
 export const SearchInput = styled.input`
-  width: 350px;
-  max-width: 350px;
+  width: 90%;
   height: 44px;
   position: absolute;
   box-sizing: border-box;
@@ -43,7 +40,7 @@ export const SearchInput = styled.input`
   padding: 12px 0px 12px 9px;
   background-color: ${(props) => props.theme.colors.Gray1};
   font-size: ${(props) => props.theme.fontSizes.sm};
-  padding-left: 31px;
+  padding-left: 40px;
   &:focus {
     outline: none;
     border-color: ${(props) => props.theme.colors.Gray3};
@@ -51,22 +48,24 @@ export const SearchInput = styled.input`
 `;
 
 export const SearchInputIcon = styled.div`
+  position: absolute;
+  box-sizing: border-box;
+  top: 55%;
+  transform: translate(-50%, -50%);
+  left: 10%;
   .icon {
-    position: absolute;
     color: ${(props) => props.theme.colors.Gray3};
-    top: 50%;
-    left: 40px;
-    transform: translate(-50%, -50%);
   }
 `;
 
 export const SearchFilterGroup = styled.div`
   width: 100%;
   height: 20%;
-  box-sizing: border-box;
   display: flex;
   flex-direction: row;
   margin-top: 36px;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const SearchFilterWrap = styled.div`

@@ -66,7 +66,7 @@ export const SignUpBoxInput = styled.input`
   padding-left: 10px;
   font-size: ${(props) => props.theme.fontSizes.md};
   background-color: ${(props) => props.theme.colors.White};
-  color: ${(props) => console.log(props)};
+  /* color: ${(props) => props}; */
   border: 1px solid ${(props) => props.theme.colors.Gray2};
   border-radius: 8px;
   &:focus {
@@ -76,19 +76,22 @@ export const SignUpBoxInput = styled.input`
 `;
 
 export const SignUpBoxInputIcon = styled.div`
-  .icon {
+  svg {
     position: absolute;
     right: 10px;
     /* color: ${(props) => props.theme.colors.Green1}; */
     top: 50%;
     transform: translate(-50%, -50%);
+    path {
+      fill: ${(props) =>
+        props.state ? props.theme.colors.Green1 : props.theme.colors.Red};
+    }
   }
 `;
 
 export const SignUpBoxSpan = styled.span`
-  height: 20px;
+  /* height: 20px; */
   color: transparent;
-
   font-size: ${(props) => props.theme.fontSizes.sm};
 `;
 

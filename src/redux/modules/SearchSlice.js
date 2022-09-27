@@ -17,8 +17,7 @@ export const auctionSearchThunk = createAsyncThunk(
 export const recentSearchThunk = createAsyncThunk(
   "auction/recentSearch",
   async (payload, thunkAPI) => {
-    const resData = await api
-      .get(`/auction/recent-search`, payload)      
+    const resData = await api.get(`/auction/recent-search`, payload);
     return thunkAPI.fulfillWithValue(resData.data.data);
   }
 );
@@ -36,7 +35,7 @@ const initialState = {
   data: "",
   recentSearch: [],
   popularSearch: [],
-  search:[],
+  search: [],
 };
 
 export const searchSlice = createSlice({
@@ -56,8 +55,10 @@ export const searchSlice = createSlice({
       state.data = action.payload;
     });
     builder.addCase(recentSearchThunk.fulfilled, (state, action) => {
-      state.recentSearch = action.payload;
-      state.isLogin = true;
+      if (action.payload !== "회원에게만 제공되는 서비스입니다.") {
+        state.recentSearch = action.payload;
+        state.isLogin = true;
+      }
     });
     builder.addCase(popularSearchThunk.fulfilled, (state, action) => {
       state.popularSearch = action.payload;
