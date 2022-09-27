@@ -34,7 +34,7 @@ const AuctionDetail = () => {
   const params = useParams();
 
   const data = useSelector((state) => state.auction.auction);
-  console.log("11111", data);
+  // console.log("11111", data);
 
   const bid = useSelector((state) => state.auction.bid);
   const favoriteState = useSelector((state) => state.auction.favorite);
@@ -44,7 +44,7 @@ const AuctionDetail = () => {
 
   const [favorite, setFavorite] = useState(favoriteState?.favoriteStatus);
 
-	// const postPrice = post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  // const postPrice = post.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 
   // console.log("페이버리", favorite);
   // console.log("디테일배돌", params?.auctionId);
@@ -60,6 +60,8 @@ const AuctionDetail = () => {
     message: data.nowPrice,
     createdAt: "",
   });
+
+  let chatOther = "";
 
   const imgList = data?.multiImages;
   const tagsArray = [
@@ -81,7 +83,7 @@ const AuctionDetail = () => {
     dispatch(auctionFavorite(data.auctionId));
   };
 
-  console.log(favorite);
+  // console.log(favorite);
   useEffect(() => {
     if (!params?.auctionId) {
       return <></>;
@@ -92,58 +94,16 @@ const AuctionDetail = () => {
         }
       });
 
-      const date = new Date(data.createdAt);
-
-      const deadline = new Date(
-        date.setDate(date.getDate() + data.auctionPeriod)
-      );
-
-      // console.log(data);
-      // console.log(date, data.auctionPeriod, deadline);
-      if (deadline <= Date.now()) {
+      if (!data.auctionStatus) {
         dispatch(winAuctionItem(params.auctionId));
-        console.log(bid);
+
         if (bid) {
           if (bid.seller === nickName || bid.bidder === nickName) {
             setWinBid(true);
-            console.log("me is win the auction");
-
-            // var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
-            // stompClient = Stomp.over(sockJS);
-            // // console.log(stompClient);
-            // stompClient.connect(
-            //   {},
-            //   () =>
-            //     stompClient.subscribe(
-            //       `/topic/chat/room/${bid.roomId}`,
-            //       () => {},
-            //     ),
-            //   onError,
-            // );
-
-            // let chatMessage = {
-            //   type: "ENTER",
-            //   roomId: bid.roomId,
-            //   sender: "",
-            //   message: "",
-            // };
-
-            // stompClient.send(
-            //   "/app/chat/bid",
-            //   {},
-            //   JSON.stringify({ ...chatMessage, sender: bid.seller }),
-            // );
-
-            // stompClient.send(
-            //   "/app/chat/bid",
-            //   {},
-            //   JSON.stringify({ ...chatMessage, sender: bid.bidder }),
-            // );
+						chatOther = [bid.seller, bid.bidder].filter((item) => item !== nickName).join('');
+						console.log(chatOther);
           }
         }
-      } else {
-        // console.log("not finish auction", params);
-        // console.log(bid);
       }
     }
   }, [JSON.stringify(data), JSON.stringify(bid.auctionId)]);
@@ -188,7 +148,7 @@ const AuctionDetail = () => {
   const onConnected = () => {
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived
+      onMessageReceived,
     );
 
     // 채팅방 들어감
@@ -220,7 +180,7 @@ const AuctionDetail = () => {
       stompClient.send(
         "/app/chat/bid",
         {},
-        JSON.stringify({ ...chatMessage, type: "ENTER" })
+        JSON.stringify({ ...chatMessage, type: "ENTER" }),
       );
 
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
@@ -266,7 +226,7 @@ const AuctionDetail = () => {
           share={true}
           menu={true}
           onClickBtn={() => setIsMenuModal(!isMenuModal)}
-					color="#ffffff"
+          color="#ffffff"
         />
 
         <DetailBodyWrap>
@@ -314,7 +274,7 @@ const AuctionDetail = () => {
               </DetailBodyViewTag>
               <DetailBodyItemTag>
                 {tagsArray?.map((item, index) =>
-                  item !== null ? <div key={index}>{item}</div> : ""
+                  item !== null ? <div key={index}>{item}</div> : "",
                 )}
               </DetailBodyItemTag>
             </DetailBodyBox>
@@ -327,11 +287,13 @@ const AuctionDetail = () => {
                   auctionId: params?.auctionId,
                   auctionCreatedAt: data?.createdAt,
                   auctionPeriod: data?.auctionPeriod,
+									audtionStatus: data?.auctionStatus,
                   isDetail: true,
                   title: data.title,
                 },
               })
-            }>
+            }
+          >
             <CommentCountWrap>
               <CommentCountTitle>실시간 채팅방</CommentCountTitle>
               <p>{data.participantCnt}명 참여중</p>
@@ -404,6 +366,7 @@ const AuctionDetail = () => {
                         auctionId: params.auctionId,
                         isDetail: false,
                         title: data.title,
+                        chatOther: chatOther
                       },
                     });
                   }}

@@ -60,7 +60,6 @@ const Main = () => {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(true);
-  console.log(loading);
 
   const auctionAllList = useSelector((state) => state.auctionList.auctionList);
 
@@ -112,7 +111,7 @@ const Main = () => {
               <EventBanner isMain={true} onClick={() => navigate("/event/1")}>
                 <FontEvent />
                 <EventContent isMain={true}>
-                  <EventDate isMain={true}>09.26 ~ 10.02</EventDate>
+                  <EventDate isMain={true}>09.27 ~ 10.02</EventDate>
                   <EventTitle isMain={true}>
                     소중한 의견을 들려주세요!
                   </EventTitle>

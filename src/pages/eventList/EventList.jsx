@@ -30,12 +30,12 @@ const EventList = () => {
       <Header back={true} pageName="이벤트" alarm={true} />
 
       <EventListContent>
-        {Array.from({ length: 1 }, () => (
-          <EventItem onClick={() => navigate("/event/1")}>
+        {Array.from({ length: 1 }, (_, idx) => (
+          <EventItem key={idx} onClick={() => navigate("/event/1")}>
             <EventBanner>
               <FontEvent />
               <EventContent>
-                <EventDate>09.26 ~ 10.02</EventDate>
+                <EventDate>09.27 ~ 10.02</EventDate>
                 <EventTitle>소중한 의견을 들려주세요!</EventTitle>
                 <EventText>
                   <span>추첨을 통해 총 5분께</span>

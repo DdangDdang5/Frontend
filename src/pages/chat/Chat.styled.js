@@ -60,6 +60,11 @@ export const ChatMessage = styled.div`
   align-items: stretch;
   justify-content: ${(props) => (props.isMe ? "flex-end" : "baseline")};
   gap: 8px;
+
+	svg {
+		width: 48px;
+		height: 48px;
+	}
 `;
 
 export const MessageProfile = styled.img`
