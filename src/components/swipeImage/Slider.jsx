@@ -133,8 +133,4 @@ const BtnBox = styled.div`
   }
 `;
 
-const Baessi = styled.span`
-  font-weight: ${({ bae }) => (bae ? `900` : `100`)};
-`;
-
 export default Slider;

@@ -18,7 +18,7 @@ import { isIOS } from "react-device-detect";
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import PlusButton from "../../elements/button/PlusButton";
-import AuctionColumn from "../../components/auction/AuctionColumn";
+import AuctionColumn from "../../components/auctionBody/AuctionColumn";
 
 // Shared import
 import { Open } from "../../shared/images";
@@ -32,12 +32,10 @@ const AuctionList = () => {
     paging,
     followingItem,
   } = useSelector((state) => state.auctionList);
-  console.log("AuctionListData", AuctionListData);
+  // console.log("AuctionListData", AuctionListData);
 
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
-
-  console.log("페이지", loading, paging, followingItem);
 
   useEffect(() => {
     dispatch(_categoryList());

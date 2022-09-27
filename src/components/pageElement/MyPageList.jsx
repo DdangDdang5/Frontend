@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const MyPageList = ({ icon, listName, onClick }) => {
@@ -23,14 +22,8 @@ const ListContainer = styled.div`
 
   .listIcon {
     display: flex;
-    width: 24px;
-    height: 30px;
-    div {
-      width: 100%;
-      height: 100%;
-      border-radius: 24px;
-      background-color: ${(props) => props.theme.colors.SkyBlue};
-    }
+    width: 28px;
+    height: 28px;
   }
   .listTitle {
     display: flex;

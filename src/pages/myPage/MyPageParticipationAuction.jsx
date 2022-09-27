@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 
 // Redux import
 import { useDispatch, useSelector } from "react-redux";
-import { _MyPageParticipationAuction } from "../../redux/modules/MyPageSlice";
+import {
+  resetList,
+  resetPaging,
+  _MyPageParticipationAuction,
+} from "../../redux/modules/MyPageSlice";
 
 // Package import
 import styled from "styled-components";
@@ -11,16 +15,16 @@ import { isIOS } from "react-device-detect";
 
 // Component import
 import Header from "../../components/header/Header";
-import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
+import AuctionStateNav from "../../components/auctionBody/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
-import AuctionRow from "../../components/auction/AuctionRow";
+import AuctionRow from "../../components/auctionBody/AuctionRow";
 
 const MyPageParticipationAuction = () => {
   const dispatch = useDispatch();
   const [isAuction, setIsAuction] = useState(true);
 
   const {
-    myPageParticipation: data,
+    myPageList: data,
     loading,
     paging,
     followingItem,
@@ -34,8 +38,6 @@ const MyPageParticipationAuction = () => {
   const auctionDone = data?.filter(
     (data) => data?.auctionStatus === false
   ).length;
-
-  console.log(data);
 
   useEffect(() => {
     dispatch(_MyPageParticipationAuction());
@@ -58,7 +60,8 @@ const MyPageParticipationAuction = () => {
       });
     }
     return () => {
-      setShouldShownData([]);
+      dispatch(resetPaging());
+      dispatch(resetList());
     };
   }, [isAuction, JSON.stringify(data)]);
 
@@ -86,20 +89,14 @@ const MyPageParticipationAuction = () => {
       />
       <MyAuctionBody>
         <AuctionLayout onScroll={handleScroll} isIOS={isIOS}>
-          {data.length === 0 ? (
-            <None>상품없음</None>
-          ) : (
-            <>
-              {shouldShownData.map((item, index) => {
-                return (
-                  <React.Fragment key={`${index}_${item.id}`}>
-                    <AuctionRow item={item} index={index} />
-                    {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
-                  </React.Fragment>
-                );
-              })}
-            </>
-          )}
+          {shouldShownData.map((item, index) => {
+            return (
+              <React.Fragment key={`${index}_${item.id}`}>
+                <AuctionRow item={item} index={index} />
+                {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
+              </React.Fragment>
+            );
+          })}
         </AuctionLayout>
       </MyAuctionBody>
       <Footer />

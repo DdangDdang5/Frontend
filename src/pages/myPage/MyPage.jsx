@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { _MyPageData } from "../../redux/modules/MyPageSlice";
 
 // Package import
+import { isIOS } from "react-device-detect";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -32,15 +33,6 @@ const MyPage = () => {
   const data = useSelector((state) => state.myPage?.myPage);
   const memberId = sessionStorage?.getItem("memberId");
 
-  console.log(data);
-  useEffect(
-    () => {
-      dispatch(_MyPageData(memberId));
-    },
-    [memberId, JSON.stringify[data]],
-    navigate
-  );
-
   const handleLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까? ")) {
       sessionStorage.clear();
@@ -55,141 +47,158 @@ const MyPage = () => {
       navigate("/myPage");
     }
   };
-  const noOneImg = () => {
-    if (data?.profileImgUrl === null) {
+
+  const basicProfileImg = () => {
+    if (
+      data?.profileImgUrl === null ||
+      data?.profileImgUrl === undefined ||
+      memberId === null
+    ) {
       return <BasicProfile onClick={() => handleLogIn()} />;
     } else {
       return <img src={data?.profileImgUrl} alt="" />;
     }
   };
 
+  useEffect(() => {
+    dispatch(_MyPageData(memberId));
+  }, [memberId, JSON.stringify[data]]);
+
   return (
     <MyPageLayout>
       <Header pageName="마이페이지" alarm={true} />
 
-      <MyProfileWrap>
-        <MyImgContainer>
-          <MyImgBox>{noOneImg()}</MyImgBox>
-        </MyImgContainer>
+      <MyPageWrap isIOS={isIOS}>
+        <MyProfileWrap>
+          <MyImgContainer>
+            <MyImgBox>{basicProfileImg()}</MyImgBox>
+          </MyImgContainer>
 
-        <MyNickContainer>
-          <NickBox>
+          <MyNickContainer>
+            <NickBox>
+              {memberId !== null ? (
+                <>
+                  <div className="nickName">{data?.nickname}</div>
+                  <div
+                    className="myPageEdit"
+                    onClick={() => {
+                      navigate("/myPageEdit");
+                    }}>
+                    프로필 수정
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="needNickName" onClick={() => handleLogIn()}>
+                    로그인이 필요합니다.
+                  </div>
+                </>
+              )}
+            </NickBox>
             {memberId !== null ? (
               <>
-                <div className="nickName">{data?.nickname}</div>
-                <div
-                  className="profileEdit"
-                  onClick={() => {
-                    navigate("/profileEdit");
-                  }}>
-                  프로필 수정
-                </div>
+                {" "}
+                <MyGradeImgWrap
+                  onClick={() => memberId && navigate(`/myGrade/${memberId}`)}>
+                  {findGrade(data?.trustGrade)}
+                </MyGradeImgWrap>
               </>
             ) : (
-              <>
-                <div className="needNickName" onClick={() => handleLogIn()}>
-                  로그인이 필요합니다.
-                </div>
-              </>
+              <></>
             )}
-          </NickBox>
-          <MyGradeImgWrap
-            onClick={() => memberId && navigate(`/myGrade/${memberId}`)}>
-            <div></div>
-            {findGrade(data?.trustGrade)}
-          </MyGradeImgWrap>
-        </MyNickContainer>
-      </MyProfileWrap>
+          </MyNickContainer>
+        </MyProfileWrap>
 
-      <MyStateWrap>
-        {memberId === null ? (
-          <>
-            <div className="MyStateWrap" onClick={() => handleLogIn()}>
-              <div
-                className="stateBox"
-                onClick={() => navigate("/myPageMyAuction")}>
-                <div className="title">나의 경매</div>
-                <div className="count">0</div>
-              </div>
-              <StateBox>
+        <MyStateWrap>
+          {memberId === null ? (
+            <>
+              <div className="MyStateWrap" onClick={() => handleLogIn()}>
                 <div
-                  className="title"
-                  onClick={() => navigate("/myPageParticipationAuction")}>
-                  참여 경매
+                  className="stateBox"
+                  onClick={() => navigate("/myPageMyAuction")}>
+                  <div className="title">나의 경매</div>
+                  <div className="count">0</div>
                 </div>
-                <div className="count">0</div>
-              </StateBox>
-              <div
-                className="stateBox"
-                onClick={() => navigate("/MyPageInterestAuction")}>
-                <div className="title">관심 경매</div>
-                <div className="count">0</div>
-              </div>
-            </div>{" "}
-          </>
-        ) : (
-          <>
-            <div className="MyStateWrap">
-              <div
-                className="stateBox"
-                onClick={() => navigate("/myPageMyAuction")}>
-                <div className="title">나의 경매</div>
-                <div className="count">{data?.myAuctionCnt}</div>
-              </div>
-              <StateBox>
+                <StateBox>
+                  <div
+                    className="title"
+                    onClick={() => navigate("/myPageParticipationAuction")}>
+                    참여 경매
+                  </div>
+                  <div className="count">0</div>
+                </StateBox>
                 <div
-                  className="title"
-                  onClick={() => navigate("/myPageParticipationAuction")}>
-                  참여 경매
+                  className="stateBox"
+                  onClick={() => navigate("/MyPageInterestAuction")}>
+                  <div className="title">관심 경매</div>
+                  <div className="count">0</div>
                 </div>
-                <div className="count">{data?.myParticipantCnt}</div>
-              </StateBox>
-              <div
-                className="stateBox"
-                onClick={() => navigate("/MyPageInterestAuction")}>
-                <div className="title">관심 경매</div>
-                <div className="count">{data?.myFavoriteCnt}</div>
+              </div>{" "}
+            </>
+          ) : (
+            <>
+              <div className="MyStateWrap">
+                <div
+                  className="stateBox"
+                  onClick={() => navigate("/myPageMyAuction")}>
+                  <div className="title">나의 경매</div>
+                  <div className="count">{data?.myAuctionCnt}</div>
+                </div>
+                <StateBox>
+                  <div
+                    className="title"
+                    onClick={() => navigate("/myPageParticipationAuction")}>
+                    참여 경매
+                  </div>
+                  <div className="count">{data?.myParticipantCnt}</div>
+                </StateBox>
+                <div
+                  className="stateBox"
+                  onClick={() => navigate("/MyPageInterestAuction")}>
+                  <div className="title">관심 경매</div>
+                  <div className="count">{data?.myFavoriteCnt}</div>
+                </div>
               </div>
-            </div>
-          </>
-        )}
-      </MyStateWrap>
-      <MyProfileListWrap>
-        <MyPageList
-          icon={<Notice />}
-          listName={`이벤트`}
-          onClick={() => navigate(`/eventList`)}
-        />
-        <MyPageList
-          icon={<Notice />}
-          listName={`공지사항`}
-          onClick={() => navigate(`/eventList`)}
-        />
-        <MyPageList
-          icon={<Questions />}
-          listName={`자주 묻는 질문`}
-          onClick={() => navigate(`/eventList`)}
-        />
-        <MyPageList
-          icon={<ProfileEdit />}
-          listName={`개인 정보 수정`}
-          onClick={() => navigate(`/profileEdit`)}
-        />
+            </>
+          )}
+        </MyStateWrap>
+        <MyProfileListWrap>
+          <MyPageList
+            icon={<Event />}
+            listName={`이벤트`}
+            onClick={() => navigate(`/eventList`)}
+          />
+          <MyPageList
+            icon={<Notice />}
+            listName={`공지사항`}
+            onClick={() => navigate(`/eventList`)}
+          />
+          <MyPageList
+            icon={<Questions />}
+            listName={`자주 묻는 질문`}
+            onClick={() => navigate(`/eventList`)}
+          />
+          <MyPageList
+            icon={<ProfileEdit />}
+            listName={`개인 정보 수정`}
+            onClick={() => navigate(`/myPageEdit`)}
+          />
 
-        {memberId === null ? (
-          <MyPageList
-            icon={<Login />}
-            listName={`로그인`}
-            onClick={() => handleLogIn()}
-          />
-        ) : (
-          <MyPageList
-            icon={<Logout />}
-            listName={`로그아웃`}
-            onClick={() => handleLogout()}
-          />
-        )}
-      </MyProfileListWrap>
+          {memberId === null ? (
+            <MyPageList
+              icon={<Login />}
+              listName={`로그인`}
+              onClick={() => handleLogIn()}
+            />
+          ) : (
+            <MyPageList
+              icon={<Logout />}
+              listName={`로그아웃`}
+              onClick={() => handleLogout()}
+            />
+          )}
+        </MyProfileListWrap>
+      </MyPageWrap>
       <Footer myPage={true} />
     </MyPageLayout>
   );
@@ -201,6 +210,13 @@ const MyPageLayout = styled.div`
   width: 100%;
   height: 100vh;
   flex-direction: column;
+`;
+const MyPageWrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: ${(props) =>
+    props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
+  overflow: auto;
 `;
 const MyProfileWrap = styled.div`
   display: flex;
@@ -265,7 +281,7 @@ const NickBox = styled.div`
     font-weight: ${(props) => props.theme.fontWeights.bold};
     line-height: 28px;
   }
-  .profileEdit {
+  .myPageEdit {
     font-size: 14px;
     font-weight: 400;
     color: #9b9b9b;
@@ -274,22 +290,6 @@ const NickBox = styled.div`
     font-size: ${(props) => props.theme.fontSizes.lg};
     font-weight: ${(props) => props.theme.fontWeights.bold};
     line-height: 28px;
-  }
-`;
-const LevelBox = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  width: 100%;
-  .levelIcon {
-    display: flex;
-    width: 46px;
-    height: 46px;
-    border-radius: 46px;
-    justify-content: center;
-    align-items: center;
-
-    background-color: grey;
   }
 `;
 
@@ -332,9 +332,10 @@ const MyStateWrap = styled.div`
   .MyStateWrap {
     display: flex;
     width: 350px;
-    background-color: #ededed;
     justify-content: space-evenly;
     align-items: center;
+    border-radius: 8px;
+    background-color: ${(props) => props.theme.colors.Gray1};
     .stateBox {
       display: flex;
       flex-direction: column;
@@ -348,7 +349,7 @@ const MyStateWrap = styled.div`
         display: flex;
         font-size: ${(props) => props.theme.fontSizes.ms};
         font-weight: ${(props) => props.theme.fontWeights.normal};
-        color: ${(props) => props.theme.colors.Black};
+        color: ${(props) => props.theme.colors.Gray4};
       }
       .count {
         font-size: ${(props) => props.theme.fontSizes.lg};
