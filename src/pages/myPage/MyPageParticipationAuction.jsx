@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 
 // Redux import
 import { useDispatch, useSelector } from "react-redux";
-import { _MyPageParticipationAuction } from "../../redux/modules/MyPageSlice";
+import {
+  resetList,
+  resetPaging,
+  _MyPageParticipationAuction,
+} from "../../redux/modules/MyPageSlice";
 
 // Package import
 import styled from "styled-components";
@@ -20,7 +24,7 @@ const MyPageParticipationAuction = () => {
   const [isAuction, setIsAuction] = useState(true);
 
   const {
-    myPageParticipation: data,
+    myPageList: data,
     loading,
     paging,
     followingItem,
@@ -34,8 +38,6 @@ const MyPageParticipationAuction = () => {
   const auctionDone = data?.filter(
     (data) => data?.auctionStatus === false
   ).length;
-
-  console.log(data);
 
   useEffect(() => {
     dispatch(_MyPageParticipationAuction());
@@ -58,7 +60,8 @@ const MyPageParticipationAuction = () => {
       });
     }
     return () => {
-      setShouldShownData([]);
+      dispatch(resetPaging());
+      dispatch(resetList());
     };
   }, [isAuction, JSON.stringify(data)]);
 

@@ -21,6 +21,7 @@ import {
 
 // Style import
 import styled from "styled-components";
+import { ImgPlus } from "../../shared/images";
 
 const AuctionWrite = () => {
   const dispatch = useDispatch();
@@ -175,19 +176,9 @@ const AuctionWrite = () => {
           <ImgBoxBtn>
             <label className="inBoxBtnContainer" htmlFor="img_UpFile">
               <div>
-                <svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 28 28"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M26.6452 12.6452H15.3548V1.35484C15.3548 0.605161 14.7497 0 14 0C13.2503 0 12.6452 0.605161 12.6452 1.35484V12.6452H1.35484C0.605161 12.6452 0 13.2503 0 14C0 14.7497 0.605161 15.3548 1.35484 15.3548H12.6452V26.6452C12.6452 27.3948 13.2503 28 14 28C14.7497 28 15.3548 27.3948 15.3548 26.6452V15.3548H26.6452C27.3948 15.3548 28 14.7497 28 14C28 13.2503 27.3948 12.6452 26.6452 12.6452Z"
-                    fill="#A5A9B6"
-                  />
-                </svg>
+                <ImgPlus />
               </div>
-              <div>파일을 입력</div>
+              <div className="imgCount">1/10</div>
             </label>
             <input
               ref={img_ref}
@@ -221,14 +212,14 @@ const AuctionWrite = () => {
           onChange={onChangeHandler}
           placeholder="제목을 입력해주세요."
         />
-        <WriteTitleContainer>상품명</WriteTitleContainer>
+        {/* <WriteTitleContainer>상품명</WriteTitleContainer>
         <WriteInputBox
           type="text"
           value={inputForm.content}
           name="content"
           onChange={onChangeHandler}
           placeholder="정확한 상품명을 입력해주세요."
-        />
+        /> */}
         <WriteTitleContainer>카테고리 선택</WriteTitleContainer>
         <WriteBtnBox
           onClick={() => dispatch(showModal("categoryList"), _categoryList())}>
@@ -398,7 +389,10 @@ const ImgBoxBtn = styled.button`
   justify-content: center;
   height: 100%;
   min-width: 93px;
-  border: none;
+  border: 1px solid #4d71ff;
+  border-radius: 5px;
+
+  background-color: ${(props) => props.theme.colors.SkyBlue};
   .inBoxBtnContainer {
     display: flex;
     flex-direction: column;
@@ -407,9 +401,9 @@ const ImgBoxBtn = styled.button`
     width: 100%;
     height: 100%;
   }
-  div {
-    font-size: 12px;
-    font-weight: 400;
+  .imgCount {
+    font-size: ${(props) => props.theme.fontSizes.ssm};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
   }
 `;
 

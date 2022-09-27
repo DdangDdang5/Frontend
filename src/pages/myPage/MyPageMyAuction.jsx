@@ -3,7 +3,11 @@ import React, { useEffect, useState } from "react";
 
 // Redux import
 import { useDispatch, useSelector } from "react-redux";
-import { resetPaging, _MyPageInAuction } from "../../redux/modules/MyPageSlice";
+import {
+  resetList,
+  resetPaging,
+  _MyPageInAuction,
+} from "../../redux/modules/MyPageSlice";
 
 // Package import
 import styled from "styled-components";
@@ -19,21 +23,20 @@ function MyPageMyAuction() {
   const dispatch = useDispatch();
   const [isAuction, setIsAuction] = useState(true);
   const {
-    myPageIn: myPageInData,
+    myPageList: data,
     loading,
     paging,
     followingItem,
   } = useSelector((state) => state.myPage);
 
-  console.log("나의 데이터", myPageInData);
-
   const [shouldShownData, setShouldShownData] = useState([]);
 
-  const auctionIng = myPageInData?.filter(
-    (myPageInData) => myPageInData?.auctionStatus === true
+  console.log("내 옥션 데이터", data);
+  const auctionIng = data?.filter(
+    (data) => data?.auctionStatus === true
   ).length;
-  const auctionDone = myPageInData?.filter(
-    (myPageInData) => myPageInData?.auctionStatus === false
+  const auctionDone = data?.filter(
+    (data) => data?.auctionStatus === false
   ).length;
 
   const handleScroll = (e) => {
@@ -52,8 +55,8 @@ function MyPageMyAuction() {
   useEffect(() => {
     dispatch(_MyPageInAuction());
 
-    if (myPageInData && myPageInData.length > 0) {
-      myPageInData?.map((item, index) => {
+    if (data && data.length > 0) {
+      data?.map((item, index) => {
         if (isAuction) {
           if (item?.auctionStatus === true) {
             setShouldShownData((prev) => {
@@ -69,17 +72,20 @@ function MyPageMyAuction() {
         }
       });
     }
-    return () => {};
-  }, [isAuction, JSON.stringify(myPageInData)]);
+    return () => {
+      setShouldShownData([]);
+    };
+  }, [isAuction, JSON.stringify(data)]);
 
   useEffect(() => {
     return () => {
       setShouldShownData([]);
       dispatch(resetPaging());
+      dispatch(resetList());
     };
   }, []);
 
-  if (!myPageInData) {
+  if (!data) {
     return <></>;
   }
   return (

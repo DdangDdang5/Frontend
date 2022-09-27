@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 
 // Redux import
 import {
+  resetList,
   resetPaging,
   _MyPageInterestAuction,
 } from "../../redux/modules/MyPageSlice";
@@ -23,12 +24,14 @@ const MyPageInterestAuction = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
-    myPageInterest: data,
+    myPageList: data,
     loading,
     paging,
     followingItem,
   } = useSelector((state) => state.myPage);
-  console.log("관심 데이터", loading, paging, followingItem);
+
+  console.log("관심 옥션 데이터", data);
+
   const [isAuction, setIsAuction] = useState(true);
 
   const [shouldShownData, setShouldShownData] = useState([]);
@@ -53,13 +56,9 @@ const MyPageInterestAuction = () => {
     }
   };
 
-  console.log("자 드가자");
-  console.log(shouldShownData);
-
   useEffect(() => {
     dispatch(_MyPageInterestAuction());
-    console.log("zezeze");
-    console.log(data);
+
     if (data && data?.length > 0) {
       data?.map((item, index) => {
         if (isAuction) {
@@ -78,14 +77,15 @@ const MyPageInterestAuction = () => {
       });
     }
     return () => {
-      console.log("컴퍼넌트 끝났다잉");
       setShouldShownData([]);
+      // dispatch(resetPaging());
     };
   }, [isAuction, JSON.stringify(data)]);
 
   useEffect(() => {
     return () => {
       dispatch(resetPaging());
+      dispatch(resetList());
     };
   }, []);
 

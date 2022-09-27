@@ -33,7 +33,7 @@ import { ReactComponent as login } from "./icon/Login.svg";
 import { ReactComponent as logout } from "./icon/Logout.svg";
 import { ReactComponent as heartFull } from "./icon/HeartFull.svg";
 import { ReactComponent as heartEmpty } from "./icon/HeartEmpty.svg";
-
+import { ReactComponent as imgPlus } from "./icon/ImgPlus.svg";
 // Category import
 import { ReactComponent as accessory } from "./category/Accessory.svg";
 import { ReactComponent as beauty } from "./category/Beauty.svg";
@@ -89,6 +89,7 @@ export const Login = login;
 export const Logout = logout;
 export const HeartFull = heartFull;
 export const HeartEmpty = heartEmpty;
+export const ImgPlus = imgPlus;
 
 // category
 export const Accessory = accessory;

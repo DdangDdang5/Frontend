@@ -4,10 +4,9 @@ import { useNavigate } from "react-router-dom";
 
 const AuctionRow = ({ item, index, isAuction }) => {
   const navigate = useNavigate();
-  console.log("22222", item);
 
   const postPrice = item.startPrice
-    ?.toString()
+    .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   if (!item || !item?.auctionId) {
