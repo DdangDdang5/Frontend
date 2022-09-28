@@ -42,6 +42,7 @@ const AuctionContainer = styled.div`
   flex-direction: row;
   gap: 18px;
   width: 100%;
+
   margin-bottom: ${(props) => (props.state ? `32px` : `20px`)};
 `;
 
@@ -85,7 +86,7 @@ const ContentBox = styled.div`
   .title {
     max-height: 25px;
     align-items: center;
-
+    width: 260px;
     overflow: hidden;
     white-space: nowrap;
     -webkit-line-clamp: 1;

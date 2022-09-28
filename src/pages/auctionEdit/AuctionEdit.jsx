@@ -14,13 +14,16 @@ import { useNavigate, useParams } from "react-router-dom";
 // Component import
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
+import { ImgDelete, ImgPlus, UnderArrow } from "../../shared/images";
+import { isIOS } from "react-device-detect";
 
 const AuctionEdit = () => {
   const dispatch = useDispatch();
   const params = useParams();
   const navigate = useNavigate();
+  const img_ref = useRef();
   const data = useSelector((state) => state.auction.auction);
-  console.log("배돌배돌", data);
+  console.log(data);
   const auctionRequestDto = {
     title: data.title,
     content: data.content,
@@ -31,11 +34,8 @@ const AuctionEdit = () => {
     // delivery: data.delivery,
     // auctionPeriod: 1,
   };
-
   const [imgFile, setImgFile] = useState([]);
-
   const [imagePreview, setImagePreview] = useState([]);
-
   const initialTag = {
     tag1: "",
     tag2: "",
@@ -44,35 +44,31 @@ const AuctionEdit = () => {
     tag5: "",
     tag6: "",
   };
-
-  const img_ref = useRef();
   const [inputForm, setInputForm] = useState(auctionRequestDto);
   const [tags, setTags] = useState([]);
-
-  console.log("옥션수정", inputForm);
+  const regionName = useSelector((state) => state.modal.regionName);
+  const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
 
   // 기존 데이터 수정페이지에 데이터 업데이트
   useEffect(() => {
     dispatch(auctionDetailData(params.auctionId));
-    const imgArray = data?.multiImages?.map((item, index) => {
-      return item.imgUrl;
-    });
+
+    // 수정 전 이미지 업로드
+    // const imgArray = data?.multiImages?.map((item, index) => {
+    //   return item.imgUrl;
+    // });
+
+    // if (imgArray) {
+    //   setImagePreview(imgArray);
+    //   setImgFile(imgArray);
+    // }
 
     setInputForm(auctionRequestDto);
-
-    if (imgArray) {
-      setImagePreview(imgArray);
-      setImgFile(imgArray);
-    }
   }, [JSON.stringify(data)]);
 
   useEffect(() => {
     dispatch(_regionList());
   }, []);
-
-  const regionName = useSelector((state) => state.modal.regionName);
-
-  const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
 
   useEffect(() => {
     setInputForm((prev) => {
@@ -114,18 +110,27 @@ const AuctionEdit = () => {
     }
   };
 
+  //미리보기 이미지 삭제
+  const onRemove = (index) => {
+    const cloneImagePreview = [...imagePreview];
+    cloneImagePreview.splice(index, 1);
+    setImagePreview(cloneImagePreview);
+  };
+
   // 이미지, 태그 , 글 업로드
   const onTransmitHandler = () => {
     // 태그 추가
-    let tagList = tags.split("#");
-    tagList = tagList.slice(1, tagList.length);
+    if (tags !== "") {
+      let tagList = tags.toString().split("#");
+      tagList = tagList.slice(1, tagList.length);
 
-    for (let i = 0; i < 6; i++) {
-      const tmp = "tag" + (i + 1);
-      if (tagList[i]) {
-        initialTag[tmp] = tagList[i];
-      } else {
-        delete initialTag[tmp];
+      for (let i = 0; i < 6; i++) {
+        const tmp = "tag" + (i + 1);
+        if (tagList[i]) {
+          initialTag[tmp] = tagList[i];
+        } else {
+          delete initialTag[tmp];
+        }
       }
     }
 
@@ -135,56 +140,45 @@ const AuctionEdit = () => {
       new Blob([JSON.stringify(inputForm)], { type: "application/json" })
     );
 
-    for (let i = 0; i < imgFile.length; i++) {
-      formData.append("images", imgFile[i]);
-    }
     formData.append(
       "tags",
       new Blob([JSON.stringify(initialTag)], { type: "application/json" })
     );
 
-    window.alert("새 게시물 만들기 완료");
+    for (let i = 0; i < 10; i++) {
+      formData.append("images", imgFile[i]);
+    }
+    if (imgFile.length === 0) {
+      return window.alert("상품 이미지를 추가하셔야 합니다");
+    } else {
+      window.alert("경매글이 게시 되었습니다.");
+    }
 
-    dispatch(editAuctionItem({ formData: formData, auctionId: data.id }));
+    dispatch(
+      editAuctionItem({ formData: formData, auctionId: data.auctionId })
+    );
     // 포스팅 완료후 새로고침
 
     navigate(-1, { replace: true });
-  };
-
-  // 이미지 미리보기 삭제
-  const onRemove = (index) => {
-    const cloneImagePreview = [...imagePreview];
-    cloneImagePreview.splice(index, 1);
-    setImagePreview(cloneImagePreview);
   };
 
   return (
     <AuctionWriteLayout>
       <Header
         back={true}
-        pageName="경매 글쓰기"
+        pageName="경매 수정하기"
         save={{ type: "완료" }}
         onClickSave={onTransmitHandler}
       />
 
-      <AuctionWriteWrap>
+      <AuctionWriteWrap isIOS={isIOS}>
         <WriteImgContainer>
           <ImgBoxBtn>
             <label className="inBoxBtnContainer" htmlFor="img_UpFile">
               <div>
-                <svg
-                  width="28"
-                  height="28"
-                  viewBox="0 0 28 28"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
-                  <path
-                    d="M26.6452 12.6452H15.3548V1.35484C15.3548 0.605161 14.7497 0 14 0C13.2503 0 12.6452 0.605161 12.6452 1.35484V12.6452H1.35484C0.605161 12.6452 0 13.2503 0 14C0 14.7497 0.605161 15.3548 1.35484 15.3548H12.6452V26.6452C12.6452 27.3948 13.2503 28 14 28C14.7497 28 15.3548 27.3948 15.3548 26.6452V15.3548H26.6452C27.3948 15.3548 28 14.7497 28 14C28 13.2503 27.3948 12.6452 26.6452 12.6452Z"
-                    fill="#A5A9B6"
-                  />
-                </svg>
+                <ImgPlus />
               </div>
-              <div>파일을 입력</div>
+              <div className="imgCount">{`${imagePreview.length}/10`}</div>
             </label>
             <input
               ref={img_ref}
@@ -202,7 +196,7 @@ const AuctionEdit = () => {
                 <ImgBox key={index}>
                   <img src={item?.img ? item?.img : item} id={index} alt="" />
                   <div className="deleteBox" onClick={() => onRemove(index)}>
-                    <div>x</div>
+                    <ImgDelete />
                   </div>
                 </ImgBox>
               );
@@ -218,51 +212,7 @@ const AuctionEdit = () => {
           onChange={onChangeHandler}
           placeholder="제목을 입력해주세요."
         />
-        {/* <WriteTitleContainer>상품명</WriteTitleContainer>
-        <WriteInputBox
-          type="text"
-          value={inputForm.content}
-          name="content"
-          onChange={onChangeHandler}
-          placeholder="정확한 상품명을 입력해주세요."
-        /> */}
 
-        {/* <WriteTitleContainer>경매 시작가</WriteTitleContainer> */}
-
-        {/* placeHoder 위치 조정이 안됨 ㅡㅡ  */}
-        {/* 
-        <WriteInputBox
-          s
-          type="number"
-          value={
-            inputForm.startPrice === 0 ? "" : inputForm.startPrice.toString()
-          }
-          name="startPrice"
-          onChange={onChangeHandler}
-        /> */}
-        {/* <input className="inputTag" type="text" placeholder="원" /> */}
-
-        {/* <WriteTitleContainer>
-          배송 방법
-          <div>(중복 선택 가능)</div>
-        </WriteTitleContainer>
-
-        <WriteDeliveryStateContainer>
-          <DeliveryBtn
-            state={inputForm.delivery}
-            onClick={() =>
-              setInputForm({ ...inputForm, delivery: !inputForm.delivery })
-            }>
-            택배
-          </DeliveryBtn>
-          <DirectBtn
-            state={inputForm.direct}
-            onClick={() =>
-              setInputForm({ ...inputForm, direct: !inputForm.direct })
-            }>
-            직거래
-          </DirectBtn>
-        </WriteDeliveryStateContainer> */}
         <WriteTitleContainer>지역 선택</WriteTitleContainer>
         <WriteBtnBox
           onClick={() => dispatch(showModal("regionList"), _regionList())}>
@@ -273,17 +223,7 @@ const AuctionEdit = () => {
               <div>{regionNameCheck}</div>
             )}
             <div>
-              <svg
-                width="18"
-                height="10"
-                viewBox="0 0 18 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M17.7048 0.29272C17.3145 -0.0975732 16.684 -0.0975732 16.2938 0.29272L8.99872 7.58819L1.70368 0.29272C1.31341 -0.0975732 0.682972 -0.0975732 0.292702 0.29272C-0.0975675 0.683012 -0.0975675 1.31348 0.292702 1.70377L8.29824 9.70979C8.49838 9.90994 8.74856 10 9.00874 10C9.26892 10 9.51908 9.89993 9.71922 9.70979L17.7248 1.70377C18.095 1.31348 18.095 0.683012 17.7048 0.29272Z"
-                  fill="#3A3A3A"
-                />
-              </svg>
+              <UnderArrow />
             </div>
           </div>
         </WriteBtnBox>
@@ -295,9 +235,12 @@ const AuctionEdit = () => {
           onChange={onChangeHandler}
           placeholder="경매 물품에 대한 상세한 설명을 적어주세요."
         />
-        <WriteTitleContainer>해시태그</WriteTitleContainer>
+        <WriteTitleContainer>
+          해시태그
+          <div>(최대 6개 까지 가능)</div>
+        </WriteTitleContainer>
         <WriteInputBox
-          placeholder="최대 6개까지 입력할 수 있습니다."
+          placeholder="태그 앞에 #을 붙여 주세요. (ex: #태그1 #태그2)"
           value={tags}
           onChange={(e) => setTags(e.target.value)}
         />
@@ -322,7 +265,8 @@ const AuctionWriteWrap = styled.div`
   margin-top: 70px;
   padding: 0px 20px;
 
-  height: calc(100vh - 140px);
+  height: ${(props) =>
+    props.isIOS ? `calc(100vh - 160px)` : `calc(100vh - 150px)`};
   overflow: scroll;
   .form {
     display: flex;
@@ -332,9 +276,9 @@ const AuctionWriteWrap = styled.div`
 const WriteImgContainer = styled.div`
   display: flex;
   flex-direction: row;
-  /* height: 93px; */
   min-height: 93px;
   gap: 12px;
+  /* height: 93px; */
   /* overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -349,18 +293,22 @@ const ImgBoxBtn = styled.button`
   justify-content: center;
   height: 100%;
   min-width: 93px;
-  border: none;
+  border-radius: 5px;
+  border: 1px solid ${(props) => props.theme.colors.Blue1};
+  background-color: ${(props) => props.theme.colors.SkyBlue};
   .inBoxBtnContainer {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    margin-top: 10px;
     gap: 5px;
     width: 100%;
     height: 100%;
   }
-  div {
-    font-size: 12px;
-    font-weight: 400;
+  .imgCount {
+    font-size: ${(props) => props.theme.fontSizes.ssm};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
   }
 `;
 
@@ -378,8 +326,7 @@ const ImgBoxWrap = styled.div`
 
 const ImgBox = styled.div`
   display: flex;
-  max-height: 93px;
-  height: 93px;
+  height: 100%;
   min-width: 93px;
   width: 93px;
   gap: 16px;
@@ -400,26 +347,21 @@ const ImgBox = styled.div`
     width: 14px;
     height: 14px;
     border-radius: 14px;
-    background-color: #3a3a3a;
-    div {
-      position: relative;
-      top: -3px;
-      right: -3px;
-      color: white;
-      display: flex;
-    }
   }
 `;
 const WriteTitleContainer = styled.div`
   display: flex;
   margin: 32px 0px 16px 0px;
   min-height: 24px;
-  font-size: 16px;
-  font-weight: 700;
+  align-items: center;
+  font-size: ${(props) => props.theme.fontSizes.ms};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
+
   div {
-    font-size: 14px;
-    font-weight: 400;
-    color: #9b9b9b;
+    margin-left: 5px;
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.fontWeights};
+    color: ${(props) => props.theme.colors.Gray3};
   }
 `;
 const WriteInputBox = styled.input`
@@ -428,13 +370,15 @@ const WriteInputBox = styled.input`
   min-height: 56px;
   /* 인풋태그 디브 박스 안벗어나게 */
   box-sizing: border-box;
-  border: 1px solid #dedede;
+  border: 1px solid ${(props) => props.theme.colors.Gray2};
   border-radius: 8px;
-  font-size: 14px;
-  font-weight: 400;
   justify-content: flex-start;
   align-items: center;
   padding: 0px 9px;
+  font-size: ${(props) => props.theme.fontSizes.ms};
+  font-weight: ${(props) => props.theme.fontWeights.fontWeights};
+  letter-spacing: -0.05em;
+  line-height: 150%;
 `;
 const WriteBtnBox = styled.button`
   display: flex;
@@ -443,8 +387,8 @@ const WriteBtnBox = styled.button`
   align-items: center;
   justify-content: space-between;
 
-  background-color: white;
-  border: 1px solid #dedede;
+  background-color: ${(props) => props.theme.colors.White};
+  border: 1px solid ${(props) => props.theme.colors.Gray2};
   border-radius: 8px;
   box-sizing: border-box;
 
@@ -455,7 +399,7 @@ const WriteBtnBox = styled.button`
     display: flex;
     width: 100%;
     justify-content: space-between;
-    color: black;
+    color: ${(props) => props.theme.colors.Black};
     div {
       display: flex;
       justify-content: center;
@@ -513,7 +457,6 @@ const WriteTitleAuctionDay = styled.div`
       props.children[0].props.state === 1
         ? "1px solid #4D71FF"
         : "1px solid #a5a9b6"};
-
     background-color: ${(props) =>
       props.children[0].props.state === 1 ? "#E9F3FF" : "white"};
     color: ${(props) =>
@@ -547,12 +490,19 @@ const WriteTitleAuctionDay = styled.div`
   }
 `;
 const WriteTextArea = styled.textarea`
+  padding: 10px;
   display: flex;
   width: 100%;
   min-height: 192px;
   box-sizing: border-box;
   resize: none;
-  border: 1px solid #c5d0e1;
+  letter-spacing: -0.05em;
+  word-spacing: -0.35em;
+  line-height: 150%;
+  border-radius: 8px;
+  border: 1px solid ${(props) => props.theme.colors.Gray2};
+  font-size: ${(props) => props.theme.fontSizes.ms};
+  font-weight: ${(props) => props.theme.fontWeights.fontWeights};
 `;
 
 export default AuctionEdit;

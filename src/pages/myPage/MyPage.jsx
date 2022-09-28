@@ -214,8 +214,9 @@ const MyPageLayout = styled.div`
 const MyPageWrap = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 70px;
   height: ${(props) =>
-    props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
+    props.isIOS ? `calc(100vh - 150px)` : `calc(100vh - 140px)`};
   overflow: auto;
 `;
 const MyProfileWrap = styled.div`
@@ -223,7 +224,7 @@ const MyProfileWrap = styled.div`
   flex-direction: row;
   justify-content: flex-start;
   gap: 20px;
-  margin: 93px 20px 20px 20px;
+  margin: 15px 20px 20px 20px;
 `;
 const MyImgContainer = styled.div`
   display: flex;
@@ -249,18 +250,6 @@ const MyImgBox = styled.div`
     height: 100%;
     border-radius: 120px;
   }
-  /* div {
-    display: flex;
-    position: absolute;
-    top: 186px;
-    left: 219px;
-    width: 36px;
-    height: 36px;
-    border-radius: 36px;
-    align-items: center;
-    justify-content: center;
-    background-color: white;
-  } */
 `;
 const MyNickContainer = styled.div`
   display: flex;
@@ -336,6 +325,8 @@ const MyStateWrap = styled.div`
     align-items: center;
     border-radius: 8px;
     background-color: ${(props) => props.theme.colors.Gray1};
+    /* box-shadow: 1px 1px 4px 1px #dadce0; */
+
     .stateBox {
       display: flex;
       flex-direction: column;

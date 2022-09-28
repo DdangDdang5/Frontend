@@ -93,7 +93,6 @@ import Yangcheon from "../../shared/images/region/Yangcheon.svg";
 import Yeoungdeongpo from "../../shared/images/region/Yeoungdeongpo.svg";
 import Yongsan from "../../shared/images/region/Yongsan.svg";
 
-
 // Style import
 import { CategoryItem, CategoryName } from "./AuctionCategory.styled";
 
@@ -115,7 +114,7 @@ const AuctionCategory = ({ division, divisionName }) => {
         auctionCategoryRegionList({
           categoryName: categoryNameCheck,
           regionName: regionNameCheck,
-        }),
+        })
       );
     } else if (categoryNameCheck !== "전체품목") {
       dispatch(auctionCategoryList(categoryNameCheck));
@@ -127,12 +126,12 @@ const AuctionCategory = ({ division, divisionName }) => {
   const onClickModalItem = (division, divisionName) => {
     if (division === "regionList") {
       dispatch(
-        hideModal({ categoryName: "전체 품목", regionName: divisionName }),
+        hideModal({ categoryName: "전체 품목", regionName: divisionName })
       );
       onCheckCategoryRegion("전체 품목", divisionName);
     } else if (division === "categoryList") {
       dispatch(
-        hideModal({ categoryName: divisionName, regionName: "서울 전체" }),
+        hideModal({ categoryName: divisionName, regionName: "서울 전체" })
       );
       onCheckCategoryRegion(divisionName, "서울 전체");
     }
@@ -146,82 +145,84 @@ const AuctionCategory = ({ division, divisionName }) => {
 
   return (
     <CategoryItem division={division} onClick={onClickAuctionDivision}>
-      {{
-				"전체 품목": <LogoClassic />,
-				"가전": <img src={HomeElectronics} />,
-				"가구/인테리어": <img src={Interior} />,
-				"남성 패션": <img src={ManFashion} />,
-				"디지털": <img src={Digital} />,
-				"여성 패션": <img src={WomanFashion} />,
-				"악세서리": <img src={Accessory} />,
-				"스포츠/레저": <img src={Sport} />,
-				"취미/게임/악기": <img src={Hobby} />,
-				"뷰티/미용": <img src={Beauty} />,
-				
-				"서울 전체": <img src={Seoul} />,
-				"도봉구": <img src={Dobong} />,
-				"동대문구": <img src={Dongdaemun} />,
-				"동작구": <img src={Dongjak} />,
-				"은평구": <img src={Eunpyeong} />,
-				"강북구": <img src={Gangbuk} />,
-				"강동구": <img src={Gangdong} />,
-				"강남구": <img src={Gangnam} />,
-				"강서구": <img src={Gangseo} />,
-				"금천구": <img src={Geumcheon} />,
-				"구로구": <img src={Guro} />,
-				"관악구": <img src={Gwanak} />,
-				"광진구": <img src={Gwangjin} />,
-				"종로구": <img src={Jongno} />,
-				"중구": <img src={Jung} />,
-				"중랑구": <img src={Jungnang} />,
-				"마포구": <img src={Mapo} />,
-				"노원구": <img src={Nowon} />,
-				"서초구": <img src={Seocho} />,
-				"서대문구": <img src={Seodaemun} />,
-				"성북구": <img src={Seongbuk} />,
-				"성동구": <img src={Seongdong} />,
-				"송파구": <img src={Songpa} />,
-				"양천구": <img src={Yangcheon} />,
-				"영등포구": <img src={Yeoungdeongpo} />,
-				"용산구": <img src={Yongsan} />,
+      {
+        {
+          "전체 품목": <LogoClassic />,
+          가전: <img src={HomeElectronics} />,
+          "가구/인테리어": <img src={Interior} />,
+          "남성 패션": <img src={ManFashion} />,
+          디지털: <img src={Digital} />,
+          "여성 패션": <img src={WomanFashion} />,
+          악세서리: <img src={Accessory} />,
+          "스포츠/레저": <img src={Sport} />,
+          "취미/게임/악기": <img src={Hobby} />,
+          "뷰티/미용": <img src={Beauty} />,
 
-				// "가전": <HomeElectronics />,
-				// "가구/인테리어": <Interior />,
-				// "남성 패션": <ManFashion />,
-				// "디지털": <Digital />,
-				// "여성 패션": <WomanFashion />,
-				// "악세서리": <Accessory />,
-				// "스포츠/레저": <Sport />,
-				// "취미/게임/악기": <Hobby />,
-				// "뷰티/미용": <Beauty />,
-				
-				// "서울 전체": <Seoul />,
-				// "도봉구": <Dobong />,
-				// "동대문구": <Dongdaemun />,
-				// "동작구": <Dongjak />,
-				// "은평구": <Eunpyeong />,
-				// "강북구": <Gangbuk />,
-				// "강동구": <Gangdong />,
-				// "강남구": <Gangnam />,
-				// "강서구": <Gangseo />,
-				// "금천구": <Geumcheon />,
-				// "구로구": <Guro />,
-				// "관악구": <Gwanak />,
-				// "광진구": <Gwangjin />,
-				// "종로구": <Jongno />,
-				// "중구": <Jung />,
-				// "중랑구": <Jungnang />,
-				// "마포구": <Mapo />,
-				// "노원구": <Nowon />,
-				// "서초구": <Seocho />,
-				// "서대문구": <Seodaemun />,
-				// "성북구": <Seongbuk />,
-				// "성동구": <Seongdong />,
-				// "송파구": <Songpa />,
-				// "양천구": <Yangcheon />,
-				// "영등포구": <Yeoungdeongpo />,
-				// "용산구": <Yongsan />,
-			}[divisionName]}
+          "서울 전체": <img src={Seoul} />,
+          도봉구: <img src={Dobong} />,
+          동대문구: <img src={Dongdaemun} />,
+          동작구: <img src={Dongjak} />,
+          은평구: <img src={Eunpyeong} />,
+          강북구: <img src={Gangbuk} />,
+          강동구: <img src={Gangdong} />,
+          강남구: <img src={Gangnam} />,
+          강서구: <img src={Gangseo} />,
+          금천구: <img src={Geumcheon} />,
+          구로구: <img src={Guro} />,
+          관악구: <img src={Gwanak} />,
+          광진구: <img src={Gwangjin} />,
+          종로구: <img src={Jongno} />,
+          중구: <img src={Jung} />,
+          중랑구: <img src={Jungnang} />,
+          마포구: <img src={Mapo} />,
+          노원구: <img src={Nowon} />,
+          서초구: <img src={Seocho} />,
+          서대문구: <img src={Seodaemun} />,
+          성북구: <img src={Seongbuk} />,
+          성동구: <img src={Seongdong} />,
+          송파구: <img src={Songpa} />,
+          양천구: <img src={Yangcheon} />,
+          영등포구: <img src={Yeoungdeongpo} />,
+          용산구: <img src={Yongsan} />,
+
+          // "가전": <HomeElectronics />,
+          // "가구/인테리어": <Interior />,
+          // "남성 패션": <ManFashion />,
+          // "디지털": <Digital />,
+          // "여성 패션": <WomanFashion />,
+          // "악세서리": <Accessory />,
+          // "스포츠/레저": <Sport />,
+          // "취미/게임/악기": <Hobby />,
+          // "뷰티/미용": <Beauty />,
+
+          // "서울 전체": <Seoul />,
+          // "도봉구": <Dobong />,
+          // "동대문구": <Dongdaemun />,
+          // "동작구": <Dongjak />,
+          // "은평구": <Eunpyeong />,
+          // "강북구": <Gangbuk />,
+          // "강동구": <Gangdong />,
+          // "강남구": <Gangnam />,
+          // "강서구": <Gangseo />,
+          // "금천구": <Geumcheon />,
+          // "구로구": <Guro />,
+          // "관악구": <Gwanak />,
+          // "광진구": <Gwangjin />,
+          // "종로구": <Jongno />,
+          // "중구": <Jung />,
+          // "중랑구": <Jungnang />,
+          // "마포구": <Mapo />,
+          // "노원구": <Nowon />,
+          // "서초구": <Seocho />,
+          // "서대문구": <Seodaemun />,
+          // "성북구": <Seongbuk />,
+          // "성동구": <Seongdong />,
+          // "송파구": <Songpa />,
+          // "양천구": <Yangcheon />,
+          // "영등포구": <Yeoungdeongpo />,
+          // "용산구": <Yongsan />,
+        }[divisionName]
+      }
 
       <CategoryName division={division}>{divisionName}</CategoryName>
     </CategoryItem>

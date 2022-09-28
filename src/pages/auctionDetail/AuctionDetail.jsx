@@ -40,8 +40,8 @@ const AuctionDetail = () => {
 
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
-
-  // console.log("스테이트", favorite);
+  console.log(data);
+  console.log(memberId);
   // console.log("찜하기 스테이트", favorite);
   const [joinVisible, setJoinVisible] = useState(false);
   const [isMenuModal, setIsMenuModal] = useState(false);
@@ -89,8 +89,10 @@ const AuctionDetail = () => {
         if (bid) {
           if (bid.seller === nickName || bid.bidder === nickName) {
             setWinBid(true);
-						chatOther = [bid.seller, bid.bidder].filter((item) => item !== nickName).join('');
-						console.log(chatOther);
+            chatOther = [bid.seller, bid.bidder]
+              .filter((item) => item !== nickName)
+              .join("");
+            console.log(chatOther);
           }
         }
       }
@@ -106,8 +108,8 @@ const AuctionDetail = () => {
   }
 
   const onClickAuctionJoin = async () => {
-    // 비로그인 -> 세션에 닉네임 없음
-    if (!nickName) {
+    // 비로그인 -> 세션에 멤버아이디 없음
+    if (!memberId) {
       if (window.confirm("로그인이 필요합니다. 로그인하시겠습니까?")) {
         navigate("/login");
       }
@@ -137,7 +139,7 @@ const AuctionDetail = () => {
   const onConnected = () => {
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived,
+      onMessageReceived
     );
 
     // 채팅방 들어감
@@ -169,7 +171,7 @@ const AuctionDetail = () => {
       stompClient.send(
         "/app/chat/bid",
         {},
-        JSON.stringify({ ...chatMessage, type: "ENTER" }),
+        JSON.stringify({ ...chatMessage, type: "ENTER" })
       );
 
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
@@ -276,13 +278,12 @@ const AuctionDetail = () => {
                   auctionId: params?.auctionId,
                   auctionCreatedAt: data?.createdAt,
                   auctionPeriod: data?.auctionPeriod,
-									audtionStatus: data?.auctionStatus,
+                  audtionStatus: data?.auctionStatus,
                   isDetail: true,
                   title: data.title,
                 },
               })
-            }
-          >
+            }>
             <CommentCountWrap>
               <CommentCountTitle>실시간 채팅방</CommentCountTitle>
               <p>{data.participantCnt}명 참여중</p>
@@ -315,7 +316,11 @@ const AuctionDetail = () => {
                 <div className="price">{`${postPrice}원`}</div>
               </div>
             </FooterLeftBox>
-            {data?.auctionStatus ? (
+            {memberId === null ? (
+              <FooterRightBox>
+                <button onClick={onClickAuctionJoin}>입찰하기</button>
+              </FooterRightBox>
+            ) : data?.auctionStatus ? (
               <FooterRightBox>
                 <button onClick={onClickAuctionJoin}>입찰하기</button>
               </FooterRightBox>
@@ -329,7 +334,7 @@ const AuctionDetail = () => {
                         auctionId: params.auctionId,
                         isDetail: false,
                         title: data.title,
-                        chatOther: chatOther
+                        chatOther: chatOther,
                       },
                     });
                   }}
@@ -354,6 +359,46 @@ const AuctionDetail = () => {
                 />
               </FooterBidContainer>
             )}
+
+            {/* {data?.auctionStatus ? (
+              <FooterRightBox>
+                <button onClick={onClickAuctionJoin}>입찰하기</button>
+              </FooterRightBox>
+            ) : winBid ? (
+              <FooterBidContainer>
+                <Button
+                  text="채팅방으로 이동"
+                  _onClick={() => {
+                    navigate(`/chat/${bid.roomId}`, {
+                      state: {
+                        auctionId: params.auctionId,
+                        isDetail: false,
+                        title: data.title,
+                        chatOther: chatOther,
+                      },
+                    });
+                  }}
+                  style={{
+                    width: "165px",
+                    ft_weight: "500",
+                    color: "#FFFFFF",
+                    bg_color: "#1DC79A",
+                  }}
+                />
+              </FooterBidContainer>
+            ) : (
+              <FooterBidContainer>
+                <Button
+                  text="입찰종료"
+                  style={{
+                    width: "165px",
+                    ft_weight: "500",
+                    color: "#646778",
+                    bg_color: "#EBEEF3",
+                  }}
+                />
+              </FooterBidContainer>
+            )} */}
           </DetailFooterContainer>
         </DetailFooterWrap>
       </AuctionDetailLayout>
@@ -520,6 +565,7 @@ const DetailBodyTitle = styled.div`
 const DetailBodySelectTag = styled.div`
   display: flex;
   margin-bottom: 10px;
+  align-items: center;
   padding: 0px 20px;
   div {
     display: flex;
@@ -657,7 +703,7 @@ const DetailFooterTimeContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 42px;
+  min-height: 42px;
   background-color: ${(props) => props.theme.colors.Red};
   color: white;
   gap: 0 8px;
@@ -695,7 +741,7 @@ const FooterLeftBox = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
+    margin-top: 10px;
   }
   .priceBox {
     display: flex;
