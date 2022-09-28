@@ -88,9 +88,9 @@ const Main = () => {
     navigate(`/auctionDetail/${auctionId}`);
   };
 
-	const moveAuctionList = async () => {
-		await dispatch(clearMode()).then(() => navigate("/auctionList"));
-		// await navigate("/auctionList");
+	const moveAuctionList = () => {
+		dispatch(clearMode());
+		navigate("/auctionList");
 	}
 
   return (
@@ -151,7 +151,7 @@ const Main = () => {
             <ListContainer>
               <ListHeader>
                 <span>따끈따끈 새로 올라온 경매!</span>
-                <ListHeaderMore onClick={() => moveAuctionList()}>
+                <ListHeaderMore onClick={moveAuctionList}>
                   <span>전체 보기</span>
                   <Next />
                 </ListHeaderMore>
@@ -188,7 +188,7 @@ const Main = () => {
               <ListContainer>
                 <ListHeader isLast={true}>
                   <span>서두르세요! 곧 경매가 끝나요</span>
-              		<ListHeaderMore onClick={() => moveAuctionList()}>
+              		<ListHeaderMore onClick={moveAuctionList}>
                     <span>전체 보기</span>
                     <Next />
                   </ListHeaderMore>

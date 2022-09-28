@@ -480,7 +480,7 @@ const AuctionDetail = () => {
           </AuctionJoinInfo>
           <AuctionJoinInput
             type="number"
-            value={userData.message.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            value={userData.message?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
             onChange={(event) => setUserData({ ...userData, message: event.target.value })}
             onKeyDown={(event) => onKeyPress(event)}
             placeholder="입찰 가격을 입력해주세요."
