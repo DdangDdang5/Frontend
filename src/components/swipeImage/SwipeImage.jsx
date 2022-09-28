@@ -171,8 +171,8 @@ const SwipeImage = ({
                 </SwipeItem>
               );
             }
-          })
-        ) : (
+          }
+					): 
 						Array.from({ length: 2 }, (_, idx) => (
               <EventBanner key={idx} idx={idx} isMain={isMain} onClick={idx ? () => navigate("/event/1") : () => navigate("/infoDetail")}>
 
