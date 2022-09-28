@@ -7,6 +7,9 @@ export const SearchBox = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  position: absolute;
+  top: 0;
+  bottom: 90px;
 `;
 
 export const SearchInputGroup = styled.div`
@@ -62,17 +65,18 @@ export const SearchFilterGroup = styled.div`
   position: relative;
   width: 100%;
   display: flex;
-  justify-content: center;
-  margin-top: 36px;
+  justify-content: space-between;
+  margin-top: 24px;
   box-sizing: border-box;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  flex: 1 1 50%;
+  padding: 0px 5%;
+  /* flex: 1 1 50%; */
 `;
 
 export const SearchFilterWrap = styled.div`
-  width: 45%;
+  width: 48%;
   box-sizing: border-box;
 `;
 
@@ -82,7 +86,6 @@ export const SearchItemList = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-left: 5%;
   gap: 16px 20px;
 `;
 
