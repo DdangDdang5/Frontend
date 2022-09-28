@@ -17,7 +17,7 @@ import {
   Close,
   Menu,
   Logo,
-  Search,
+  SearchImg,
   Share,
 } from "../../shared/images";
 
@@ -81,7 +81,7 @@ const Header = ({
 
         {/* right */}
         <HeaderIconContainer>
-          {search ? <Search onClick={() => navigate("/search")} /> : null}
+          {search ? <SearchImg onClick={() => navigate("/search")} /> : null}
           {alarm ? <Alarm onClick={() => navigate("/notification")} /> : null}
           {share ? <Share /> : null}
           {menu ? <Menu onClick={onClickBtn} /> : null}

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { isIOS } from "react-device-detect";
 
 // Shared import
-import { Chat, Home, MyPage, Search } from "../../shared/images";
+import { Chat, Home, MyPage, SearchImg } from "../../shared/images";
 
 // Style import
 import {
@@ -38,7 +38,7 @@ const Footer = ({ home, search, chat, myPage }) => {
           <span>홈</span>
         </FooterIcon>
         <FooterIcon onClick={() => navigate("/search")}>
-          {search ? <Search nowpage="true" /> : <Search />}
+          {search ? <SearchImg nowpage="true" /> : <SearchImg />}
           <span>검색</span>
         </FooterIcon>
         <FooterIcon onClick={() => moveChatList(memberId)}>

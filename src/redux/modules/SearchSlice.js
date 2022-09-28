@@ -49,6 +49,9 @@ export const searchSlice = createSlice({
     popularAction: (state, action) => {
       state.popularSearch = action.payload.popularSearch;
     },
+		clearSearch: (state, action) => {
+			state.data = [];
+		}
   },
   extraReducers: (builder) => {
     builder.addCase(auctionSearchThunk.fulfilled, (state, action) => {
@@ -66,6 +69,6 @@ export const searchSlice = createSlice({
   },
 });
 
-export const { searchAction, recentAction, popularAction } =
+export const { searchAction, recentAction, popularAction, clearSearch } =
   searchSlice.actions;
 export default searchSlice.reducer;
