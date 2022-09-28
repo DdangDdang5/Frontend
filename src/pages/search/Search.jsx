@@ -3,7 +3,7 @@ import React, { Fragment, useState, useEffect } from "react";
 
 // Redux import
 import { useDispatch, useSelector } from "react-redux";
-import { auctionSearchThunk } from "../../redux/modules/SearchSlice";
+import { auctionSearchThunk, clearSearch } from "../../redux/modules/SearchSlice";
 
 // Package import
 import { useNavigate } from "react-router-dom";
@@ -55,6 +55,10 @@ const Search = () => {
       setIsSearch(false);
     }
   };
+
+	useEffect(() => {
+		dispatch(clearSearch());
+	}, [])
 
   useEffect(() => {}, [dispatch]);
 
