@@ -85,6 +85,10 @@ function MyPageMyAuction() {
     };
   }, []);
 
+  // const button =()=>{
+  //   switch()
+  // }
+
   if (!data) {
     return <></>;
   }
@@ -151,10 +155,12 @@ const ActionBtn = styled.button`
   box-sizing: border-box;
   min-height: 40px;
   margin-bottom: 32px;
-  background-color: white;
-  border: 1px solid #4d71ff;
+  background-color: ${(props) => props.theme.colors.White};
+  border: 1px solid ${(props) => props.theme.colors.Blue1};
   border-radius: 8px;
-  color: #4d71ff;
+  font-size: ${(props) => props.theme.fontSizes.ms};
+  font-weight: ${(props) => props.theme.fontWeights.fontWeights};
+  color: ${(props) => props.theme.colors.Blue1};
 `;
 
 export default MyPageMyAuction;

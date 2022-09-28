@@ -70,14 +70,6 @@ const SignUp = () => {
   const nickNameSpanRef = useRef();
   const NickNameCheckef = useRef();
 
-  // const [color, setColor] = useState({
-  //   email: "#dedede",
-  //   id: "#dedede",
-  //   nickName: "#dedede",
-  //   password: "#dedede",
-  //   repassword: "#dedede",
-  // });
-
   const newMember = {
     email,
     password,
@@ -88,7 +80,7 @@ const SignUp = () => {
   const checkLoginEmail = useCallback(
     debounce((email) => {
       const emailRegExp =
-        /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+        /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i;
       if (!emailRegExp.test(email)) {
         emailSpanRef.current.innerText = "이메일 형식에 맞지 않습니다.";
         emailSpanRef.current.style.color = "#FF664D";
@@ -154,7 +146,8 @@ const SignUp = () => {
       // }
       // else {
       //   if
-      repassword !== password && repassword.length > 0 
+      repassword !== password &&
+      repassword.length > 0
     ) {
       // passwordSpanRef.current.style.color = "#FF664D";
       rePasswordSpanRef.current.style.color = "#FF664D";
@@ -233,7 +226,7 @@ const SignUp = () => {
         emailRef.current.innerText = "중복되는 이메일입니다.";
         // setCheck({ ...check, email: true });
       } else {
-        if (nickNameCheck === true) {
+        if (nickNameCheck === false) {
           nickNameRef.current.focus();
           nickNameRef.current.style.color = "#BCBCBC";
           nickNameRef.current.innerText = "중복되는 닉네임입니다.";
@@ -252,14 +245,14 @@ const SignUp = () => {
         }
       }
     },
-    [email, password, repassword, nickName]
+    [email, nickName, password, repassword]
   );
 
   return (
     <Fragment>
       <Header back={true} pageName="회원가입" />
       <SignUpBox>
-        <SignUpBoxForm onSubmit={(event) => onsubmitHandler(event)}>
+        <SignUpBoxForm>
           <SignUpBoxInputGroup>
             이메일
             <SignUpBoxInputWrap>
@@ -273,11 +266,13 @@ const SignUp = () => {
                 required
               ></SignUpBoxInput>
               <SignUpBoxInputIcon ref={emailIconRef}>
-                {/* {email === checkLoginEmail ? (
-                  <Ok
-                  state={true}/>
-                ) : (
+                {/* {setEmailCheck && checkLoginEmail ? (
                   <Delete
+                  // state={true}
+                  />
+                ) : (
+                  <Ok
+                  // state={false}
                   />
                 )} */}
               </SignUpBoxInputIcon>
@@ -343,6 +338,7 @@ const SignUp = () => {
           <SignUpButtonGroup>
             {email && password && repassword && nickName ? (
               <Button
+                _onClick={(e) => onsubmitHandler(e)}
                 type={"submit"}
                 text={"회원가입"}
                 style={{

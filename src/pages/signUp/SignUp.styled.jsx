@@ -79,7 +79,6 @@ export const SignUpBoxInputIcon = styled.div`
   svg {
     position: absolute;
     right: 10px;
-    /* color: ${(props) => props.theme.colors.Green1}; */
     top: 50%;
     transform: translate(-50%, -50%);
     path {

@@ -2,10 +2,10 @@
 import styled from "styled-components";
 
 export const SearchResultContainer = styled.div`
-  width: 100%;
+  width: 90%;
   justify-content: center;
   align-items: center;
-  position: relative;
+  position: absolute;
   display: flex;
   margin-top: 100px;
 `;
