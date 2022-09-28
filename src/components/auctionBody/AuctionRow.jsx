@@ -42,6 +42,7 @@ const AuctionContainer = styled.div`
   flex-direction: row;
   gap: 18px;
   width: 100%;
+
   margin-bottom: ${(props) => (props.state ? `32px` : `20px`)};
 `;
 

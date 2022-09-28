@@ -52,6 +52,10 @@ const AuctionWrite = () => {
   const [inputForm, setInputForm] = useState(auctionRequestDto);
   const [tags, setTags] = useState([]);
 
+  console.log("이미지", imgFile);
+  console.log("인풋폼", inputForm);
+  console.log("테그", initialTag);
+
   useEffect(() => {
     dispatch(_categoryList());
   }, []);
@@ -116,15 +120,17 @@ const AuctionWrite = () => {
   // 이미지, 태그 , 글 업로드
   const onTransmitHandler = () => {
     // 태그 추가
-    let tagList = tags.split("#");
-    tagList = tagList.slice(1, tagList.length);
+    if (tags !== "") {
+      let tagList = tags.toString().split("#");
+      tagList = tagList.slice(1, tagList.length);
 
-    for (let i = 0; i < 6; i++) {
-      const tmp = "tag" + (i + 1);
-      if (tagList[i]) {
-        initialTag[tmp] = tagList[i];
-      } else {
-        delete initialTag[tmp];
+      for (let i = 0; i < 6; i++) {
+        const tmp = "tag" + (i + 1);
+        if (tagList[i]) {
+          initialTag[tmp] = tagList[i];
+        } else {
+          delete initialTag[tmp];
+        }
       }
     }
 
@@ -138,16 +144,27 @@ const AuctionWrite = () => {
       new Blob([JSON.stringify(initialTag)], { type: "application/json" })
     );
 
-    for (let i = 0; i < imgFile.length; i++) {
+    for (let i = 0; i < 10; i++) {
       formData.append("images", imgFile[i]);
     }
+    if (imgFile.length === 0) {
+      return window.alert("상품 이미지를 추가하셔야 합니다");
+    } else if (inputForm.title === "") {
+      return window.alert("제목을 입력하셔야 합니다.");
+    } else if (inputForm.startPrice === 0) {
+      return window.alert("경매 시작가를 입력하셔야 합니다.");
+    } else if (inputForm.delivery === false && inputForm.direct === false) {
+      return window.alert("거래 방법을 선택하셔야 합니다.");
+    } else if (inputForm.content === "") {
+      return window.alert("상세 소개글을 입력하셔야 합니다.");
+    } else {
+      window.alert("경매글이 게시 되었습니다.");
 
-    window.alert("새 게시물 만들기 완료");
+      dispatch(addAuctionItem(formData));
+      // 포스팅 완료후 새로고침
 
-    dispatch(addAuctionItem(formData));
-    // 포스팅 완료후 새로고침
-
-    navigate(-1, { replace: true });
+      navigate(-1, { replace: true });
+    }
   };
 
   // 이미지 미리보기 삭제
@@ -282,7 +299,7 @@ const AuctionWrite = () => {
         </WriteTitleAuctionDay>
 
         <WriteTitleContainer>
-          배송 방법
+          거래 방법
           <div>(중복 선택 가능)</div>
         </WriteTitleContainer>
 
@@ -334,9 +351,12 @@ const AuctionWrite = () => {
           onChange={onChangeHandler}
           placeholder="경매 물품에 대한 상세한 설명을 적어주세요."
         />
-        <WriteTitleContainer>해시태그</WriteTitleContainer>
+        <WriteTitleContainer>
+          해시태그
+          <div>(최대 6개 까지 가능)</div>
+        </WriteTitleContainer>
         <WriteInputBox
-          placeholder="최대 6개까지 입력할 수 있습니다."
+          placeholder="태그 앞에 #을 붙여 주세요. (ex: #태그1 #태그2)"
           value={tags}
           onChange={(e) => setTags(e.target.value)}
         />
@@ -372,9 +392,9 @@ const AuctionWriteWrap = styled.div`
 const WriteImgContainer = styled.div`
   display: flex;
   flex-direction: row;
-  /* height: 93px; */
   min-height: 93px;
   gap: 12px;
+  /* height: 93px; */
   /* overflow-y: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
@@ -389,8 +409,8 @@ const ImgBoxBtn = styled.button`
   justify-content: center;
   height: 100%;
   min-width: 93px;
-  border: 1px solid #4d71ff;
   border-radius: 5px;
+  border: 1px solid ${(props) => props.theme.colors.Blue1};
   background-color: ${(props) => props.theme.colors.SkyBlue};
   .inBoxBtnContainer {
     display: flex;
@@ -449,12 +469,15 @@ const WriteTitleContainer = styled.div`
   display: flex;
   margin: 32px 0px 16px 0px;
   min-height: 24px;
-  font-size: 16px;
-  font-weight: 700;
+  align-items: center;
+  font-size: ${(props) => props.theme.fontSizes.ms};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
+
   div {
-    font-size: 14px;
-    font-weight: 400;
-    color: #9b9b9b;
+    margin-left: 5px;
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.fontWeights};
+    color: ${(props) => props.theme.colors.Gray3};
   }
 `;
 const WriteInputBox = styled.input`
@@ -463,13 +486,15 @@ const WriteInputBox = styled.input`
   min-height: 56px;
   /* 인풋태그 디브 박스 안벗어나게 */
   box-sizing: border-box;
-  border: 1px solid #dedede;
+  border: 1px solid ${(props) => props.theme.colors.Gray2};
   border-radius: 8px;
-  font-size: 14px;
-  font-weight: 400;
   justify-content: flex-start;
   align-items: center;
   padding: 0px 9px;
+  font-size: ${(props) => props.theme.fontSizes.ms};
+  font-weight: ${(props) => props.theme.fontWeights.fontWeights};
+  letter-spacing: -0.05em;
+  line-height: 150%;
 `;
 const WriteBtnBox = styled.button`
   display: flex;
@@ -478,8 +503,8 @@ const WriteBtnBox = styled.button`
   align-items: center;
   justify-content: space-between;
 
-  background-color: white;
-  border: 1px solid #dedede;
+  background-color: ${(props) => props.theme.colors.White};
+  border: 1px solid ${(props) => props.theme.colors.Gray2};
   border-radius: 8px;
   box-sizing: border-box;
 
@@ -490,7 +515,7 @@ const WriteBtnBox = styled.button`
     display: flex;
     width: 100%;
     justify-content: space-between;
-    color: black;
+    color: ${(props) => props.theme.colors.Black};
     div {
       display: flex;
       justify-content: center;
@@ -587,7 +612,11 @@ const WriteTextArea = styled.textarea`
   min-height: 192px;
   box-sizing: border-box;
   resize: none;
-  border: 1px solid #c5d0e1;
+  letter-spacing: -0.05em;
+  word-spacing: -0.35em;
+  line-height: 150%;
+  border-radius: 8px;
+  border: 1px solid ${(props) => props.theme.colors.Gray2};
   font-size: ${(props) => props.theme.fontSizes.ms};
   font-weight: ${(props) => props.theme.fontWeights.fontWeights};
 `;

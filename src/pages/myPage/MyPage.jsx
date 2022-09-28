@@ -325,6 +325,8 @@ const MyStateWrap = styled.div`
     align-items: center;
     border-radius: 8px;
     background-color: ${(props) => props.theme.colors.Gray1};
+    /* box-shadow: 1px 1px 4px 1px #dadce0; */
+
     .stateBox {
       display: flex;
       flex-direction: column;

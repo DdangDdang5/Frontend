@@ -4,8 +4,10 @@ import styled from "styled-components";
 
 const Auction = ({ data }) => {
   const navigate = useNavigate();
-	
-	const nowPrice = data?.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+
+  const nowPrice = data?.nowPrice
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   if (!data || !data?.auctionId) {
     return <></>;
