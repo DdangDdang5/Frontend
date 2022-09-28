@@ -25,7 +25,7 @@ import MyPageParticipationAuction from "./pages/myPage/MyPageParticipationAuctio
 import MyPageInterestAuction from "./pages/myPage/MyPageInterestAuction";
 import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
 import AuctionEdit from "./pages/auctionEdit/AuctionEdit";
-import Notification from "./pages/notification/Notification";
+// import Notification from "./pages/notification/Notification";
 import NotFound from "./pages/notFound/NotFound";
 import Event from "./pages/event/Event";
 import EventList from "./pages/eventList/EventList";
@@ -41,12 +41,12 @@ import UserProfile from "./pages/userProfile/UserProfile";
 import { FontRegular } from "./shared/fonts/font";
 
 // Notification import
-import { onMessageListener } from "./firebaseInit";
-import Notifications from "./components/notification/Notification";
-import ReactNotificationComponent from "./components/notification/ReactNotification";
-import { ToastNotification } from "./pages/notification/ToastNotification";
-import { add } from "./redux/modules/NotificationSlice";
-import MypageEdit from "./pages/myPage/MyPageEdit";
+// import { onMessageListener } from "./firebaseInit";
+// import Notifications from "./components/notification/Notification";
+// import ReactNotificationComponent from "./components/notification/ReactNotification";
+// import { ToastNotification } from "./pages/notification/ToastNotification";
+// import { add } from "./redux/modules/NotificationSlice";
+// import MypageEdit from "./pages/myPage/MyPageEdit";
 
 function App() {
   const dispatch = useDispatch();
@@ -149,9 +149,9 @@ function App() {
       )}
       {!((isIOS || isMacOs) && isSafari) ? <Notifications /> : <></>} */}
 
-        {notifToastList?.map((item) => (
+        {/* {notifToastList?.map((item) => (
           <ToastNotification notif={item} />
-        ))}
+        ))} */}
 
         <Routes>
           <Route path="*" element={<NotFound />} />
@@ -180,7 +180,7 @@ function App() {
             element={<MyPageInterestAuction />}
           />
           <Route path="/userProfile/:memberId" element={<UserProfile />} />
-          <Route path="/notification" element={<Notification />} />
+          {/* <Route path="/notification" element={<Notification />} /> */}
           <Route path="/event/:eventId" element={<Event />} />
           <Route path="/eventList" element={<EventList />} />
           <Route path="/loading" element={<Loading />} />
