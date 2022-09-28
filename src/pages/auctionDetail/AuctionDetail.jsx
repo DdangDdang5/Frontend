@@ -41,9 +41,7 @@ const AuctionDetail = () => {
 
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
-  console.log(data);
-  console.log(memberId);
-  // console.log("찜하기 스테이트", favorite);
+
   const [joinVisible, setJoinVisible] = useState(false);
   const [isMenuModal, setIsMenuModal] = useState(false);
   const [winBid, setWinBid] = useState(false);
@@ -56,7 +54,7 @@ const AuctionDetail = () => {
     createdAt: "",
   });
 
-  let chatOther = "";
+	const [chatOther, setChatOther] = useState("");
 
   const imgList = data?.multiImages;
 
@@ -93,9 +91,9 @@ const AuctionDetail = () => {
         if (bid) {
           if (bid.seller === nickName || bid.bidder === nickName) {
             setWinBid(true);
-            chatOther = [bid.seller, bid.bidder]
+            setChatOther([bid.seller, bid.bidder]
               .filter((item) => item !== nickName)
-              .join("");
+              .join(""));
           }
         }
       }
@@ -134,6 +132,22 @@ const AuctionDetail = () => {
       navigate(`/userProfile/${data?.memberId}`);
     }
   };
+
+	const onSubmitAuctionPrice = () => {
+		// if (userData.message > )
+		const nowPrice = Math.max(
+			data.nowPrice,
+			chatList.length > 0
+				? +chatList[chatList.length - 1]?.message
+				: data.startPrice,
+		);
+
+		if (+userData.message > nowPrice) {
+			sendMessage();
+		} else {
+			window.alert("현재 최고가보다 높은 호가를 올려야합니다.");
+		}
+	}
 
   // 웹소켓 연결
   const registerUser = () => {
@@ -295,9 +309,9 @@ const AuctionDetail = () => {
               navigate(`/chat/${data.roomId}`, {
                 state: {
                   auctionId: params?.auctionId,
-                  auctionCreatedAt: data?.createdAt,
-                  auctionPeriod: data?.auctionPeriod,
-                  audtionStatus: data?.auctionStatus,
+                  auctionCreatedAt: data.createdAt,
+                  auctionPeriod: data.auctionPeriod,
+                  auctionStatus: data.auctionStatus,
                   isDetail: true,
                   title: data.title,
                 },
@@ -461,14 +475,13 @@ const AuctionDetail = () => {
             </AuctionNowPrice>
           </AuctionNowPriceWrap>
           <AuctionJoinInfo>
-            입찰 후에는 금액을 수정하거나 취소할 수 없습니다.
+            입찰 후에는 금액을 수정하거나 취소할 수 없습니다.<br />
+						최대 999,999원까지 입력할 수 있습니다.
           </AuctionJoinInfo>
           <AuctionJoinInput
             type="number"
-            value={userData.message}
-            onChange={(event) =>
-              setUserData({ ...userData, message: event.target.value })
-            }
+            value={userData.message.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+            onChange={(event) => setUserData({ ...userData, message: event.target.value })}
             onKeyDown={(event) => onKeyPress(event)}
             placeholder="입찰 가격을 입력해주세요."
           />
@@ -484,7 +497,7 @@ const AuctionDetail = () => {
             <Button
               type={"submit"}
               text={"입찰하기"}
-              _onClick={sendMessage}
+              _onClick={onSubmitAuctionPrice}
               style={{
                 width: "100%",
                 height: "56px",

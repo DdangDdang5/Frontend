@@ -2,7 +2,7 @@
 import styled, { css } from "styled-components";
 
 export const SwipeContainer = styled.div`
-  width: ${(props) => props.width ? props.width : "100%"};
+  width: ${(props) => (props.width ? props.width : "100%")};
   max-width: ${(props) => props.maxWidth};
   height: ${(props) => props.height};
 
@@ -68,15 +68,15 @@ export const BannerContent = styled.div`
 `;
 
 export const BannerTime = styled.span`
-	width: fit-content;
-	padding: 2px 8px;
+  width: fit-content;
+  padding: 2px 8px;
 
-	background-color: aqua;
-	border-radius: 100px;
+  background-color: aqua;
+  border-radius: 100px;
 
   font-size: ${(props) => props.theme.fontSizes.sm};
   font-weight: ${(props) => props.theme.fontWeights.normal};
-	
+
   ${(props) => {
     switch (props.idx) {
       case 0:
@@ -130,11 +130,11 @@ export const BannerCircle = styled.div`
   z-index: -5;
 
   position: absolute;
-	left: 61.28%;
-	right: -16.15%;
-	top: 45.59%;
-	bottom: -50.49%;
-	
+  left: 61.28%;
+  right: -16.15%;
+  top: 45.59%;
+  bottom: -50.49%;
+
   ${(props) => {
     switch (props.idx) {
       case 0:
@@ -196,16 +196,15 @@ export const SwipeIdxItem = styled.span`
     props.idxNow ? props.theme.colors.White : "rgba(255, 255, 255, 0.5)"};
 `;
 
-
 export const EventBannerList = styled.div`
-	width: 100%;
+  width: 100%;
   min-width: 100%;
-	height: 100%;
+  height: 100%;
 
-	display: flex;
+  display: flex;
 `;
 
-export const EventBanner = styled.div`	
+export const EventBanner = styled.div`
   width: 100%;
   min-width: 100%;
   height: auto;
@@ -213,26 +212,29 @@ export const EventBanner = styled.div`
 
   position: relative;
 
-  background-color: ${(props) => props.idx ? props.theme.colors.Blue1 : props.theme.colors.Yellow};
+  background-color: ${(props) =>
+    props.idx ? props.theme.colors.Blue1 : props.theme.colors.Yellow};
   border-radius: ${(props) => (props.isMain ? null : "8px")};
   overflow: hidden;
 
   svg {
     position: absolute;
-    top: ${(props) => (props.isMain ? (props.idx ? "10px" : "20px") : "5px")};
-    right: ${(props) => (props.isMain ? "10px" : "-8px")};
+    top: ${(props) => (props.isMain ? "10px" : "-15px")};
+    right: ${(props) => (props.isMain ? "10px" : "-10px")};
 
     z-index: 10;
 
-    transform: ${(props) =>
-      props.idx && props.isMain ? null : "scale(0.9)"};
+    transform: ${(props) => (props.isMain ? null : "scale(0.8)")};
   }
 `;
 
 export const EventContent = styled.div`
   height: calc(100% - 40px);
   padding: 20px;
-	background: ${(props) => props.idx ? "linear-gradient(180deg, #344485 0%, rgba(52, 68, 133, 0) 100%)" : "linear-gradient(180deg, #FF8339 0%, rgba(255, 131, 57, 0) 100%)"};
+  background: ${(props) =>
+    props.idx
+      ? "linear-gradient(180deg, #344485 0%, rgba(52, 68, 133, 0) 100%)"
+      : "linear-gradient(180deg, #FF8339 0%, rgba(255, 131, 57, 0) 100%)"};
   /* background: linear-gradient(180deg, #344485 0%, rgba(52, 68, 133, 0) 100%); */
   border-radius: ${(props) => (props.isMain ? null : "8px")};
 
@@ -247,7 +249,8 @@ export const EventDate = styled.span`
   width: fit-content;
   padding: 2px 10px;
 
-  background: ${(props) => props.idx ? props.theme.colors.Blue1 : props.theme.colors.Yellow};
+  background: ${(props) =>
+    props.idx ? props.theme.colors.Blue1 : props.theme.colors.Yellow};
   border-radius: 100px;
 
   font-size: ${(props) => (props.isMain ? props.theme.fontSizes.sm : "12px")};
@@ -256,7 +259,7 @@ export const EventDate = styled.span`
 `;
 
 export const EventTitle = styled.span`
-	width: ${(props) => props.idx ? "130px" : "160px"};
+  width: ${(props) => (props.idx ? "130px" : "160px")};
 
   font-weight: ${(props) => props.theme.fontWeights.bold};
   font-size: ${(props) =>
@@ -284,12 +287,11 @@ export const EventCircle = styled.div`
   width: 214px;
   height: 214px;
 
-  background: linear-gradient(
-    140.57deg,
-    #fdb024 17.64%,
-    rgba(253, 176, 36, 0) 63.63%
-  );
   border-radius: 200px;
+	background: ${(props) =>
+    props.isMain && !props.idx
+      ? "linear-gradient(140.57deg, #ff664d 17.64%, rgba(255, 102, 77, 0) 63.63%)"
+      : "linear-gradient(140.57deg, #fdb024 17.64%, rgba(253, 176, 36, 0) 63.63%)"};
 
   position: absolute;
   left: 61.28%;
@@ -297,7 +299,6 @@ export const EventCircle = styled.div`
   top: 45.59%;
   bottom: -50.49%;
 `;
-
 
 export const SwipeBtn = styled.button`
   width: 30px;

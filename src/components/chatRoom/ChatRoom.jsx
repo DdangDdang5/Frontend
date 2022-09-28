@@ -49,7 +49,7 @@ const ChatRoom = ({ room }) => {
       <ChatRoomContent>
         <ChatRoomInfo>
           <ChatRoomNickname>{room.auctionTitle}</ChatRoomNickname>
-          <ChatRoomTime>{calcTime(room.createdAt)}</ChatRoomTime>
+          <ChatRoomTime>{calcTime(room.lastMessageTime)}</ChatRoomTime>
         </ChatRoomInfo>
         <ChatRoomMessageWrap>
           <ChatRoomMessage>

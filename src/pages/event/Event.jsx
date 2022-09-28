@@ -54,7 +54,7 @@ const Event = () => {
             <EventBanner idx={1} isMain={false}>
               <FontEvent />
               <EventContent idx={1}>
-                <EventDate idx={1}>09.27 ~ 10.02</EventDate>
+                <EventDate idx={1}>09.29 ~ 10.02</EventDate>
                 <EventTitle idx={1}>소중한 의견을 들려주세요!</EventTitle>
                 <EventText idx={1}>
                   <span>추첨을 통해 총 5분께</span>
@@ -69,7 +69,7 @@ const Event = () => {
           <EventInfo>
             <div>
               <EventInfoType>이벤트 기간</EventInfoType>
-              <span>2022.09.27 ~ 2022.10.02</span>
+              <span>2022.09.29 ~ 2022.10.02</span>
             </div>
             <div>
               <EventInfoType>당첨 인원</EventInfoType>

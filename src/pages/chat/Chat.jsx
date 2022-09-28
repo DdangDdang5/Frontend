@@ -14,7 +14,7 @@ import ChatOptionModal from "../../components/modal/ChatOptionModal";
 import OptionModal from "../../components/modal/OptionModal";
 import Button from "../../elements/button/Button";
 import { doneAuction } from "../../redux/modules/AuctionSlice";
-import { getChatMessageList } from "../../redux/modules/ChatSlice";
+import { clearChatMessageList, getChatMessageList } from "../../redux/modules/ChatSlice";
 import { Add, BasicProfile, Send } from "../../shared/images";
 import Loading from "../loading/Loading";
 
@@ -50,24 +50,24 @@ const Chat = () => {
 
   const { roomId } = useParams();
   const {
+    chatOther,
     auctionId,
     auctionCreatedAt,
     auctionPeriod,
     auctionStatus,
     isDetail,
     title,
-    chatOther,
   } = useLocation().state;
+
   const nickName = sessionStorage.getItem("memberNickname");
 
-	// console.log(auctionId, auctionCreatedAt, auctionPeriod, auctionStatus);
+	// console.log(auctionId, auctionCreatedAt, auctionPeriod, auctionStatus, chatOther);
 
   const chatMessageList = useSelector(
     (state) => state.chat.chatMessageList,
   ).filter((item) => item.roomId === roomId);
 
   const [loading, setLoading] = useState(true);
-  // console.log(loading);
 
   const [visible, setVisible] = useState(false); // 채팅 메뉴 모달
   const [optionVisible, setOptionVisible] = useState(false);
@@ -114,11 +114,15 @@ const Chat = () => {
   useEffect(() => {
     dispatch(getChatMessageList(roomId));
 
-    if (chatMessageList[0]?.data?.length > 0) {
-			console.log(chatList);
-			chatList.push(...chatMessageList[0].data);
-			setChatList(chatList);
-    }
+		if (chatMessageList[0]?.data?.length > 0) {
+			if (chatList.length > 0) {
+				setChatList([...chatMessageList[0].data]);
+			} else {
+				chatList.push(...chatMessageList[0].data);
+				setChatList([...chatList]);
+			}
+		}
+
   }, [JSON.stringify(chatMessageList)]);
 
   useEffect(() => {
@@ -169,13 +173,6 @@ const Chat = () => {
     setOptionVisible(true);
   };
 
-  // 경매 거래 완료
-  const onClickFinishAuction = () => {
-    dispatch(doneAuction(auctionId));
-    navigate(`/auctionReview/${auctionId}`);
-		onDisconnected();
-  };
-
   const calcTime = (createdAt) => {
     const date = new Date(createdAt);
     return (
@@ -212,7 +209,7 @@ const Chat = () => {
     setLoading(true);
     var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
     stompClient = Stomp.over(sockJS);
-    stompClient.debug = null; // stompJS console.log 막기
+    // stompClient.debug = null; // stompJS console.log 막기
 
     stompClient.connect({}, onConnected, onError);
   };
@@ -255,7 +252,7 @@ const Chat = () => {
   const onMessageReceived = (payload) => {
     let payloadData = JSON.parse(payload.body);
 
-    if (payloadData.type === "TALK") {
+    if (payloadData.type === "ENTER" || payloadData.type === "TALK") {
       chatList.push(payloadData);
       setChatList([...chatList]);
     }
@@ -285,11 +282,18 @@ const Chat = () => {
     }
   };
 
-  const onDisconnected = () => {
+  const onDisconnected = (isDone) => {
     if (stompClient !== null) {
       stompClient.disconnect();
       stompClient = null;
-      navigate(-1);
+			
+  		// 경매 거래 완료 -> isDone === true
+			if (isDone) {
+				dispatch(doneAuction(auctionId));
+				navigate(`/auctionReview/${auctionId}`);
+			} else {
+				navigate(-1);
+			}
     } else {
 			navigate(-1);
 		}
@@ -307,8 +311,8 @@ const Chat = () => {
               pageName={title}
               menu={true}
               onClickBtn={onClickMenu}
-              onClickTitle={() => navigate(`/auctionDetail/${auctionId}`)}
-							onClickBackBtn={onDisconnected}
+              // onClickTitle={() => navigate(`/auctionDetail/${auctionId}`)}
+							onClickBackBtn={() => onDisconnected(false)}
             />
 
             {/* 경매 남은 시간 */}
@@ -421,7 +425,7 @@ const Chat = () => {
               <ModalBtnWrap>
                 <Button
                   text="완료할래요"
-                  _onClick={onClickFinishAuction}
+                  _onClick={() => onDisconnected(true)}
                   style={{
                     width: "100%",
                     ft_weight: "500",

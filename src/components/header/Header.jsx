@@ -58,8 +58,6 @@ const Header = ({
 }) => {
   const navigate = useNavigate();
 
-	console.log(onClickBackBtn);
-
   return (
     <HeaderContainer>
       <HeaderContent color={color}>

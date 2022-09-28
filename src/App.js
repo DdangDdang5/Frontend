@@ -103,37 +103,41 @@ function App() {
   // console.log(notifToastList);
   // const EventSource = NativeEventSource || EventSourcePolyfill;
 
-  // useEffect(() => {
-  //   let url =
-  //     process.env.REACT_APP_URL +
-  //     "/subscribe/" +
-  //     sessionStorage.getItem("memberId");
-  //   const sse = new EventSource(url);
-  //   console.log(sse);
+  useEffect(() => {
+    let url =
+      process.env.REACT_APP_URL +
+      "/subscribe/" +
+      sessionStorage.getItem("memberId");
+    const sse = new EventSource(url);
+    console.log(sse);
 
-  //   sse.onopen = (event) => {
-  //     console.log("connection opened", event);
-  //   };
+    sse.onopen = (event) => {
+      console.log("connection opened", event);
+    };
 
-  //   sse.onmessage = (event) => {
-  //     const data = JSON.parse(event.data);
-  //     console.log(data);
-  //   };
+    sse.addEventListener("message", (event) => {
+      console.log(event);
+      // const data = JSON.parse(event.data);
+      // console.log(data);
 
-  //   sse.addEventListener("sse", (event) => {
-  //     const data = JSON.parse(event.data);
-  //     console.log(event);
-  //     console.log(data);
-  //     dispatch(add({ newNotifs: data }));
-  //   });
+			// dispatch(add({ newNotifs: data }));
 
-  //   sse.onerror = (error) => {
-  //     sse.close();
-  //   };
-  //   return () => {
-  //     sse.close();
-  //   };
-  // }, []);
+			if (event.type === 'message' && event.data.startsWith('{')) {
+				setNotification((prev) => [JSON.parse(event.data)]);
+
+				// queryClient.invalidateQueries('alertList');
+			}
+			
+    });
+
+    sse.onerror = (error) => {
+      sse.close();
+    };
+
+    return () => {
+      sse.close();
+    };
+  }, []);
 
   return (
     <AppContainer>

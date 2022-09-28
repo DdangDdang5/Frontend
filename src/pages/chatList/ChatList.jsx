@@ -32,8 +32,6 @@ const ChatList = () => {
 
   const nickName = sessionStorage.getItem("memberNickname");
 
-	// console.log(chatRoomList);
-
 	const getChatRoomtList = async () => {
 		await setLoading(true);
 		await dispatch(getChatRoomListByMember(nickName));
