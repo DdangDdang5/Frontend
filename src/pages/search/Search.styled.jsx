@@ -59,21 +59,21 @@ export const SearchInputIcon = styled.div`
 `;
 
 export const SearchFilterGroup = styled.div`
+  position: relative;
   width: 100%;
-  /* position: relative; */
   display: flex;
-  margin-top: 36px;
-  /* align-items: center; */
   justify-content: center;
-  border: 1px solid blue;
+  margin-top: 36px;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  flex: 1 1 50%;
 `;
 
 export const SearchFilterWrap = styled.div`
-  width: 100%;
+  width: 45%;
   box-sizing: border-box;
-  border: 1px solid red;
-  display: flex;
 `;
 
 export const SearchItemList = styled.div`
