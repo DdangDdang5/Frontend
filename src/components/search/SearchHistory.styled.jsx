@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 export const HistoryBox = styled.div`
   padding: 18px;
-  padding-top: 32px;
   padding-left: 20px;
   box-sizing: border-box;
   height: 70vh;

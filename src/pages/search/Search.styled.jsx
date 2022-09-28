@@ -7,6 +7,9 @@ export const SearchBox = styled.div`
   &::-webkit-scrollbar {
     display: none;
   }
+  position: absolute;
+  top: 0;
+  bottom: 90px;
 `;
 
 export const SearchInputGroup = styled.div`
@@ -59,18 +62,21 @@ export const SearchInputIcon = styled.div`
 `;
 
 export const SearchFilterGroup = styled.div`
+  position: relative;
   width: 100%;
-  height: 20%;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 24px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: row;
-  margin-top: 36px;
-  align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
+  padding: 0px 5%;
+  /* flex: 1 1 50%; */
 `;
 
 export const SearchFilterWrap = styled.div`
-  width: 100%;
-  height: 100%;
+  width: 48%;
   box-sizing: border-box;
 `;
 
@@ -80,7 +86,6 @@ export const SearchItemList = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-  margin-left: 5%;
   gap: 16px 20px;
 `;
 
@@ -101,7 +106,7 @@ export const SearchTagWrap = styled.div`
   display: flex;
   gap: 4px;
   span {
-    padding: 2px 6px;
+    padding: 2px 4px;
     font-weight: ${(props) => props.theme.fontWeights.bold};
     color: ${(props) => props.theme.colors.White};
     background-color: ${(props) => props.theme.colors.Blue1};
