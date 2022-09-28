@@ -48,6 +48,7 @@ export const RecentKeyword = styled.div`
   color: ${(props) => props.theme.colors.Black};
   background-color: ${(props) => props.theme.colors.Gray1};
   line-height: 24px;
+  cursor: pointer;
 `;
 
 export const PopularKeywordWrap = styled.div`
@@ -89,4 +90,5 @@ export const PopularKeyword = styled.div`
   gap: 12px;
   box-sizing: border-box;
   margin-left: 30px;
+  cursor: pointer;
 `;

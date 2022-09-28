@@ -60,13 +60,10 @@ const Login = ({ location }) => {
     password: false,
   });
 
-  const emailRef = useRef();
-  const emailIconRef = useRef();
-  const passwordRef = useRef();
-  const passwordIconRef = useRef();
+  const iconRef = useRef();
 
-  const emailRegExp =
-    /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+  //이메일 정규 표현식
+  const emailRegExp = /^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/i;
 
   const deleteEmailText = useCallback(() => {
     setEmail("");
@@ -90,7 +87,7 @@ const Login = ({ location }) => {
         dispatch(loginMemberThunk({ email, password })).then((res) => {
           if (res.payload.statusCode === 200) {
             window.alert(`${res.payload.data.nickName}님 안녕하세요!`);
-						
+
             navigate(-1);
           } else {
             alert(res.payload.msg);
@@ -125,7 +122,7 @@ const Login = ({ location }) => {
                 placeholder="이메일을 입력하세요."
                 required
               />
-              <LoginBoxInputIcon ref={emailIconRef}>
+              <LoginBoxInputIcon ref={iconRef}>
                 <Delete onClick={deleteEmailText} className="icon" />
               </LoginBoxInputIcon>
             </LoginBoxInputWrap>
@@ -138,7 +135,7 @@ const Login = ({ location }) => {
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="비밀번호를 입력하세요."
               />
-              <LoginBoxInputIcon ref={emailIconRef}>
+              <LoginBoxInputIcon ref={iconRef}>
                 <Delete onClick={deletePasswordText} className="icon" />
               </LoginBoxInputIcon>
             </LoginBoxInputWrap>

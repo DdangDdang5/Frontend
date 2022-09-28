@@ -125,7 +125,8 @@ const Search = () => {
                 <SearchResult />
               </div>
             ) : (
-              <SearchHistory />
+              <SearchHistory
+              setKeyword={setKeyword} />
             )}
           </SearchFilterGroup>
         </>
