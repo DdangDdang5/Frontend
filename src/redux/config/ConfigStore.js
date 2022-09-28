@@ -7,6 +7,7 @@ import modal from "../modules/ModalSlice";
 import search from "../modules/SearchSlice";
 import chat from "../modules/ChatSlice";
 import myPage from "../modules/MyPageSlice";
+import notification from "../modules/NotificationSlice";
 
 // Package import
 import { configureStore } from "@reduxjs/toolkit";
@@ -26,5 +27,6 @@ export default configureStore({
     search,
     chat,
     myPage,
+		notification,
   },
 });

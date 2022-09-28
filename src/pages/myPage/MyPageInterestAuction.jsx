@@ -1,72 +1,120 @@
+// React import
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import Header from "../../components/header/Header";
-import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
-import Footer from "../../components/footer/Footer";
-import { _MyPageInterestAuction } from "../../redux/modules/MyPageSlice";
+
+// Redux import
+import {
+  resetList,
+  resetPaging,
+  _MyPageInterestAuction,
+} from "../../redux/modules/MyPageSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+
+// Package import
+import styled from "styled-components";
+import { isIOS } from "react-device-detect";
+
+// Component import
+import Header from "../../components/header/Header";
+import AuctionStateNav from "../../components/auctionBody/AuctionStateNav";
+import Footer from "../../components/footer/Footer";
+import AuctionRow from "../../components/auctionBody/AuctionRow";
 
 const MyPageInterestAuction = () => {
   const dispatch = useDispatch();
-  const data = useSelector((state) => state.myPage.myPageInterest);
+  const navigate = useNavigate();
+  const {
+    myPageList: data,
+    loading,
+    paging,
+    followingItem,
+  } = useSelector((state) => state.myPage);
+
+  console.log("관심 옥션 데이터", data);
+
   const [isAuction, setIsAuction] = useState(true);
+
+  const [shouldShownData, setShouldShownData] = useState([]);
+
+  const auctionIng = data?.filter((data) => data.auctionStatus === true).length;
+  const auctionDone = data?.filter(
+    (data) => data.auctionStatus === false
+  ).length;
+
+  const handleScroll = (e) => {
+    let scrollTopHandler = e.target.scrollTop;
+
+    let clientHeightHandler = e.target.clientHeight;
+    let scrollHeightHandler = e.target.scrollHeight;
+    console.log(scrollHeightHandler);
+    if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
+      if (!loading) {
+        if (followingItem) {
+          dispatch(_MyPageInterestAuction());
+        }
+      }
+    }
+  };
 
   useEffect(() => {
     dispatch(_MyPageInterestAuction());
+
+    if (data && data?.length > 0) {
+      data?.map((item, index) => {
+        if (isAuction) {
+          if (item?.auctionStatus === true) {
+            setShouldShownData((prev) => {
+              return [...prev, item];
+            });
+          }
+        } else {
+          if (item?.auctionStatus === false) {
+            setShouldShownData((prev) => {
+              return [...prev, item];
+            });
+          }
+        }
+      });
+    }
+    return () => {
+      setShouldShownData([]);
+      // dispatch(resetPaging());
+    };
+  }, [isAuction, JSON.stringify(data)]);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetPaging());
+      dispatch(resetList());
+    };
   }, []);
 
   return (
     <MyAuctionLayout>
-      <Header back={true} pageName="관심 경매" alarm={true} />
-      <AuctionStateNav isAuction={isAuction} setIsAuction={setIsAuction} />
-      <MyAuctionBody>
+      {/* <Header back={true} pageName="관심 경매" alarm={true} /> */}
+      <Header back={true} pageName="관심 경매" />
+      <AuctionStateNav
+        isAuction={isAuction}
+        setIsAuction={setIsAuction}
+        auctionIng={auctionIng}
+        auctionDone={auctionDone}
+      />
+      <MyAuctionBody onScroll={handleScroll} isIOS={isIOS}>
         <AuctionLayout>
-          {data.data === null ? (
-            <None>상품없음</None>
-          ) : (
-            <>
-              {data.map((item, index) => {
-                return (
-                  <React.Fragment key={`${index}_${item.id}`}>
-                    <Auction2Container>
-                      <ImgBox>{item.profileImgUrl}</ImgBox>
-                      <ContentBox>
-                        <div className="contentNavBox">
-                          <div className="delivery">택배</div>
-                          <div className="region">성산구</div>
-                        </div>
-                        <div className="title">
-                          제목은 한 줄만 노출됩니다. 길어진다면 짤라야 겠죠
-                        </div>
-                        <div className="priceBox">
-                          <div>최근입찰가</div>
-                          <div className="price">5000원</div>
-                        </div>
-                      </ContentBox>
-                    </Auction2Container>
-                    {isAuction ? (
-                      <Action2Btn>거래 진행중</Action2Btn>
-                    ) : (
-                      <Action2Btn>거래 완료</Action2Btn>
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </>
-          )}
+          {shouldShownData?.map((item, index) => {
+            return (
+              <React.Fragment key={`${index}_${item.id}`}>
+                <AuctionRow item={item} index={index} isAuction={isAuction} />
+                {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
+              </React.Fragment>
+            );
+          })}
         </AuctionLayout>
       </MyAuctionBody>
       <Footer />
     </MyAuctionLayout>
   );
 };
-
-const None = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-`;
 
 const MyAuctionLayout = styled.div`
   display: flex;
@@ -75,7 +123,8 @@ const MyAuctionLayout = styled.div`
 `;
 const MyAuctionBody = styled.div`
   display: flex;
-  height: calc(100vh - 180px);
+  height: ${(props) =>
+    props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   flex-direction: column;
   overflow: scroll;
 `;
@@ -85,86 +134,28 @@ const AuctionLayout = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   padding: 0px 20px;
-`;
-const Auction2Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 18px;
-  margin-bottom: 15px;
+  height: 100%;
 `;
 
-const ImgBox = styled.div`
+const None = styled.div`
   display: flex;
-
-  img {
-    width: 75px;
-    height: 75px;
-    border-radius: 8px;
-  }
-`;
-const ContentBox = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  gap: 4px;
-
-  .contentNavBox {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-
-    .delivery {
-      background-color: #4d71ff;
-      color: white;
-      border-radius: 100px;
-      padding: 2px 6px;
-      font-size: 14px;
-      font-weight: 500;
-    }
-    .region {
-      border: 1px solid #4d71ff;
-      color: #4d71ff;
-      border-radius: 100px;
-      padding: 2px 6px;
-      font-size: 14px;
-      font-weight: 500;
-    }
-  }
-  .title {
-    width: 100%;
-    height: 25px;
-    font-size: 18px;
-    font-weight: 400;
-    align-items: center;
-
-    flex-wrap: nowrap;
-    overflow: hidden;
-    -webkit-line-clamp: 1;
-    text-overflow: ellipsis;
-  }
-  .priceBox {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    div {
-      font-size: 14px;
-      font-weight: 400;
-      color: #a5a9b6;
-    }
-    .price {
-      font-size: 18px;
-      font-weight: 500;
-      color: black;
-    }
-  }
+  justify-content: center;
+  align-items: center;
 `;
-const Action2Btn = styled.button`
+
+const ActionBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   box-sizing: border-box;
-  height: 30px;
-  margin-bottom: 20px;
+  min-height: 40px;
+  margin-bottom: 32px;
   background-color: white;
-  border: 1px solid #a5a9b6;
+  border: 1px solid #4d71ff;
   border-radius: 8px;
+  color: #4d71ff;
 `;
+
 export default MyPageInterestAuction;

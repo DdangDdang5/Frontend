@@ -1,14 +1,15 @@
 const fontSizes = {
-	xxl: "24px",
+  xxl: "24px",
   xl: "22px",
   lg: "20px",
   md: "18px",
   ms: "16px",
   sm: "14px",
+  ssm: "12px",
 };
 
 const fontWeights = {
-  normal: 400,
+  fontWeights: 400,
   medium: 500,
   bold: 700,
 };

@@ -8,6 +8,9 @@ export const UserProfileContent = styled.div`
 
   position: absolute;
   top: 70px;
+	bottom: 0;
+
+	overflow: scroll;
 `;
 
 export const UserProfileWrap = styled.div`
@@ -31,6 +34,39 @@ export const UserProfileInfo = styled.div`
     width: 73px;
     height: 73px;
     border-radius: 50%;
+  }
+
+	svg {
+		width: 73px;
+		height: 73px;
+	}
+`;
+
+export const MyGradeImgWrap = styled.div`
+  position: relative;
+	right: 20px;
+
+  svg {
+    width: 38px;
+    height: 38px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  div {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: ${(props) => props.theme.colors.Gray2};
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: -10;
   }
 `;
 

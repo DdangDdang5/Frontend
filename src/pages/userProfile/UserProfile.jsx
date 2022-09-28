@@ -1,9 +1,17 @@
 // React import
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect } from "react";
 
-// Component import
+// Redux import
+import { getMember } from "../../redux/modules/MemberSlice";
+
+// Package import
+import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+// Component & Shared import
 import Header from "../../components/header/Header";
+import { findGrade } from "../../shared/Grade";
+import { BasicProfile } from "../../shared/images";
 
 // Style import
 import {
@@ -12,7 +20,7 @@ import {
   MidTabContent,
   MidTabLabel,
   MidTabRadioBtn,
-  UserGrade,
+  MyGradeImgWrap,
   UserProfileContainer,
   UserProfileContent,
   UserProfileInfo,
@@ -24,11 +32,33 @@ import {
   ReviewItemPrice,
   ReviewItemPriceWrap,
   ReviewItemTitle,
+  TagRegion,
   TagWrap,
 } from "../auctionReview/AuctionReview.styled";
 
 const UserProfile = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { memberId } = useParams();
+  const member = useSelector((state) => state.member.member);
+  console.log(member);
+
+  const saleAuctionList = [];
+  const doneAuctionList = [];
+
+  member?.auctionResponseDtoList?.map((item) =>
+    item.auctionStatus
+      ? saleAuctionList.push(item)
+      : doneAuctionList.push(item),
+  );
+
+  console.log(saleAuctionList);
+  console.log(doneAuctionList);
+
+  useEffect(() => {
+    dispatch(getMember(memberId));
+  }, []);
 
   return (
     <UserProfileContainer>
@@ -38,10 +68,17 @@ const UserProfile = () => {
         {/* 유저 프로필 정보 */}
         <UserProfileWrap>
           <UserProfileInfo>
-            <img src="maskable.png" alt="user-profile" />
-            <span>닉네임</span>
+            {member?.profileImgUrl ? (
+              <img src={member?.profileImgUrl} alt="user-profile" />
+            ) : (
+              <BasicProfile />
+            )}
+            <span>{member?.nickname}</span>
           </UserProfileInfo>
-          <UserGrade onClick={() => navigate("/myGrade")}></UserGrade>
+          <MyGradeImgWrap>
+            <div></div>
+            {findGrade(member?.trustGrade)}
+          </MyGradeImgWrap>
         </UserProfileWrap>
 
         <MidTabContainer>
@@ -52,32 +89,36 @@ const UserProfile = () => {
             name="auction-status"
             checked
           />
-          <MidTabLabel htmlFor="auction-sale">경매중</MidTabLabel>
+          <MidTabLabel htmlFor="auction-sale">경매중 {saleAuctionList.length}</MidTabLabel>
           <MidTabRadioBtn
             type="radio"
             id="auction-done"
             name="auction-status"
           />
-          <MidTabLabel htmlFor="auction-done">경매완료</MidTabLabel>
+          <MidTabLabel htmlFor="auction-done">경매완료 {doneAuctionList.length}</MidTabLabel>
 
           {/* 경매중 목록 */}
           <MidTabContent id="auction-sale-content">
             <ItemList>
-              {Array.from({ length: 6 }, (_, idx) => (
-                <ReviewItem key={idx}>
-                  <img src="maskable.png" alt="auction-new-img" />
+              {saleAuctionList?.map((item) => (
+                <ReviewItem
+                  key={item.auctionId}
+                  onClick={() => navigate(`/auctionDetail/${item.auctionId}`)}
+                >
+                  <img
+                    src={item.multiImages[0]?.imgUrl}
+                    alt="user-sale-auction-img"
+                  />
                   <ReviewItemContent>
                     <TagWrap backgroundColor="gray">
-                      <span>택배</span>
-                      <span>직거래</span>
-                      <span>동작구</span>
+                      {item.delivery ? <span>택배</span> : null}
+                      {item.direct ? <span>직거래</span> : null}
+                      <TagRegion>{item.region}</TagRegion>
                     </TagWrap>
-                    <ReviewItemTitle>
-                      제목은 한 줄만 노출됩니다. 길어진 텍스트는 줄어듭니다.
-                    </ReviewItemTitle>
+                    <ReviewItemTitle>{item.title}</ReviewItemTitle>
                     <ReviewItemPriceWrap>
                       <span>최근입찰가</span>
-                      <ReviewItemPrice>5000원</ReviewItemPrice>
+                      <ReviewItemPrice>{item.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</ReviewItemPrice>
                     </ReviewItemPriceWrap>
                   </ReviewItemContent>
                 </ReviewItem>
@@ -88,21 +129,25 @@ const UserProfile = () => {
           {/* 경매완료 목록 */}
           <MidTabContent id="auction-done-content">
             <ItemList>
-              {Array.from({ length: 3 }, (_, idx) => (
-                <ReviewItem key={idx}>
-                  <img src="maskable.png" alt="auction-new-img" />
+              {doneAuctionList?.map((item) => (
+                <ReviewItem
+                  key={item.auctionId}
+                  onClick={() => navigate(`/auctionDetail/${item.auctionId}`)}
+                >
+                  <img
+                    src={item.multiImages[0]?.imgUrl}
+                    alt="user-sale-auction-img"
+                  />
                   <ReviewItemContent>
                     <TagWrap backgroundColor="gray">
-                      <span>택배</span>
-                      <span>직거래</span>
-                      <span>동작구</span>
+                      {item.delivery ? <span>택배</span> : null}
+                      {item.direct ? <span>직거래</span> : null}
+                      <TagRegion>{item.region}</TagRegion>
                     </TagWrap>
-                    <ReviewItemTitle>
-                      제목은 한 줄만 노출됩니다. 길어진 텍스트는 줄어듭니다.
-                    </ReviewItemTitle>
+                    <ReviewItemTitle>{item.title}</ReviewItemTitle>
                     <ReviewItemPriceWrap>
                       <span>최근입찰가</span>
-                      <ReviewItemPrice>5000원</ReviewItemPrice>
+                      <ReviewItemPrice>{item.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}원</ReviewItemPrice>
                     </ReviewItemPriceWrap>
                   </ReviewItemContent>
                 </ReviewItem>

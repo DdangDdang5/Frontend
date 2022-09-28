@@ -60,6 +60,11 @@ export const ChatMessage = styled.div`
   align-items: stretch;
   justify-content: ${(props) => (props.isMe ? "flex-end" : "baseline")};
   gap: 8px;
+
+	svg {
+		width: 48px;
+		height: 48px;
+	}
 `;
 
 export const MessageProfile = styled.img`
@@ -189,4 +194,26 @@ export const MenuItemList = styled.div`
 
 export const MenuItem = styled.div`
 	padding: 12px 20px;
+`;
+
+export const OptionModalContainer = styled.div`
+	padding: 32px;
+`;
+
+export const ModalTextWrap = styled.div`
+	color: ${(props) => props.theme.colors.Black};
+	font-size: ${(props) => props.theme.fontSizes.ms};
+	font-weight: ${(props) => props.theme.fontWeights.normal};
+
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+`;
+
+export const ModalBtnWrap = styled.div`
+	margin-top: 28px;
+
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
 `;

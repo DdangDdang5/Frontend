@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 // Style import
 import {
-  ChatRoomAlarm,
   ChatRoomContainer,
   ChatRoomContent,
   ChatRoomInfo,
@@ -15,6 +14,7 @@ import {
   ChatRoomMessageWrap,
   ChatRoomNickname,
   ChatRoomProfile,
+  ChatRoomTime,
 } from "./ChatRoom.styled";
 
 const ChatRoom = ({ room }) => {
@@ -34,21 +34,28 @@ const ChatRoom = ({ room }) => {
     <ChatRoomContainer
       onClick={() =>
         navigate(`/chat/${room.roomId}`, {
-          state: { isDetail: false, title: room.roomName },
+          state: {
+            auctionId: room.auctionId,
+            isDetail: false,
+            title: room.auctionTitle,
+          },
         })
       }
     >
-      <ChatRoomProfile src={room.profileImg ? room.profileImg : "maskable.png"} alt="profile" />
+      <ChatRoomProfile
+        src={room.multiImages ? room.multiImages[0].imgUrl : "maskable.png"}
+        alt="profile"
+      />
       <ChatRoomContent>
         <ChatRoomInfo>
-          <ChatRoomNickname>{room.roomName}</ChatRoomNickname>
-          <span>{calcTime(room.createdAt)}</span>
+          <ChatRoomNickname>{room.auctionTitle}</ChatRoomNickname>
+          <ChatRoomTime>{calcTime(room.createdAt)}</ChatRoomTime>
         </ChatRoomInfo>
         <ChatRoomMessageWrap>
           <ChatRoomMessage>
             {room.message
               ? room.message
-              : "채팅방 메세지 내용입니다. 두 줄까지 확인 가능합니다."}
+              : ""}
           </ChatRoomMessage>
           {/* <ChatRoomAlarm>1</ChatRoomAlarm> */}
         </ChatRoomMessageWrap>

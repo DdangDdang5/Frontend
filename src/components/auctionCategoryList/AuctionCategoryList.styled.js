@@ -46,7 +46,7 @@ export const CategoryList = styled.div`
   margin: auto 20px;
 
   display: flex;
-  gap: 12px;
+	gap: ${(props) => props.division === "category" ? "0px" : "12px"};
   overflow-x: scroll;
 
 	&::-webkit-scrollbar {

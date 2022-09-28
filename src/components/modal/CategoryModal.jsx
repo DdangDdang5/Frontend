@@ -2,7 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
 // Redux import
-import { hideModal, _regionList } from "../../redux/modules/ModalSlice";
+import { hideModal } from "../../redux/modules/ModalSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
@@ -13,8 +13,9 @@ import {
   auctionCategoryList,
   auctionCategoryRegionList,
   auctionItemList,
-  auctionItemListNotPage,
   auctionRegionList,
+	clearAuctionList,
+	initialPaging,
 } from "../../redux/modules/AuctionListSlice";
 
 const CategoryModal = () => {
@@ -52,9 +53,11 @@ const CategoryModal = () => {
   const onCheckCategoryRegion = (categoryName, regionName) => {
     const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
     const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
+		dispatch(initialPaging());
 
     if (categoryNameCheck === "전체품목" && regionNameCheck === "서울전체") {
-      dispatch(auctionItemListNotPage());
+			dispatch(clearAuctionList());
+			dispatch(auctionItemList());
     } else if (
       categoryNameCheck !== "전체품목" &&
       regionNameCheck !== "서울전체"
@@ -161,17 +164,20 @@ const CategoryModalBodyContainer = styled.div`
   }
 
   align-content: flex-start;
-  justify-content: flex-start;
+  justify-content: space-between;
   height: 460px;
   padding: 0px 20px;
-  gap: 26px 20px;
+  gap: 26px 0px;
 `;
 const CategoryModalBodyItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 48px;
+  /* width: 165px; */
   width: 165px;
+  min-width: 48%;
+  max-width: 48%;
 `;
 
 const CategoryModalBodyItemIn = styled.button`

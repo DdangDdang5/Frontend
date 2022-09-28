@@ -13,12 +13,11 @@ export const AuctionReviewContent = styled.div`
 
   position: absolute;
   top: 70px;
-  bottom: 70px;
+  bottom: ${(props) => props.isIOS ? "80px" : "70px"};
 `;
 
 export const ReviewItemWrap = styled.div`
   padding: 16px 20px;
-  background-color: ${(props) => props.theme.colors.Gray1};
 
   font-size: ${(props) => props.theme.fontSizes.sm};
 `;
@@ -31,6 +30,7 @@ export const ReviewItemWrapTitle = styled.span`
 `;
 
 export const ReviewItem = styled.div`
+	width: 100%;
   margin: 8px auto;
 
   display: flex;
@@ -47,21 +47,6 @@ export const ReviewItemContent = styled.div`
   margin-left: 18px;
 `;
 
-export const TagWrap = styled.div`
-  display: flex;
-  gap: 4px;
-
-  span {
-    padding: 2px 6px;
-
-    background-color: ${(props) => props.backgroundColor};
-    border-radius: 100px;
-
-    color: ${(props) => props.color};
-		font-size: ${(props) => props.theme.fontSizes.sm};
-    font-weight: ${(props) => props.theme.fontWeights.medium};
-  }
-`;
 
 export const ReviewItemTitle = styled.span`
   width: 100%;
@@ -74,6 +59,30 @@ export const ReviewItemTitle = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+`;
+
+export const TagWrap = styled.div`
+	margin-bottom: 10px;
+
+	display: flex;
+  gap: 4px;
+
+  span {
+    padding: 2px 6px;
+
+    color: ${(props) => props.theme.colors.White};
+		background-color: ${(props) => props.theme.colors.Blue1};
+    border-radius: 100px;
+
+		font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.medium};
+  }
+`;
+
+export const TagRegion = styled.span`
+  color: ${(props) => props.theme.colors.Blue1} !important;
+  background-color: ${(props) => props.theme.colors.White} !important;
+  border: 1px solid ${(props) => props.theme.colors.Blue1};
 `;
 
 export const ReviewItemPriceWrap = styled.div`
@@ -98,6 +107,8 @@ export const ReviewItemPrice = styled.span`
 export const QuestionList = styled.div`
   width: 100%;
   padding: 32px 0;
+	
+  background-color: ${(props) => props.theme.colors.Gray1};
 
   position: absolute;
   top: 154px;
@@ -112,7 +123,7 @@ export const QuestionList = styled.div`
 export const AnswerContainer = styled.div`
   margin: auto 20px;
 
-  p {
+  span {
     font-size: ${(props) => props.theme.fontSizes.ms};
     font-weight: ${(props) => props.theme.fontWeights.bold};
   }
@@ -135,6 +146,11 @@ export const AnswerItem = styled.label`
   display: flex;
   flex-direction: column;
   align-items: center;
+
+	span {
+		font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+	}
 `;
 
 export const AnswerRadioBtn = styled.input.attrs({ type: "radio" })`

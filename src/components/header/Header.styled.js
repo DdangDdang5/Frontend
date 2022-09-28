@@ -6,6 +6,7 @@ export const HeaderContainer = styled.div`
   height: 70px;
 
   position: absolute;
+  z-index: 100;
   top: 0;
 
   display: flex;
@@ -20,14 +21,15 @@ export const HeaderContent = styled.div`
   justify-content: space-between;
   align-items: center;
 
-	svg {
-		width: 24px;
-		height: 24px;
-		
-		path {
-			fill: ${(props) => props.theme.colors.Black};
-		}
-	}
+  svg {
+    width: 24px;
+    height: 24px;
+
+    path {
+      fill: ${(props) =>
+        props.color ? props.color : props.theme.colors.Black};
+    }
+  }
 `;
 
 export const HeaderTitle = styled.div`
@@ -35,15 +37,15 @@ export const HeaderTitle = styled.div`
   align-items: center;
   gap: 8px;
 
-	.close {
-		width: 16px;
-		height: 16px;
-	}
-  
+  .close {
+    width: 16px;
+    height: 16px;
+  }
+
   .logo {
-		width: 56px;
-		height: 36px;
-	}
+    width: 56px;
+    height: 36px;
+  }
 `;
 
 export const PageTitle = styled.span`
@@ -58,11 +60,12 @@ export const HeaderIconContainer = styled.div`
   display: flex;
   gap: 20px;
   justify-content: end;
-	align-items: center;
-	
-  span {
-    color: ${(props) => props.theme.colors.Gray4};
-    font-size: ${(props) => props.theme.fontSizes.ms};
-    font-weight: ${(props) => props.theme.fontWeights.normal};
-  }
+  align-items: center;
+`;
+
+export const SaveBtn = styled.span`
+  color: ${(props) =>
+    props.state ? props.theme.colors.Blue1 : props.theme.colors.Gray4};
+  font-size: ${(props) => props.theme.fontSizes.ms};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
 `;

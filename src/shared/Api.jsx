@@ -1,6 +1,9 @@
+// Redux import
+import { history } from "../redux/config/ConfigStore";
+
+// Package import
 import axios from "axios";
 import { getCookie, setCookie, deleteCookie } from "./Cookie";
-import { history } from "../redux/config/ConfigStore";
 import { Cookies } from "react-cookie";
 
 const cookies = new Cookies();

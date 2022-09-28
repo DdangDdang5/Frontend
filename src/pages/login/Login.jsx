@@ -13,6 +13,8 @@ import { Cookies } from "react-cookie";
 // Component & Element & Shared import
 import Button from "../../elements/button/Button";
 import Header from "../../components/header/Header";
+import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
+import { Delete, Kakao, Logo } from "../../shared/images";
 
 // Style import
 import {
@@ -30,10 +32,6 @@ import {
   LoginBoxSignUpText,
   LoginBoxSignUpLink,
 } from "./Login.styled";
-
-// Shared import
-import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
-import { Delete, Kakao, Logo } from "../../shared/images";
 
 const Login = ({ location }) => {
   const [email, setEmail] = useState("");
@@ -55,6 +53,12 @@ const Login = ({ location }) => {
   useEffect(() => {
     // if (token) history.push("/");
   }, [isLogin]);
+
+  const [check, setCheck] = useState({
+    email: false,
+    id: false,
+    password: false,
+  });
 
   const emailRef = useRef();
   const emailIconRef = useRef();
@@ -86,6 +90,7 @@ const Login = ({ location }) => {
         dispatch(loginMemberThunk({ email, password })).then((res) => {
           if (res.payload.statusCode === 200) {
             window.alert(`${res.payload.data.nickName}님 안녕하세요!`);
+						
             navigate(-1);
           } else {
             alert(res.payload.msg);
@@ -164,13 +169,6 @@ const Login = ({ location }) => {
             text={"카카오로 로그인하기"}
             onClick={() => {
               window.location.href = KAKAO_OAUTH_URL;
-            }}
-            style={{
-              width: "100%",
-              height: "56px",
-              ft_size: "18px",
-              color: "#6D6D6D",
-              bg_color: "#F7E111",
             }}
           />
         </LoginBoxkakaoButtonGroup>

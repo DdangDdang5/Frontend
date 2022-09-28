@@ -1,11 +1,14 @@
 // React import
 import React, { useEffect, useState } from "react";
 
-// Reducer import
+// Redux import
 import { useSelector, useDispatch } from "react-redux";
-import { auctionDetailData } from "../../redux/modules/AuctionSlice";
-import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
-import { history } from "../../redux/config/ConfigStore";
+import {
+  auctionDetailData,
+  auctionFavorite,
+  joinAuction,
+  winAuctionItem,
+} from "../../redux/modules/AuctionSlice";
 
 // Package import
 import { useNavigate, useParams } from "react-router-dom";
@@ -15,31 +18,35 @@ import styled from "styled-components";
 
 // Component import
 import Header from "../../components/header/Header";
-import Slider from "../../components/auction/Slider";
+import Slider from "../../components/swipeImage/Slider";
 import AuctionJoinModal from "../../components/modal/AuctionJoinModal";
-import SwipeImage from "../../components/swipeImage/SwipeImage";
+import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
+import MenuModal from "../../components/modal/MenuModal";
+import AuctionHeart from "../../components/auctionBody/AuctionHeart";
 
 // Element & Shared import
 import Button from "../../elements/button/Button";
-import { Close, Next } from "../../shared/images";
+import { Claim, Close, Next, BasicProfile } from "../../shared/images";
 
 var stompClient = null;
 
 const AuctionDetail = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   const params = useParams();
-  const data = useSelector((state) => state.auction.auction);
 
-  const imgList = data.multiImages;
+  const data = useSelector((state) => state.auction.auction);
+  const bid = useSelector((state) => state.auction.bid);
+  const favoriteState = useSelector((state) => state.auction.favorite);
 
   const nickName = sessionStorage.getItem("memberNickname");
-  // console.log("111111", imgList);
-
+  const memberId = sessionStorage.getItem("memberId");
+  console.log(data);
+  console.log(memberId);
+  // console.log("찜하기 스테이트", favorite);
   const [joinVisible, setJoinVisible] = useState(false);
-  // const [price, setPrice] = useState(data.nowPrice);
-
+  const [isMenuModal, setIsMenuModal] = useState(false);
+  const [winBid, setWinBid] = useState(false);
   const [chatList, setChatList] = useState([]);
   const [userData, setUserData] = useState({
     type: "",
@@ -49,17 +56,51 @@ const AuctionDetail = () => {
     createdAt: "",
   });
 
+  let chatOther = "";
+
+  const imgList = data?.multiImages;
+
+  // console.log(chatList);
+  // console.log(userData);
+
+  const tagsArray = [
+    data.tags?.tag2,
+    data.tags?.tag1,
+    data.tags?.tag3,
+    data.tags?.tag4,
+    data.tags?.tag5,
+    data.tags?.tag6,
+  ];
+
+  // 가격표 세자리 변경
+  const postPrice = data?.nowPrice
+    ?.toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
   useEffect(() => {
     if (!params?.auctionId) {
       return <></>;
     } else {
       dispatch(auctionDetailData(+params?.auctionId)).then((res) => {
-				if (data.bidRoomId !== undefined && chatList.length === 0) {
-					registerUser();
-				}
-			});
-		}
-  }, [JSON.stringify(data)]);
+        if (data.bidRoomId !== undefined && chatList.length === 0 && data.auctionStatus) {
+          registerUser();
+        }
+      });
+
+      if (data.auctionStatus === false) {
+        dispatch(winAuctionItem(params.auctionId));
+
+        if (bid) {
+          if (bid.seller === nickName || bid.bidder === nickName) {
+            setWinBid(true);
+            chatOther = [bid.seller, bid.bidder]
+              .filter((item) => item !== nickName)
+              .join("");
+          }
+        }
+      }
+    }
+  }, [JSON.stringify(data), JSON.stringify(bid.auctionId)]);
 
   useEffect(() => {
     dispatch(auctionDetailData(+params?.auctionId));
@@ -69,24 +110,28 @@ const AuctionDetail = () => {
     return navigate(-1);
   }
 
-  const handleDelete = async () => {
-    try {
-      const response = await dispatch(deleteAuctionItem(data.id)).unwrap();
-      if (response) {
-        return navigate(-1, { replace: true });
-      }
-    } catch {}
-  };
-
   const onClickAuctionJoin = async () => {
-    // 비로그인 -> 세션에 닉네임 없음
-    if (!nickName) {
+    // 비로그인 -> 세션에 멤버아이디 없음
+    if (!memberId) {
       if (window.confirm("로그인이 필요합니다. 로그인하시겠습니까?")) {
         navigate("/login");
       }
     } else {
-      // 입찰 모달 보여줌
-      setJoinVisible(true);
+      if (data?.nickname === nickName) {
+        window.alert("본인이 생성한 경매는 입찰할 수 없습니다.");
+      } else {
+        // 입찰 모달 보여줌
+        setJoinVisible(true);
+        setUserData({ ...userData, message: "" });
+      }
+    }
+  };
+
+  const onClickAuctionSeller = () => {
+    if (nickName && nickName === data?.nickName) {
+      navigate("/myPage");
+    } else {
+      navigate(`/userProfile/${data?.memberId}`);
     }
   };
 
@@ -100,12 +145,9 @@ const AuctionDetail = () => {
   };
 
   const onConnected = () => {
-    // setUserData({ ...userData, type: "ENTER" });
-    // console.log(userData);
-
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived,
+      onMessageReceived
     );
 
     // 채팅방 들어감
@@ -116,21 +158,10 @@ const AuctionDetail = () => {
     console.log(err);
   };
 
-  const userJoin = () => {
-    let chatMessage = {
-      type: "ENTER",
-      roomId: data.bidRoomId,
-      sender: nickName,
-      message: data.nowPrice,
-    };
-
-    stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
-  };
-
   const onMessageReceived = (payload) => {
     let payloadData = JSON.parse(payload.body);
 
-    if (payloadData.type === "ENTER" || payloadData.type === "TALK") {
+    if (payloadData.type === "TALK") {
       chatList.push(payloadData);
       setChatList([...chatList]);
     }
@@ -148,7 +179,7 @@ const AuctionDetail = () => {
       stompClient.send(
         "/app/chat/bid",
         {},
-        JSON.stringify({ ...chatMessage, type: "ENTER" }),
+        JSON.stringify({ ...chatMessage, type: "ENTER" })
       );
 
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
@@ -164,6 +195,38 @@ const AuctionDetail = () => {
     }
   };
 
+  const onDisconnected = () => {
+    if (stompClient !== null) {
+      stompClient.disconnect();
+      stompClient = null;
+      navigate(-1);
+    } else {
+			navigate(-1);
+		}
+  };
+
+  // 타이머 기능
+  const timer = (countDown) => {
+    const oneDay = 1 * 24 * 60 * 60 * 1000;
+    const fiveDay = oneDay * 5;
+    const sevenDay = oneDay * 7;
+    const startTime = Date.parse(data.createdAt);
+    const dateTimeAfterOneDays = startTime + oneDay;
+    const dateTimeAfterFiveDays = startTime + fiveDay;
+    const dateTimeAfterSevenDays = startTime + sevenDay;
+
+    switch (countDown) {
+      case 1:
+        return dateTimeAfterOneDays;
+      case 5:
+        return dateTimeAfterFiveDays;
+      case 7:
+        return dateTimeAfterSevenDays;
+      default:
+        return <div>경매가 종료되었습니다.</div>;
+    }
+  };
+
   return (
     <>
       <AuctionDetailLayout>
@@ -171,7 +234,9 @@ const AuctionDetail = () => {
           back={true}
           share={true}
           menu={true}
-          handleDelete={handleDelete}
+          onClickBtn={() => setIsMenuModal(!isMenuModal)}
+					onClickBackBtn={onDisconnected}
+          color="#ffffff"
         />
 
         <DetailBodyWrap>
@@ -181,78 +246,197 @@ const AuctionDetail = () => {
 
           <DetailBodyContainer>
             <DetailBodyProfileBox>
-              <DetailBodyProfileImg>
-                <img src={data.member.profileImgUrl} alt="" />
+              <DetailBodyProfileImg onClick={onClickAuctionSeller}>
+                {data?.profileImgUrl === null ? (
+                  <BasicProfile className="noOneImg" />
+                ) : (
+                  <img src={data?.profileImgUrl} alt="" />
+                )}
               </DetailBodyProfileImg>
               <div className="DetailBodyProfile">
                 <DetailBodyProfileContent>
-                  <div className="nickName">{data.member.nickName}</div>
+                  <div className="nickName">{data?.nickname}</div>
                   <div className="trustCount">신뢰도</div>
                 </DetailBodyProfileContent>
-                <div>신고</div>
+                <div>
+                  <Claim />
+                </div>
               </div>
             </DetailBodyProfileBox>
 
-            <DetailBodyTitle>{data.title}</DetailBodyTitle>
+            <DetailBodyBox>
+              <DetailBodyTitle>{data.title}</DetailBodyTitle>
 
-            <DetailBodySelectTag>
-              {data.direct ? <div>택배</div> : ""}
-              {data.delivery ? <div>직거래</div> : ""}
-              {data.region ? <div>{data.region}</div> : ""}
-            </DetailBodySelectTag>
+              <DetailBodySelectTag>
+                {data?.direct ? <div>택배</div> : ""}
+                {data?.delivery ? <div>직거래</div> : ""}
+                {data?.region ? (
+                  <div className="region">{data.region}</div>
+                ) : (
+                  ""
+                )}
+              </DetailBodySelectTag>
 
-            <DetailBodyContent>{data.content}</DetailBodyContent>
-            <DetailBodyViewTag>
-              <div>관심 10</div>
-              <div>조회 {data.viewerCnt}</div>
-            </DetailBodyViewTag>
-            <DetailBodyItemTag></DetailBodyItemTag>
+              <DetailBodyContent>{data.content}</DetailBodyContent>
+              <DetailBodyViewTag>
+                <div>관심 {data.favoriteCnt}</div>
+                <div>조회 {data.viewerCnt}</div>
+              </DetailBodyViewTag>
+              <DetailBodyItemTag>
+                {tagsArray?.map((item, index) =>
+                  item !== null ? <div key={index}>{`#${item}`}</div> : "",
+                )}
+              </DetailBodyItemTag>
+            </DetailBodyBox>
           </DetailBodyContainer>
 
           <CommentCountContainer
             onClick={() =>
-              navigate(`/chat/${data.chatRoomId}`, {
-                state: { isDetail: true, title: data.title },
+              navigate(`/chat/${data.roomId}`, {
+                state: {
+                  auctionId: params?.auctionId,
+                  auctionCreatedAt: data?.createdAt,
+                  auctionPeriod: data?.auctionPeriod,
+                  audtionStatus: data?.auctionStatus,
+                  isDetail: true,
+                  title: data.title,
+                },
               })
-            }
-          >
+            }>
             <CommentCountWrap>
               <CommentCountTitle>실시간 채팅방</CommentCountTitle>
               <p>{data.participantCnt}명 참여중</p>
             </CommentCountWrap>
             <Next />
           </CommentCountContainer>
-
-          {/* <DetailCommentContainer>
-          <CommentFormBox>
-            <div className="inputBox">
-              <textarea placeholder="댓글을 입력해주세요." rows="" cols="" />
-              <button>댓글 작성</button>
-            </div>
-          </CommentFormBox>
-        </DetailCommentContainer> */}
         </DetailBodyWrap>
 
         <DetailFooterWrap>
+          {/* 타이머 기능 */}
           <DetailFooterTimeContainer>
-            <p>남은 시간</p>
-            <h3>{data.createdAt}</h3>
+            {data?.auctionStatus ? (
+              <>
+                <span>남은 시간</span>
+                <CountdownTimer targetDate={timer(data.auctionPeriod)} />
+              </>
+            ) : (
+              <div className="auctionState">경매가 마감되었습니다.</div>
+            )}
           </DetailFooterTimeContainer>
           <DetailFooterContainer>
             <FooterLeftBox>
-              <div className="presentPrice">{`시작가 ${data.startPrice}원`}</div>
-							{/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
-              <div className="price">{`현재가 ${data.nowPrice}원`}</div>
+              {/* 좋아요 기능 */}
+              <div className="likeBox">
+                <AuctionHeart params={params} />
+              </div>
+              <div className="priceBox">
+                <div className="presentPrice">최근 입찰가</div>
+                {/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
+                <div className="price">{`${postPrice}원`}</div>
+              </div>
             </FooterLeftBox>
-            <FooterRightBox>
-              <button onClick={onClickAuctionJoin}>입찰하기</button>
-            </FooterRightBox>
+            {memberId === null ? (
+              <FooterRightBox>
+                <button onClick={onClickAuctionJoin}>입찰하기</button>
+              </FooterRightBox>
+            ) : data?.auctionStatus ? (
+              <FooterRightBox>
+                <button onClick={onClickAuctionJoin}>입찰하기</button>
+              </FooterRightBox>
+            ) : winBid ? (
+              <FooterBidContainer>
+                <Button
+                  text="채팅방으로 이동"
+                  _onClick={() => {
+                    navigate(`/chat/${bid.roomId}`, {
+                      state: {
+                        auctionId: params.auctionId,
+                        isDetail: false,
+                        title: data.title,
+                        chatOther: chatOther,
+                      },
+                    });
+                  }}
+                  style={{
+                    width: "165px",
+                    ft_weight: "500",
+                    color: "#FFFFFF",
+                    bg_color: "#1DC79A",
+                  }}
+                />
+              </FooterBidContainer>
+            ) : (
+              <FooterBidContainer>
+                <Button
+                  text="입찰종료"
+                  style={{
+                    width: "165px",
+                    ft_weight: "500",
+                    color: "#646778",
+                    bg_color: "#EBEEF3",
+                  }}
+                />
+              </FooterBidContainer>
+            )}
+
+            {/* {data?.auctionStatus ? (
+              <FooterRightBox>
+                <button onClick={onClickAuctionJoin}>입찰하기</button>
+              </FooterRightBox>
+            ) : winBid ? (
+              <FooterBidContainer>
+                <Button
+                  text="채팅방으로 이동"
+                  _onClick={() => {
+                    navigate(`/chat/${bid.roomId}`, {
+                      state: {
+                        auctionId: params.auctionId,
+                        isDetail: false,
+                        title: data.title,
+                        chatOther: chatOther,
+                      },
+                    });
+                  }}
+                  style={{
+                    width: "165px",
+                    ft_weight: "500",
+                    color: "#FFFFFF",
+                    bg_color: "#1DC79A",
+                  }}
+                />
+              </FooterBidContainer>
+            ) : (
+              <FooterBidContainer>
+                <Button
+                  text="입찰종료"
+                  style={{
+                    width: "165px",
+                    ft_weight: "500",
+                    color: "#646778",
+                    bg_color: "#EBEEF3",
+                  }}
+                />
+              </FooterBidContainer>
+            )} */}
           </DetailFooterContainer>
         </DetailFooterWrap>
       </AuctionDetailLayout>
 
+      {/* 경매 메뉴 모달 */}
+      <>
+        {isMenuModal ? (
+          <MenuModal
+            data={data}
+            isMenuModal={isMenuModal}
+            setIsMenuModal={setIsMenuModal}
+            id={params.auctionId.toString()}
+          />
+        ) : (
+          ""
+        )}
+      </>
+
       {/* 경매 입찰 모달 */}
-			<>
       <AuctionJoinModal visible={joinVisible} setVisible={setJoinVisible}>
         <AuctionJoinModalContent>
           <AuctionJoinIcon>
@@ -265,7 +449,15 @@ const AuctionDetail = () => {
           <AuctionNowPriceWrap>
             <span>현재 최고가</span>
             <AuctionNowPrice>
-              {Math.max(data.startPrice, data.nowPrice)}원
+              {Math.max(
+                data.nowPrice,
+                chatList.length > 0
+                  ? +chatList[chatList.length - 1]?.message
+                  : data.startPrice,
+              )
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              원
             </AuctionNowPrice>
           </AuctionNowPriceWrap>
           <AuctionJoinInfo>
@@ -280,7 +472,8 @@ const AuctionDetail = () => {
             onKeyDown={(event) => onKeyPress(event)}
             placeholder="입찰 가격을 입력해주세요."
           />
-          {userData.message <= Math.max(data.startPrice, data.nowPrice) ? (
+          {userData.message <=
+          Math.max(data.startPrice, +chatList[chatList.length - 1]?.message) ? (
             <AuctionJoinInputInfo>
               현재 최고가보다 낮은 호가입니다.
             </AuctionJoinInputInfo>
@@ -295,15 +488,12 @@ const AuctionDetail = () => {
               style={{
                 width: "100%",
                 height: "56px",
-                ft_size: "18px",
                 color: "#FFFFFF",
-                bg_color: "#4D71FF",
               }}
             />
           </ButtonContainer>
         </AuctionJoinModalContent>
       </AuctionJoinModal>
-			</>
     </>
   );
 };
@@ -317,14 +507,12 @@ const AuctionDetailLayout = styled.div`
 const DetailBodyWrap = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 70px;
-  height: calc(100vh - 185px);
+  height: calc(100vh - 115px);
   overflow: scroll;
 `;
 const ItemImgContainer = styled.div`
   display: flex;
   width: 100%;
-  margin-bottom: 20px;
   /* img {
     width: 100%;
     height: 390px;
@@ -333,23 +521,36 @@ const ItemImgContainer = styled.div`
 const DetailBodyContainer = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 0px 20px;
+  /* padding: 0px 20px; */
 `;
 const DetailBodyProfileBox = styled.div`
   display: flex;
   flex-direction: row;
   width: 100%;
-  height: 48px;
-  margin-bottom: 24px;
+  min-height: 97px;
+  height: 97px;
+  margin-bottom: 15px;
+  border-bottom: 1px solid #ebeef3;
   .DetailBodyProfile {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    padding-right: 18px;
   }
 `;
 const DetailBodyProfileImg = styled.div`
   display: flex;
+  align-items: center;
+  padding-left: 18px;
+  .noOneImg {
+    height: 48px;
+    width: 48px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    margin-right: 11px;
+  }
   img {
     height: 48px;
     width: 48px;
@@ -365,70 +566,104 @@ const DetailBodyProfileContent = styled.div`
   justify-content: center;
   align-items: flex-start;
   .nickName {
-    font-size: 16px;
-    font-weight: 700;
+    font-size: ${(props) => props.theme.fontSizes.ms};
+    font-weight: ${(props) => props.theme.fontWeights.bold};
+    line-height: 24px;
   }
   .trustCount {
-    font-size: 16px;
-    font-weight: 400;
+    font-size: ${(props) => props.theme.fontSizes.ms};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+    color: ${(props) => props.theme.colors.Gray4};
+    line-height: 24px;
   }
 `;
 
+const DetailBodyBox = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
 const DetailBodyTitle = styled.div`
   display: flex;
-  font-size: 20px;
-  font-weight: 700;
-  word-break: break-all;
+  padding: 0px 20px;
+  font-size: ${(props) => props.theme.fontSizes.lg};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
+  line-height: 30px;
   margin-bottom: 16px;
 `;
 const DetailBodySelectTag = styled.div`
   display: flex;
-  margin-bottom: 16px;
+  margin-bottom: 10px;
+  align-items: center;
+  padding: 0px 20px;
   div {
     display: flex;
     border-radius: 20px;
-    background-color: #dedede;
     padding: 1px 6px;
     margin-right: 6px;
+
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.medium};
+    background-color: ${(props) => props.theme.colors.Blue1};
+    color: ${(props) => props.theme.colors.White};
+    line-height: 21px;
+  }
+  .region {
+    display: flex;
+    border-radius: 20px;
+    padding: 1px 6px;
+    margin-right: 6px;
+
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.medium};
+    background-color: ${(props) => props.theme.colors.White};
+    color: ${(props) => props.theme.colors.Blue1};
+    border: 1px solid #4d71ff;
+    line-height: 21px;
   }
 `;
 const DetailBodyContent = styled.div`
   display: flex;
+  padding: 0px 20px;
   word-break: break-all;
-  font-size: 20px;
+  font-size: ${(props) => props.theme.fontSizes.lg};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
+  line-height: 36px;
   height: 100%;
 `;
 const DetailBodyViewTag = styled.div`
   display: flex;
+  padding: 0px 20px;
   flex-direction: row;
   align-items: center;
   height: 49px;
   gap: 0 9px;
+  margin-bottom: 6px;
 
   div {
-    font-size: 16px;
-    font-weight: 400;
-    color: #9b9b9b;
+    font-size: ${(props) => props.theme.fontSizes.ms};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+    color: ${(props) => props.theme.colors.Gray3};
   }
 `;
 
 const DetailBodyItemTag = styled.div`
   display: flex;
+  padding: 0px 20px;
   flex-direction: row;
   align-items: center;
-  gap: 0 8px;
-  height: 22px;
+  height: 25px;
+  gap: 6px;
   margin-bottom: 40px;
   div {
     display: flex;
-    font-size: 14px;
-    font-weight: 500;
-    justify-content: center;
+    border-radius: 20px;
+    padding: 1px 6px;
 
-    padding: 2px 6px;
-    border-radius: 100px;
-    background-color: #9b9b9b;
-    color: white;
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.medium};
+    background-color: ${(props) => props.theme.colors.Blue1};
+    color: ${(props) => props.theme.colors.White};
+    line-height: 21px;
   }
 `;
 
@@ -442,12 +677,12 @@ const CommentCountContainer = styled.div`
   border-top: 1px solid #dedede;
   gap: 8px;
   h3 {
-    font-size: 20px;
-    font-weight: 700;
+    font-size: ${(props) => props.theme.fontSizes.lg};
+    font-weight: ${(props) => props.theme.fontWeights.bold};
   }
   p {
-    font-size: 20px;
-    font-weight: 400;
+    font-size: ${(props) => props.theme.fontSizes.lg};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
     color: #9b9b9b;
   }
 
@@ -468,57 +703,16 @@ const CommentCountContainer = styled.div`
 const CommentCountWrap = styled.div`
   display: flex;
   gap: 12px;
+  p {
+    font-size: ${(props) => props.theme.fontSizes.lg};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+    color: ${(props) => props.theme.colors.Blue1};
+  }
 `;
 
 const CommentCountTitle = styled.p`
   font-weight: 700 !important;
   color: black !important;
-`;
-
-const DetailCommentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-const CommentFormBox = styled.form`
-  display: flex;
-  justify-content: center;
-  height: 180px;
-  background-color: #dedede;
-  .inputBox {
-    display: flex;
-    flex-direction: column;
-    width: 350px;
-    gap: 16px;
-    textarea {
-      display: flex;
-      border-radius: 8px;
-      border: 1px solid #bcbcbc;
-      margin-top: 20px;
-      width: 100%;
-      height: 68px;
-      resize: none;
-
-      box-sizing: border-box;
-      padding: 13px 16px;
-      font-size: 14px;
-      font-weight: 400;
-      letter-spacing: -0.05em;
-    }
-    button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      border: none;
-      background-color: #bcbcbc;
-      width: 100%;
-      height: 56px;
-
-      font-size: 18px;
-      font-weight: 400;
-      color: #6d6d6d;
-    }
-  }
 `;
 
 const DetailFooterWrap = styled.div`
@@ -537,41 +731,67 @@ const DetailFooterTimeContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  height: 42px;
-  background-color: rgba(0, 0, 0, 0.7);
+  min-height: 42px;
+  background-color: ${(props) => props.theme.colors.Red};
   color: white;
   gap: 0 8px;
-  p {
-    font-size: 14px;
-    font-weight: 400;
+  span {
+    font-size: ${(props) => props.theme.fontSizes.sm};
+    font-weight: ${(props) => props.theme.fontWeights.normal};
+    line-height: 20px;
   }
-  h3 {
-    font-size: 20px;
-    font-weight: 700;
+  .auctionState {
+    font-size: ${(props) => props.theme.fontSizes.lg};
+    font-weight: ${(props) => props.theme.fontWeights.bold};
+    line-height: 30px;
   }
 `;
 const DetailFooterContainer = styled.div`
+  height: 100%;
+
   display: flex;
   flex-direction: row;
   justify-content: space-between;
 `;
 
+const FooterBidContainer = styled.div`
+  margin: 13px 20px 14px 0px;
+`;
+
 const FooterLeftBox = styled.div`
   display: flex;
-  align-items: flex-start;
-  flex-direction: column;
-  margin: 9px 0px 11px 20px;
-  .presentPrice {
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: row;
+  margin: 10px 0px 11px 20px;
+  gap: 12px;
+  .likeBox {
     display: flex;
-    font-size: 14px;
-    color: #bcbcbc;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
   }
-  .price {
+  .priceBox {
     display: flex;
-    font-size: 24px;
-    font-weight: 700;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+
+    .presentPrice {
+      display: flex;
+      font-size: ${(props) => props.theme.fontSizes.sm};
+      font-weight: ${(props) => props.theme.fontWeights.normal};
+      color: ${(props) => props.theme.colors.Gray3};
+    }
+    .price {
+      display: flex;
+      font-size: ${(props) => props.theme.fontSizes.xxl};
+      font-weight: ${(props) => props.theme.fontWeights.bold};
+    }
   }
 `;
+
 const FooterRightBox = styled.div`
   display: flex;
   margin: 13px 20px 14px 0px;
@@ -621,15 +841,6 @@ const AuctionJoinIcon = styled.div`
     border-radius: 50%;
   }
 `;
-
-// const AuctionWrap = styled.div`
-// 	background-color: aliceblue;
-// 	height: fit-content;
-// 	position: absolute;
-// 	bottom: 50%;
-// 	left: 0;
-// 	right: 0;
-// `;
 
 const AuctionJoinModalContent = styled.div`
   padding: 20px;

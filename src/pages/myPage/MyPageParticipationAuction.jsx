@@ -1,30 +1,49 @@
+// React import
 import React, { useEffect, useState } from "react";
+
+// Redux import
+import { useDispatch, useSelector } from "react-redux";
+import {
+  resetList,
+  resetPaging,
+  _MyPageParticipationAuction,
+} from "../../redux/modules/MyPageSlice";
+
+// Package import
 import styled from "styled-components";
+import { isIOS } from "react-device-detect";
+
+// Component import
 import Header from "../../components/header/Header";
-import AuctionStateNav from "../../components/auctionStateNav/AuctionStateNav";
+import AuctionStateNav from "../../components/auctionBody/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux/es/exports";
-import { _MyPageParticipationAuction } from "../../redux/modules/MyPageSlice";
+import AuctionRow from "../../components/auctionBody/AuctionRow";
 
 const MyPageParticipationAuction = () => {
   const dispatch = useDispatch();
   const [isAuction, setIsAuction] = useState(true);
-  const data = useSelector((state) => state.myPage.myPageParticipati);
 
   const {
-    myPageParticipati: myPageParticipatiData,
+    myPageList: data,
     loading,
     paging,
     followingItem,
   } = useSelector((state) => state.myPage);
+
   const [shouldShownData, setShouldShownData] = useState([]);
+
+  const auctionIng = data?.filter(
+    (data) => data?.auctionStatus === true
+  ).length;
+  const auctionDone = data?.filter(
+    (data) => data?.auctionStatus === false
+  ).length;
 
   useEffect(() => {
     dispatch(_MyPageParticipationAuction());
 
-    if (myPageParticipatiData && myPageParticipatiData.length > 0) {
-      myPageParticipatiData?.map((item, index) => {
+    if (data && data?.length > 0) {
+      data?.map((item, index) => {
         if (isAuction) {
           if (item?.auctionStatus === true) {
             setShouldShownData((prev) => {
@@ -41,9 +60,10 @@ const MyPageParticipationAuction = () => {
       });
     }
     return () => {
-      setShouldShownData([]);
+      dispatch(resetPaging());
+      dispatch(resetList());
     };
-  }, [isAuction, JSON.stringify(myPageParticipatiData)]);
+  }, [isAuction, JSON.stringify(data)]);
 
   const handleScroll = (e) => {
     let scrollTopHandler = e.target.scrollTop;
@@ -60,56 +80,30 @@ const MyPageParticipationAuction = () => {
 
   return (
     <MyAuctionLayout>
-      <Header back={true} pageName="참여 경매" alarm={true} />
-      <AuctionStateNav isAuction={isAuction} setIsAuction={setIsAuction} />
+      {/* <Header back={true} pageName="참여 경매" alarm={true} /> */}
+      <Header back={true} pageName="참여 경매" />
+      <AuctionStateNav
+        isAuction={isAuction}
+        setIsAuction={setIsAuction}
+        auctionIng={auctionIng}
+        auctionDone={auctionDone}
+      />
       <MyAuctionBody>
-        <AuctionLayout onScroll={handleScroll}>
-          {data.data == null ? (
-            <None>상품없음</None>
-          ) : (
-            <>
-              {shouldShownData.map((item, index) => {
-                return (
-                  <React.Fragment key={`${index}_${item.id}`}>
-                    <Auction2Container>
-                      <ImgBox>{item.profileImgUrl}</ImgBox>
-                      <ContentBox>
-                        <div className="contentNavBox">
-                          <div className="delivery">택배</div>
-                          <div className="region">성산구</div>
-                        </div>
-                        <div className="title">
-                          제목은 한 줄만 노출됩니다. 길어진다면 짤라야 겠죠
-                        </div>
-                        <div className="priceBox">
-                          <div>최근입찰가</div>
-                          <div className="price">5000원</div>
-                        </div>
-                      </ContentBox>
-                    </Auction2Container>
-                    {isAuction ? (
-                      <Action2Btn>거래 진행중</Action2Btn>
-                    ) : (
-                      <Action2Btn>거래 완료</Action2Btn>
-                    )}
-                  </React.Fragment>
-                );
-              })}
-            </>
-          )}
+        <AuctionLayout onScroll={handleScroll} isIOS={isIOS}>
+          {shouldShownData.map((item, index) => {
+            return (
+              <React.Fragment key={`${index}_${item.id}`}>
+                <AuctionRow item={item} index={index} />
+                {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
+              </React.Fragment>
+            );
+          })}
         </AuctionLayout>
       </MyAuctionBody>
       <Footer />
     </MyAuctionLayout>
   );
 };
-const None = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-`;
-
 const MyAuctionLayout = styled.div`
   display: flex;
   flex-direction: column;
@@ -117,7 +111,8 @@ const MyAuctionLayout = styled.div`
 `;
 const MyAuctionBody = styled.div`
   display: flex;
-  height: calc(100vh - 180px);
+  height: ${(props) =>
+    props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   flex-direction: column;
   overflow: scroll;
 `;
@@ -127,87 +122,28 @@ const AuctionLayout = styled.div`
   justify-content: flex-start;
   align-items: flex-start;
   padding: 0px 20px;
-`;
-const Auction2Container = styled.div`
-  display: flex;
-  flex-direction: row;
-  gap: 18px;
-  margin-bottom: 15px;
+  height: 100%;
 `;
 
-const ImgBox = styled.div`
+const None = styled.div`
   display: flex;
-
-  img {
-    width: 75px;
-    height: 75px;
-    border-radius: 8px;
-  }
-`;
-const ContentBox = styled.div`
-  display: flex;
-  flex-direction: column;
   width: 100%;
-  gap: 4px;
-
-  .contentNavBox {
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-
-    .delivery {
-      background-color: #4d71ff;
-      color: white;
-      border-radius: 100px;
-      padding: 2px 6px;
-      font-size: 14px;
-      font-weight: 500;
-    }
-    .region {
-      border: 1px solid #4d71ff;
-      color: #4d71ff;
-      border-radius: 100px;
-      padding: 2px 6px;
-      font-size: 14px;
-      font-weight: 500;
-    }
-  }
-  .title {
-    width: 100%;
-    height: 25px;
-    font-size: 18px;
-    font-weight: 400;
-    align-items: center;
-
-    flex-wrap: nowrap;
-    overflow: hidden;
-    -webkit-line-clamp: 1;
-    text-overflow: ellipsis;
-  }
-  .priceBox {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    div {
-      font-size: 14px;
-      font-weight: 400;
-      color: #a5a9b6;
-    }
-    .price {
-      font-size: 18px;
-      font-weight: 500;
-      color: black;
-    }
-  }
+  justify-content: center;
+  align-items: center;
 `;
-const Action2Btn = styled.button`
+
+const ActionBtn = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   box-sizing: border-box;
-  height: 30px;
-  margin-bottom: 20px;
+  min-height: 40px;
+  margin-bottom: 32px;
   background-color: white;
-  border: 1px solid #a5a9b6;
+  border: 1px solid #4d71ff;
   border-radius: 8px;
+  color: #4d71ff;
 `;
 
 export default MyPageParticipationAuction;
