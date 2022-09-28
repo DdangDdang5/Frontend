@@ -2,11 +2,10 @@
 import styled from "styled-components";
 
 export const HistoryBox = styled.div`
-  padding: 18px;
-  padding-left: 20px;
   box-sizing: border-box;
   height: 70vh;
   width: 100%;
+  margin-top: 7px;
 `;
 
 export const HeaderContent = styled.div`
@@ -18,6 +17,7 @@ export const Title = styled.span`
   float: left;
   font-weight: ${(props) => props.theme.fontWeights.bold};
   color: ${(props) => props.theme.colors.Black};
+  font-size: ${(props) => props.theme.fontSizes.ms};
 `;
 
 export const RecentKeywordWrap = styled.div`
@@ -52,15 +52,18 @@ export const RecentKeyword = styled.div`
 
 export const PopularKeywordWrap = styled.div`
   position: relative;
-  height: 200px;
-  width: 350px;
+  height: 250px;
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
   flex: 1 1 50%;
   flex-direction: column;
   box-sizing: border-box;
-  gap: 12px;
+  gap: 24px;
   top: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export const PopularNum = styled.div`

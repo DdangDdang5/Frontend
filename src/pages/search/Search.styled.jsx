@@ -53,11 +53,12 @@ export const SearchInput = styled.input`
 export const SearchInputIcon = styled.div`
   position: absolute;
   box-sizing: border-box;
-  top: 55%;
+  top: 53%;
   transform: translate(-50%, -50%);
   left: 10%;
-  .icon {
-    color: ${(props) => props.theme.colors.Gray3};
+  svg {
+    width: 14px;
+    height: 14px;
   }
 `;
 

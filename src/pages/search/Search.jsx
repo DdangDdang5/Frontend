@@ -3,7 +3,10 @@ import React, { Fragment, useState, useEffect } from "react";
 
 // Redux import
 import { useDispatch, useSelector } from "react-redux";
-import { auctionSearchThunk, clearSearch } from "../../redux/modules/SearchSlice";
+import {
+  auctionSearchThunk,
+  clearSearch,
+} from "../../redux/modules/SearchSlice";
 
 // Package import
 import { useNavigate } from "react-router-dom";
@@ -56,9 +59,9 @@ const Search = () => {
     }
   };
 
-	useEffect(() => {
-		dispatch(clearSearch());
-	}, [])
+  useEffect(() => {
+    dispatch(clearSearch());
+  }, []);
 
   useEffect(() => {}, [dispatch]);
 
@@ -68,7 +71,7 @@ const Search = () => {
   };
 
   return (
-    <Fragment >
+    <Fragment>
       <SearchBox>
         <SearchInputGroup>
           <SearchInputWrap>
@@ -79,7 +82,7 @@ const Search = () => {
               onKeyDown={(e) => onKeyPress(e)}
             />
             <SearchInputIcon>
-              <SearchImg className="icon" />
+              <SearchImg />
             </SearchInputIcon>
           </SearchInputWrap>
         </SearchInputGroup>
