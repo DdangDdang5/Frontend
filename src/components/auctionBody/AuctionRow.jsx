@@ -85,7 +85,7 @@ const ContentBox = styled.div`
   .title {
     max-height: 25px;
     align-items: center;
-
+    width: 260px;
     overflow: hidden;
     white-space: nowrap;
     -webkit-line-clamp: 1;

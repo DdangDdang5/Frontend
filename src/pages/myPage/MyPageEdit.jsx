@@ -1,13 +1,15 @@
 // React import
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 // Redux import
 import { editMyPage, _MyPageData } from "../../redux/modules/MyPageSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { nickNameCheckThunk } from "../../redux/modules/MemberSlice";
 
 // Package import
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { debounce } from "lodash";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -23,6 +25,13 @@ const MyPageEdit = () => {
     nickName: "",
   };
 
+  const [nickNameCheck, setNickNameCheck] = useState(false);
+
+  const nickNameRef = useRef();
+  const nickNameIconRef = useRef();
+  const nickNameSpanRef = useRef();
+  const NickNameCheckef = useRef();
+
   const profileData = useSelector((state) => state?.myPage?.myPage);
 
   const img_ref = useRef(null);
@@ -33,6 +42,48 @@ const MyPageEdit = () => {
   console.log("preview", imagePreview);
 
   const memberId = sessionStorage?.getItem("memberId");
+  const nickName = sessionStorage?.getItem("nickName");
+
+  useEffect(() => {
+    if (nickName !== "") {
+      checkNickName(nickName);
+    } else {
+      nickNameSpanRef.current.innerText = "";
+      nickNameSpanRef.current.style.color = "";
+    }
+  }, [nickName]);
+
+  // 닉네임 체크
+  const checkNickName = useCallback(
+    debounce((nickName) => {
+      const nickNameRegExp = /^([a-z0-9가-힣])[a-z0-9가-힣]{3,7}$/i;
+      if (!nickNameRegExp.test(nickName)) {
+        nickNameSpanRef.current.innerText =
+          "닉네임은 공백 없이 4~6자 이내의 한글, 영문, 숫자를 이용하여 입력해주세요.";
+        nickNameSpanRef.current.style.color = "#EF664D";
+        nickNameRef.current.style.borderColor = "#EF664D";
+        nickNameIconRef.current.style.color = "#EF664D";
+        setNickNameCheck(true);
+      } else {
+        dispatch(nickNameCheckThunk({ nickName })).then((res) => {
+          if (!res.payload) {
+            nickNameSpanRef.current.innerText = "중복되는 닉네임입니다.";
+            nickNameSpanRef.current.style.color = "#FF664D";
+            nickNameIconRef.current.style.color = "#FF664D";
+            nickNameRef.current.style.borderColor = "#FF664D";
+            setNickNameCheck(true);
+          } else {
+            nickNameSpanRef.current.innerText = "사용가능한 닉네임입니다.";
+            nickNameSpanRef.current.style.color = "#1DC79A";
+            nickNameIconRef.current.style.color = "#1DC79A";
+            nickNameRef.current.style.borderColor = "#1DC79A";
+            setNickNameCheck(false);
+          }
+        });
+      }
+    }, 500),
+    [nickName]
+  );
 
   const onLoadFile = (e) => {
     const reader = new FileReader();
@@ -114,16 +165,19 @@ const MyPageEdit = () => {
           <div className="MyTextNick">닉네임</div>
           <div className="MyTextInputWrap">
             <input
+              ref={nickNameRef}
               type="text"
               value={inputForm.nickName}
               name="nickName"
               onChange={onChangeHandler}
               placeholder="닉네임을 입력해주세요."
+              minLength="4"
+              maxLength="6"
             />
 
-            <Delete />
+            <Delete ref={nickNameIconRef} />
           </div>
-          <div className="MyTextCheck">사용할 수 없는 닉네임입니다.</div>
+          <span ref={nickNameSpanRef} className="MyTextCheck"></span>
         </MyTextWrap>
       </MyProfile>
       <MyDoneBtnWrap>
