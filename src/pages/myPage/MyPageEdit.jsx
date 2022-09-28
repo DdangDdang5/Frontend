@@ -43,6 +43,7 @@ const MyPageEdit = () => {
 
   const memberId = sessionStorage?.getItem("memberId");
   const nickName = sessionStorage?.getItem("nickName");
+  console.log(memberId);
 
   useEffect(() => {
     if (nickName !== "") {
