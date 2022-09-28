@@ -35,6 +35,7 @@ import { ReactComponent as heartFull } from "./icon/HeartFull.svg";
 import { ReactComponent as heartEmpty } from "./icon/HeartEmpty.svg";
 import { ReactComponent as imgPlus } from "./icon/ImgPlus.svg";
 import { ReactComponent as imgDelete } from "./icon/ImgDelete.svg";
+import { ReactComponent as underArrow } from "./icon/UnderArrow.svg";
 
 // Category import
 import { ReactComponent as accessory } from "./category/Accessory.svg";
@@ -122,6 +123,7 @@ export const HeartFull = heartFull;
 export const HeartEmpty = heartEmpty;
 export const ImgPlus = imgPlus;
 export const ImgDelete = imgDelete;
+export const UnderArrow = underArrow;
 
 // category
 export const Accessory = accessory;

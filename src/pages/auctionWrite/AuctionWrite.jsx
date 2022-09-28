@@ -21,7 +21,7 @@ import {
 
 // Style import
 import styled from "styled-components";
-import { ImgDelete, ImgPlus } from "../../shared/images";
+import { ImgDelete, ImgPlus, UnderArrow } from "../../shared/images";
 
 const AuctionWrite = () => {
   const dispatch = useDispatch();
@@ -52,9 +52,10 @@ const AuctionWrite = () => {
   const [inputForm, setInputForm] = useState(auctionRequestDto);
   const [tags, setTags] = useState([]);
 
-  console.log("이미지", imgFile);
-  console.log("인풋폼", inputForm);
-  console.log("테그", initialTag);
+  const categoryName = useSelector((state) => state.modal.categoryName);
+  const regionName = useSelector((state) => state.modal.regionName);
+  const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
+  const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
 
   useEffect(() => {
     dispatch(_categoryList());
@@ -63,13 +64,6 @@ const AuctionWrite = () => {
   useEffect(() => {
     dispatch(_regionList());
   }, []);
-
-  const categoryName = useSelector((state) => state.modal.categoryName);
-  const regionName = useSelector((state) => state.modal.regionName);
-
-  const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
-  const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
-
   useEffect(() => {
     setInputForm((prev) => {
       const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
@@ -106,6 +100,13 @@ const AuctionWrite = () => {
 
     setImgFile(imgFileList);
     setImagePreview(imgUrlList);
+  };
+
+  //미리보기 이미지 삭제
+  const onRemove = (index) => {
+    const cloneImagePreview = [...imagePreview];
+    cloneImagePreview.splice(index, 1);
+    setImagePreview(cloneImagePreview);
   };
 
   const onChangeHandler = (e) => {
@@ -165,18 +166,6 @@ const AuctionWrite = () => {
 
       navigate(-1, { replace: true });
     }
-  };
-
-  // 이미지 미리보기 삭제
-  // const onRemove = (id) => {
-  //   return setImagePreview(
-  //     imagePreview.filter((imagePreview) => imagePreview.id !== id)
-  //   );
-  // };
-  const onRemove = (index) => {
-    const cloneImagePreview = [...imagePreview];
-    cloneImagePreview.splice(index, 1);
-    setImagePreview(cloneImagePreview);
   };
 
   return (
@@ -247,17 +236,7 @@ const AuctionWrite = () => {
               <div>{categoryNameCheck}</div>
             )}
             <div>
-              <svg
-                width="18"
-                height="10"
-                viewBox="0 0 18 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M17.7048 0.29272C17.3145 -0.0975732 16.684 -0.0975732 16.2938 0.29272L8.99872 7.58819L1.70368 0.29272C1.31341 -0.0975732 0.682972 -0.0975732 0.292702 0.29272C-0.0975675 0.683012 -0.0975675 1.31348 0.292702 1.70377L8.29824 9.70979C8.49838 9.90994 8.74856 10 9.00874 10C9.26892 10 9.51908 9.89993 9.71922 9.70979L17.7248 1.70377C18.095 1.31348 18.095 0.683012 17.7048 0.29272Z"
-                  fill="#3A3A3A"
-                />
-              </svg>
+              <UnderArrow />
             </div>
           </div>
         </WriteBtnBox>
@@ -329,17 +308,7 @@ const AuctionWrite = () => {
               <div>{regionNameCheck}</div>
             )}
             <div>
-              <svg
-                width="18"
-                height="10"
-                viewBox="0 0 18 10"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M17.7048 0.29272C17.3145 -0.0975732 16.684 -0.0975732 16.2938 0.29272L8.99872 7.58819L1.70368 0.29272C1.31341 -0.0975732 0.682972 -0.0975732 0.292702 0.29272C-0.0975675 0.683012 -0.0975675 1.31348 0.292702 1.70377L8.29824 9.70979C8.49838 9.90994 8.74856 10 9.00874 10C9.26892 10 9.51908 9.89993 9.71922 9.70979L17.7248 1.70377C18.095 1.31348 18.095 0.683012 17.7048 0.29272Z"
-                  fill="#3A3A3A"
-                />
-              </svg>
+              <UnderArrow />
             </div>
           </div>
         </WriteBtnBox>
