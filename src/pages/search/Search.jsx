@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { auctionSearchThunk } from "../../redux/modules/SearchSlice";
 
 // Package import
-import { IoSearchOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 
 // Component & Shared import
@@ -14,6 +13,7 @@ import Footer from "../../components/footer/Footer";
 import SearchHistory from "../../components/search/SearchHistory";
 import SearchResult from "../../components/search/SearchResult";
 import { getCookie } from "../../shared/Cookie";
+import { SearchImg } from "../../shared/images";
 
 // Style import
 import {
@@ -75,7 +75,7 @@ const Search = () => {
               onKeyDown={(e) => onKeyPress(e)}
             />
             <SearchInputIcon>
-              <IoSearchOutline className="icon" />
+              <SearchImg className="icon" />
             </SearchInputIcon>
           </SearchInputWrap>
         </SearchInputGroup>
