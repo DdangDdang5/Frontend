@@ -11,7 +11,7 @@ export const SwipeContainer = styled.div`
 
   display: flex;
   justify-content: center;
-  /* overflow: hidden; */
+  overflow: hidden;
 `;
 
 export const SwipeShowContainer = styled.div`
@@ -219,12 +219,11 @@ export const EventBanner = styled.div`
 
   svg {
     position: absolute;
-    top: ${(props) => (props.isMain ? "10px" : "5px")};
+    top: ${(props) => (props.isMain ? (props.idx ? "10px" : "20px") : "5px")};
     right: ${(props) => (props.isMain ? "10px" : "-8px")};
 
     z-index: 10;
 
-		bottom: ${(props) => console.log(props)};
     transform: ${(props) =>
       props.idx && props.isMain ? null : "scale(0.9)"};
   }

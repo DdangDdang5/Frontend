@@ -27,7 +27,8 @@ const EventList = () => {
 
   return (
     <EventListContainer>
-      <Header back={true} pageName="이벤트" alarm={true} />
+      {/* <Header back={true} pageName="이벤트" alarm={true} /> */}
+      <Header back={true} pageName="이벤트" />
 
       <EventListContent>
         {Array.from({ length: 1 }, (_, idx) => (

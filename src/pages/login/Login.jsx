@@ -90,6 +90,7 @@ const Login = ({ location }) => {
         dispatch(loginMemberThunk({ email, password })).then((res) => {
           if (res.payload.statusCode === 200) {
             window.alert(`${res.payload.data.nickName}님 안녕하세요!`);
+						
             navigate(-1);
           } else {
             alert(res.payload.msg);

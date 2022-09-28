@@ -30,6 +30,7 @@ import NotFound from "./pages/notFound/NotFound";
 import Event from "./pages/event/Event";
 import EventList from "./pages/eventList/EventList";
 import Loading from "./pages/loading/Loading";
+import InfoDetail from "./pages/infoDetail/InfoDetail";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
@@ -183,6 +184,7 @@ function App() {
           <Route path="/event/:eventId" element={<Event />} />
           <Route path="/eventList" element={<EventList />} />
           <Route path="/loading" element={<Loading />} />
+          <Route path="/infoDetail" element={<InfoDetail />} />
         </Routes>
         {modal && <CategoryModal />}
       </AppContent>

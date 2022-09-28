@@ -39,7 +39,7 @@ const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
   // 게시글 수정하기
   const handleEdit = () => {
     if (window.confirm("경매글을 수정하시겠습니까?")) {
-      return navigate(`/auctionEdit/${id}`);
+      return navigate(`/auctionEdit/${+id}`);
     }
   };
 

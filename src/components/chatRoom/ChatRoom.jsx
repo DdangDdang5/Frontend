@@ -55,7 +55,7 @@ const ChatRoom = ({ room }) => {
           <ChatRoomMessage>
             {room.message
               ? room.message
-              : "채팅방 메세지 내용입니다. 두 줄까지 확인 가능합니다."}
+              : ""}
           </ChatRoomMessage>
           {/* <ChatRoomAlarm>1</ChatRoomAlarm> */}
         </ChatRoomMessageWrap>

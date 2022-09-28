@@ -1,5 +1,5 @@
 // React import
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 // Redux import
 import {
@@ -18,11 +18,12 @@ import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { isIOS } from "react-device-detect";
 
-// Component import
+// Component & Page import
 import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import PlusButton from "../../elements/button/PlusButton";
 import AuctionColumn from "../../components/auctionBody/AuctionColumn";
+import Loading from "../loading/Loading";
 
 // Shared import
 import { Open } from "../../shared/images";
@@ -41,15 +42,24 @@ const AuctionList = () => {
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
 
-  useEffect(() => {
-    dispatch(_categoryList());
-    dispatch(_regionList());
+  const [loadingState, setLoadingState] = useState(true);
 
-    if (categoryName === "전체 품목" && regionName === "서울 전체") {
-      dispatch(initialPaging());
-      dispatch(clearAuctionList());
-      dispatch(auctionItemList());
-    }
+	const initializeAuctionList = async () => {
+		await setLoadingState(true);
+		await dispatch(_categoryList());
+		await dispatch(_regionList());
+	
+		if (categoryName === "전체 품목" && regionName === "서울 전체") {
+			await dispatch(initialPaging());
+			await dispatch(clearAuctionList());
+			await dispatch(auctionItemList());
+		}
+
+		await setLoadingState(false);
+	}
+
+  useEffect(() => {
+		initializeAuctionList();
   }, [categoryName, regionName]);
 
   // 페이지 네이션
@@ -72,45 +82,56 @@ const AuctionList = () => {
   }
   return (
     <AuctionListLayout>
-      <Header back={true} pageName="경매 목록" search={true} alarm={true} />
-      <ListCategoryWrap>
-        <CategoryWrap>
-          <CategoryBtn
-            onClick={() =>
-              dispatch(showModal("categoryList"), _categoryList())
-            }>
-            <CategoryBtnText>{categoryName}</CategoryBtnText>
-            <Open />
-          </CategoryBtn>
-        </CategoryWrap>
+      {loadingState ? (
+        <Loading />
+      ) : (
+        <>
+          {/* <Header back={true} pageName="경매 목록" search={true} alarm={true} /> */}
+          <Header back={true} pageName="경매 목록" search={true} />
+          <ListCategoryWrap>
+            <CategoryWrap>
+              <CategoryBtn
+                onClick={() =>
+                  dispatch(showModal("categoryList"), _categoryList())
+                }
+              >
+                <CategoryBtnText>{categoryName}</CategoryBtnText>
+                <Open />
+              </CategoryBtn>
+            </CategoryWrap>
 
-        <CategoryWrap>
-          <CategoryBtn>
-            <CategoryBtnText
-              onClick={() => dispatch(showModal("regionList"), _regionList())}>
-              {regionName}
-            </CategoryBtnText>
-            <Open />
-          </CategoryBtn>
-        </CategoryWrap>
-        <CategoryWrap>
-          <CategoryBtn>
-            <CategoryBtnTimeText>마감임박</CategoryBtnTimeText>
-          </CategoryBtn>
-        </CategoryWrap>
-      </ListCategoryWrap>
-      <ListContents onScroll={handleScroll} isIOS={isIOS}>
-        {AuctionListData?.map((item, index) => {
-          return (
-            <AuctionColumn
-              key={`${item.auctionId}-${index}-${item.title}`}
-              data={item}
-            />
-          );
-        })}
-      </ListContents>
-      <PlusButton />
-      <Footer />
+            <CategoryWrap>
+              <CategoryBtn>
+                <CategoryBtnText
+                  onClick={() =>
+                    dispatch(showModal("regionList"), _regionList())
+                  }
+                >
+                  {regionName}
+                </CategoryBtnText>
+                <Open />
+              </CategoryBtn>
+            </CategoryWrap>
+            <CategoryWrap>
+              <CategoryBtn>
+                <CategoryBtnTimeText>마감임박</CategoryBtnTimeText>
+              </CategoryBtn>
+            </CategoryWrap>
+          </ListCategoryWrap>
+          <ListContents onScroll={handleScroll} isIOS={isIOS}>
+            {AuctionListData?.map((item, index) => {
+              return (
+                <AuctionColumn
+                  key={`${item.auctionId}-${index}-${item.title}`}
+                  data={item}
+                />
+              );
+            })}
+          </ListContents>
+          <PlusButton />
+          <Footer />
+        </>
+      )}
     </AuctionListLayout>
   );
 };

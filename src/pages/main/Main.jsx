@@ -93,7 +93,8 @@ const Main = () => {
         <Loading />
       ) : (
         <>
-          <Header logo={true} search={true} alarm={true} />
+          {/* <Header logo={true} search={true} alarm={true} /> */}
+          <Header logo={true} search={true} />
 
           <MainContent isIOS={isIOS}>
             {/* 배너 */}

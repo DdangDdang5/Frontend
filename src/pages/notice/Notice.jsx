@@ -7,7 +7,8 @@ import Header from "../../components/header/Header";
 const Notice = () => {
   return (
     <NoticeWrap>
-      <Header back={true} pageName="공지사항" alarm={true} />
+      {/* <Header back={true} pageName="공지사항" alarm={true} /> */}
+      <Header back={true} pageName="공지사항" />
       <div></div>
     </NoticeWrap>
   );
