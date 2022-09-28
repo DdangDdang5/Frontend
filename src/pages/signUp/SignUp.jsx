@@ -85,19 +85,19 @@ const SignUp = () => {
         emailSpanRef.current.style.color = "#FF664D";
         emailRef.current.style.borderColor = "#FF664D";
         // setCheck({ ...check, email: true });
-        setEmailCheck(true);
+        setEmailCheck(false);
       } else {
         dispatch(emailCheckThunk({ email })).then((res) => {
           if (!res.payload) {
             emailSpanRef.current.innerText = "중복되는 이메일입니다.";
             emailSpanRef.current.style.color = "#FF664D";
             emailRef.current.style.borderColor = "#FF664D";
-            setEmailCheck(true);
+            setEmailCheck(false);
           } else {
             emailSpanRef.current.innerText = "사용가능한 이메일입니다.";
             emailSpanRef.current.style.color = "#1DC79A";
             emailRef.current.style.borderColor = "#1DC79A";
-            setEmailCheck(false);
+            setEmailCheck(true);
           }
         });
       }
@@ -157,26 +157,27 @@ const SignUp = () => {
           "닉네임은 공백 없이 4~6자 이내의 한글, 영문, 숫자를 이용하여 입력해주세요.";
         nickNameSpanRef.current.style.color = "#EF664D";
         nickNameRef.current.style.borderColor = "#EF664D";
-        nickNameIconRef.current.style.color = "#EF664D";
-        setNickNameCheck(true);
+        setNickNameCheck(false);
       } else {
         dispatch(nickNameCheckThunk({ nickName })).then((res) => {
           if (!res.payload) {
             nickNameSpanRef.current.innerText = "중복되는 닉네임입니다.";
             nickNameSpanRef.current.style.color = "#FF664D";
             nickNameRef.current.style.borderColor = "#FF664D";
-            setNickNameCheck(true);
+            setNickNameCheck(false);
           } else {
             nickNameSpanRef.current.innerText = "사용가능한 닉네임입니다.";
             nickNameSpanRef.current.style.color = "#1DC79A";
             nickNameRef.current.style.borderColor = "#1DC79A";
-            setNickNameCheck(false);
+            setNickNameCheck(true);
           }
         });
       }
     }, 500),
     [nickName]
   );
+
+  useEffect(() => {}, [emailCheck, nickNameCheck]);
 
   useEffect(() => {
     if (email !== "") {
@@ -190,13 +191,13 @@ const SignUp = () => {
   const onsubmitHandler = useCallback(
     (e) => {
       e.preventDefault();
-      if (emailCheck === true) {
+      if (emailCheck === false) {
         emailRef.current.focus();
         emailRef.current.style.color = "#3A3A3A";
         emailRef.current.innerText = "중복되는 이메일입니다.";
         // setCheck({ ...check, email: true });
       } else {
-        if (nickNameCheck === true) {
+        if (nickNameCheck === false) {
           nickNameRef.current.focus();
           nickNameRef.current.style.color = "#3A3A3A";
           nickNameRef.current.innerText = "중복되는 닉네임입니다.";
@@ -215,7 +216,7 @@ const SignUp = () => {
         }
       }
     },
-    [email, nickName, password, repassword]
+    [emailCheck, nickNameCheck, password, repassword]
   );
 
   return (
@@ -236,7 +237,7 @@ const SignUp = () => {
                 required
               ></SignUpBoxInput>
               {email.length > 0 ? (
-                !emailCheck ? (
+                emailCheck ? (
                   <SignUpBoxInputIcon ref={emailIconRef} state={true}>
                     <Ok />
                   </SignUpBoxInputIcon>
@@ -316,7 +317,7 @@ const SignUp = () => {
                 required
               />
               {nickName.length > 0 ? (
-                !nickNameCheck ? (
+                nickNameCheck ? (
                   <SignUpBoxInputIcon ref={nickNameIconRef} state={true}>
                     <Ok />
                   </SignUpBoxInputIcon>
@@ -330,7 +331,8 @@ const SignUp = () => {
             <SignUpBoxSpan ref={nickNameSpanRef}></SignUpBoxSpan>
           </SignUpBoxInputGroup>
           <SignUpButtonGroup>
-            {email && password && repassword && nickName ? (
+            {console.log(emailCheck, password, repassword, nickNameCheck)}
+            {emailCheck && password && repassword && nickNameCheck ? (
               <Button
                 _onClick={(e) => onsubmitHandler(e)}
                 type={"submit"}
@@ -348,6 +350,7 @@ const SignUp = () => {
                 type={"submit"}
                 text={"회원가입"}
                 style={{
+                  disabled: "disabled",
                   width: "100%",
                   height: "56px",
                   ft_size: "18px",
