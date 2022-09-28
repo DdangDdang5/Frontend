@@ -43,7 +43,7 @@ const SwipeImage = ({
   const ref = useRef(null);
   const navigate = useNavigate();
 
-  console.log(data);
+  // console.log(data);
 
   const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
@@ -177,7 +177,7 @@ const SwipeImage = ({
           })
         ) : (
 						Array.from({ length: 2 }, (_, idx) => (
-              <EventBanner key={idx} idx={idx} isMain={isMain} onClick={idx ? () => navigate("/event/1") : null}>
+              <EventBanner key={idx} idx={idx} isMain={isMain} onClick={idx ? () => navigate("/event/1") : () => navigate("/infoDetail")}>
                 <FontEvent />
                 <EventContent idx={idx} isMain={isMain}>
                   <EventDate idx={idx} isMain={isMain}>09.27 ~ {idx ? "10.02" : "상시"}</EventDate>

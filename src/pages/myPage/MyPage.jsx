@@ -66,7 +66,8 @@ const MyPage = () => {
 
   return (
     <MyPageLayout>
-      <Header pageName="마이페이지" alarm={true} />
+      {/* <Header pageName="마이페이지" alarm={true} /> */}
+      <Header pageName="마이페이지" />
 
       <MyPageWrap isIOS={isIOS}>
         <MyProfileWrap>

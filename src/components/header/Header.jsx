@@ -53,16 +53,19 @@ const Header = ({
   onClickBtn,
   onClickSave,
   onClickTitle,
+	onClickBackBtn,
 	color
 }) => {
   const navigate = useNavigate();
+
+	console.log(onClickBackBtn);
 
   return (
     <HeaderContainer>
       <HeaderContent color={color}>
         {/* left */}
         <HeaderTitle>
-          {back ? <Back onClick={() => navigate(-1)} /> : null}
+          {back ? <Back onClick={onClickBackBtn ? onClickBackBtn : () => navigate(-1)} /> : null}
           {close ? (
             <Close className="close" onClick={() => navigate(-1)} />
           ) : null}

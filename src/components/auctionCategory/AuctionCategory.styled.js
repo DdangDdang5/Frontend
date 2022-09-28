@@ -9,7 +9,7 @@ export const CategoryItem = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-	gap: ${(props) => props.division === "categoryList" ? "8px" : "12px"};
+	gap: 8px;
 
   svg {
     width: 56px;

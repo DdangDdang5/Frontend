@@ -32,6 +32,8 @@ const ChatList = () => {
 
   const nickName = sessionStorage.getItem("memberNickname");
 
+	// console.log(chatRoomList);
+
 	const getChatRoomtList = async () => {
 		await setLoading(true);
 		await dispatch(getChatRoomListByMember(nickName));
@@ -51,7 +53,8 @@ const ChatList = () => {
         <Loading />
       ) : (
         <>
-          <Header pageName="채팅" alarm={true} />
+          {/* <Header pageName="채팅" alarm={true} /> */}
+          <Header pageName="채팅" />
           <ChatRoomList isIOS={isIOS}>
             {chatRoomList.length > 0 ? (
               chatRoomList?.map((item) => (

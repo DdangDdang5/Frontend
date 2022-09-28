@@ -169,7 +169,7 @@ const AuctionReview = () => {
                   <AnswerItem key={idxA}>
                     <AnswerRadioBtn
                       type="radio"
-                      id={itemA}
+                      id={itemA.toString()}
                       name={`action-review-${idx}`}
                       onChange={(e) => onCheckRadioBtn(e)}
                     />

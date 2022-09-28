@@ -90,7 +90,8 @@ function MyPageMyAuction() {
   }
   return (
     <MyAuctionLayout>
-      <Header back={true} pageName="나의 경매" alarm={true} />
+      {/* <Header back={true} pageName="나의 경매" alarm={true} /> */}
+      <Header back={true} pageName="나의 경매" />
       <AuctionStateNav
         isAuction={isAuction}
         setIsAuction={setIsAuction}

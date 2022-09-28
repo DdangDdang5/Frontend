@@ -91,7 +91,8 @@ const MyPageInterestAuction = () => {
 
   return (
     <MyAuctionLayout>
-      <Header back={true} pageName="관심 경매" alarm={true} />
+      {/* <Header back={true} pageName="관심 경매" alarm={true} /> */}
+      <Header back={true} pageName="관심 경매" />
       <AuctionStateNav
         isAuction={isAuction}
         setIsAuction={setIsAuction}

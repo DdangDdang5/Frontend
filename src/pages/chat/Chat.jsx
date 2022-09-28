@@ -60,6 +60,8 @@ const Chat = () => {
   } = useLocation().state;
   const nickName = sessionStorage.getItem("memberNickname");
 
+	// console.log(auctionId, auctionCreatedAt, auctionPeriod, auctionStatus);
+
   const chatMessageList = useSelector(
     (state) => state.chat.chatMessageList,
   ).filter((item) => item.roomId === roomId);
@@ -100,17 +102,22 @@ const Chat = () => {
 
   //   return () => {
   //     if (loading) {
+	// 			onDisconnected();
   //       setTimeout(timeout);
   //     }
   //   };
   // }, []);
 
+	console.log(chatList);
+	console.log(chatMessageList);
+
   useEffect(() => {
     dispatch(getChatMessageList(roomId));
 
     if (chatMessageList[0]?.data?.length > 0) {
-      // chatList.push(...chatMessageList[0].data);
-      setChatList(chatMessageList[0].data);
+			console.log(chatList);
+			chatList.push(...chatMessageList[0].data);
+			setChatList(chatList);
     }
   }, [JSON.stringify(chatMessageList)]);
 
@@ -166,6 +173,7 @@ const Chat = () => {
   const onClickFinishAuction = () => {
     dispatch(doneAuction(auctionId));
     navigate(`/auctionReview/${auctionId}`);
+		onDisconnected();
   };
 
   const calcTime = (createdAt) => {
@@ -204,7 +212,7 @@ const Chat = () => {
     setLoading(true);
     var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
     stompClient = Stomp.over(sockJS);
-    // stompClient.debug = null; // stompJS console.log 막기
+    stompClient.debug = null; // stompJS console.log 막기
 
     stompClient.connect({}, onConnected, onError);
   };
@@ -278,11 +286,13 @@ const Chat = () => {
   };
 
   const onDisconnected = () => {
-    if (stompClient !== null && window.confirm("채팅방을 나가겠습니까?")) {
+    if (stompClient !== null) {
       stompClient.disconnect();
       stompClient = null;
       navigate(-1);
-    }
+    } else {
+			navigate(-1);
+		}
   };
 
   return (
@@ -298,6 +308,7 @@ const Chat = () => {
               menu={true}
               onClickBtn={onClickMenu}
               onClickTitle={() => navigate(`/auctionDetail/${auctionId}`)}
+							onClickBackBtn={onDisconnected}
             />
 
             {/* 경매 남은 시간 */}

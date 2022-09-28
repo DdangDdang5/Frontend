@@ -13,9 +13,7 @@ import { useNavigate } from "react-router-dom";
 
 // Component & Shared import
 import AuctionCategory from "../auctionCategory/AuctionCategory";
-import {
-  Next,
-} from "../../shared/images";
+import { Next } from "../../shared/images";
 
 // Style import
 import {
@@ -59,7 +57,7 @@ const AuctionCategoryList = ({ isCategory }) => {
           <Next />
         </CategoryMore>
       </CategoryHeader>
-      <CategoryList>
+      {/* <CategoryList division={title}>
         {list6?.map((item, idx) =>
           isCategory ? (
             <AuctionCategory
@@ -75,7 +73,29 @@ const AuctionCategoryList = ({ isCategory }) => {
             />
           ),
         )}
-      </CategoryList>
+      </CategoryList> */}
+
+      {isCategory ? (
+        <CategoryList division="category">
+          {list6?.map((item, idx) => (
+            <AuctionCategory
+              division="categoryList"
+              divisionName={item.categoryName}
+              key={idx}
+            />
+          ))}
+        </CategoryList>
+      ) : (
+        <CategoryList division="region">
+          {list6?.map((item, idx) => (
+            <AuctionCategory
+              division="regionList"
+              divisionName={item.regionName}
+              key={idx}
+            />
+          ))}
+        </CategoryList>
+      )}
     </CategoryListContainer>
   );
 };
