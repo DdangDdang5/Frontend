@@ -301,7 +301,7 @@ const AuctionDetail = () => {
               <div className="DetailBodyProfile">
                 <DetailBodyProfileContent>
                   <div className="nickName">
-                    {data?.nickname.split("kakao")[0] + "kakao"}
+                    {data?.nickname?.split("kakao")[0] + "kakao"}
                   </div>
                   <div className="trustCount">신뢰도</div>
                 </DetailBodyProfileContent>
