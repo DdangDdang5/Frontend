@@ -30,7 +30,7 @@ const MyPageInterestAuction = () => {
     followingItem,
   } = useSelector((state) => state.myPage);
 
-  console.log("관심 옥션 데이터", data);
+  // console.log("관심 옥션 데이터", data);
 
   const [isAuction, setIsAuction] = useState(true);
 
@@ -46,7 +46,6 @@ const MyPageInterestAuction = () => {
 
     let clientHeightHandler = e.target.clientHeight;
     let scrollHeightHandler = e.target.scrollHeight;
-    console.log(scrollHeightHandler);
     if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
       if (!loading) {
         if (followingItem) {
@@ -105,13 +104,12 @@ const MyPageInterestAuction = () => {
             return (
               <React.Fragment key={`${index}_${item.id}`}>
                 <AuctionRow item={item} index={index} isAuction={isAuction} />
-                {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
               </React.Fragment>
             );
           })}
         </AuctionLayout>
       </MyAuctionBody>
-      <Footer />
+      <Footer myPage={true} />
     </MyAuctionLayout>
   );
 };
@@ -127,6 +125,10 @@ const MyAuctionBody = styled.div`
     props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   flex-direction: column;
   overflow: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  ::-webkit-scrollbar {
+    display: none; /* Chrome , Safari , Opera */
+  }
 `;
 const AuctionLayout = styled.div`
   display: flex;
@@ -135,6 +137,7 @@ const AuctionLayout = styled.div`
   align-items: flex-start;
   padding: 0px 20px;
   height: 100%;
+  gap: 20px;
 `;
 
 const None = styled.div`

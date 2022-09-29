@@ -15,7 +15,6 @@ const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
 
   const modalRef = useRef();
   const memberId = parseInt(sessionStorage?.getItem("memberId"));
-  console.log(data);
   // 모달 닫기
   const handleModalHide = (e) => {
     if (modalRef.current === e.target) {

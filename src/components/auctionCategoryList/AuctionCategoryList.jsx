@@ -6,6 +6,7 @@ import {
   categoryHitList,
   regionHitList,
 } from "../../redux/modules/AuctionDivisionSlice";
+import { clearMode } from "../../redux/modules/ModalSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
@@ -44,6 +45,11 @@ const AuctionCategoryList = ({ isCategory }) => {
     dispatch(categoryHitList());
     dispatch(regionHitList());
   }, [dispatch]);
+	
+	const moveAuctionList = () => {
+		dispatch(clearMode())
+		navigate("/auctionList");
+	}
 
   return (
     <CategoryListContainer>
@@ -52,7 +58,7 @@ const AuctionCategoryList = ({ isCategory }) => {
           <span>인기 {title} </span>
           <CategoryNum>TOP {list6?.length}</CategoryNum>
         </CategoryTitle>
-        <CategoryMore onClick={() => navigate("/auctionList")}>
+        <CategoryMore onClick={moveAuctionList}>
           <span>전체 보기</span>
           <Next />
         </CategoryMore>

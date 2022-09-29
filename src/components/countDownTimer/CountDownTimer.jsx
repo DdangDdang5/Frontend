@@ -22,7 +22,7 @@ const ExpiredNotice = () => {
 const ShowCounter = ({ days, hours, minutes, seconds }) => {
   return (
     <Time style={{ display: "flex", color: "white" }}>
-      {days === 0 ? (
+      {/* {days === 0 ? (
         ""
       ) : (
         <>
@@ -37,7 +37,7 @@ const ShowCounter = ({ days, hours, minutes, seconds }) => {
           <DateTimeDisplay value={hours} type={"Hours"} isDanger={false} />
           <p>시&nbsp;</p>
         </>
-      )}
+      )} */}
       {minutes === 0 ? (
         ""
       ) : (
@@ -68,8 +68,8 @@ const CountdownTimer = ({ targetDate }) => {
   } else {
     return (
       <ShowCounter
-        days={days}
-        hours={hours}
+        // days={days}
+        // hours={hours}
         minutes={minutes}
         seconds={seconds}
       />

@@ -5,7 +5,10 @@ import { useNavigate } from "react-router-dom";
 const AuctionRow = ({ item, index, isAuction }) => {
   const navigate = useNavigate();
 
-  const postPrice = item.startPrice
+  const nowPrice = item.nowPrice
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const startPrice = item?.startPrice
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -29,8 +32,17 @@ const AuctionRow = ({ item, index, isAuction }) => {
         </div>
         <div className="title">{item.content}</div>
         <div className="priceBox">
-          <div>최근입찰가</div>
-          <div className="price">{postPrice}</div>
+          {startPrice === nowPrice ? (
+            <>
+              <div>경매시작가</div>
+              <div className="price">{startPrice}</div>
+            </>
+          ) : (
+            <>
+              <div>현재입찰가</div>
+              <div className="price">{nowPrice}</div>
+            </>
+          )}
         </div>
       </ContentBox>
     </AuctionContainer>
@@ -43,7 +55,7 @@ const AuctionContainer = styled.div`
   gap: 18px;
   width: 100%;
 
-  margin-bottom: ${(props) => (props.state ? `32px` : `20px`)};
+  margin-bottom: ${(props) => (props.state ? `40px` : `20px`)};
 `;
 
 const ImgBox = styled.div`

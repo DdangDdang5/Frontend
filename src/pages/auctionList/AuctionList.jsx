@@ -15,7 +15,7 @@ import {
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { isIOS } from "react-device-detect";
 
 // Component & Page import
@@ -41,25 +41,26 @@ const AuctionList = () => {
 
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
+  const modal = useSelector((state) => state.modal.show);
 
   const [loadingState, setLoadingState] = useState(true);
 
-	const initializeAuctionList = async () => {
-		await setLoadingState(true);
-		await dispatch(_categoryList());
-		await dispatch(_regionList());
-	
-		if (categoryName === "전체 품목" && regionName === "서울 전체") {
-			await dispatch(initialPaging());
-			await dispatch(clearAuctionList());
-			await dispatch(auctionItemList());
-		}
+  const initializeAuctionList = async () => {
+    await setLoadingState(true);
+    await dispatch(_categoryList());
+    await dispatch(_regionList());
 
-		await setLoadingState(false);
-	}
+    if (categoryName === "전체 품목" && regionName === "서울 전체") {
+      await dispatch(initialPaging());
+      await dispatch(clearAuctionList());
+      await dispatch(auctionItemList());
+    }
+
+    await setLoadingState(false);
+  };
 
   useEffect(() => {
-		initializeAuctionList();
+    initializeAuctionList();
   }, [categoryName, regionName]);
 
   // 페이지 네이션
@@ -67,7 +68,7 @@ const AuctionList = () => {
     let scrollTopHandler = e.target.scrollTop;
     let clientHeightHandler = e.target.clientHeight;
     let scrollHeightHandler = e.target.scrollHeight;
-    console.log(clientHeightHandler);
+    // console.log(clientHeightHandler);
     if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
       if (!loading) {
         if (followingItem) {
@@ -81,58 +82,62 @@ const AuctionList = () => {
     return <></>;
   }
   return (
-    <AuctionListLayout>
-      {loadingState ? (
-        <Loading />
-      ) : (
-        <>
-          {/* <Header back={true} pageName="경매 목록" search={true} alarm={true} /> */}
-          <Header back={true} pageName="경매 목록" search={true} />
-          <ListCategoryWrap>
-            <CategoryWrap>
-              <CategoryBtn
-                onClick={() =>
-                  dispatch(showModal("categoryList"), _categoryList())
-                }
-              >
-                <CategoryBtnText>{categoryName}</CategoryBtnText>
-                <Open />
-              </CategoryBtn>
-            </CategoryWrap>
+    <>
+      <AuctionListLayout>
+        {loadingState ? (
+          <Loading />
+        ) : (
+          <>
+            {/* <Header back={true} pageName="경매 목록" search={true} alarm={true} /> */}
+            <Header back={true} pageName="경매 목록" search={true} />
+            <ListCategoryWrap>
+              <CategoryWrap idx={0} state={categoryName}>
+                <CategoryBtn
+                  idx={0}
+                  state={categoryName}
+                  onClick={() =>
+                    dispatch(showModal("categoryList"), _categoryList())
+                  }
+                >
+                  <CategoryBtnText>{categoryName}</CategoryBtnText>
+                  <Open />
+                </CategoryBtn>
+              </CategoryWrap>
 
-            <CategoryWrap>
-              <CategoryBtn>
-                <CategoryBtnText
+              <CategoryWrap idx={1} state={regionName}>
+                <CategoryBtn
+                  idx={1}
+                  state={regionName}
                   onClick={() =>
                     dispatch(showModal("regionList"), _regionList())
                   }
                 >
-                  {regionName}
-                </CategoryBtnText>
-                <Open />
-              </CategoryBtn>
-            </CategoryWrap>
-            <CategoryWrap>
-              <CategoryBtn>
+                  <CategoryBtnText>{regionName}</CategoryBtnText>
+                  <Open />
+                </CategoryBtn>
+              </CategoryWrap>
+              {/* <CategoryWrap>
+                <CategoryBtn>
                 <CategoryBtnTimeText>마감임박</CategoryBtnTimeText>
               </CategoryBtn>
-            </CategoryWrap>
-          </ListCategoryWrap>
-          <ListContents onScroll={handleScroll} isIOS={isIOS}>
-            {AuctionListData?.map((item, index) => {
-              return (
-                <AuctionColumn
-                  key={`${item.auctionId}-${index}-${item.title}`}
-                  data={item}
-                />
-              );
-            })}
-          </ListContents>
-          <PlusButton />
-          <Footer />
-        </>
-      )}
-    </AuctionListLayout>
+              </CategoryWrap> */}
+            </ListCategoryWrap>
+            <ListContents onScroll={handleScroll} isIOS={isIOS}>
+              {AuctionListData?.map((item, index) => {
+                return (
+                  <AuctionColumn
+                    key={`${item.auctionId}-${index}-${item.title}`}
+                    data={item}
+                  />
+                );
+              })}
+            </ListContents>
+            <PlusButton />
+            <Footer />
+          </>
+        )}
+      </AuctionListLayout>
+    </>
   );
 };
 
@@ -154,7 +159,15 @@ const ListCategoryWrap = styled.div`
 
 const CategoryWrap = styled.div`
   width: fit-content;
-  border: 1px solid #dedede;
+  border: 1px solid
+    ${(props) =>
+      props.idx
+        ? props.state === "서울 전체"
+          ? props.theme.colors.Gray1
+          : props.theme.colors.Blue1
+        : props.state === "전체 품목"
+        ? props.theme.colors.Gray1
+        : props.theme.colors.Blue1};
   border-radius: 100px;
 `;
 
@@ -164,13 +177,42 @@ const CategoryBtn = styled.div`
   justify-content: center;
   height: 30px;
 
+  border-radius: 100px;
+  ${(props) =>
+    props.idx
+      ? props.state === "서울 전체"
+        ? css`
+            color: ${(props) => props.theme.colors.Black};
+            background-color: ${(props) => props.theme.colors.White};
+          `
+        : css`
+            color: ${(props) => props.theme.colors.Blue1};
+            background-color: ${(props) => props.theme.colors.SkyBlue};
+          `
+      : props.state === "전체 품목"
+      ? css`
+          color: ${(props) => props.theme.colors.Black};
+          background-color: ${(props) => props.theme.colors.White};
+        `
+      : css`
+          color: ${(props) => props.theme.colors.Blue1};
+          background-color: ${(props) => props.theme.colors.SkyBlue};
+        `}
+
   svg {
     width: 12px;
     height: 7px;
     padding-right: 12px;
 
     path {
-      fill: ${(props) => props.theme.colors.Gray3};
+      fill: ${(props) =>
+        props.idx
+          ? props.state === "서울 전체"
+            ? props.theme.colors.Black
+            : props.theme.colors.Blue1
+          : props.state === "전체 품목"
+          ? props.theme.colors.Black
+          : props.theme.colors.Blue1};
     }
   }
 `;
@@ -189,15 +231,17 @@ const CategoryBtnTimeText = styled.div`
 `;
 
 const ListContents = styled.div`
+	width: calc(100% - 40px);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
   align-content: flex-start;
-  justify-content: flex-start;
+  justify-content: space-between;
   height: ${(props) =>
     props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   overflow: auto;
-  padding: 0px 10px;
+  padding: 0px 20px;
+	margin: auto;
 `;
 
 export default AuctionList;

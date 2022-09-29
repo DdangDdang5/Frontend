@@ -9,6 +9,10 @@ const Auction = ({ data }) => {
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+  const startPrice = data?.startPrice
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
   if (!data || !data?.auctionId) {
     return <></>;
   }
@@ -32,10 +36,18 @@ const Auction = ({ data }) => {
 
           {/* 줄에 표시되는 글자수 제한 */}
           <ItemContentBody>{data?.title}</ItemContentBody>
-
           <ItemContentFooter>
-            <StartPrice>최고입찰가</StartPrice>
-            <PresentPrice>{nowPrice ? nowPrice : 0}원</PresentPrice>
+            {startPrice === nowPrice ? (
+              <>
+                <StartPrice>경매시작가</StartPrice>
+                <PresentPrice>{startPrice}원</PresentPrice>
+              </>
+            ) : (
+              <>
+                <StartPrice>현재입찰가</StartPrice>
+                <PresentPrice>{nowPrice}원</PresentPrice>
+              </>
+            )}
           </ItemContentFooter>
         </ItemContentWrap>
       </AuctionItemContainer>
@@ -45,7 +57,7 @@ const Auction = ({ data }) => {
 
 const AuctionItemWrap = styled.div`
   display: flex;
-  width: 50%;
+  width: 48%;
   height: 277px;
   min-height: 277px;
 
@@ -56,7 +68,6 @@ const AuctionItemContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  margin: 0px 10px;
 `;
 const ItemPicture = styled.div`
   display: flex;
@@ -92,7 +103,7 @@ const ItemContentHeader = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2px 6px;
+    padding: 2px 4px;
 
     border-radius: 100px;
 
@@ -126,7 +137,7 @@ const ItemContentBody = styled.div`
   height: 50px;
   margin-bottom: 2px;
 
-  display: -webkit-box;
+  display: block;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;

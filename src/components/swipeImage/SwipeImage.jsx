@@ -179,7 +179,7 @@ const SwipeImage = ({
                 <FontEvent />
                 <EventContent idx={idx} isMain={isMain}>
                   <EventDate idx={idx} isMain={isMain}>
-                    09.27 ~ {idx ? "10.02" : "상시"}
+                    09.29 ~ {idx ? "10.02" : "상시"}
                   </EventDate>
                   <EventTitle idx={idx} isMain={isMain}>
                     {idx
@@ -196,7 +196,7 @@ const SwipeImage = ({
                   </EventText>
                 </EventContent>
                 {idx ? <EventImg /> : <InfoImg />}
-                <EventCircle id />
+                <EventCircle isMain={isMain} idx={idx} />
               </EventBanner>
             ))}
       </SwipeShowContainer>

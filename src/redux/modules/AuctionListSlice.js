@@ -19,7 +19,7 @@ export const auctionItemListNotPage = createAsyncThunk(
   async (payload, thunkAPI) => {
     try {
       const response = await api.get("/auction");
-      console.log(response);
+      // console.log(response);
 
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (err) {
@@ -54,7 +54,7 @@ export const addAuctionItem = createAsyncThunk(
       const response = await api.post("/auction", payload, {
         "Content-Type": "multipart/form-data",
       });
-      console.log(response);
+      // console.log(response);
       return thunkAPI.fulfillWithValue(response.data.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -65,7 +65,7 @@ export const addAuctionItem = createAsyncThunk(
 export const editAuctionItem = createAsyncThunk(
   "editAuctionItem",
   async (payload, thunkAPI) => {
-    console.log("editAuctionItem배돌", payload.auctionId);
+    // console.log("editAuctionItem배돌", payload.auctionId);
     try {
       const response = await api.patch(
         `/auction/${payload.auctionId}`,
@@ -74,7 +74,7 @@ export const editAuctionItem = createAsyncThunk(
           "Content-Type": "multipart/form-data",
         }
       );
-      console.log("editAuctionItem리스폰", response);
+      // console.log("editAuctionItem리스폰", response);
       return thunkAPI.fulfillWithValue(response.data);
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -85,7 +85,7 @@ export const editAuctionItem = createAsyncThunk(
 export const deleteAuctionItem = createAsyncThunk(
   "deleteAuctionItem",
   async (payload, thunkAPI) => {
-    console.log("111", payload);
+    // console.log("111", payload);
 
     try {
       const response = await api.delete(`auction/${payload}`);
@@ -186,12 +186,12 @@ const auctionListSlice = createSlice({
     noFollowingItem: (state, action) => {
       state.followingItem = false;
     },
-		initialPaging: (state, action) => {
-			state.paging = 1;
-		},
-		clearAuctionList: (state, action) => {
-			state.auctionList = [];
-		}
+    initialPaging: (state, action) => {
+      state.paging = 1;
+    },
+    clearAuctionList: (state, action) => {
+      state.auctionList = [];
+    },
   },
   extraReducers: {
     [auctionItemListNotPage.fulfilled]: (state, action) => {
@@ -298,6 +298,7 @@ const auctionListSlice = createSlice({
   },
 });
 
-export const { noFollowingItem, initialPaging, clearAuctionList } = auctionListSlice.actions;
+export const { noFollowingItem, initialPaging, clearAuctionList } =
+  auctionListSlice.actions;
 
 export default auctionListSlice.reducer;

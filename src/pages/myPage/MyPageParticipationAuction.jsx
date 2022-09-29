@@ -60,10 +60,16 @@ const MyPageParticipationAuction = () => {
       });
     }
     return () => {
+      setShouldShownData([]);
+    };
+  }, [isAuction, JSON.stringify(data)]);
+  useEffect(() => {
+    return () => {
+      setShouldShownData([]);
       dispatch(resetPaging());
       dispatch(resetList());
     };
-  }, [isAuction, JSON.stringify(data)]);
+  }, []);
 
   const handleScroll = (e) => {
     let scrollTopHandler = e.target.scrollTop;
@@ -94,13 +100,14 @@ const MyPageParticipationAuction = () => {
             return (
               <React.Fragment key={`${index}_${item.id}`}>
                 <AuctionRow item={item} index={index} />
-                {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
+                {/* 일단 추후 업데이트 예정 */}
+                {/* {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>} */}
               </React.Fragment>
             );
           })}
         </AuctionLayout>
       </MyAuctionBody>
-      <Footer />
+      <Footer myPage={true} />
     </MyAuctionLayout>
   );
 };
@@ -115,6 +122,10 @@ const MyAuctionBody = styled.div`
     props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   flex-direction: column;
   overflow: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  ::-webkit-scrollbar {
+    display: none; /* Chrome , Safari , Opera */
+  }
 `;
 const AuctionLayout = styled.div`
   display: flex;

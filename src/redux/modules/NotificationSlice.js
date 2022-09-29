@@ -17,16 +17,16 @@ export const getAllNotificationList = createAsyncThunk(
   async (payload, thunkAPI) => {
     const response = await api.get(`/notification/${payload}`);
     return response.data.data;
-  },
+  }
 );
 
 export const readNotification = createAsyncThunk(
   "readNotification",
   async (payload, thunkAPI) => {
     const response = await api.patch(`/notification/read/${payload}`);
-    console.log(response);
+    // console.log(response);
     return response.data.data;
-  },
+  }
 );
 
 const notificationSlice = createSlice({
@@ -40,14 +40,14 @@ const notificationSlice = createSlice({
         ...action.payload.newNotifs,
       ];
 
-      console.log("eklendi");
+      // console.log("eklendi");
     },
     clear: (state, action) => {
       state.notifs = [];
     },
     removeToastList: (state, action) => {
       let updated = state.notifToastList.filter(
-        (item) => item.id !== action.payload.notifList.id,
+        (item) => item.id !== action.payload.notifList.id
       );
       state.notifToastList = updated;
     },
@@ -59,7 +59,7 @@ const notificationSlice = createSlice({
       state.notifList = action.payload;
     },
     [readNotification.fulfilled]: (state, action) => {
-      console.log("readNotification", action);
+      // console.log("readNotification", action);
       state.notifList = state.notifList.map((item) => {
         if (item.notifId === action.payload.id) {
           return action.payload;

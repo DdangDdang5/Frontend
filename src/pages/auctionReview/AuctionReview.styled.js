@@ -162,7 +162,8 @@ export const AnswerRadioBtn = styled.input.attrs({ type: "radio" })`
 
   &:checked {
     /* display: none; */
-    background: ${(props) => props.theme.colors.Gray3};
+    /* background: ${(props) => props.theme.colors.Gray3}; */
+		color: ${(props) => props.theme.colors.Blue1};
 
     & + span {
       /* border: 2px solid black; */

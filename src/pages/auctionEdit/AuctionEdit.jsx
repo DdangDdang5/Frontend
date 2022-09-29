@@ -23,7 +23,7 @@ const AuctionEdit = () => {
   const navigate = useNavigate();
   const img_ref = useRef();
   const data = useSelector((state) => state.auction.auction);
-  console.log(data);
+  // console.log(data);
   const auctionRequestDto = {
     title: data.title,
     content: data.content,

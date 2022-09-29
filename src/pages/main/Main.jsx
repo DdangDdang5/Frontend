@@ -48,6 +48,7 @@ import {
   TagWrap,
 } from "./Main.styled";
 import { FontEvent, FontRegular } from "../../shared/fonts/font";
+import { clearMode } from "../../redux/modules/ModalSlice";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -86,6 +87,11 @@ const Main = () => {
   const moveAuctionDetail = (auctionId) => {
     navigate(`/auctionDetail/${auctionId}`);
   };
+
+	const moveAuctionList = () => {
+		dispatch(clearMode());
+		navigate("/auctionList");
+	}
 
   return (
     <MainContainer>
@@ -133,7 +139,7 @@ const Main = () => {
                       </div>
                       <PopularPriceWrap>
                         <span>현재 입찰가</span>
-                        <PopularPrice>{item.nowPrice}원</PopularPrice>
+                        <PopularPrice>{item.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</PopularPrice>
                       </PopularPriceWrap>
                     </PopularItemContent>
                   </PopularItem>
@@ -145,7 +151,7 @@ const Main = () => {
             <ListContainer>
               <ListHeader>
                 <span>따끈따끈 새로 올라온 경매!</span>
-                <ListHeaderMore onClick={() => navigate("/auctionList")}>
+                <ListHeaderMore onClick={moveAuctionList}>
                   <span>전체 보기</span>
                   <Next />
                 </ListHeaderMore>
@@ -168,8 +174,8 @@ const Main = () => {
                       </TagWrap>
                       <NewItemTitle>{item.title}</NewItemTitle>
                       <NewItemPriceWrap>
-                        <span>입찰시작가</span>
-                        <NewItemPrice>{item.nowPrice}원</NewItemPrice>
+                        <span>현재입찰가</span>
+                        <NewItemPrice>{item.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</NewItemPrice>
                       </NewItemPriceWrap>
                     </NewItemContent>
                   </NewItem>
@@ -182,7 +188,7 @@ const Main = () => {
               <ListContainer>
                 <ListHeader isLast={true}>
                   <span>서두르세요! 곧 경매가 끝나요</span>
-                  <ListHeaderMore onClick={() => navigate("/auctionList")}>
+              		<ListHeaderMore onClick={moveAuctionList}>
                     <span>전체 보기</span>
                     <Next />
                   </ListHeaderMore>
@@ -204,8 +210,8 @@ const Main = () => {
                       </TagWrap>
                       <NewItemTitle>{item.title}</NewItemTitle>
                       <NewItemPriceWrap>
-                        <span>최고입찰가</span>
-                        <NewItemPrice>{item.nowPrice}원</NewItemPrice>
+                        <span>현재입찰가</span>
+                        <NewItemPrice>{item.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</NewItemPrice>
                       </NewItemPriceWrap>
                     </LastItem>
                   ))}

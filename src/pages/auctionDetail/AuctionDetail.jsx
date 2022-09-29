@@ -41,9 +41,7 @@ const AuctionDetail = () => {
 
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
-  console.log(data);
-  console.log(memberId);
-  // console.log("찜하기 스테이트", favorite);
+
   const [joinVisible, setJoinVisible] = useState(false);
   const [isMenuModal, setIsMenuModal] = useState(false);
   const [winBid, setWinBid] = useState(false);
@@ -56,7 +54,7 @@ const AuctionDetail = () => {
     createdAt: "",
   });
 
-  let chatOther = "";
+  const [chatOther, setChatOther] = useState("");
 
   const imgList = data?.multiImages;
 
@@ -82,7 +80,11 @@ const AuctionDetail = () => {
       return <></>;
     } else {
       dispatch(auctionDetailData(+params?.auctionId)).then((res) => {
-        if (data.bidRoomId !== undefined && chatList.length === 0 && data.auctionStatus) {
+        if (
+          data.bidRoomId !== undefined &&
+          chatList.length === 0 &&
+          data.auctionStatus
+        ) {
           registerUser();
         }
       });
@@ -93,9 +95,11 @@ const AuctionDetail = () => {
         if (bid) {
           if (bid.seller === nickName || bid.bidder === nickName) {
             setWinBid(true);
-            chatOther = [bid.seller, bid.bidder]
-              .filter((item) => item !== nickName)
-              .join("");
+            setChatOther(
+              [bid.seller, bid.bidder]
+                .filter((item) => item !== nickName)
+                .join("")
+            );
           }
         }
       }
@@ -110,7 +114,7 @@ const AuctionDetail = () => {
     return navigate(-1);
   }
 
-  const onClickAuctionJoin = async () => {
+  const onClickAuctionJoin = () => {
     // 비로그인 -> 세션에 멤버아이디 없음
     if (!memberId) {
       if (window.confirm("로그인이 필요합니다. 로그인하시겠습니까?")) {
@@ -127,6 +131,26 @@ const AuctionDetail = () => {
     }
   };
 
+  const onClickAuctionChatRoom = () => {
+    if (!memberId) {
+      if (window.confirm("로그인이 필요합니다. 로그인하시겠습니까?")) {
+        navigate("/login");
+      }
+    } else {
+      navigate(`/chat/${data.roomId}`, {
+        state: {
+          auctionId: params?.auctionId,
+          auctionCreatedAt: data.createdAt,
+          auctionPeriod: data.auctionPeriod,
+          auctionStatus: data.auctionStatus,
+          isDetail: true,
+          title: data.title,
+        },
+      });
+      window.location.reload();
+    }
+  };
+
   const onClickAuctionSeller = () => {
     if (nickName && nickName === data?.nickName) {
       navigate("/myPage");
@@ -135,11 +159,31 @@ const AuctionDetail = () => {
     }
   };
 
+  const onSubmitAuctionPrice = () => {
+    // if (userData.message > )
+    const nowPrice = Math.max(
+      data.nowPrice,
+      chatList.length > 0
+        ? +chatList[chatList.length - 1]?.message
+        : data.startPrice
+    );
+
+    if (+userData.message > nowPrice) {
+      if (+userData.message > 999999) {
+        window.alert("최대 999,999원까지 입력할 수 있습니다.");
+      } else {
+        sendMessage();
+      }
+    } else {
+      window.alert("현재 최고가보다 높은 호가를 올려야합니다.");
+    }
+  };
+
   // 웹소켓 연결
   const registerUser = () => {
     var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
     stompClient = Stomp.over(sockJS);
-    // stompClient.debug = null; // stompJS console.log 막기
+    stompClient.debug = null; // stompJS console.log 막기
 
     stompClient.connect({}, onConnected, onError);
   };
@@ -176,11 +220,12 @@ const AuctionDetail = () => {
         message: userData.message,
       };
 
-      stompClient.send(
-        "/app/chat/bid",
-        {},
-        JSON.stringify({ ...chatMessage, type: "ENTER" })
-      );
+      // stompClient.send(
+      //   "/app/chat/bid",
+      //   {},
+
+      //   JSON.stringify({ ...chatMessage, type: "ENTER" }),
+      // );
 
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
       setUserData({ ...userData, message: "" });
@@ -201,27 +246,27 @@ const AuctionDetail = () => {
       stompClient = null;
       navigate(-1);
     } else {
-			navigate(-1);
-		}
+      navigate(-1);
+    }
   };
 
   // 타이머 기능
   const timer = (countDown) => {
-    const oneDay = 1 * 24 * 60 * 60 * 1000;
-    const fiveDay = oneDay * 5;
-    const sevenDay = oneDay * 7;
+    const tenMinute = 10 * 60 * 1000;
+    const thirtyMinute = tenMinute * 3;
+    const sixtyMinute = tenMinute * 6;
     const startTime = Date.parse(data.createdAt);
-    const dateTimeAfterOneDays = startTime + oneDay;
-    const dateTimeAfterFiveDays = startTime + fiveDay;
-    const dateTimeAfterSevenDays = startTime + sevenDay;
+    const dateTimeAfterTenMinute = startTime + tenMinute;
+    const dateTimeAfterThirtyMinute = startTime + thirtyMinute;
+    const dateTimeAfterSixtyMinute = startTime + sixtyMinute;
 
     switch (countDown) {
-      case 1:
-        return dateTimeAfterOneDays;
-      case 5:
-        return dateTimeAfterFiveDays;
-      case 7:
-        return dateTimeAfterSevenDays;
+      case 10:
+        return dateTimeAfterTenMinute;
+      case 30:
+        return dateTimeAfterThirtyMinute;
+      case 60:
+        return dateTimeAfterSixtyMinute;
       default:
         return <div>경매가 종료되었습니다.</div>;
     }
@@ -235,7 +280,7 @@ const AuctionDetail = () => {
           share={true}
           menu={true}
           onClickBtn={() => setIsMenuModal(!isMenuModal)}
-					onClickBackBtn={onDisconnected}
+          onClickBackBtn={onDisconnected}
           color="#ffffff"
         />
 
@@ -284,28 +329,16 @@ const AuctionDetail = () => {
               </DetailBodyViewTag>
               <DetailBodyItemTag>
                 {tagsArray?.map((item, index) =>
-                  item !== null ? <div key={index}>{`#${item}`}</div> : "",
+                  item !== null ? <div key={index}>{`#${item}`}</div> : ""
                 )}
               </DetailBodyItemTag>
             </DetailBodyBox>
           </DetailBodyContainer>
 
-          <CommentCountContainer
-            onClick={() =>
-              navigate(`/chat/${data.roomId}`, {
-                state: {
-                  auctionId: params?.auctionId,
-                  auctionCreatedAt: data?.createdAt,
-                  auctionPeriod: data?.auctionPeriod,
-                  audtionStatus: data?.auctionStatus,
-                  isDetail: true,
-                  title: data.title,
-                },
-              })
-            }>
+          <CommentCountContainer onClick={onClickAuctionChatRoom}>
             <CommentCountWrap>
-              <CommentCountTitle>실시간 채팅방</CommentCountTitle>
-              <p>{data.participantCnt}명 참여중</p>
+              <CommentCountTitle>실시간 질문방</CommentCountTitle>
+              <p>{data.participantCnt}명 질문중</p>
             </CommentCountWrap>
             <Next />
           </CommentCountContainer>
@@ -356,6 +389,7 @@ const AuctionDetail = () => {
                         chatOther: chatOther,
                       },
                     });
+                    window.location.reload();
                   }}
                   style={{
                     width: "165px",
@@ -453,7 +487,7 @@ const AuctionDetail = () => {
                 data.nowPrice,
                 chatList.length > 0
                   ? +chatList[chatList.length - 1]?.message
-                  : data.startPrice,
+                  : data.startPrice
               )
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -462,18 +496,32 @@ const AuctionDetail = () => {
           </AuctionNowPriceWrap>
           <AuctionJoinInfo>
             입찰 후에는 금액을 수정하거나 취소할 수 없습니다.
+            <br />
+            최대 999,999원까지 입력할 수 있습니다.
           </AuctionJoinInfo>
           <AuctionJoinInput
             type="number"
             value={userData.message}
+            maxLength="6"
+            // onInput={(event) =>
+            //   event.value.length > event.maxLength
+            //     ? (event.value = event.value.slice(0, event.maxLength))
+            //     : null
+            // }
             onChange={(event) =>
               setUserData({ ...userData, message: event.target.value })
             }
             onKeyDown={(event) => onKeyPress(event)}
             placeholder="입찰 가격을 입력해주세요."
           />
-          {userData.message <=
-          Math.max(data.startPrice, +chatList[chatList.length - 1]?.message) ? (
+          {/* {console.log(+userData.message, data.nowPrice)} */}
+          {+userData.message <=
+          Math.max(
+            data.nowPrice,
+            chatList.length > 0
+              ? +chatList[chatList.length - 1]?.message
+              : data.startPrice
+          ) ? (
             <AuctionJoinInputInfo>
               현재 최고가보다 낮은 호가입니다.
             </AuctionJoinInputInfo>
@@ -484,7 +532,7 @@ const AuctionDetail = () => {
             <Button
               type={"submit"}
               text={"입찰하기"}
-              _onClick={sendMessage}
+              _onClick={onSubmitAuctionPrice}
               style={{
                 width: "100%",
                 height: "56px",

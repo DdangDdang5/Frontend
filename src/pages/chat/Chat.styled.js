@@ -8,8 +8,8 @@ export const ChatContent = styled.div`
   background-color: ${(props) => props.theme.colors.Gray1};
 
   position: absolute;
-  top: ${(props) => props.isDetail ? "112px" : "70px"};
-  bottom: 70px;
+	top: 112px;
+  bottom: ${(props) => props.isIOS ? "80px" : "70px"};
 
   overflow-y: scroll;
 `;
@@ -19,7 +19,7 @@ export const AuctionTimeWrap = styled.div`
   height: 42px;
 
   color: ${(props) => props.theme.colors.White};
-  background-color: ${(props) => props.theme.colors.Red};
+  background-color: ${(props) => props.isDetail ? props.theme.colors.Red : props.theme.colors.Blue1};
   font-size: ${(props) => props.theme.fontSizes.sm};
   font-weight: ${(props) => props.theme.fontWeights.normal};
 
@@ -121,15 +121,13 @@ export const MessageTime = styled.span`
 
 export const ChatFooter = styled.div`
   width: calc(100% - 40px);
-  height: 70px;
+  height: ${(props) => props.isIOS ? "80px" : "70px"};
   padding: 0 20px;
+	/* padding-bottom:${(props) => props.isIOS ? "10px" : null};  */
+	/* margin-bottom: ${(props) => props.isIOS ? "10px" : null}; */
 
   position: absolute;
   bottom: 0;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 
   svg {
     width: 24px;
@@ -145,6 +143,14 @@ export const ChatFooter = styled.div`
 			fill: ${(props) => props.theme.colors.Blue1};
 		}
 	}
+`;
+
+export const ChatFooterContent = styled.div`
+	height: 70px;
+
+	display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const MessageInput = styled.input`
@@ -183,6 +189,10 @@ export const SendBtn = styled.button`
 			}
 		}
 	}
+`;
+
+export const SendIOSContainer = styled.div`
+	height: 10px;
 `;
 
 export const MenuItemList = styled.div`

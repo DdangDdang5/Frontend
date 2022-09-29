@@ -61,6 +61,10 @@ export const modalSlice = createSlice({
     changeMode: (state, action) => {
       state.mode = action.payload;
     },
+		clearMode: (state, action) => {
+			state.categoryName = "전체 품목";
+			state.regionName = "서울 전체";
+		}
   },
   extraReducers: {
     [_categoryList.fulfilled]: (state, action) => {
@@ -123,5 +127,5 @@ export const modalSlice = createSlice({
   },
 });
 
-export const { showModal, hideModal, changeMode } = modalSlice.actions;
+export const { showModal, hideModal, changeMode, clearMode } = modalSlice.actions;
 export default modalSlice.reducer;

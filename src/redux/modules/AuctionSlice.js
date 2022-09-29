@@ -70,7 +70,6 @@ export const reviewAuction = createAsyncThunk(
         `/auction/${payload.auctionId}/review`,
         payload.data
       );
-			console.log(response);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
@@ -79,18 +78,20 @@ export const reviewAuction = createAsyncThunk(
 );
 
 export const joinAuction = createAsyncThunk(
-	"joinAuction",
-	async (payload, thunkAPI) => {
-		try {
-			const response = await api.post(`/auction/${payload.auctionId}/join`, { userPrice: payload.userPrice});
-			console.log(response);
-			// return response.data.data;
-			return response.data;
-		} catch (error) {
-			return thunkAPI.rejectWithValue(error);
-		}
-	}
-)
+  "joinAuction",
+  async (payload, thunkAPI) => {
+    try {
+      const response = await api.post(`/auction/${payload.auctionId}/join`, {
+        userPrice: payload.userPrice,
+      });
+      console.log(response);
+      // return response.data.data;
+      return response.data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
 
 const auctionSlice = createSlice({
   name: "auction_",
@@ -142,7 +143,7 @@ const auctionSlice = createSlice({
 
     // 경매 입찰
     [joinAuction.fulfilled]: (state, action) => {
-			console.log('reducer', action);
+      // console.log('reducer', action);
       // state.review = action.payload.data;
     },
     [joinAuction.rejected]: (state, action) => {

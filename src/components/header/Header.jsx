@@ -53,27 +53,29 @@ const Header = ({
   onClickBtn,
   onClickSave,
   onClickTitle,
-	onClickBackBtn,
-	color
+  onClickBackBtn,
+  color,
 }) => {
   const navigate = useNavigate();
-
-	console.log(onClickBackBtn);
 
   return (
     <HeaderContainer>
       <HeaderContent color={color}>
         {/* left */}
         <HeaderTitle>
-          {back ? <Back onClick={onClickBackBtn ? onClickBackBtn : () => navigate(-1)} /> : null}
+          {back ? (
+            <Back
+              onClick={onClickBackBtn ? onClickBackBtn : () => navigate(-1)}
+            />
+          ) : null}
           {close ? (
-            <Close className="close" onClick={() => navigate(-1)} />
+            <Close id="close" onClick={() => navigate(-1)} />
           ) : null}
           {pageName ? (
             <PageTitle onClick={onClickTitle}>{pageName}</PageTitle>
           ) : null}
           {logo ? (
-            <Logo className="logo" onClick={() => navigate("/")}>
+            <Logo id="logo" onClick={() => navigate("/")}>
               땅땅
             </Logo>
           ) : null}

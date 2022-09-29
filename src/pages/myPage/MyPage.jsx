@@ -49,14 +49,14 @@ const MyPage = () => {
   };
 
   const basicProfileImg = () => {
-    if (
-      data?.profileImgUrl === null ||
-      data?.profileImgUrl === undefined ||
-      memberId === null
-    ) {
+    if (memberId === null) {
       return <BasicProfile onClick={() => handleLogIn()} />;
     } else {
-      return <img src={data?.profileImgUrl} alt="" />;
+      if (data?.profileImgUrl === null || data?.profileImgUrl === undefined) {
+        return <BasicProfile />;
+      } else {
+        return <img src={data?.profileImgUrl} alt="" />;
+      }
     }
   };
 
@@ -114,23 +114,15 @@ const MyPage = () => {
           {memberId === null ? (
             <>
               <div className="MyStateWrap" onClick={() => handleLogIn()}>
-                <div
-                  className="stateBox"
-                  onClick={() => navigate("/myPageMyAuction")}>
+                <div className="stateBox">
                   <div className="title">나의 경매</div>
                   <div className="count">0</div>
                 </div>
                 <StateBox>
-                  <div
-                    className="title"
-                    onClick={() => navigate("/myPageParticipationAuction")}>
-                    참여 경매
-                  </div>
+                  <div className="title">참여 경매</div>
                   <div className="count">0</div>
                 </StateBox>
-                <div
-                  className="stateBox"
-                  onClick={() => navigate("/MyPageInterestAuction")}>
+                <div className="stateBox">
                   <div className="title">관심 경매</div>
                   <div className="count">0</div>
                 </div>
@@ -151,7 +143,11 @@ const MyPage = () => {
                     onClick={() => navigate("/myPageParticipationAuction")}>
                     참여 경매
                   </div>
-                  <div className="count">{data?.myParticipantCnt}</div>
+                  <div
+                    className="count"
+                    onClick={() => navigate("/myPageParticipationAuction")}>
+                    {data?.myParticipantCnt}
+                  </div>
                 </StateBox>
                 <div
                   className="stateBox"
@@ -169,16 +165,8 @@ const MyPage = () => {
             listName={`이벤트`}
             onClick={() => navigate(`/eventList`)}
           />
-          <MyPageList
-            icon={<Notice />}
-            listName={`공지사항`}
-            onClick={() => navigate(`/eventList`)}
-          />
-          <MyPageList
-            icon={<Questions />}
-            listName={`자주 묻는 질문`}
-            onClick={() => navigate(`/eventList`)}
-          />
+          <MyPageList icon={<Notice />} listName={`공지사항`} />
+          <MyPageList icon={<Questions />} listName={`자주 묻는 질문`} />
           <MyPageList
             icon={<ProfileEdit />}
             listName={`개인 정보 수정`}
@@ -357,18 +345,20 @@ const StateBox = styled.div`
   align-items: center;
   width: 114px;
   height: 26px;
-
   border-left: 1px solid black;
   border-right: 1px solid black;
-
   .title {
     display: flex;
-
+    justify-content: center;
+    width: 100%;
     font-size: ${(props) => props.theme.fontSizes.ms};
     font-weight: ${(props) => props.theme.fontWeights.normal};
     color: #6d6d6d;
   }
   .count {
+    display: flex;
+    width: 100%;
+    justify-content: center;
     font-size: ${(props) => props.theme.fontSizes.lg};
     font-weight: ${(props) => props.theme.fontWeights.bold};
   }
