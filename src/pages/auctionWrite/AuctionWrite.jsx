@@ -35,7 +35,7 @@ const AuctionWrite = () => {
     region: "동대문구",
     direct: false,
     delivery: false,
-    auctionPeriod: "",
+    auctionPeriod: 0,
   };
   const initialTag = {
     tag1: "",
