@@ -90,5 +90,4 @@ export const PopularKeyword = styled.div`
   gap: 12px;
   box-sizing: border-box;
   margin-left: 30px;
-  cursor: pointer;
 `;
