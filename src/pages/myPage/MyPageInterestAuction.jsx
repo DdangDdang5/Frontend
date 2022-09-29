@@ -137,6 +137,7 @@ const AuctionLayout = styled.div`
   align-items: flex-start;
   padding: 0px 20px;
   height: 100%;
+  gap: 20px;
 `;
 
 const None = styled.div`
