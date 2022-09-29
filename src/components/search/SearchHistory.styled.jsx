@@ -62,6 +62,9 @@ export const PopularKeywordWrap = styled.div`
   box-sizing: border-box;
   gap: 24px;
   top: 20px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 `;
 
 export const PopularNum = styled.div`
@@ -81,10 +84,10 @@ export const PopularKeyword = styled.div`
   font-family: "Spoqa Han Sans Neo";
   color: ${(props) => props.theme.colors.Black};
   line-height: 25.2px;
-  width: 22vw;
+  width: 134px;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  box-sizing: border-box;
   margin-left: 30px;
-  display: inline-block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
