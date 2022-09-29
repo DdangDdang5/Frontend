@@ -39,7 +39,7 @@ const AuctionDetail = () => {
   const bid = useSelector((state) => state.auction.bid);
   const favoriteState = useSelector((state) => state.auction.favorite);
 
-	console.log(data);
+  console.log(data);
 
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
@@ -275,6 +275,7 @@ const AuctionDetail = () => {
     }
   };
 
+  console.log("타임", data);
   return (
     <>
       <AuctionDetailLayout>
