@@ -65,29 +65,11 @@ const Chat = () => {
     title,
   } = useLocation().state;
 
-  // const location = useLocation();
-  // console.log(location);
-  // const chatOther = location?.chatOther;
-  // const auctionId = location?.auctionId;
-  // const auctionCreatedAt = location?.auctionCreatedAt;
-  // const auctionPeriod = location?.auctionPeriod;
-  // const auctionStatus = location?.auctionStatus;
-  // const isDetail = location?.isDetail;
-  // const title = location?.title;
-
   const nickName = sessionStorage.getItem("memberNickname");
 
-  // console.log(
-  //   auctionId,
-  //   auctionCreatedAt,
-  //   auctionPeriod,
-  //   auctionStatus,
-  //   chatOther,
-  // );
-  // console.log(isDetail, title);
 
   const chatMessageList = useSelector(
-    (state) => state.chat.chatMessageList,
+    (state) => state.chat.chatMessageList
   ).filter((item) => item.roomId === roomId);
 
   const [loading, setLoading] = useState(true);
@@ -130,9 +112,6 @@ const Chat = () => {
   //     }
   //   };
   // }, []);
-
-  // console.log(chatList);
-  // console.log(chatMessageList);
 
   useEffect(() => {
     dispatch(getChatMessageList(roomId));
@@ -272,7 +251,7 @@ const Chat = () => {
       stompClient.send(
         "/app/chat/message",
         {},
-        JSON.stringify({ ...chatMessage, sender: chatOther }),
+        JSON.stringify({ ...chatMessage, sender: chatOther })
       );
     }
     setLoading(false);
@@ -404,7 +383,7 @@ const Chat = () => {
                           </ChatMessage>
                         )}
                       </div>
-                    ),
+                    )
                 )}
               </ChatMessageList>
             </ChatContent>
@@ -433,8 +412,7 @@ const Chat = () => {
           <OptionModal
             minHeight="50px"
             visible={visible}
-            setVisible={setVisible}
-          >
+            setVisible={setVisible}>
             <MenuItemList>
               <MenuItem onClick={onClickFinishMenu}>거래 완료하기</MenuItem>
               {/* <MenuItem>차단하기</MenuItem>
@@ -447,8 +425,7 @@ const Chat = () => {
           <ChatOptionModal
             minHeight="260px"
             visible={optionVisible}
-            setVisible={setOptionVisible}
-          >
+            setVisible={setOptionVisible}>
             <OptionModalContainer>
               <ModalTextWrap>
                 <span>거래가 완료되었나요?</span>

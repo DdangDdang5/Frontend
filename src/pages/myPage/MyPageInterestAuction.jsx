@@ -30,7 +30,7 @@ const MyPageInterestAuction = () => {
     followingItem,
   } = useSelector((state) => state.myPage);
 
-  console.log("관심 옥션 데이터", data);
+  // console.log("관심 옥션 데이터", data);
 
   const [isAuction, setIsAuction] = useState(true);
 
@@ -46,7 +46,6 @@ const MyPageInterestAuction = () => {
 
     let clientHeightHandler = e.target.clientHeight;
     let scrollHeightHandler = e.target.scrollHeight;
-    console.log(scrollHeightHandler);
     if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
       if (!loading) {
         if (followingItem) {

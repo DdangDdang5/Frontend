@@ -329,7 +329,7 @@ const AuctionDetail = () => {
               </DetailBodyViewTag>
               <DetailBodyItemTag>
                 {tagsArray?.map((item, index) =>
-                  item !== null ? <div key={index}>{`#${item}`}</div> : "",
+                  item !== null ? <div key={index}>{`#${item}`}</div> : ""
                 )}
               </DetailBodyItemTag>
             </DetailBodyBox>
@@ -487,7 +487,7 @@ const AuctionDetail = () => {
                 data.nowPrice,
                 chatList.length > 0
                   ? +chatList[chatList.length - 1]?.message
-                  : data.startPrice,
+                  : data.startPrice
               )
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
