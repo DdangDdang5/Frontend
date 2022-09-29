@@ -41,8 +41,8 @@ const AuctionDetail = () => {
 
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
-  console.log(data);
-  console.log(memberId);
+  // console.log(data);
+  // console.log(memberId);
   // console.log("찜하기 스테이트", favorite);
   const [joinVisible, setJoinVisible] = useState(false);
   const [isMenuModal, setIsMenuModal] = useState(false);
@@ -82,7 +82,11 @@ const AuctionDetail = () => {
       return <></>;
     } else {
       dispatch(auctionDetailData(+params?.auctionId)).then((res) => {
-        if (data.bidRoomId !== undefined && chatList.length === 0 && data.auctionStatus) {
+        if (
+          data.bidRoomId !== undefined &&
+          chatList.length === 0 &&
+          data.auctionStatus
+        ) {
           registerUser();
         }
       });
@@ -201,8 +205,8 @@ const AuctionDetail = () => {
       stompClient = null;
       navigate(-1);
     } else {
-			navigate(-1);
-		}
+      navigate(-1);
+    }
   };
 
   // 타이머 기능
@@ -235,7 +239,7 @@ const AuctionDetail = () => {
           share={true}
           menu={true}
           onClickBtn={() => setIsMenuModal(!isMenuModal)}
-					onClickBackBtn={onDisconnected}
+          onClickBackBtn={onDisconnected}
           color="#ffffff"
         />
 
@@ -284,7 +288,7 @@ const AuctionDetail = () => {
               </DetailBodyViewTag>
               <DetailBodyItemTag>
                 {tagsArray?.map((item, index) =>
-                  item !== null ? <div key={index}>{`#${item}`}</div> : "",
+                  item !== null ? <div key={index}>{`#${item}`}</div> : ""
                 )}
               </DetailBodyItemTag>
             </DetailBodyBox>
@@ -453,7 +457,7 @@ const AuctionDetail = () => {
                 data.nowPrice,
                 chatList.length > 0
                   ? +chatList[chatList.length - 1]?.message
-                  : data.startPrice,
+                  : data.startPrice
               )
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}

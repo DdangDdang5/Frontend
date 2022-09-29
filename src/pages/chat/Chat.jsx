@@ -60,10 +60,10 @@ const Chat = () => {
   } = useLocation().state;
   const nickName = sessionStorage.getItem("memberNickname");
 
-	// console.log(auctionId, auctionCreatedAt, auctionPeriod, auctionStatus);
+  // console.log(auctionId, auctionCreatedAt, auctionPeriod, auctionStatus);
 
   const chatMessageList = useSelector(
-    (state) => state.chat.chatMessageList,
+    (state) => state.chat.chatMessageList
   ).filter((item) => item.roomId === roomId);
 
   const [loading, setLoading] = useState(true);
@@ -102,22 +102,18 @@ const Chat = () => {
 
   //   return () => {
   //     if (loading) {
-	// 			onDisconnected();
+  // 			onDisconnected();
   //       setTimeout(timeout);
   //     }
   //   };
   // }, []);
 
-	console.log(chatList);
-	console.log(chatMessageList);
-
   useEffect(() => {
     dispatch(getChatMessageList(roomId));
 
     if (chatMessageList[0]?.data?.length > 0) {
-			console.log(chatList);
-			chatList.push(...chatMessageList[0].data);
-			setChatList(chatList);
+      chatList.push(...chatMessageList[0].data);
+      setChatList(chatList);
     }
   }, [JSON.stringify(chatMessageList)]);
 
@@ -164,7 +160,7 @@ const Chat = () => {
 
   // 채팅 메뉴 모달 중 "거래 완료하기" 클릭
   const onClickFinishMenu = () => {
-		dispatch(doneAuction(auctionId))
+    dispatch(doneAuction(auctionId));
     setVisible(false);
     setOptionVisible(true);
   };
@@ -173,7 +169,7 @@ const Chat = () => {
   const onClickFinishAuction = () => {
     dispatch(doneAuction(auctionId));
     navigate(`/auctionReview/${auctionId}`);
-		onDisconnected();
+    onDisconnected();
   };
 
   const calcTime = (createdAt) => {
@@ -246,7 +242,7 @@ const Chat = () => {
       stompClient.send(
         "/app/chat/message",
         {},
-        JSON.stringify({ ...chatMessage, sender: chatOther }),
+        JSON.stringify({ ...chatMessage, sender: chatOther })
       );
     }
     setLoading(false);
@@ -291,8 +287,8 @@ const Chat = () => {
       stompClient = null;
       navigate(-1);
     } else {
-			navigate(-1);
-		}
+      navigate(-1);
+    }
   };
 
   return (
@@ -308,7 +304,7 @@ const Chat = () => {
               menu={true}
               onClickBtn={onClickMenu}
               onClickTitle={() => navigate(`/auctionDetail/${auctionId}`)}
-							onClickBackBtn={onDisconnected}
+              onClickBackBtn={onDisconnected}
             />
 
             {/* 경매 남은 시간 */}
@@ -371,7 +367,7 @@ const Chat = () => {
                           </ChatMessage>
                         )}
                       </div>
-                    ),
+                    )
                 )}
               </ChatMessageList>
             </ChatContent>
@@ -397,8 +393,7 @@ const Chat = () => {
           <OptionModal
             minHeight="50px"
             visible={visible}
-            setVisible={setVisible}
-          >
+            setVisible={setVisible}>
             <MenuItemList>
               <MenuItem onClick={onClickFinishMenu}>거래 완료하기</MenuItem>
               {/* <MenuItem>차단하기</MenuItem>
@@ -411,8 +406,7 @@ const Chat = () => {
           <ChatOptionModal
             minHeight="260px"
             visible={optionVisible}
-            setVisible={setOptionVisible}
-          >
+            setVisible={setOptionVisible}>
             <OptionModalContainer>
               <ModalTextWrap>
                 <span>거래가 완료되었나요?</span>

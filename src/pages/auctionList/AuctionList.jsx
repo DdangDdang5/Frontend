@@ -44,22 +44,22 @@ const AuctionList = () => {
 
   const [loadingState, setLoadingState] = useState(true);
 
-	const initializeAuctionList = async () => {
-		await setLoadingState(true);
-		await dispatch(_categoryList());
-		await dispatch(_regionList());
-	
-		if (categoryName === "전체 품목" && regionName === "서울 전체") {
-			await dispatch(initialPaging());
-			await dispatch(clearAuctionList());
-			await dispatch(auctionItemList());
-		}
+  const initializeAuctionList = async () => {
+    await setLoadingState(true);
+    await dispatch(_categoryList());
+    await dispatch(_regionList());
 
-		await setLoadingState(false);
-	}
+    if (categoryName === "전체 품목" && regionName === "서울 전체") {
+      await dispatch(initialPaging());
+      await dispatch(clearAuctionList());
+      await dispatch(auctionItemList());
+    }
+
+    await setLoadingState(false);
+  };
 
   useEffect(() => {
-		initializeAuctionList();
+    initializeAuctionList();
   }, [categoryName, regionName]);
 
   // 페이지 네이션
@@ -67,7 +67,7 @@ const AuctionList = () => {
     let scrollTopHandler = e.target.scrollTop;
     let clientHeightHandler = e.target.clientHeight;
     let scrollHeightHandler = e.target.scrollHeight;
-    console.log(clientHeightHandler);
+    // console.log(clientHeightHandler);
     if (scrollHeightHandler - clientHeightHandler - scrollTopHandler - 30 < 0) {
       if (!loading) {
         if (followingItem) {
@@ -93,8 +93,7 @@ const AuctionList = () => {
               <CategoryBtn
                 onClick={() =>
                   dispatch(showModal("categoryList"), _categoryList())
-                }
-              >
+                }>
                 <CategoryBtnText>{categoryName}</CategoryBtnText>
                 <Open />
               </CategoryBtn>
@@ -105,8 +104,7 @@ const AuctionList = () => {
                 <CategoryBtnText
                   onClick={() =>
                     dispatch(showModal("regionList"), _regionList())
-                  }
-                >
+                  }>
                   {regionName}
                 </CategoryBtnText>
                 <Open />
