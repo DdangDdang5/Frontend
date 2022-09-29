@@ -16,10 +16,10 @@ const AuctionStateNav = ({
         type="button"
         state={isAuction}
         onClick={() => setIsAuction(true)}>
-        <div state={isAuction}>경매중 {auctionIng}</div>
+        <div>경매중 {auctionIng}</div>
       </StateNavContainer>
       <StateNavContainer state={!isAuction} onClick={() => setIsAuction(false)}>
-        <div state={!isAuction}>경매완료 {auctionDone}</div>
+        <div>경매완료 {auctionDone}</div>
       </StateNavContainer>
     </AuctionStateNavLayout>
   );

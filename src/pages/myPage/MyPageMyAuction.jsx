@@ -18,9 +18,11 @@ import Header from "../../components/header/Header";
 import AuctionStateNav from "../../components/auctionBody/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
 import AuctionRow from "../../components/auctionBody/AuctionRow";
+import { useNavigate } from "react-router-dom";
 
 function MyPageMyAuction() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isAuction, setIsAuction] = useState(true);
   const {
     myPageList: data,
@@ -32,6 +34,7 @@ function MyPageMyAuction() {
   console.log(data);
 
   const [shouldShownData, setShouldShownData] = useState([]);
+  console.log(shouldShownData);
 
   // console.log("내 옥션 데이터", data);
   const auctionIng = data?.filter(
@@ -61,6 +64,7 @@ function MyPageMyAuction() {
       data?.map((item, index) => {
         if (isAuction) {
           if (item?.auctionStatus === true) {
+            console.log(item);
             setShouldShownData((prev) => {
               return [...prev, item];
             });
@@ -110,7 +114,34 @@ function MyPageMyAuction() {
             return (
               <React.Fragment key={`${index}_${item.id}`}>
                 <AuctionRow item={item} index={index} isAuction={isAuction} />
-                {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
+                {isAuction ? (
+                  <></>
+                ) : item.auctionDone ? (
+                  item.reviewDone ? (
+                    <ActionBtn>평가완료</ActionBtn>
+                  ) : (
+                    <ActionBtn
+                      onClick={() =>
+                        navigate(`/auctionReview/${item.auctionId}`)
+                      }>
+                      평가하기
+                    </ActionBtn>
+                  )
+                ) : (
+                  <ActionBtn
+                    onClick={() => {
+                      navigate(`/chat/${item.roomId}`, {
+                        state: {
+                          auctionId: item.auctionId,
+                          isDetail: false,
+                          title: item.title,
+                        },
+                      });
+                      window.location.reload();
+                    }}>
+                    채팅방 입장하기
+                  </ActionBtn>
+                )}
               </React.Fragment>
             );
           })}

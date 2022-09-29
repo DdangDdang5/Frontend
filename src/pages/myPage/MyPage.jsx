@@ -165,16 +165,8 @@ const MyPage = () => {
             listName={`이벤트`}
             onClick={() => navigate(`/eventList`)}
           />
-          <MyPageList
-            icon={<Notice />}
-            listName={`공지사항`}
-            onClick={() => navigate(`/eventList`)}
-          />
-          <MyPageList
-            icon={<Questions />}
-            listName={`자주 묻는 질문`}
-            onClick={() => navigate(`/eventList`)}
-          />
+          <MyPageList icon={<Notice />} listName={`공지사항`} />
+          <MyPageList icon={<Questions />} listName={`자주 묻는 질문`} />
           <MyPageList
             icon={<ProfileEdit />}
             listName={`개인 정보 수정`}

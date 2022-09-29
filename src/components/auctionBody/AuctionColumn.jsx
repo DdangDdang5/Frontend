@@ -9,6 +9,10 @@ const Auction = ({ data }) => {
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+  const startPrice = data?.startPrice
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
   if (!data || !data?.auctionId) {
     return <></>;
   }
@@ -32,10 +36,18 @@ const Auction = ({ data }) => {
 
           {/* 줄에 표시되는 글자수 제한 */}
           <ItemContentBody>{data?.title}</ItemContentBody>
-
           <ItemContentFooter>
-            <StartPrice>최고입찰가</StartPrice>
-            <PresentPrice>{nowPrice ? nowPrice : 0}원</PresentPrice>
+            {startPrice === nowPrice ? (
+              <>
+                <StartPrice>경매시작가</StartPrice>
+                <PresentPrice>{startPrice}원</PresentPrice>
+              </>
+            ) : (
+              <>
+                <StartPrice>현재입찰가</StartPrice>
+                <PresentPrice>{nowPrice}원</PresentPrice>
+              </>
+            )}
           </ItemContentFooter>
         </ItemContentWrap>
       </AuctionItemContainer>

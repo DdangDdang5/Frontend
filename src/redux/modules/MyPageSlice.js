@@ -71,7 +71,7 @@ export const _MyPageParticipationAuction = createAsyncThunk(
       const response = await api.get(
         `/pagination/member/mypage/participant?page=${paging}&size=6&sortBy=id&isAsc=false`
       );
-      console.log("슬라이스", response);
+      // console.log("슬라이스", response);
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
       }
