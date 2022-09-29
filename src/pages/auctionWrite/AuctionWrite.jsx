@@ -57,6 +57,9 @@ const AuctionWrite = () => {
   const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
   const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
 
+  console.log("이미지 파일", imgFile);
+  console.log("프리뷰", imagePreview);
+
   useEffect(() => {
     dispatch(_categoryList());
   }, []);
@@ -85,28 +88,35 @@ const AuctionWrite = () => {
     const imgFileList = [];
     const imgUrlList = [];
 
-    for (let i = 0; i < imagePreview.length; i++) {
-      imgUrlList.push(imagePreview[i]);
-      imgFileList.push(imgFile[i]);
-    }
+    if (imagePreview.length > 9) {
+      return window.alert("이미지 개수는 10장을 초과 할 수 없습니다");
+    } else {
+      for (let i = 0; i < imagePreview.length; i++) {
+        imgUrlList.push(imagePreview[i]);
+        imgFileList.push(imgFile[i]);
+      }
 
-    for (let i = 0; i < imgList.length; i++) {
-      imgUrlList.push({
-        id: imagePreview.length,
-        img: URL.createObjectURL(imgList[i]),
-      });
-      imgFileList.push(imgList[i]);
-    }
+      for (let i = 0; i < imgList.length; i++) {
+        imgUrlList.push({
+          id: imagePreview.length,
+          img: URL.createObjectURL(imgList[i]),
+        });
+        imgFileList.push(imgList[i]);
+      }
 
-    setImgFile(imgFileList);
-    setImagePreview(imgUrlList);
+      setImgFile(imgFileList);
+      setImagePreview(imgUrlList);
+    }
   };
 
   //미리보기 이미지 삭제
   const onRemove = (index) => {
     const cloneImagePreview = [...imagePreview];
+    const cloneImage = [...imgFile];
     cloneImagePreview.splice(index, 1);
+    cloneImage.splice(index, 1);
     setImagePreview(cloneImagePreview);
+    setImgFile(cloneImage);
   };
 
   const onChangeHandler = (e) => {

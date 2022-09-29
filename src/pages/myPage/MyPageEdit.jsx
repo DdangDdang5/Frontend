@@ -24,67 +24,76 @@ const MyPageEdit = () => {
   const data = {
     nickName: "",
   };
-
-  const [nickNameCheck, setNickNameCheck] = useState(false);
+  const profileData = useSelector((state) => state?.myPage?.myPage);
+  const img_ref = useRef(null);
 
   const nickNameRef = useRef();
   const nickNameIconRef = useRef();
   const nickNameSpanRef = useRef();
-  const NickNameCheckef = useRef();
-
-  const profileData = useSelector((state) => state?.myPage?.myPage);
-
-  const img_ref = useRef(null);
 
   const [inputForm, setInputForm] = useState(data);
   const [imgFile, setImgFile] = useState([]);
   const [imagePreview, setImagePreview] = useState(profileData?.profileImgUrl);
-  console.log("preview", imagePreview);
+  // console.log("preview", imagePreview);
 
   const memberId = sessionStorage?.getItem("memberId");
-  const nickName = sessionStorage?.getItem("nickName");
-  console.log(memberId);
+  console.log(profileData);
 
   useEffect(() => {
-    if (nickName !== "") {
-      checkNickName(nickName);
-    } else {
-      nickNameSpanRef.current.innerText = "";
-      nickNameSpanRef.current.style.color = "";
-    }
-  }, [nickName]);
+    dispatch(nickNameCheckThunk(data));
+  }, []);
+
+  // useEffect(() => {
+  //   if (nickName !== "") {
+  //     checkNickName(nickName);
+  //   } else {
+  //     nickNameSpanRef.current.innerText = "";
+  //     nickNameSpanRef.current.style.color = "";
+  //   }
+  // }, [nickName]);
 
   // 닉네임 체크
-  const checkNickName = useCallback(
-    debounce((nickName) => {
-      const nickNameRegExp = /^([a-z0-9가-힣])[a-z0-9가-힣]{3,7}$/i;
-      if (!nickNameRegExp.test(nickName)) {
-        nickNameSpanRef.current.innerText =
-          "닉네임은 공백 없이 4~6자 이내의 한글, 영문, 숫자를 이용하여 입력해주세요.";
-        nickNameSpanRef.current.style.color = "#EF664D";
-        nickNameRef.current.style.borderColor = "#EF664D";
-        nickNameIconRef.current.style.color = "#EF664D";
-        setNickNameCheck(true);
-      } else {
-        dispatch(nickNameCheckThunk({ nickName })).then((res) => {
-          if (!res.payload) {
-            nickNameSpanRef.current.innerText = "중복되는 닉네임입니다.";
-            nickNameSpanRef.current.style.color = "#FF664D";
-            nickNameIconRef.current.style.color = "#FF664D";
-            nickNameRef.current.style.borderColor = "#FF664D";
-            setNickNameCheck(true);
-          } else {
-            nickNameSpanRef.current.innerText = "사용가능한 닉네임입니다.";
-            nickNameSpanRef.current.style.color = "#1DC79A";
-            nickNameIconRef.current.style.color = "#1DC79A";
-            nickNameRef.current.style.borderColor = "#1DC79A";
-            setNickNameCheck(false);
-          }
-        });
-      }
-    }, 500),
-    [nickName]
-  );
+  // const checkNickName = useCallback(
+  //   debounce((nickName) => {
+  //     const nickNameRegExp = /^([a-z0-9가-힣])[a-z0-9가-힣]{3,7}$/i;
+  //     if (!nickNameRegExp.test(nickName)) {
+  //       nickNameSpanRef.current.innerText =
+  //         "닉네임은 공백 없이 4~6자 이내의 한글, 영문, 숫자를 이용하여 입력해주세요.";
+  //       nickNameSpanRef.current.style.color = "#EF664D";
+  //       nickNameRef.current.style.borderColor = "#EF664D";
+  //       nickNameIconRef.current.style.color = "#EF664D";
+  //       setNickNameCheck(true);
+  //     } else {
+  //       dispatch(nickNameCheckThunk({ nickName })).then((res) => {
+  //         if (!res.payload) {
+  //           nickNameSpanRef.current.innerText = "중복되는 닉네임입니다.";
+  //           nickNameSpanRef.current.style.color = "#FF664D";
+  //           nickNameIconRef.current.style.color = "#FF664D";
+  //           nickNameRef.current.style.borderColor = "#FF664D";
+  //           setNickNameCheck(true);
+  //         } else {
+  //           nickNameSpanRef.current.innerText = "사용가능한 닉네임입니다.";
+  //           nickNameSpanRef.current.style.color = "#1DC79A";
+  //           nickNameIconRef.current.style.color = "#1DC79A";
+  //           nickNameRef.current.style.borderColor = "#1DC79A";
+  //           setNickNameCheck(false);
+  //         }
+  //       });
+  //     }
+  //   }, 500),
+  //   [nickName]
+  // );
+
+  // const onsubmitHandler = useCallback((event) => {
+  //   event.preventDefault();
+  //   if (nickNameCheck === false) {
+  //     nickNameRef.current.focus();
+  //     nickNameRef.current.style.color = "#BCBCBC";
+  //     nickNameRef.current.innerText = "중복되는 닉네임입니다.";
+  //   } else {
+  //     dispatch(signUpMemberThunk(newMember));
+  //   }
+  // });
 
   const onLoadFile = (e) => {
     const reader = new FileReader();
@@ -142,11 +151,6 @@ const MyPageEdit = () => {
             ) : (
               <img src={imagePreview} alt="" />
             )}
-            {/* {profileData?.profileImgUrl === null ? (
-              <BasicProfile />
-            ) : (
-              <img src={imagePreview} alt="" />
-            )} */}
 
             <label htmlFor="img_UpFile">
               <Camera />
@@ -166,19 +170,22 @@ const MyPageEdit = () => {
           <div className="MyTextNick">닉네임</div>
           <div className="MyTextInputWrap">
             <input
-              ref={nickNameRef}
               type="text"
               value={inputForm.nickName}
               name="nickName"
               onChange={onChangeHandler}
-              placeholder="닉네임을 입력해주세요."
+              placeholder={
+                profileData.nickname === null
+                  ? "닉네임을 입력해주세요."
+                  : profileData.nickname
+              }
               minLength="4"
               maxLength="6"
             />
 
-            <Delete ref={nickNameIconRef} />
+            <Delete />
           </div>
-          <span ref={nickNameSpanRef} className="MyTextCheck"></span>
+          <span className="MyTextCheck"></span>
         </MyTextWrap>
       </MyProfile>
       <MyDoneBtnWrap>
