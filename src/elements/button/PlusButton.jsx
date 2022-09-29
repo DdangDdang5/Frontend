@@ -5,9 +5,11 @@ import React from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import { isIOS13, isIPhone13, isIOS } from "react-device-detect";
+import { clearMode } from "../../redux/modules/ModalSlice";
+import { useDispatch } from "react-redux";
 
 const PlusButton = () => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const memberId = sessionStorage.getItem("memberId");
 
@@ -17,6 +19,7 @@ const PlusButton = () => {
         navigate("/login");
       }
     } else {
+			dispatch(clearMode())
       navigate("/auctionWrite");
     }
   };

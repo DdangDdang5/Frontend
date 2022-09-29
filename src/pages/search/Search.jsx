@@ -11,12 +11,14 @@ import {
 // Package import
 import { useNavigate } from "react-router-dom";
 
-// Component & Shared import
+// Component & Element & Shared import
 import Footer from "../../components/footer/Footer";
 import SearchHistory from "../../components/search/SearchHistory";
 import SearchResult from "../../components/search/SearchResult";
 import { getCookie } from "../../shared/Cookie";
 import { SearchImg } from "../../shared/images";
+import PageModal from "../../components/modal/PageModal";
+import Button from "../../elements/button/Button";
 
 // Style import
 import {
@@ -35,9 +37,7 @@ import {
   SearchItemPrice,
   SearchItemList,
 } from "./Search.styled";
-import ChatOptionModal from "../../components/modal/ChatOptionModal";
 import { ModalBtnWrap, OptionModalContainer } from "../event/Event.styled";
-import Button from "../../elements/button/Button";
 
 const Search = () => {
   const dispatch = useDispatch();
@@ -137,15 +137,15 @@ const Search = () => {
         </SearchBox>
         <Footer search={true} />
       </div>
-      
+
       {/* 메뉴 모달의 옵션 클릭 모달 */}
-      <ChatOptionModal
+      <PageModal
         minHeight="260px"
         visible={sendEvent}
         setVisible={setSendEvent}
       >
         <OptionModalContainer>
-          <span>검색어를 입력해주세요!</span>
+          <span>검색어를 입력해주세요.</span>
           <ModalBtnWrap>
             <Button
               text="닫기"
@@ -158,7 +158,7 @@ const Search = () => {
             />
           </ModalBtnWrap>
         </OptionModalContainer>
-      </ChatOptionModal>
+      </PageModal>
     </Fragment>
   );
 };

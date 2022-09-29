@@ -79,7 +79,9 @@ const MyPage = () => {
             <NickBox>
               {memberId !== null ? (
                 <>
-                  <div className="nickName">{data?.nickname}</div>
+                  <div className="nickName">
+                    {data?.nickname?.split("kakao")[0] + "kakao"}
+                  </div>
                   <div
                     className="myPageEdit"
                     onClick={() => {

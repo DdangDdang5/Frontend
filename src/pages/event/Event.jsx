@@ -3,7 +3,7 @@ import React, { useState } from "react";
 
 // Package import
 import Header from "../../components/header/Header";
-import ChatOptionModal from "../../components/modal/ChatOptionModal";
+import PageModal from "../../components/modal/PageModal";
 import Button from "../../elements/button/Button";
 import { FontEvent } from "../../shared/fonts/font";
 import { EventImg } from "../../shared/images";
@@ -122,7 +122,7 @@ const Event = () => {
       </div>
 
       {/* 메뉴 모달의 옵션 클릭 모달 */}
-      <ChatOptionModal
+      <PageModal
         minHeight="260px"
         visible={sendEvent}
         setVisible={setSendEvent}
@@ -141,7 +141,7 @@ const Event = () => {
             />
           </ModalBtnWrap>
         </OptionModalContainer>
-      </ChatOptionModal>
+      </PageModal>
     </>
   );
 };
