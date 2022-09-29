@@ -118,7 +118,9 @@ function MyPageMyAuction() {
                   <></>
                 ) : item.auctionDone ? (
                   item.reviewDone ? (
-                    <ActionBtn>평가완료</ActionBtn>
+                    <ActionBtn className="evaluationComplete">
+                      평가완료
+                    </ActionBtn>
                   ) : (
                     <ActionBtn
                       onClick={() =>
@@ -176,6 +178,21 @@ const AuctionLayout = styled.div`
   align-items: flex-start;
   padding: 0px 20px;
   height: 100%;
+  .evaluationComplete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 40px;
+    margin-bottom: 32px;
+    background-color: ${(props) => props.theme.colors.Gray3};
+    border: none;
+    border-radius: 8px;
+    font-size: ${(props) => props.theme.fontSizes.ms};
+    font-weight: ${(props) => props.theme.fontWeights.fontWeights};
+    color: ${(props) => props.theme.colors.Gray4};
+  }
 `;
 
 const None = styled.div`
