@@ -100,7 +100,7 @@ const AuctionDetail = () => {
             setChatOther(
               [bid.seller, bid.bidder]
                 .filter((item) => item !== nickName)
-                .join(""),
+                .join("")
             );
           }
         }
@@ -167,15 +167,15 @@ const AuctionDetail = () => {
       data.nowPrice,
       chatList.length > 0
         ? +chatList[chatList.length - 1]?.message
-        : data.startPrice,
+        : data.startPrice
     );
 
     if (+userData.message > nowPrice) {
-			if (+userData.message > 999999) {
-				window.alert("최대 999,999원까지 입력할 수 있습니다.");
-			} else {
-	      sendMessage();
-			}
+      if (+userData.message > 999999) {
+        window.alert("최대 999,999원까지 입력할 수 있습니다.");
+      } else {
+        sendMessage();
+      }
     } else {
       window.alert("현재 최고가보다 높은 호가를 올려야합니다.");
     }
@@ -193,7 +193,7 @@ const AuctionDetail = () => {
   const onConnected = () => {
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived,
+      onMessageReceived
     );
 
     // 채팅방 들어감
@@ -225,6 +225,7 @@ const AuctionDetail = () => {
       // stompClient.send(
       //   "/app/chat/bid",
       //   {},
+
       //   JSON.stringify({ ...chatMessage, type: "ENTER" }),
       // );
 
@@ -254,21 +255,21 @@ const AuctionDetail = () => {
 
   // 타이머 기능
   const timer = (countDown) => {
-    const oneDay = 1 * 24 * 60 * 60 * 1000;
-    const fiveDay = oneDay * 5;
-    const sevenDay = oneDay * 7;
+    const tenMinute = 10 * 60 * 1000;
+    const thirtyMinute = tenMinute * 3;
+    const sixtyMinute = tenMinute * 6;
     const startTime = Date.parse(data.createdAt);
-    const dateTimeAfterOneDays = startTime + oneDay;
-    const dateTimeAfterFiveDays = startTime + fiveDay;
-    const dateTimeAfterSevenDays = startTime + sevenDay;
+    const dateTimeAfterTenMinute = startTime + tenMinute;
+    const dateTimeAfterThirtyMinute = startTime + thirtyMinute;
+    const dateTimeAfterSixtyMinute = startTime + sixtyMinute;
 
     switch (countDown) {
-      case 1:
-        return dateTimeAfterOneDays;
-      case 5:
-        return dateTimeAfterFiveDays;
-      case 7:
-        return dateTimeAfterSevenDays;
+      case 10:
+        return dateTimeAfterTenMinute;
+      case 30:
+        return dateTimeAfterThirtyMinute;
+      case 60:
+        return dateTimeAfterSixtyMinute;
       default:
         return <div>경매가 종료되었습니다.</div>;
     }
@@ -339,8 +340,8 @@ const AuctionDetail = () => {
 
           <CommentCountContainer onClick={onClickAuctionChatRoom}>
             <CommentCountWrap>
-              <CommentCountTitle>실시간 채팅방</CommentCountTitle>
-              <p>{data.participantCnt}명 참여중</p>
+              <CommentCountTitle>실시간 질문방</CommentCountTitle>
+              <p>{data.participantCnt}명 질문중</p>
             </CommentCountWrap>
             <Next />
           </CommentCountContainer>
@@ -522,7 +523,7 @@ const AuctionDetail = () => {
             data.nowPrice,
             chatList.length > 0
               ? +chatList[chatList.length - 1]?.message
-              : data.startPrice,
+              : data.startPrice
           ) ? (
             <AuctionJoinInputInfo>
               현재 최고가보다 낮은 호가입니다.

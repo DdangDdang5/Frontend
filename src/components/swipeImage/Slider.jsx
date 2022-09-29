@@ -80,7 +80,6 @@ const SliderWrap = styled.div`
   position: relative;
   overflow: hidden;
   span {
-    background-color: yellow;
     z-index: 100;
     position: absolute;
     bottom: 0;
@@ -92,8 +91,8 @@ const SliderWrap = styled.div`
 const ImgBox = styled.div`
   div {
     display: flex;
-    min-width: 390px;
-    max-width: 390px;
+    min-width: 410px;
+    max-width: 410px;
     min-height: 390px;
     max-height: 390px;
     img {

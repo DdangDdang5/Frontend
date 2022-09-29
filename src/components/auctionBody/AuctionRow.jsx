@@ -4,8 +4,12 @@ import { useNavigate } from "react-router-dom";
 
 const AuctionRow = ({ item, index, isAuction }) => {
   const navigate = useNavigate();
+  console.log(item);
 
-  const postPrice = item.startPrice
+  const nowPrice = item.nowPrice
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  const startPrice = item?.startPrice
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
@@ -29,8 +33,17 @@ const AuctionRow = ({ item, index, isAuction }) => {
         </div>
         <div className="title">{item.content}</div>
         <div className="priceBox">
-          <div>최근입찰가</div>
-          <div className="price">{postPrice}</div>
+          {startPrice === nowPrice ? (
+            <>
+              <div>경매시작가</div>
+              <div className="price">{startPrice}</div>
+            </>
+          ) : (
+            <>
+              <div>현재입찰가</div>
+              <div className="price">{nowPrice}</div>
+            </>
+          )}
         </div>
       </ContentBox>
     </AuctionContainer>

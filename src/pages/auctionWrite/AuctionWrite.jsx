@@ -35,7 +35,7 @@ const AuctionWrite = () => {
     region: "동대문구",
     direct: false,
     delivery: false,
-    auctionPeriod: 1,
+    auctionPeriod: "",
   };
   const initialTag = {
     tag1: "",
@@ -276,25 +276,25 @@ const AuctionWrite = () => {
           {inputForm.startPrice.length > 0 ? <div>원</div> : ""}
         </WritePriceWrap>
 
-        <WriteTitleContainer>경매 일수</WriteTitleContainer>
+        <WriteTitleContainer>경매 시간</WriteTitleContainer>
         <WriteTitleAuctionDay>
           <button
             className="btn1"
             state={inputForm.auctionPeriod}
-            onClick={() => setInputForm({ ...inputForm, auctionPeriod: 1 })}>
-            1
+            onClick={() => setInputForm({ ...inputForm, auctionPeriod: 10 })}>
+            10분
           </button>
           <button
             className="btn5"
             state={inputForm.auctionPeriod}
-            onClick={() => setInputForm({ ...inputForm, auctionPeriod: 5 })}>
-            5
+            onClick={() => setInputForm({ ...inputForm, auctionPeriod: 30 })}>
+            30분
           </button>
           <button
             className="btn7"
             state={inputForm.auctionPeriod}
-            onClick={() => setInputForm({ ...inputForm, auctionPeriod: 7 })}>
-            7
+            onClick={() => setInputForm({ ...inputForm, auctionPeriod: 60 })}>
+            60분
           </button>
         </WriteTitleAuctionDay>
 
@@ -532,6 +532,7 @@ const WriteDeliveryStateContainer = styled.div`
   width: 100%;
   min-height: 48px;
   gap: 20px;
+  justify-content: center;
 `;
 const DirectBtn = styled.button`
   display: flex;
@@ -574,39 +575,39 @@ const WriteTitleAuctionDay = styled.div`
     height: 48px;
     border-radius: 100px;
     border: ${(props) =>
-      props.children[0].props.state === 1
+      props.children[0].props.state === 10
         ? "1px solid #4D71FF"
         : "1px solid #a5a9b6"};
     background-color: ${(props) =>
-      props.children[0].props.state === 1 ? "#E9F3FF" : "white"};
+      props.children[0].props.state === 10 ? "#E9F3FF" : "white"};
     color: ${(props) =>
-      props.children[0].props.state === 1 ? "#4D71FF" : "#a5a9b6"};
+      props.children[0].props.state === 10 ? "#4D71FF" : "#a5a9b6"};
   }
   .btn5 {
     width: 100px;
     height: 48px;
     border-radius: 100px;
     border: ${(props) =>
-      props.children[0].props.state === 5
+      props.children[0].props.state === 30
         ? "1px solid #4D71FF"
         : "1px solid #a5a9b6"};
     background-color: ${(props) =>
-      props.children[0].props.state === 5 ? "#E9F3FF" : "white"};
+      props.children[0].props.state === 30 ? "#E9F3FF" : "white"};
     color: ${(props) =>
-      props.children[0].props.state === 5 ? "#4D71FF" : "#a5a9b6"};
+      props.children[0].props.state === 30 ? "#4D71FF" : "#a5a9b6"};
   }
   .btn7 {
     width: 100px;
     height: 48px;
     border-radius: 100px;
     border: ${(props) =>
-      props.children[0].props.state === 7
+      props.children[0].props.state === 60
         ? "1px solid #4D71FF"
         : "1px solid #a5a9b6"};
     background-color: ${(props) =>
-      props.children[0].props.state === 7 ? "#E9F3FF" : "white"};
+      props.children[0].props.state === 60 ? "#E9F3FF" : "white"};
     color: ${(props) =>
-      props.children[0].props.state === 7 ? "#4D71FF" : "#a5a9b6"};
+      props.children[0].props.state === 60 ? "#4D71FF" : "#a5a9b6"};
   }
 `;
 const WriteTextArea = styled.textarea`

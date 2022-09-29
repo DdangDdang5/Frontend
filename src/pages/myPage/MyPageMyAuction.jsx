@@ -18,9 +18,11 @@ import Header from "../../components/header/Header";
 import AuctionStateNav from "../../components/auctionBody/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
 import AuctionRow from "../../components/auctionBody/AuctionRow";
+import { useNavigate } from "react-router-dom";
 
 function MyPageMyAuction() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isAuction, setIsAuction] = useState(true);
   const {
     myPageList: data,
@@ -29,7 +31,10 @@ function MyPageMyAuction() {
     followingItem,
   } = useSelector((state) => state.myPage);
 
+  console.log(data);
+
   const [shouldShownData, setShouldShownData] = useState([]);
+  console.log(shouldShownData);
 
   // console.log("내 옥션 데이터", data);
   const auctionIng = data?.filter(
@@ -59,6 +64,7 @@ function MyPageMyAuction() {
       data?.map((item, index) => {
         if (isAuction) {
           if (item?.auctionStatus === true) {
+            console.log(item);
             setShouldShownData((prev) => {
               return [...prev, item];
             });
@@ -108,7 +114,36 @@ function MyPageMyAuction() {
             return (
               <React.Fragment key={`${index}_${item.id}`}>
                 <AuctionRow item={item} index={index} isAuction={isAuction} />
-                {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
+                {isAuction ? (
+                  <></>
+                ) : item.auctionDone ? (
+                  item.reviewDone ? (
+                    <ActionBtn className="evaluationComplete">
+                      평가완료
+                    </ActionBtn>
+                  ) : (
+                    <ActionBtn
+                      onClick={() =>
+                        navigate(`/auctionReview/${item.auctionId}`)
+                      }>
+                      평가하기
+                    </ActionBtn>
+                  )
+                ) : (
+                  <ActionBtn
+                    onClick={() => {
+                      navigate(`/chat/${item.roomId}`, {
+                        state: {
+                          auctionId: item.auctionId,
+                          isDetail: false,
+                          title: item.title,
+                        },
+                      });
+                      window.location.reload();
+                    }}>
+                    채팅방 입장하기
+                  </ActionBtn>
+                )}
               </React.Fragment>
             );
           })}
@@ -130,7 +165,12 @@ const MyAuctionBody = styled.div`
     props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   flex-direction: column;
   overflow: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  ::-webkit-scrollbar {
+    display: none; /* Chrome , Safari , Opera */
+  }
 `;
+
 const AuctionLayout = styled.div`
   display: flex;
   flex-direction: column;
@@ -138,6 +178,21 @@ const AuctionLayout = styled.div`
   align-items: flex-start;
   padding: 0px 20px;
   height: 100%;
+  .evaluationComplete {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 40px;
+    margin-bottom: 32px;
+    background-color: ${(props) => props.theme.colors.Gray3};
+    border: none;
+    border-radius: 8px;
+    font-size: ${(props) => props.theme.fontSizes.ms};
+    font-weight: ${(props) => props.theme.fontWeights.fontWeights};
+    color: ${(props) => props.theme.colors.Gray4};
+  }
 `;
 
 const None = styled.div`
