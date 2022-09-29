@@ -39,8 +39,6 @@ const AuctionDetail = () => {
   const bid = useSelector((state) => state.auction.bid);
   const favoriteState = useSelector((state) => state.auction.favorite);
 
-  console.log(data);
-
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
 
@@ -243,7 +241,6 @@ const AuctionDetail = () => {
   };
 
   const onDisconnected = () => {
-    console.log(stompClient);
     if (stompClient !== null) {
       stompClient.disconnect();
       stompClient = null;
@@ -275,7 +272,6 @@ const AuctionDetail = () => {
     }
   };
 
-  console.log("타임", data);
   return (
     <>
       <AuctionDetailLayout>

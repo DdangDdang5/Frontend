@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 const AuctionRow = ({ item, index, isAuction }) => {
   const navigate = useNavigate();
-  console.log(item);
 
   const nowPrice = item.nowPrice
     .toString()

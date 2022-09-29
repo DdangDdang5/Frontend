@@ -31,10 +31,7 @@ function MyPageMyAuction() {
     followingItem,
   } = useSelector((state) => state.myPage);
 
-  console.log(data);
-
   const [shouldShownData, setShouldShownData] = useState([]);
-  console.log(shouldShownData);
 
   // console.log("내 옥션 데이터", data);
   const auctionIng = data?.filter(
@@ -64,7 +61,6 @@ function MyPageMyAuction() {
       data?.map((item, index) => {
         if (isAuction) {
           if (item?.auctionStatus === true) {
-            console.log(item);
             setShouldShownData((prev) => {
               return [...prev, item];
             });

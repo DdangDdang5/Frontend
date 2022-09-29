@@ -21,7 +21,7 @@ const Kakao = () => {
 
   // 리다이렉트된 주소의 params query code를 가져옴
   const code = new URL(window.location.href).searchParams.get("code");
-  console.log(code);
+  // console.log(code);
 
   // const kakaoLogin = async () => {
   //   await axios
