@@ -133,23 +133,23 @@ const Chat = () => {
 
   // 타이머 기능
   const timer = (countDown) => {
-    const oneDay = 1 * 24 * 60 * 60 * 1000;
-    const fiveDay = oneDay * 5;
-    const sevenDay = oneDay * 7;
+    const tenMinute = 10 * 60 * 1000;
+    const thirtyMinute = tenMinute * 3;
+    const sixtyMinute = tenMinute * 6;
     const startTime = Date.parse(auctionCreatedAt);
-    const dateTimeAfterOneDays = startTime + oneDay;
-    const dateTimeAfterFiveDays = startTime + fiveDay;
-    const dateTimeAfterSevenDays = startTime + sevenDay;
+    const dateTimeAfterTenMinute = startTime + tenMinute;
+    const dateTimeAfterThirtyMinute = startTime + thirtyMinute;
+    const dateTimeAfterSixtyMinute = startTime + sixtyMinute;
 
     switch (countDown) {
-      case 1:
-        return dateTimeAfterOneDays;
-      case 5:
-        return dateTimeAfterFiveDays;
-      case 7:
-        return dateTimeAfterSevenDays;
+      case 10:
+        return dateTimeAfterTenMinute;
+      case 30:
+        return dateTimeAfterThirtyMinute;
+      case 60:
+        return dateTimeAfterSixtyMinute;
       default:
-        return <div>기간이 끝났습니다</div>;
+        return <div>경매가 종료되었습니다.</div>;
     }
   };
 
