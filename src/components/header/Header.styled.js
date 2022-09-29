@@ -29,6 +29,10 @@ export const HeaderContent = styled.div`
     path {
 			fill: ${(props) => props.color ? props.color : props.theme.colors.Black};
     }
+
+		circle {
+			fill: ${(props) => props.color ? props.color : props.theme.colors.Black};
+		}
   }
 `;
 
