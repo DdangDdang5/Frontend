@@ -300,7 +300,9 @@ const AuctionDetail = () => {
               </DetailBodyProfileImg>
               <div className="DetailBodyProfile">
                 <DetailBodyProfileContent>
-                  <div className="nickName">{data?.nickname}</div>
+                  <div className="nickName">
+                    {data?.nickname.split("kakao")[0] + "kakao"}
+                  </div>
                   <div className="trustCount">신뢰도</div>
                 </DetailBodyProfileContent>
                 <div>
