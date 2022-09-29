@@ -29,6 +29,8 @@ function MyPageMyAuction() {
     followingItem,
   } = useSelector((state) => state.myPage);
 
+  console.log(data);
+
   const [shouldShownData, setShouldShownData] = useState([]);
 
   // console.log("내 옥션 데이터", data);
@@ -130,7 +132,12 @@ const MyAuctionBody = styled.div`
     props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   flex-direction: column;
   overflow: scroll;
+  -ms-overflow-style: none; /* IE and Edge */
+  ::-webkit-scrollbar {
+    display: none; /* Chrome , Safari , Opera */
+  }
 `;
+
 const AuctionLayout = styled.div`
   display: flex;
   flex-direction: column;

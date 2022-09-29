@@ -98,7 +98,7 @@ const AuctionDetail = () => {
             setChatOther(
               [bid.seller, bid.bidder]
                 .filter((item) => item !== nickName)
-                .join(""),
+                .join("")
             );
           }
         }
@@ -165,15 +165,15 @@ const AuctionDetail = () => {
       data.nowPrice,
       chatList.length > 0
         ? +chatList[chatList.length - 1]?.message
-        : data.startPrice,
+        : data.startPrice
     );
 
     if (+userData.message > nowPrice) {
-			if (+userData.message > 999999) {
-				window.alert("최대 999,999원까지 입력할 수 있습니다.");
-			} else {
-	      sendMessage();
-			}
+      if (+userData.message > 999999) {
+        window.alert("최대 999,999원까지 입력할 수 있습니다.");
+      } else {
+        sendMessage();
+      }
     } else {
       window.alert("현재 최고가보다 높은 호가를 올려야합니다.");
     }
@@ -191,7 +191,7 @@ const AuctionDetail = () => {
   const onConnected = () => {
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived,
+      onMessageReceived
     );
 
     // 채팅방 들어감
@@ -223,7 +223,7 @@ const AuctionDetail = () => {
       stompClient.send(
         "/app/chat/bid",
         {},
-        JSON.stringify({ ...chatMessage, type: "ENTER" }),
+        JSON.stringify({ ...chatMessage, type: "ENTER" })
       );
 
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
@@ -337,8 +337,8 @@ const AuctionDetail = () => {
 
           <CommentCountContainer onClick={onClickAuctionChatRoom}>
             <CommentCountWrap>
-              <CommentCountTitle>실시간 채팅방</CommentCountTitle>
-              <p>{data.participantCnt}명 참여중</p>
+              <CommentCountTitle>실시간 질문방</CommentCountTitle>
+              <p>{data.participantCnt}명 질문중</p>
             </CommentCountWrap>
             <Next />
           </CommentCountContainer>
@@ -520,7 +520,7 @@ const AuctionDetail = () => {
             data.nowPrice,
             chatList.length > 0
               ? +chatList[chatList.length - 1]?.message
-              : data.startPrice,
+              : data.startPrice
           ) ? (
             <AuctionJoinInputInfo>
               현재 최고가보다 낮은 호가입니다.
