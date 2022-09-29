@@ -31,13 +31,13 @@ export const getChatRoomList = createAsyncThunk(
 );
 
 export const getChatRoomListByMember = createAsyncThunk(
-	"getChatRoomListByMember",
-	async (payload, thunkAPI) => {
-		const response = await api.get(`/ono/${payload}`);
-		// console.log(response);
-		return thunkAPI.fulfillWithValue(response.data.data);
-	}
-)
+  "getChatRoomListByMember",
+  async (payload, thunkAPI) => {
+    const response = await api.get(`/ono/${payload}`);
+    // console.log(response);
+    return thunkAPI.fulfillWithValue(response.data.data);
+  },
+);
 
 export const getChatMessageList = createAsyncThunk(
   "getChatMessageList",
@@ -53,6 +53,11 @@ export const getChatMessageList = createAsyncThunk(
 const chatListSlice = createSlice({
   name: "chatList",
   initialState,
+  reducers: {
+    clearChatMessageList: (state, action) => {
+      state.chatMessageList = [];
+    },
+  },
   extraReducers: {
     [makeChatRoom.fulfilled]: (state, action) => {
       // action.payload -> chatroom
@@ -64,15 +69,18 @@ const chatListSlice = createSlice({
       state.chatRoomList = action.payload;
     },
 
-		[getChatRoomListByMember.fulfilled]: (state, action) => {
-			// action.payload -> 1:1 chatroom list by member
-			state.chatRoomList = action.payload;
-		},
+    [getChatRoomListByMember.fulfilled]: (state, action) => {
+      // action.payload -> 1:1 chatroom list by member
+      state.chatRoomList = action.payload;
+    },
 
     [getChatMessageList.fulfilled]: (state, action) => {
       // action.payload -> chatroom message list
-
-      if (state.chatMessageList.length === 0) {
+      if (
+        state.chatMessageList.filter(
+          (item) => item.roomId === action.payload.roomId,
+        ).length === 0
+      ) {
         state.chatMessageList.push(action.payload);
       } else {
         state.chatMessageList = state.chatMessageList.map((item) =>
@@ -82,5 +90,7 @@ const chatListSlice = createSlice({
     },
   },
 });
+
+export const { clearChatMessageList } = chatListSlice.actions;
 
 export default chatListSlice.reducer;

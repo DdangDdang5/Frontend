@@ -36,7 +36,7 @@ const EventList = () => {
             <EventBanner idx={1} isMain={false}>
               <FontEvent />
               <EventContent idx={1}>
-                <EventDate idx={1}>09.27 ~ 10.02</EventDate>
+                <EventDate idx={1}>09.29 ~ 10.02</EventDate>
                 <EventTitle idx={1}>소중한 의견을 들려주세요!</EventTitle>
                 <EventText>
                   <span>추첨을 통해 총 5분께</span>

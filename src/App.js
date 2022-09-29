@@ -115,21 +115,25 @@ function App() {
   //     console.log("connection opened", event);
   //   };
 
-  //   sse.onmessage = (event) => {
-  //     const data = JSON.parse(event.data);
-  //     console.log(data);
-  //   };
-
-  //   sse.addEventListener("sse", (event) => {
-  //     const data = JSON.parse(event.data);
+  //   sse.addEventListener("message", (event) => {
   //     console.log(event);
-  //     console.log(data);
-  //     dispatch(add({ newNotifs: data }));
+  //     // const data = JSON.parse(event.data);
+  //     // console.log(data);
+
+	// 		// dispatch(add({ newNotifs: data }));
+
+	// 		if (event.type === 'message' && event.data.startsWith('{')) {
+	// 			setNotification((prev) => [JSON.parse(event.data)]);
+
+	// 			// queryClient.invalidateQueries('alertList');
+	// 		}
+			
   //   });
 
   //   sse.onerror = (error) => {
   //     sse.close();
   //   };
+
   //   return () => {
   //     sse.close();
   //   };

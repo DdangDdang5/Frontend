@@ -133,8 +133,8 @@ export const ListHeader = styled.span`
 
 export const ListHeaderMore = styled.div`
   color: ${(props) => props.theme.colors.Gray3};
-  font-size: ${(props) => props.theme.fontSizes.sm};
-  font-weight: ${(props) => props.theme.fontWeights.normal};
+  font-size: ${(props) => props.theme.fontSizes.sm} !important;
+  font-weight: ${(props) => props.theme.fontWeights.medium} !important;
 
   display: flex;
   align-items: center;

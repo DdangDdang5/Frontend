@@ -45,7 +45,7 @@ const Auction = ({ data }) => {
 
 const AuctionItemWrap = styled.div`
   display: flex;
-  width: 50%;
+  width: 48%;
   height: 277px;
   min-height: 277px;
 
@@ -56,7 +56,6 @@ const AuctionItemContainer = styled.div`
   flex-direction: column;
   width: 100%;
   height: 100%;
-  margin: 0px 10px;
 `;
 const ItemPicture = styled.div`
   display: flex;
@@ -92,7 +91,7 @@ const ItemContentHeader = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 2px 6px;
+    padding: 2px 4px;
 
     border-radius: 100px;
 

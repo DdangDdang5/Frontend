@@ -6,7 +6,7 @@ import { hideModal } from "../../redux/modules/ModalSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
-import styled from "styled-components";
+import styled, { css, keyframes } from "styled-components";
 
 // Style import
 import {
@@ -25,6 +25,7 @@ const CategoryModal = () => {
   const division = useSelector((state) => state.modal.division);
   const categoryName = useSelector((state) => state.modal.categoryName);
   const regionName = useSelector((state) => state.modal.regionName);
+	const show = useSelector((state) => state.modal.show);
 
   const categoryList = useSelector((state) =>
     state.modal.categoryList.map((item, index) => {
@@ -93,7 +94,7 @@ const CategoryModal = () => {
           dispatch(hideModal());
         }
       }}>
-      <CategoryModalWrap>
+      <CategoryModalWrap show={show}>
         <CategoryModalHead>{title}</CategoryModalHead>
         <CategoryModalBodyContainer>
           {modalList.map((item, idx) => {
@@ -119,6 +120,32 @@ const CategoryModal = () => {
   );
 };
 
+const slideIn = keyframes`
+  from {
+      transform: translate(0%, 100%);
+  }
+  to {
+      transform: translateX(0%);
+  }
+`;
+
+const slideOut = keyframes`
+  from {
+      transform: translate(0%);
+  }
+  to {
+      transform: translate(0%, 100%);
+  }
+`;
+
+// components
+const modalSettings = (visible) => css`
+  visibility: ${visible ? 'visible' : 'hidden'};
+  /* z-index: 15; */
+  animation: ${visible ? slideIn : slideOut} 0.5s ease-out;
+  transition: visibility 0.5s ease-out;
+`;
+
 const ModalLayout = styled.div`
   display: flex;
   position: absolute;
@@ -142,6 +169,8 @@ const CategoryModalWrap = styled.div`
   bottom: 0px;
 
   background-color: white;
+	/* animation: ${(props) => props.aniSlide} 0.5s ease-out; */
+	${(props) => modalSettings(props.show)}
 `;
 
 const CategoryModalHead = styled.div`
@@ -192,8 +221,11 @@ const CategoryModalBodyItemIn = styled.button`
   border: none;
   outline: none;
   border-radius: 100px;
-  :hover {
-    background-color: #dedede;
+	background-color: transparent;
+	color: ${(props) => props.theme.colors.Black};
+
+  &:active {
+    background-color: ${(props) => props.theme.colors.SkyBlue} !important;
   }
 `;
 // const CategoryModalFooter = styled.div`
