@@ -24,6 +24,7 @@ const MyPageEdit = () => {
   const data = {
     nickName: "",
   };
+
   const profileData = useSelector((state) => state?.myPage?.myPage);
   const img_ref = useRef(null);
 
