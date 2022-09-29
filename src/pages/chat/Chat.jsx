@@ -1,5 +1,6 @@
 // React import
 import React, { useEffect, useState } from "react";
+import { isIOS } from "react-device-detect";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +15,10 @@ import ChatOptionModal from "../../components/modal/ChatOptionModal";
 import OptionModal from "../../components/modal/OptionModal";
 import Button from "../../elements/button/Button";
 import { doneAuction } from "../../redux/modules/AuctionSlice";
-import { clearChatMessageList, getChatMessageList } from "../../redux/modules/ChatSlice";
+import {
+  clearChatMessageList,
+  getChatMessageList,
+} from "../../redux/modules/ChatSlice";
 import { Add, BasicProfile, Send } from "../../shared/images";
 import Loading from "../loading/Loading";
 
@@ -25,6 +29,7 @@ import {
   ChatContainer,
   ChatContent,
   ChatFooter,
+  ChatFooterContent,
   ChatMessage,
   ChatMessageList,
   MenuItem,
@@ -40,6 +45,7 @@ import {
   ModalTextWrap,
   OptionModalContainer,
   SendBtn,
+  SendIOSContainer,
 } from "./Chat.styled";
 
 var stompClient = null;
@@ -59,9 +65,26 @@ const Chat = () => {
     title,
   } = useLocation().state;
 
+  // const location = useLocation();
+  // console.log(location);
+  // const chatOther = location?.chatOther;
+  // const auctionId = location?.auctionId;
+  // const auctionCreatedAt = location?.auctionCreatedAt;
+  // const auctionPeriod = location?.auctionPeriod;
+  // const auctionStatus = location?.auctionStatus;
+  // const isDetail = location?.isDetail;
+  // const title = location?.title;
+
   const nickName = sessionStorage.getItem("memberNickname");
 
-	// console.log(auctionId, auctionCreatedAt, auctionPeriod, auctionStatus, chatOther);
+  // console.log(
+  //   auctionId,
+  //   auctionCreatedAt,
+  //   auctionPeriod,
+  //   auctionStatus,
+  //   chatOther,
+  // );
+  // console.log(isDetail, title);
 
   const chatMessageList = useSelector(
     (state) => state.chat.chatMessageList,
@@ -102,27 +125,28 @@ const Chat = () => {
 
   //   return () => {
   //     if (loading) {
-	// 			onDisconnected();
+  // 			onDisconnected();
   //       setTimeout(timeout);
   //     }
   //   };
   // }, []);
 
-	console.log(chatList);
-	console.log(chatMessageList);
+  // console.log(chatList);
+  // console.log(chatMessageList);
 
   useEffect(() => {
     dispatch(getChatMessageList(roomId));
 
-		if (chatMessageList[0]?.data?.length > 0) {
-			if (chatList.length > 0) {
-				setChatList([...chatMessageList[0].data]);
-			} else {
-				chatList.push(...chatMessageList[0].data);
-				setChatList([...chatList]);
-			}
-		}
-
+    if (chatMessageList[0]?.data?.length > 0) {
+      if (chatList.length > 0) {
+        setChatList([...chatMessageList[0].data]);
+      } else {
+        chatList.push(...chatMessageList[0].data);
+        setChatList([...chatList]);
+      }
+    }
+    // console.log("5555555555555555555");
+    // console.log(chatMessageList);
   }, [JSON.stringify(chatMessageList)]);
 
   useEffect(() => {
@@ -168,19 +192,24 @@ const Chat = () => {
 
   // 채팅 메뉴 모달 중 "거래 완료하기" 클릭
   const onClickFinishMenu = () => {
-		dispatch(doneAuction(auctionId))
+    dispatch(doneAuction(auctionId));
     setVisible(false);
     setOptionVisible(true);
   };
 
   const calcTime = (createdAt) => {
-    const date = new Date(createdAt);
-    return (
-      (date.getHours() >= 12 ? "PM " : "AM ") +
-      (date.getHours() % 12).toString().padStart(2, 0) +
-      ":" +
-      date.getMinutes().toString().padStart(2, 0)
-    );
+		if (isIOS) {
+			const [hours, minutes, seconds] = createdAt.split(" ")[1].split(":");
+			return (hours >= 12 ? "PM " : "AM ") + hours + ":" + minutes;
+		} else {
+			const date = new Date(createdAt);
+	    return (
+	      (date.getHours() >= 12 ? "PM " : "AM ") +
+	      (date.getHours() % 12).toString().padStart(2, 0) +
+	      ":" +
+	      date.getMinutes().toString().padStart(2, 0)
+	    );
+		}
   };
 
   const checkNickname = (nickName) => {
@@ -286,17 +315,17 @@ const Chat = () => {
     if (stompClient !== null) {
       stompClient.disconnect();
       stompClient = null;
-			
-  		// 경매 거래 완료 -> isDone === true
-			if (isDone) {
-				dispatch(doneAuction(auctionId));
-				navigate(`/auctionReview/${auctionId}`);
-			} else {
-				navigate(-1);
-			}
+
+      // 경매 거래 완료 -> isDone === true
+      if (isDone) {
+        dispatch(doneAuction(auctionId));
+        navigate(`/auctionReview/${auctionId}`);
+      } else {
+        navigate(-1);
+      }
     } else {
-			navigate(-1);
-		}
+      navigate(-1);
+    }
   };
 
   return (
@@ -312,7 +341,7 @@ const Chat = () => {
               menu={true}
               onClickBtn={onClickMenu}
               // onClickTitle={() => navigate(`/auctionDetail/${auctionId}`)}
-							onClickBackBtn={() => onDisconnected(false)}
+              onClickBackBtn={() => onDisconnected(false)}
             />
 
             {/* 경매 남은 시간 */}
@@ -330,7 +359,7 @@ const Chat = () => {
             ) : null}
 
             {/* 채팅 내역 */}
-            <ChatContent id="chat-content" isDetail={isDetail}>
+            <ChatContent id="chat-content" isDetail={isDetail} isIOS={isIOS}>
               <ChatMessageList>
                 {chatList?.map(
                   (chat, idx) =>
@@ -381,19 +410,22 @@ const Chat = () => {
             </ChatContent>
 
             {/* 채팅 보내기 */}
-            <ChatFooter>
-              <Add className="add" />
-              <MessageInput
-                type="text"
-                placeholder="enter public message"
-                value={userData.message}
-                onChange={(event) => handleValue(event)}
-                onKeyDown={(event) => onKeyPress(event)}
-                onClick={onClickInput}
-              />
-              <SendBtn onClick={sendMessage}>
-                <Send />
-              </SendBtn>
+            <ChatFooter isIOS={isIOS}>
+              <ChatFooterContent>
+                <Add className="add" />
+                <MessageInput
+                  type="text"
+                  placeholder="enter public message"
+                  value={userData.message}
+                  onChange={(event) => handleValue(event)}
+                  onKeyDown={(event) => onKeyPress(event)}
+                  onClick={onClickInput}
+                />
+                <SendBtn onClick={sendMessage}>
+                  <Send />
+                </SendBtn>
+              </ChatFooterContent>
+              {isIOS ? <SendIOSContainer></SendIOSContainer> : <></>}
             </ChatFooter>
           </ChatContainer>
 

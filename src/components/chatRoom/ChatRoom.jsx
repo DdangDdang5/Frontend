@@ -32,15 +32,16 @@ const ChatRoom = ({ room }) => {
 
   return (
     <ChatRoomContainer
-      onClick={() =>
+      onClick={() => {
         navigate(`/chat/${room.roomId}`, {
           state: {
             auctionId: room.auctionId,
             isDetail: false,
             title: room.auctionTitle,
           },
-        })
-      }
+        });
+        window.location.reload();
+      }}
     >
       <ChatRoomProfile
         src={room.multiImages ? room.multiImages[0].imgUrl : "maskable.png"}
@@ -52,11 +53,7 @@ const ChatRoom = ({ room }) => {
           <ChatRoomTime>{calcTime(room.lastMessageTime)}</ChatRoomTime>
         </ChatRoomInfo>
         <ChatRoomMessageWrap>
-          <ChatRoomMessage>
-            {room.message
-              ? room.message
-              : ""}
-          </ChatRoomMessage>
+          <ChatRoomMessage>{room.message ? room.message : ""}</ChatRoomMessage>
           {/* <ChatRoomAlarm>1</ChatRoomAlarm> */}
         </ChatRoomMessageWrap>
       </ChatRoomContent>

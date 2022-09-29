@@ -231,6 +231,7 @@ const CategoryBtnTimeText = styled.div`
 `;
 
 const ListContents = styled.div`
+	width: calc(100% - 40px);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
