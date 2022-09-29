@@ -673,7 +673,7 @@ const DetailBodyContent = styled.div`
   display: flex;
   padding: 0px 20px;
   word-break: break-all;
-  font-size: ${(props) => props.theme.fontSizes.lg};
+  font-size: ${(props) => props.theme.fontSizes.md};
   font-weight: ${(props) => props.theme.fontWeights.normal};
   line-height: 36px;
   height: 100%;

@@ -425,7 +425,7 @@ const Chat = () => {
 
           {/* 메뉴 모달의 옵션 클릭 모달 */}
           <ChatOptionModal
-            minHeight="260px"
+             minHeight="260px"
             visible={optionVisible}
             setVisible={setOptionVisible}
           >

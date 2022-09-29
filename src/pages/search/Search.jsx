@@ -35,10 +35,14 @@ import {
   SearchItemPrice,
   SearchItemList,
 } from "./Search.styled";
+import ChatOptionModal from "../../components/modal/ChatOptionModal";
+import { ModalBtnWrap, OptionModalContainer } from "../event/Event.styled";
+import Button from "../../elements/button/Button";
 
 const Search = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [sendEvent, setSendEvent] = useState(false);
 
   const searchList = useSelector((state) => state.search.data);
   const [keyword, setKeyword] = useState("");
@@ -46,10 +50,10 @@ const Search = () => {
   const token = getCookie("accessToken");
 
   // 검색 Enter
-  const onKeyPress = (e) => {
+  const onClickSendEvent = (e) => {
     if (e.key === "Enter") {
       if (keyword === "") {
-        window.alert("검색어를 입력해주세요.");
+        setSendEvent(true);
       } else {
         setIsSearch(true);
         dispatch(auctionSearchThunk(keyword));
@@ -72,66 +76,89 @@ const Search = () => {
 
   return (
     <Fragment>
-      <SearchBox>
-        <SearchInputGroup>
-          <SearchInputWrap>
-            <SearchInput
-              type="text"
-              onChange={(e) => setKeyword(e.target.value)}
-              placeholder="검색어를 입력해주세요."
-              onKeyDown={(e) => onKeyPress(e)}
+      <div>
+        <SearchBox>
+          <SearchInputGroup>
+            <SearchInputWrap>
+              <SearchInput
+                type="text"
+                onChange={(e) => setKeyword(e.target.value)}
+                placeholder="검색어를 입력해주세요."
+                onKeyDown={(e) => onClickSendEvent(e)}
+              />
+              <SearchInputIcon>
+                <SearchImg />
+              </SearchInputIcon>
+            </SearchInputWrap>
+          </SearchInputGroup>
+          <>
+            <SearchFilterGroup>
+              {searchList?.length > 0 ? (
+                searchList.map((item) => {
+                  return (
+                    <SearchFilterWrap>
+                      <SearchItemList>
+                        <SearchItem
+                          key={item.auctionId}
+                          onClick={() => moveAuctionDetail(item.auctionId)}
+                        >
+                          <img
+                            src={item?.multiImages[0]?.imgUrl}
+                            alt="auction-popular-img"
+                          />
+                          <SearchItemContent>
+                            <SearchTagWrap>
+                              {item.delivery ? <span>택배</span> : null}
+                              {item.direct ? <span>직거래</span> : null}
+                              <span>{item.region}</span>
+                            </SearchTagWrap>
+                            <SearchItemTitle>{item.title}</SearchItemTitle>
+                            <SearchItemPriceWrap>
+                              <span>최고입찰가</span>
+                              <SearchItemPrice>
+                                {item.startPrice}원
+                              </SearchItemPrice>
+                            </SearchItemPriceWrap>
+                          </SearchItemContent>
+                        </SearchItem>
+                      </SearchItemList>
+                    </SearchFilterWrap>
+                  );
+                })
+              ) : isSearch ? (
+                <div>
+                  <SearchResult />
+                </div>
+              ) : (
+                <SearchHistory setKeyword={setKeyword} />
+              )}
+            </SearchFilterGroup>
+          </>
+        </SearchBox>
+        <Footer search={true} />
+      </div>
+      
+      {/* 메뉴 모달의 옵션 클릭 모달 */}
+      <ChatOptionModal
+        minHeight="260px"
+        visible={sendEvent}
+        setVisible={setSendEvent}
+      >
+        <OptionModalContainer>
+          <span>검색어를 입력해주세요!</span>
+          <ModalBtnWrap>
+            <Button
+              text="닫기"
+              _onClick={() => setSendEvent(false)}
+              style={{
+                width: "100%",
+                ft_weight: "500",
+                color: "#FFFFFF",
+              }}
             />
-            <SearchInputIcon>
-              <SearchImg />
-            </SearchInputIcon>
-          </SearchInputWrap>
-        </SearchInputGroup>
-        <>
-          <SearchFilterGroup>
-            {searchList?.length > 0 ? (
-              searchList.map((item) => {
-                return (
-                  <SearchFilterWrap>
-                    <SearchItemList>
-                      <SearchItem
-                        key={item.auctionId}
-                        onClick={() => moveAuctionDetail(item.auctionId)}
-                      >
-                        <img
-                          src={item?.multiImages[0]?.imgUrl}
-                          alt="auction-popular-img"
-                        />
-                        <SearchItemContent>
-                          <SearchTagWrap>
-                            {item.delivery ? <span>택배</span> : null}
-                            {item.direct ? <span>직거래</span> : null}
-                            <span>{item.region}</span>
-                          </SearchTagWrap>
-                          <SearchItemTitle>{item.title}</SearchItemTitle>
-                          <SearchItemPriceWrap>
-                            <span>최고입찰가</span>
-                            <SearchItemPrice>
-                              {item.startPrice}원
-                            </SearchItemPrice>
-                          </SearchItemPriceWrap>
-                        </SearchItemContent>
-                      </SearchItem>
-                    </SearchItemList>
-                  </SearchFilterWrap>
-                );
-              })
-            ) : isSearch ? (
-              <div>
-                <SearchResult />
-              </div>
-            ) : (
-              <SearchHistory
-              setKeyword={setKeyword} />
-            )}
-          </SearchFilterGroup>
-        </>
-      </SearchBox>
-      <Footer search={true} />
+          </ModalBtnWrap>
+        </OptionModalContainer>
+      </ChatOptionModal>
     </Fragment>
   );
 };
