@@ -69,13 +69,13 @@ const Header = ({
             />
           ) : null}
           {close ? (
-            <Close className="close" onClick={() => navigate(-1)} />
+            <Close id="close" onClick={() => navigate(-1)} />
           ) : null}
           {pageName ? (
             <PageTitle onClick={onClickTitle}>{pageName}</PageTitle>
           ) : null}
           {logo ? (
-            <Logo className="logo" onClick={() => navigate("/")}>
+            <Logo id="logo" onClick={() => navigate("/")}>
               땅땅
             </Logo>
           ) : null}

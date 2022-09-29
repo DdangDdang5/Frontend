@@ -70,7 +70,6 @@ export const reviewAuction = createAsyncThunk(
         `/auction/${payload.auctionId}/review`,
         payload.data
       );
-			console.log(response);
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error);

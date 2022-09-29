@@ -111,17 +111,9 @@ const AuctionReview = () => {
             data: {
               trustPoint: valueSum,
             },
-          })
-        ).then((res) => {
-          console.log(res);
-          if (res.payload.statusCode === 200) {
-            if (res.payload.data.split("가")[0] === "판매자") {
-              navigate("/myPageMyAuction");
-            } else {
-              navigate("/myPageParticipationAuction");
-            }
-          }
-        });
+          }),
+        );
+        navigate("/myPage");
       }
     } else {
       window.alert("평가 항목을 전부 선택해주세요.");

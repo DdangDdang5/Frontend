@@ -110,7 +110,7 @@ const MyPageInterestAuction = () => {
           })}
         </AuctionLayout>
       </MyAuctionBody>
-      <Footer />
+      <Footer myPage={true} />
     </MyAuctionLayout>
   );
 };

@@ -39,6 +39,8 @@ const AuctionDetail = () => {
   const bid = useSelector((state) => state.auction.bid);
   const favoriteState = useSelector((state) => state.auction.favorite);
 
+	console.log(data);
+
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
 
@@ -183,7 +185,7 @@ const AuctionDetail = () => {
   const registerUser = () => {
     var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
     stompClient = Stomp.over(sockJS);
-    // stompClient.debug = null; // stompJS console.log 막기
+    stompClient.debug = null; // stompJS console.log 막기
 
     stompClient.connect({}, onConnected, onError);
   };
@@ -223,7 +225,8 @@ const AuctionDetail = () => {
       // stompClient.send(
       //   "/app/chat/bid",
       //   {},
-      //   JSON.stringify({ ...chatMessage, type: "ENTER" })
+
+      //   JSON.stringify({ ...chatMessage, type: "ENTER" }),
       // );
 
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
