@@ -331,7 +331,6 @@ const SignUp = () => {
             <SignUpBoxSpan ref={nickNameSpanRef}></SignUpBoxSpan>
           </SignUpBoxInputGroup>
           <SignUpButtonGroup>
-            {console.log(emailCheck, password, repassword, nickNameCheck)}
             {emailCheck && password && repassword && nickNameCheck ? (
               <Button
                 _onClick={(e) => onsubmitHandler(e)}
