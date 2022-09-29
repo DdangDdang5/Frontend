@@ -11,7 +11,7 @@ import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
 
 // Component import
 import Header from "../../components/header/Header";
-import ChatOptionModal from "../../components/modal/ChatOptionModal";
+import PageModal from "../../components/modal/PageModal";
 import OptionModal from "../../components/modal/OptionModal";
 import Button from "../../elements/button/Button";
 import { doneAuction } from "../../redux/modules/AuctionSlice";
@@ -165,12 +165,16 @@ const Chat = () => {
 
   // 채팅 메뉴 모달 클릭
   const onClickMenu = () => {
-    setVisible(true);
+		if (auctionStatus === false || auctionStatus === true) {
+			window.alert("1:1 채팅에서만 확인 가능합니다.")
+		} else {
+	    setVisible(true);
+		}
   };
 
   // 채팅 메뉴 모달 중 "거래 완료하기" 클릭
   const onClickFinishMenu = () => {
-    dispatch(doneAuction(auctionId));
+    dispatch(doneAuction(auctionId)).then((res) => console.log(res));
     setVisible(false);
     setOptionVisible(true);
   };
@@ -424,7 +428,7 @@ const Chat = () => {
           </OptionModal>
 
           {/* 메뉴 모달의 옵션 클릭 모달 */}
-          <ChatOptionModal
+          <PageModal
             minHeight="260px"
             visible={optionVisible}
             setVisible={setOptionVisible}
@@ -455,7 +459,7 @@ const Chat = () => {
                 />
               </ModalBtnWrap>
             </OptionModalContainer>
-          </ChatOptionModal>
+          </PageModal>
         </>
       )}
     </>

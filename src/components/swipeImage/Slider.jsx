@@ -7,7 +7,7 @@ import styled from "styled-components";
 const Slider = ({ data }) => {
   const ref = useRef(null);
 
-  const cnt = data.map((item, index) => {
+  const cnt = data?.map((item, index) => {
     return item.imgUrl;
   });
 
@@ -60,7 +60,7 @@ const Slider = ({ data }) => {
     <SliderWrap>
       <ImgBox style={styled} ref={ref}>
         <div>
-          {cnt.map((item, index) => {
+          {cnt?.map((item, index) => {
             return <img key={index} src={item} alt="" />;
           })}
         </div>

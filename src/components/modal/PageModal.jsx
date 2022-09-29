@@ -4,7 +4,7 @@ import React from "react";
 // Package import
 import styled from "styled-components";
 
-const ChatOptionModal = ({ children, visible, setVisible, minHeight }) => {
+const PageModal = ({ children, visible, setVisible, minHeight }) => {
   return (
     <ModalLayout visible={visible} onClick={() => setVisible(false)}>
       <ModalWrapper visible={visible}>
@@ -62,4 +62,4 @@ const ModalInner = styled.div`
   position: relative;
 `;
 
-export default ChatOptionModal;
+export default PageModal;
