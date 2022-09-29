@@ -169,7 +169,7 @@ const AuctionWrite = () => {
       return window.alert("상품 이미지를 추가하셔야 합니다");
     } else if (inputForm.title === "") {
       return window.alert("제목을 입력하셔야 합니다.");
-    } else if (inputForm.startPrice === 0) {
+    } else if (inputForm.startPrice === 0 || inputForm.startPrice === "") {
       return window.alert("경매 시작가를 입력하셔야 합니다.");
     } else if (inputForm.delivery === false && inputForm.direct === false) {
       return window.alert("거래 방법을 선택하셔야 합니다.");
