@@ -56,7 +56,7 @@ const AuctionContainer = styled.div`
   gap: 18px;
   width: 100%;
 
-  margin-bottom: 40px;
+  margin-bottom: ${(props) => (props.state ? `40px` : `20px`)};
 `;
 
 const ImgBox = styled.div`
