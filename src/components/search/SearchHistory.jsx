@@ -1,5 +1,5 @@
 // React import
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 
 // Redux import
 import { useDispatch, useSelector } from "react-redux";
@@ -20,11 +20,11 @@ import {
   PopularKeyword,
 } from "./SearchHistory.styled";
 
-const SearchHistory = () => {
+const SearchHistory = ({setKeyword}) => {
   const dispatch = useDispatch();
   const recentSearch = useSelector((state) => state.search.recentSearch);
   const popularSearch = useSelector((state) => state.search.popularSearch);
-  
+
   useEffect(() => {
     dispatch(recentSearchThunk());
     dispatch(popularSearchThunk());
@@ -49,7 +49,7 @@ const SearchHistory = () => {
           <Title>지금 인기있어요</Title>
           <PopularKeywordWrap>
             {popularSearch?.map((item, idx) => (
-              <div key={idx}>
+              <div key={idx} onClick={(e) => item.searchWord}>
                 <PopularNum>
                   <div>{idx + 1}</div>
                 </PopularNum>
