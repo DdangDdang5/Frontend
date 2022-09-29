@@ -38,7 +38,6 @@ const MyPageEdit = () => {
   // console.log("preview", imagePreview);
 
   const memberId = sessionStorage?.getItem("memberId");
-  console.log(profileData);
 
   useEffect(() => {
     dispatch(nickNameCheckThunk(data));

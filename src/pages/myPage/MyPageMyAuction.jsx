@@ -31,7 +31,7 @@ function MyPageMyAuction() {
 
   const [shouldShownData, setShouldShownData] = useState([]);
 
-  console.log("내 옥션 데이터", data);
+  // console.log("내 옥션 데이터", data);
   const auctionIng = data?.filter(
     (data) => data?.auctionStatus === true
   ).length;
