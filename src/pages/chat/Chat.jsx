@@ -67,9 +67,8 @@ const Chat = () => {
 
   const nickName = sessionStorage.getItem("memberNickname");
 
-
   const chatMessageList = useSelector(
-    (state) => state.chat.chatMessageList
+    (state) => state.chat.chatMessageList,
   ).filter((item) => item.roomId === roomId);
 
   const [loading, setLoading] = useState(true);
@@ -177,18 +176,18 @@ const Chat = () => {
   };
 
   const calcTime = (createdAt) => {
-		if (isIOS) {
-			const [hours, minutes, seconds] = createdAt.split(" ")[1].split(":");
-			return (hours >= 12 ? "PM " : "AM ") + hours + ":" + minutes;
-		} else {
-			const date = new Date(createdAt);
-	    return (
-	      (date.getHours() >= 12 ? "PM " : "AM ") +
-	      (date.getHours() % 12).toString().padStart(2, 0) +
-	      ":" +
-	      date.getMinutes().toString().padStart(2, 0)
-	    );
-		}
+    if (isIOS) {
+      const [hours, minutes, seconds] = createdAt.split(" ")[1].split(":");
+      return (hours >= 12 ? "PM " : "AM ") + hours + ":" + minutes;
+    } else {
+      const date = new Date(createdAt);
+      return (
+        (date.getHours() >= 12 ? "PM " : "AM ") +
+        (date.getHours() % 12).toString().padStart(2, 0) +
+        ":" +
+        date.getMinutes().toString().padStart(2, 0)
+      );
+    }
   };
 
   const checkNickname = (nickName) => {
@@ -217,7 +216,7 @@ const Chat = () => {
     setLoading(true);
     var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
     stompClient = Stomp.over(sockJS);
-    // stompClient.debug = null; // stompJS console.log 막기
+    stompClient.debug = null; // stompJS console.log 막기
 
     stompClient.connect({}, onConnected, onError);
   };
@@ -251,7 +250,7 @@ const Chat = () => {
       stompClient.send(
         "/app/chat/message",
         {},
-        JSON.stringify({ ...chatMessage, sender: chatOther })
+        JSON.stringify({ ...chatMessage, sender: chatOther }),
       );
     }
     setLoading(false);
@@ -324,21 +323,23 @@ const Chat = () => {
             />
 
             {/* 경매 남은 시간 */}
-            {isDetail ? (
-              <AuctionTimeWrap>
-                {auctionStatus ? (
+            <AuctionTimeWrap isDetail={isDetail}>
+              {isDetail ? (
+                auctionStatus ? (
                   <>
                     <span>남은 시간</span>
                     <CountdownTimer targetDate={timer(auctionPeriod)} />
                   </>
                 ) : (
                   <AuctionTime>경매가 마감되었습니다.</AuctionTime>
-                )}
-              </AuctionTimeWrap>
-            ) : null}
+                )
+              ) : (
+                <span>거래후 우측 상단 버튼을 눌러 거래를 완료해주세요.</span>
+              )}
+            </AuctionTimeWrap>
 
             {/* 채팅 내역 */}
-            <ChatContent id="chat-content" isDetail={isDetail} isIOS={isIOS}>
+            <ChatContent id="chat-content" isIOS={isIOS}>
               <ChatMessageList>
                 {chatList?.map(
                   (chat, idx) =>
@@ -383,7 +384,7 @@ const Chat = () => {
                           </ChatMessage>
                         )}
                       </div>
-                    )
+                    ),
                 )}
               </ChatMessageList>
             </ChatContent>
@@ -412,7 +413,8 @@ const Chat = () => {
           <OptionModal
             minHeight="50px"
             visible={visible}
-            setVisible={setVisible}>
+            setVisible={setVisible}
+          >
             <MenuItemList>
               <MenuItem onClick={onClickFinishMenu}>거래 완료하기</MenuItem>
               {/* <MenuItem>차단하기</MenuItem>
@@ -425,7 +427,8 @@ const Chat = () => {
           <ChatOptionModal
             minHeight="260px"
             visible={optionVisible}
-            setVisible={setOptionVisible}>
+            setVisible={setOptionVisible}
+          >
             <OptionModalContainer>
               <ModalTextWrap>
                 <span>거래가 완료되었나요?</span>
