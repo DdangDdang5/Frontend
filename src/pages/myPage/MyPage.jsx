@@ -49,14 +49,14 @@ const MyPage = () => {
   };
 
   const basicProfileImg = () => {
-    if (
-      data?.profileImgUrl === null ||
-      data?.profileImgUrl === undefined ||
-      memberId === null
-    ) {
+    if (memberId === null) {
       return <BasicProfile onClick={() => handleLogIn()} />;
     } else {
-      return <img src={data?.profileImgUrl} alt="" />;
+      if (data?.profileImgUrl === null || data?.profileImgUrl === undefined) {
+        return <BasicProfile />;
+      } else {
+        return <img src={data?.profileImgUrl} alt="" />;
+      }
     }
   };
 

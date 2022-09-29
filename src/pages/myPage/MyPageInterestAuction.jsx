@@ -104,7 +104,6 @@ const MyPageInterestAuction = () => {
             return (
               <React.Fragment key={`${index}_${item.id}`}>
                 <AuctionRow item={item} index={index} isAuction={isAuction} />
-                {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>}
               </React.Fragment>
             );
           })}
