@@ -118,10 +118,6 @@ export const SearchTagWrap = styled.div`
 
 export const SearchItemTitle = styled.div`
   width: 100%;
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 `;
 
 export const SearchItemPriceWrap = styled.div`
