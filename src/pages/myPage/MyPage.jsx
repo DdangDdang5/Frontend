@@ -33,6 +33,8 @@ const MyPage = () => {
   const data = useSelector((state) => state.myPage?.myPage);
   const memberId = sessionStorage?.getItem("memberId");
 
+  console.log(data);
+
   const handleLogout = () => {
     if (window.confirm("로그아웃 하시겠습니까? ")) {
       sessionStorage.clear();

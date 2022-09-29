@@ -30,6 +30,8 @@ const MyPageParticipationAuction = () => {
     followingItem,
   } = useSelector((state) => state.myPage);
 
+  console.log(data);
+
   const [shouldShownData, setShouldShownData] = useState([]);
 
   const auctionIng = data?.filter(

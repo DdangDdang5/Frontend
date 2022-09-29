@@ -85,34 +85,51 @@ const AuctionWrite = () => {
     const imgFileList = [];
     const imgUrlList = [];
 
-    for (let i = 0; i < imagePreview.length; i++) {
-      imgUrlList.push(imagePreview[i]);
-      imgFileList.push(imgFile[i]);
-    }
+    if (imagePreview.length > 9) {
+      return window.alert("이미지 개수는 10장을 초과 할 수 없습니다");
+    } else {
+      for (let i = 0; i < imagePreview.length; i++) {
+        imgUrlList.push(imagePreview[i]);
+        imgFileList.push(imgFile[i]);
+      }
 
-    for (let i = 0; i < imgList.length; i++) {
-      imgUrlList.push({
-        id: imagePreview.length,
-        img: URL.createObjectURL(imgList[i]),
-      });
-      imgFileList.push(imgList[i]);
-    }
+      for (let i = 0; i < imgList.length; i++) {
+        imgUrlList.push({
+          id: imagePreview.length,
+          img: URL.createObjectURL(imgList[i]),
+        });
+        imgFileList.push(imgList[i]);
+      }
 
-    setImgFile(imgFileList);
-    setImagePreview(imgUrlList);
+      setImgFile(imgFileList);
+      setImagePreview(imgUrlList);
+    }
   };
 
   //미리보기 이미지 삭제
   const onRemove = (index) => {
     const cloneImagePreview = [...imagePreview];
+    const cloneImage = [...imgFile];
     cloneImagePreview.splice(index, 1);
+    cloneImage.splice(index, 1);
     setImagePreview(cloneImagePreview);
+    setImgFile(cloneImage);
   };
 
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
+    const limit = 6;
+
     if (name === "startPrice") {
-      setInputForm({ ...inputForm, [name]: Number(value) });
+      if (Number(value) > 100000) {
+        window.alert(`시작가는 100,000원을 초과할 수 없습니다.`);
+        setInputForm({ ...inputForm, [name]: "" });
+      } else {
+        setInputForm({
+          ...inputForm,
+          [name]: Number(value).toString().slice(0, limit),
+        });
+      }
     } else {
       setInputForm({ ...inputForm, [name]: value });
     }
@@ -152,7 +169,7 @@ const AuctionWrite = () => {
       return window.alert("상품 이미지를 추가하셔야 합니다");
     } else if (inputForm.title === "") {
       return window.alert("제목을 입력하셔야 합니다.");
-    } else if (inputForm.startPrice === 0) {
+    } else if (inputForm.startPrice === 0 || inputForm.startPrice === "") {
       return window.alert("경매 시작가를 입력하셔야 합니다.");
     } else if (inputForm.delivery === false && inputForm.direct === false) {
       return window.alert("거래 방법을 선택하셔야 합니다.");
@@ -213,8 +230,8 @@ const AuctionWrite = () => {
         <WriteTitleContainer>제목</WriteTitleContainer>
         <WriteInputBox
           type="text"
-          value={inputForm.title}
           name="title"
+          value={inputForm.title}
           onChange={onChangeHandler}
           placeholder="제목을 입력해주세요."
         />
@@ -240,20 +257,24 @@ const AuctionWrite = () => {
             </div>
           </div>
         </WriteBtnBox>
-        <WriteTitleContainer>경매 시작가</WriteTitleContainer>
+        <WriteTitleContainer>
+          경매 시작가
+          <div>(최대 100,000원까지 가능)</div>
+        </WriteTitleContainer>
 
         {/* placeHoder 위치 조정이 안됨 ㅡㅡ  */}
 
-        <WriteInputBox
-          placeholder="시작가를 입력해주세요."
-          type="number"
-          value={
-            inputForm.startPrice === 0 ? "" : inputForm.startPrice.toString()
-          }
-          name="startPrice"
-          onChange={onChangeHandler}
-        />
-        {/* <input className="inputTag" type="text" placeholder="원" /> */}
+        <WritePriceWrap>
+          <WriteInputBox
+            placeholder="시작가를 입력해주세요."
+            type="number"
+            name="startPrice"
+            value={inputForm.startPrice === 0 ? "" : inputForm.startPrice}
+            onChange={onChangeHandler}
+            maxLength="6"
+          />
+          {inputForm.startPrice.length > 0 ? <div>원</div> : ""}
+        </WritePriceWrap>
 
         <WriteTitleContainer>경매 일수</WriteTitleContainer>
         <WriteTitleAuctionDay>
@@ -315,8 +336,8 @@ const AuctionWrite = () => {
         <WriteTitleContainer>상세 설명</WriteTitleContainer>
         <WriteTextArea
           type="text"
-          value={inputForm.content}
           name="content"
+          value={inputForm.content}
           onChange={onChangeHandler}
           placeholder="경매 물품에 대한 상세한 설명을 적어주세요."
         />
@@ -449,6 +470,20 @@ const WriteTitleContainer = styled.div`
     color: ${(props) => props.theme.colors.Gray3};
   }
 `;
+
+const WritePriceWrap = styled.div`
+  display: flex;
+  position: relative;
+  div {
+    position: absolute;
+    top: 16px;
+    right: 11px;
+    font-size: ${(props) => props.theme.fontSizes.md};
+    font-weight: ${(props) => props.theme.fontWeights.fontWeights};
+    color: ${(props) => props.theme.colors.Gray3};
+  }
+`;
+
 const WriteInputBox = styled.input`
   display: flex;
   width: 100%;
