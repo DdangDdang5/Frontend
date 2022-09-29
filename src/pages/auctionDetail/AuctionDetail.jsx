@@ -39,6 +39,8 @@ const AuctionDetail = () => {
   const bid = useSelector((state) => state.auction.bid);
   const favoriteState = useSelector((state) => state.auction.favorite);
 
+  console.log(data);
+
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
 
@@ -75,6 +77,8 @@ const AuctionDetail = () => {
     ?.toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+  console.log(chatList);
+
   useEffect(() => {
     if (!params?.auctionId) {
       return <></>;
@@ -92,13 +96,15 @@ const AuctionDetail = () => {
       if (data.auctionStatus === false) {
         dispatch(winAuctionItem(params.auctionId));
 
+        console.log(bid);
+
         if (bid) {
           if (bid.seller === nickName || bid.bidder === nickName) {
             setWinBid(true);
             setChatOther(
               [bid.seller, bid.bidder]
                 .filter((item) => item !== nickName)
-                .join("")
+                .join(""),
             );
           }
         }
@@ -108,6 +114,7 @@ const AuctionDetail = () => {
 
   useEffect(() => {
     dispatch(auctionDetailData(+params?.auctionId));
+    console.log(chatList);
   }, [JSON.stringify(chatList)]);
 
   if (!data) {
@@ -165,7 +172,7 @@ const AuctionDetail = () => {
       data.nowPrice,
       chatList.length > 0
         ? +chatList[chatList.length - 1]?.message
-        : data.startPrice
+        : data.startPrice,
     );
 
     if (+userData.message > nowPrice) {
@@ -191,7 +198,7 @@ const AuctionDetail = () => {
   const onConnected = () => {
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived
+      onMessageReceived,
     );
 
     // 채팅방 들어감
@@ -229,6 +236,9 @@ const AuctionDetail = () => {
 
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
       setUserData({ ...userData, message: "" });
+      chatList.push(chatMessage);
+      setChatList([...chatList]);
+      console.log(chatList);
 
       setJoinVisible(false);
     }
@@ -303,7 +313,7 @@ const AuctionDetail = () => {
                   <div className="nickName">
                     {data?.nickname?.split("kakao")[0] + "kakao"}
                   </div>
-                  <div className="trustCount">신뢰도</div>
+                  <div className="trustCount">{data?.trustGrade}</div>
                 </DetailBodyProfileContent>
                 <div>
                   <Claim />
@@ -331,7 +341,7 @@ const AuctionDetail = () => {
               </DetailBodyViewTag>
               <DetailBodyItemTag>
                 {tagsArray?.map((item, index) =>
-                  item !== null ? <div key={index}>{`#${item}`}</div> : ""
+                  item !== null ? <div key={index}>{`#${item}`}</div> : "",
                 )}
               </DetailBodyItemTag>
             </DetailBodyBox>
@@ -367,7 +377,17 @@ const AuctionDetail = () => {
               <div className="priceBox">
                 <div className="presentPrice">최근 입찰가</div>
                 {/* {console.log(Math.max(data.nowPrice, data.startPrice, +chatList[chatList.length - 1]?.message))} */}
-                <div className="price">{`${postPrice}원`}</div>
+                <div className="price">
+                  {Math.max(
+                    data?.nowPrice,
+                    chatList.length > 0
+                      ? chatList[chatList.length - 1]?.message
+                      : 0,
+                  )
+                    ?.toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  원
+                </div>
               </div>
             </FooterLeftBox>
             {memberId === null ? (
@@ -414,46 +434,6 @@ const AuctionDetail = () => {
                 />
               </FooterBidContainer>
             )}
-
-            {/* {data?.auctionStatus ? (
-              <FooterRightBox>
-                <button onClick={onClickAuctionJoin}>입찰하기</button>
-              </FooterRightBox>
-            ) : winBid ? (
-              <FooterBidContainer>
-                <Button
-                  text="채팅방으로 이동"
-                  _onClick={() => {
-                    navigate(`/chat/${bid.roomId}`, {
-                      state: {
-                        auctionId: params.auctionId,
-                        isDetail: false,
-                        title: data.title,
-                        chatOther: chatOther,
-                      },
-                    });
-                  }}
-                  style={{
-                    width: "165px",
-                    ft_weight: "500",
-                    color: "#FFFFFF",
-                    bg_color: "#1DC79A",
-                  }}
-                />
-              </FooterBidContainer>
-            ) : (
-              <FooterBidContainer>
-                <Button
-                  text="입찰종료"
-                  style={{
-                    width: "165px",
-                    ft_weight: "500",
-                    color: "#646778",
-                    bg_color: "#EBEEF3",
-                  }}
-                />
-              </FooterBidContainer>
-            )} */}
           </DetailFooterContainer>
         </DetailFooterWrap>
       </AuctionDetailLayout>
@@ -489,7 +469,7 @@ const AuctionDetail = () => {
                 data.nowPrice,
                 chatList.length > 0
                   ? +chatList[chatList.length - 1]?.message
-                  : data.startPrice
+                  : data.startPrice,
               )
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -522,7 +502,7 @@ const AuctionDetail = () => {
             data.nowPrice,
             chatList.length > 0
               ? +chatList[chatList.length - 1]?.message
-              : data.startPrice
+              : data.startPrice,
           ) ? (
             <AuctionJoinInputInfo>
               현재 최고가보다 낮은 호가입니다.

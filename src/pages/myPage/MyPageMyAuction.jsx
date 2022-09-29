@@ -128,14 +128,15 @@ function MyPageMyAuction() {
                 ) : (
                   <ActionBtn
                     onClick={() => {
-                      navigate(`/chat/${item.roomId}`, {
-                        state: {
-                          auctionId: item.auctionId,
-                          isDetail: false,
-                          title: item.title,
-                        },
-                      });
-                      window.location.reload();
+											console.log(item)
+                      // navigate(`/chat/${item.onoRoomId}`, {
+                      //   state: {
+                      //     auctionId: item.auctionId,
+                      //     isDetail: false,
+                      //     title: item.title,
+                      //   },
+                      // });
+                      // window.location.reload();
                     }}>
                     채팅방 입장하기
                   </ActionBtn>

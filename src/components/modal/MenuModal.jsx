@@ -8,6 +8,7 @@ import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
 // Package import
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { clearMode } from "../../redux/modules/ModalSlice";
 
 const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
   const dispatch = useDispatch();
@@ -38,6 +39,7 @@ const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
   // 게시글 수정하기
   const handleEdit = () => {
     if (window.confirm("경매글을 수정하시겠습니까?")) {
+			dispatch(clearMode());
       return navigate(`/auctionEdit/${+id}`);
     }
   };
