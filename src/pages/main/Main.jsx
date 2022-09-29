@@ -174,7 +174,7 @@ const Main = () => {
                       </TagWrap>
                       <NewItemTitle>{item.title}</NewItemTitle>
                       <NewItemPriceWrap>
-                        <span>입찰시작가</span>
+                        <span>현재입찰가</span>
                         <NewItemPrice>{item.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</NewItemPrice>
                       </NewItemPriceWrap>
                     </NewItemContent>
@@ -210,7 +210,7 @@ const Main = () => {
                       </TagWrap>
                       <NewItemTitle>{item.title}</NewItemTitle>
                       <NewItemPriceWrap>
-                        <span>최고입찰가</span>
+                        <span>현재입찰가</span>
                         <NewItemPrice>{item.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</NewItemPrice>
                       </NewItemPriceWrap>
                     </LastItem>

@@ -24,25 +24,26 @@ export const HeaderContent = styled.div`
   svg {
     width: 24px;
     height: 24px;
+		filter: ${(props) => props.color ? "drop-shadow(0px 0px 4px rgba(0, 0, 0, 0.5))" : null};
 
     path {
-      fill: ${(props) =>
-        props.color ? props.color : props.theme.colors.Black};
+			fill: ${(props) => props.color ? props.color : props.theme.colors.Black};
     }
   }
 `;
 
 export const HeaderTitle = styled.div`
+  width: 70%;
   display: flex;
   align-items: center;
   gap: 8px;
 
-  .close {
+  #close {
     width: 16px;
     height: 16px;
   }
 
-  .logo {
+  #logo {
     width: 56px;
     height: 36px;
   }
@@ -52,6 +53,11 @@ export const PageTitle = styled.span`
   color: ${(props) => props.theme.colors.Black};
   font-size: ${(props) => props.theme.fontSizes.lg};
   font-weight: ${(props) => props.theme.fontWeights.bold};
+
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const HeaderIconContainer = styled.div`

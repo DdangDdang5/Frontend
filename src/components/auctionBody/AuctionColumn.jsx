@@ -125,7 +125,7 @@ const ItemContentBody = styled.div`
   height: 50px;
   margin-bottom: 2px;
 
-  display: -webkit-box;
+  display: block;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
