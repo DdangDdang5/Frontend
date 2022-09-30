@@ -36,6 +36,7 @@ import {
   SearchItemPrice,
   SearchItemList,
 } from "./Search.styled";
+import { clearAuction } from "../../redux/modules/AuctionSlice";
 
 const Search = () => {
   const dispatch = useDispatch();
@@ -69,6 +70,7 @@ const Search = () => {
 
   // 경매 상세페이지로 이동
   const moveAuctionDetail = (auctionId) => {
+    dispatch(clearAuction());
     navigate(`/auctionDetail/${auctionId}`);
   };
 

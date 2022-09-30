@@ -1,9 +1,12 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { clearAuction } from "../../redux/modules/AuctionSlice";
 
 const Auction = ({ data }) => {
   const navigate = useNavigate();
+	const dispatch = useDispatch();
 
   const nowPrice = data?.nowPrice
     .toString()
@@ -20,6 +23,7 @@ const Auction = ({ data }) => {
     <AuctionItemWrap>
       <AuctionItemContainer
         onClick={() => {
+					dispatch(clearAuction());
           navigate(`/auctionDetail/${data?.auctionId}`);
         }}>
         {data?.multiImages[0]?.imgUrl && (
