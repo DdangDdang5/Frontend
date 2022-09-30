@@ -70,7 +70,29 @@ const AuctionDetail = () => {
     createdAt: "",
   });
 
-  const [days, hours, minutes, seconds] = useCountdown(data.auctionPeriod);
+  // 타이머 기능
+  const timer = (countDown) => {
+    const tenMinute = 10 * 60 * 1000;
+    const thirtyMinute = tenMinute * 3;
+    const sixtyMinute = tenMinute * 6;
+    const startTime = Date.parse(data.createdAt);
+    const dateTimeAfterTenMinute = startTime + tenMinute;
+    const dateTimeAfterThirtyMinute = startTime + thirtyMinute;
+    const dateTimeAfterSixtyMinute = startTime + sixtyMinute;
+
+    switch (countDown) {
+      case 10:
+        return dateTimeAfterTenMinute;
+      case 30:
+        return dateTimeAfterThirtyMinute;
+      case 60:
+        return dateTimeAfterSixtyMinute;
+      default:
+        return <div>경매가 종료되었습니다.</div>;
+    }
+  };
+
+	const [days, hours, minutes, seconds] = useCountdown(timer(data?.auctionPeriod));
 
   const imgList = data?.multiImages;
 
@@ -91,9 +113,6 @@ const AuctionDetail = () => {
     ?.toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  // useEffect(() => {
-  // }, []);
-
   useEffect(() => {
     if (!params?.auctionId) {
       return <></>;
@@ -112,7 +131,7 @@ const AuctionDetail = () => {
         dispatch(winAuctionItem(params.auctionId));
 
         // console.log(bid);
-				console.log(data);
+				// console.log(data);
 
         if (bid) {
           if (bid.seller === nickName || bid.bidder === nickName) {
@@ -237,7 +256,7 @@ const AuctionDetail = () => {
   const registerUser = () => {
     var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
     stompClient = Stomp.over(sockJS);
-    // stompClient.debug = null; // stompJS console.log 막기
+    stompClient.debug = null; // stompJS console.log 막기
 
     stompClient.connect({}, onConnected, onError);
   };
@@ -309,28 +328,6 @@ const AuctionDetail = () => {
       navigate(-1);
     } else {
       navigate(-1);
-    }
-  };
-
-  // 타이머 기능
-  const timer = (countDown) => {
-    const tenMinute = 10 * 60 * 1000;
-    const thirtyMinute = tenMinute * 3;
-    const sixtyMinute = tenMinute * 6;
-    const startTime = Date.parse(data.createdAt);
-    const dateTimeAfterTenMinute = startTime + tenMinute;
-    const dateTimeAfterThirtyMinute = startTime + thirtyMinute;
-    const dateTimeAfterSixtyMinute = startTime + sixtyMinute;
-
-    switch (countDown) {
-      case 10:
-        return dateTimeAfterTenMinute;
-      case 30:
-        return dateTimeAfterThirtyMinute;
-      case 60:
-        return dateTimeAfterSixtyMinute;
-      default:
-        return <div>경매가 종료되었습니다.</div>;
     }
   };
 
@@ -413,7 +410,7 @@ const AuctionDetail = () => {
         <DetailFooterWrap>
           {/* 타이머 기능 */}
           <DetailFooterTimeContainer>
-            {data?.auctionStatus || +minutes + +seconds > 0 ? (
+            {data?.auctionStatus && +minutes + +seconds > 0 ? (
               <>
                 <span>남은 시간</span>
                 <CountdownTimer targetDate={timer(data.auctionPeriod)} />

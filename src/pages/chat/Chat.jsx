@@ -94,6 +94,33 @@ const Chat = () => {
     createdAt: "",
   });
 
+  // 타이머 기능
+  const timer = (countDown) => {
+    const tenMinute = 10 * 60 * 1000;
+    const thirtyMinute = tenMinute * 3;
+    const sixtyMinute = tenMinute * 6;
+    const startTime = Date.parse(auctionCreatedAt);
+    const dateTimeAfterTenMinute = startTime + tenMinute;
+    const dateTimeAfterThirtyMinute = startTime + thirtyMinute;
+    const dateTimeAfterSixtyMinute = startTime + sixtyMinute;
+
+    switch (countDown) {
+      case 10:
+				console.log(dateTimeAfterTenMinute)
+        return dateTimeAfterTenMinute;
+      case 30:
+				console.log(dateTimeAfterThirtyMinute)
+        return dateTimeAfterThirtyMinute;
+      case 60:
+				console.log(dateTimeAfterSixtyMinute)
+        return dateTimeAfterSixtyMinute;
+      default:
+        return <div>경매가 종료되었습니다.</div>;
+    }
+  };
+
+  const [days, hours, minutes, seconds] = useCountdown(timer(auctionPeriod));
+
   const initialChat = async () => {
     await setLoading(true);
     await registerUser();
@@ -139,30 +166,6 @@ const Chat = () => {
   useEffect(() => {
     scrollToBottom();
   }, [chatList]);
-
-  // 타이머 기능
-  const timer = (countDown) => {
-    const tenMinute = 10 * 60 * 1000;
-    const thirtyMinute = tenMinute * 3;
-    const sixtyMinute = tenMinute * 6;
-    const startTime = Date.parse(auctionCreatedAt);
-    const dateTimeAfterTenMinute = startTime + tenMinute;
-    const dateTimeAfterThirtyMinute = startTime + thirtyMinute;
-    const dateTimeAfterSixtyMinute = startTime + sixtyMinute;
-
-    switch (countDown) {
-      case 10:
-        return dateTimeAfterTenMinute;
-      case 30:
-        return dateTimeAfterThirtyMinute;
-      case 60:
-        return dateTimeAfterSixtyMinute;
-      default:
-        return <div>경매가 종료되었습니다.</div>;
-    }
-  };
-
-  const [days, hours, minutes, seconds] = useCountdown(auctionPeriod);
 
   // 채팅 입력창 클릭
   const onClickInput = () => {
@@ -370,7 +373,7 @@ const Chat = () => {
             {/* 경매 남은 시간 */}
             <AuctionTimeWrap isDetail={isDetail}>
               {isDetail ? (
-                auctionStatus || +minutes + +seconds > 0 ? (
+                auctionStatus && +minutes + +seconds > 0 ? (
                   <>
                     <span>남은 시간</span>
                     <CountdownTimer targetDate={timer(auctionPeriod)} />

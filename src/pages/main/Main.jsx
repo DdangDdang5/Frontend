@@ -69,8 +69,6 @@ const Main = () => {
     (state) => state.auctionList.auctionDeadlineList,
   );
 
-	console.log(auctionHitList);
-
   const getAuctionData = async () => {
     await dispatch(getAuctionHitList());
     await dispatch(getAuctionNewList());
