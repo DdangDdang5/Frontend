@@ -25,11 +25,11 @@ export const BannerContainer = styled.div`
 `;
 
 export const EventBannerList = styled.div`
-	height: 100%;
+  height: 100%;
 `;
 
 export const EventBanner = styled.div`
-	width: 100%;
+  width: 100%;
   height: 100%;
   position: relative;
 
@@ -44,8 +44,7 @@ export const EventBanner = styled.div`
 
     z-index: 10;
 
-    transform: ${(props) =>
-      props.isMain ? null : "scale(0.9)"};
+    transform: ${(props) => (props.isMain ? null : "scale(0.9)")};
   }
 `;
 

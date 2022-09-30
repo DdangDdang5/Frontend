@@ -1,5 +1,5 @@
 // React import
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 // Redux import
 import { useDispatch } from "react-redux";
@@ -8,6 +8,10 @@ import { deleteAuctionItem } from "../../redux/modules/AuctionListSlice";
 // Package import
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import { clearMode } from "../../redux/modules/ModalSlice";
+
+// Component import
+import PageModal from "./PageModal";
 
 const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
   const dispatch = useDispatch();
@@ -15,6 +19,15 @@ const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
 
   const modalRef = useRef();
   const memberId = parseInt(sessionStorage?.getItem("memberId"));
+
+  const [optionVisible, setOptionVisible] = useState(false); // alert 모달
+  const [optionContent, setOptionContent] = useState({
+    modalText: "",
+    btnText: "",
+    isConfirm: false,
+    onClickBtn: () => {},
+  });
+
   // 모달 닫기
   const handleModalHide = (e) => {
     if (modalRef.current === e.target) {
@@ -24,40 +37,65 @@ const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
 
   // 게시글 삭제하기
   const handleDelete = async () => {
-    if (window.confirm("경매글을 삭제하시겠습니까?"))
-      try {
-        const response = await dispatch(
-          deleteAuctionItem(data.auctionId)
-        ).unwrap();
-        if (response) {
-          return navigate(-1, { replace: true });
-        }
-      } catch {}
+		setOptionContent({
+			modalText: "\n경매글을 삭제하시겠습니까?",
+			btnText: "삭제할래요",
+			isConfirm: true,
+			onClickBtn: async () => {
+				try {
+					const response = await dispatch(
+						deleteAuctionItem(data.auctionId),
+					).unwrap();
+					if (response) {
+						return navigate(-1, { replace: true });
+					}
+				} catch {}
+			},
+		});
+		setOptionVisible(true);
   };
 
   // 게시글 수정하기
   const handleEdit = () => {
-    if (window.confirm("경매글을 수정하시겠습니까?")) {
-      return navigate(`/auctionEdit/${+id}`);
-    }
+		setOptionContent({
+			modalText: "\n경매글을 수정하시겠습니까?",
+			btnText: "수정할래요",
+			isConfirm: true,
+			onClickBtn: () => {
+				dispatch(clearMode());
+				navigate(`/auctionEdit/${+id}`);
+			},
+		});
+		setOptionVisible(true);
   };
 
   return (
-    <MenuModalLayout ref={modalRef} onClick={handleModalHide}>
-      <MenuModalWrap>
-        {memberId === data.memberId ? (
-          <>
-            <div onClick={() => handleEdit()}>경매글 수정하기</div>
-            <div onClick={() => handleDelete()}>경매글 삭제하기</div>
-          </>
-        ) : (
-          <>
-            <div>글쓴이 차단하기</div>
-            <div>신고하기</div>
-          </>
-        )}
-      </MenuModalWrap>
-    </MenuModalLayout>
+    <>
+      <MenuModalLayout ref={modalRef} onClick={handleModalHide}>
+        <MenuModalWrap>
+          {memberId === data.memberId ? (
+            <>
+              <div onClick={() => handleEdit()}>경매글 수정하기</div>
+              <div onClick={() => handleDelete()}>경매글 삭제하기</div>
+            </>
+          ) : (
+            <>
+              <div>글쓴이 차단하기</div>
+              <div>신고하기</div>
+            </>
+          )}
+        </MenuModalWrap>
+      </MenuModalLayout>
+
+      <PageModal
+        visible={optionVisible}
+        setVisible={setOptionVisible}
+        modalText={optionContent.modalText}
+        btnText={optionContent.btnText}
+        isConfirm={optionContent.isConfirm}
+        onClickBtn={optionContent.onClickBtn}
+      />
+    </>
   );
 };
 
