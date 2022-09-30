@@ -114,10 +114,8 @@ const MyPage = () => {
                   <>
                     <div className="nickName">
                       {data?.nickname?.length > 6
-
-                        ? data?.nickname?.split("kakao")[0] + "kakao"
-                        : data?.nickname}
-
+                      ? data?.nickname?.split("kakao")[0] + "kakao"
+                      : data?.nickname}
                     </div>
                     <div
                       className="myPageEdit"

@@ -128,7 +128,6 @@ function MyPageMyAuction() {
                 ) : (
                   <ActionBtn
                     onClick={() => {
-											console.log(item)
                       navigate(`/chat/${item.onoRoomId}`, {
                         state: {
                           auctionId: item.auctionId,

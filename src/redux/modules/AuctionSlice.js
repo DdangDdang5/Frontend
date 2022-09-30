@@ -96,6 +96,11 @@ export const joinAuction = createAsyncThunk(
 const auctionSlice = createSlice({
   name: "auction_",
   initialState,
+	reducers: {
+		clearAuction: (state, action) => {
+			state.auction = {};
+		}
+	},
   extraReducers: {
     //경매 상세 조회
     [auctionDetailData.fulfilled]: (state, action) => {
@@ -152,4 +157,5 @@ const auctionSlice = createSlice({
   },
 });
 
+export const { clearAuction } = auctionSlice.actions;
 export default auctionSlice.reducer;

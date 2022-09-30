@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import {
   auctionDetailData,
   auctionFavorite,
+  clearAuction,
   joinAuction,
   winAuctionItem,
 } from "../../redux/modules/AuctionSlice";
@@ -62,7 +63,7 @@ const AuctionDetail = () => {
     type: "",
     roomId: data.bidRoomId,
     sender: "",
-    message: data.nowPrice,
+    message: 0,
     createdAt: "",
   });
 
@@ -85,24 +86,28 @@ const AuctionDetail = () => {
     ?.toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
+	useEffect(() => {
+		dispatch(clearAuction());
+	}, []);
+
   useEffect(() => {
     if (!params?.auctionId) {
       return <></>;
     } else {
       dispatch(auctionDetailData(+params?.auctionId)).then((res) => {
         if (
-          data.bidRoomId !== undefined &&
+          data?.bidRoomId !== undefined &&
           chatList.length === 0 &&
-          data.auctionStatus
+          data?.auctionStatus
         ) {
           registerUser();
         }
       });
 
-      if (data.auctionStatus === false) {
+      if (data?.auctionStatus === false) {
         dispatch(winAuctionItem(params.auctionId));
 
-        console.log(bid);
+        // console.log(bid);
 
         if (bid) {
           if (bid.seller === nickName || bid.bidder === nickName) {
@@ -193,12 +198,12 @@ const AuctionDetail = () => {
         ? +chatList[chatList.length - 1]?.message
         : data.startPrice,
     );
-    console.log(
-      data?.nowPrice,
-      +chatList[chatList.length - 1]?.message,
-      nowPrice,
-    );
-    console.log(userData?.message);
+    // console.log(
+    //   data?.nowPrice,
+    //   +chatList[chatList.length - 1]?.message,
+    //   nowPrice,
+    // );
+    // console.log(userData?.message);
 
     if (+userData.message > nowPrice) {
       if (+userData.message > 999999) {
@@ -251,7 +256,7 @@ const AuctionDetail = () => {
       type: "ENTER",
       roomId: data.bidRoomId,
       sender: nickName,
-      message: userData.message,
+      message: data.nowPrice,
     };
 
     stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
