@@ -175,22 +175,74 @@ const AuctionWrite = () => {
       formData.append("images", imgFile[i]);
     }
     if (imgFile.length === 0) {
-      return window.alert("상품 이미지를 추가하셔야 합니다");
+      return (
+        setOptionVisible(true),
+        setOptionContent({
+          modalText: "상품이미지를 \n 추가하셔야 합니다.",
+          btnText: "확인",
+          // isConfirm: true,
+          onClickBtn: () => setOptionVisible(false),
+        })
+      );
     } else if (inputForm.title === "") {
-      return window.alert("제목을 입력하셔야 합니다.");
+      return (
+        setOptionVisible(true),
+        setOptionContent({
+          modalText: "제목을 \n 입력하셔야 합니다.",
+          btnText: "확인",
+          // isConfirm: true,
+          onClickBtn: () => setOptionVisible(false),
+        })
+      );
     } else if (inputForm.startPrice === 0 || inputForm.startPrice === "") {
-      return window.alert("경매 시작가를 입력하셔야 합니다.");
+      return (
+        setOptionVisible(true),
+        setOptionContent({
+          modalText: "경매 시작가를 \n 입력하셔야 합니다.",
+          btnText: "확인",
+          // isConfirm: true,
+          onClickBtn: () => setOptionVisible(false),
+        })
+      );
+    } else if (inputForm.auctionPeriod === 0) {
+      return (
+        setOptionVisible(true),
+        setOptionContent({
+          modalText: "경매 시간을 \n 선택하셔야 합니다.",
+          btnText: "확인",
+          // isConfirm: true,
+          onClickBtn: () => setOptionVisible(false),
+        })
+      );
     } else if (inputForm.delivery === false && inputForm.direct === false) {
-      return window.alert("거래 방법을 선택하셔야 합니다.");
+      return (
+        setOptionVisible(true),
+        setOptionContent({
+          modalText: "거래 방법을 \n 선택하셔야 합니다.",
+          btnText: "확인",
+          // isConfirm: true,
+          onClickBtn: () => setOptionVisible(false),
+        })
+      );
     } else if (inputForm.content === "") {
-      return window.alert("상세 소개글을 입력하셔야 합니다.");
+      return (
+        setOptionVisible(true),
+        setOptionContent({
+          modalText: "상세 소개글을 \n 입력하셔야 합니다.",
+          btnText: "확인",
+          // isConfirm: true,
+          onClickBtn: () => setOptionVisible(false),
+        })
+      );
     } else {
-      window.alert("경매글이 게시 되었습니다.");
-
+      setOptionVisible(true);
+      setOptionContent({
+        modalText: "경매글이 \n 게시되었습니다.",
+        btnText: "확인",
+        isConfirm: true,
+        onClickBtn: () => navigate(-1, { replace: true }),
+      });
       dispatch(addAuctionItem(formData));
-      // 포스팅 완료후 새로고침
-
-      navigate(-1, { replace: true });
     }
   };
 
