@@ -42,7 +42,7 @@ const AuctionDetail = () => {
   const bid = useSelector((state) => state.auction.bid);
   const favoriteState = useSelector((state) => state.auction.favorite);
 
-	// console.log(data);
+  // console.log(data);
 
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
@@ -92,7 +92,9 @@ const AuctionDetail = () => {
     }
   };
 
-	const [days, hours, minutes, seconds] = useCountdown(timer(data?.auctionPeriod));
+  const [days, hours, minutes, seconds] = useCountdown(
+    timer(data?.auctionPeriod),
+  );
 
   const imgList = data?.multiImages;
 
@@ -131,7 +133,7 @@ const AuctionDetail = () => {
         dispatch(winAuctionItem(params.auctionId));
 
         // console.log(bid);
-				// console.log(data);
+        // console.log(data);
 
         if (bid) {
           if (bid.seller === nickName || bid.bidder === nickName) {
@@ -139,7 +141,7 @@ const AuctionDetail = () => {
             setChatOther(
               [bid.seller, bid.bidder]
                 .filter((item) => item !== nickName)
-                .join("")
+                .join(""),
             );
           }
         }
@@ -220,7 +222,7 @@ const AuctionDetail = () => {
       data?.nowPrice,
       chatList.length > 0
         ? +chatList[chatList.length - 1]?.message
-        : data.startPrice
+        : data.startPrice,
     );
     // console.log(
     //   data?.nowPrice,
@@ -264,7 +266,7 @@ const AuctionDetail = () => {
   const onConnected = () => {
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived
+      onMessageReceived,
     );
 
     // 채팅방 들어감
@@ -392,7 +394,7 @@ const AuctionDetail = () => {
               </DetailBodyViewTag>
               <DetailBodyItemTag>
                 {tagsArray?.map((item, index) =>
-                  item !== null ? <div key={index}>{`#${item}`}</div> : ""
+                  item !== null ? <div key={index}>{`#${item}`}</div> : "",
                 )}
               </DetailBodyItemTag>
             </DetailBodyBox>
@@ -433,7 +435,7 @@ const AuctionDetail = () => {
                     data?.nowPrice,
                     chatList.length > 0
                       ? chatList[chatList.length - 1]?.message
-                      : data?.startPrice
+                      : data?.startPrice,
                   )
                     ?.toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -520,7 +522,7 @@ const AuctionDetail = () => {
                 data.nowPrice,
                 chatList.length > 0
                   ? +chatList[chatList.length - 1]?.message
-                  : data.startPrice
+                  : data.startPrice,
               )
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -553,7 +555,7 @@ const AuctionDetail = () => {
             data.nowPrice,
             chatList.length > 0
               ? +chatList[chatList.length - 1]?.message
-              : data.startPrice
+              : data.startPrice,
           ) ? (
             <AuctionJoinInputInfo>
               현재 최고가보다 낮은 호가입니다.

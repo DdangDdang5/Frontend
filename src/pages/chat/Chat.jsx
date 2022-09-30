@@ -71,7 +71,7 @@ const Chat = () => {
   const nickName = sessionStorage.getItem("memberNickname");
 
   const chatMessageList = useSelector(
-    (state) => state.chat.chatMessageList
+    (state) => state.chat.chatMessageList,
   ).filter((item) => item.roomId === roomId);
 
   const [loading, setLoading] = useState(true);
@@ -106,13 +106,10 @@ const Chat = () => {
 
     switch (countDown) {
       case 10:
-				console.log(dateTimeAfterTenMinute)
         return dateTimeAfterTenMinute;
       case 30:
-				console.log(dateTimeAfterThirtyMinute)
         return dateTimeAfterThirtyMinute;
       case 60:
-				console.log(dateTimeAfterSixtyMinute)
         return dateTimeAfterSixtyMinute;
       default:
         return <div>경매가 종료되었습니다.</div>;
@@ -298,7 +295,7 @@ const Chat = () => {
       stompClient.send(
         "/app/chat/message",
         {},
-        JSON.stringify({ ...chatMessage, sender: chatOther })
+        JSON.stringify({ ...chatMessage, sender: chatOther }),
       );
     }
     setLoading(false);
@@ -354,6 +351,8 @@ const Chat = () => {
     }
   };
 
+	// console.log(+minutes, +seconds, +minutes + +seconds);
+
   return (
     <>
       {loading ? (
@@ -372,7 +371,7 @@ const Chat = () => {
 
             {/* 경매 남은 시간 */}
             <AuctionTimeWrap isDetail={isDetail}>
-              {isDetail ? (
+							{isDetail ? (
                 auctionStatus && +minutes + +seconds > 0 ? (
                   <>
                     <span>남은 시간</span>
@@ -432,7 +431,7 @@ const Chat = () => {
                           </ChatMessage>
                         )}
                       </div>
-                    )
+                    ),
                 )}
               </ChatMessageList>
             </ChatContent>
@@ -461,7 +460,8 @@ const Chat = () => {
           <OptionModal
             minHeight="50px"
             visible={visible}
-            setVisible={setVisible}>
+            setVisible={setVisible}
+          >
             <MenuItemList>
               <MenuItem onClick={onClickFinishMenu}>거래 완료하기</MenuItem>
               {/* <MenuItem>차단하기</MenuItem>
