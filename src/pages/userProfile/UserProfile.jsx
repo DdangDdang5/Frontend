@@ -50,6 +50,8 @@ const UserProfile = () => {
     item.auctionStatus ? saleAuctionList.push(item) : doneAuctionList.push(item)
   );
 
+	// console.log(saleAuctionList, doneAuctionList);
+
   useEffect(() => {
     dispatch(getMember(memberId));
   }, []);

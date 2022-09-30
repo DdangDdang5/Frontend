@@ -165,7 +165,7 @@ export const PopularItem = styled.div`
   position: relative;
 
   img {
-    width: 85%;
+    width: 100%;
     height: 100%;
 
     border-radius: 8px;

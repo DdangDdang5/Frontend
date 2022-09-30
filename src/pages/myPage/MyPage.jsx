@@ -109,7 +109,9 @@ const MyPage = () => {
                 {memberId !== null ? (
                   <>
                     <div className="nickName">
-                      {data?.nickname?.split("kakao")[0] + "kakao"}
+                      {data?.nickname?.length > 6
+                      ? data?.nickname?.split("kakao")[0] + "kakao"
+                      : data?.nickname}
                     </div>
                     <div
                       className="myPageEdit"
@@ -129,23 +131,16 @@ const MyPage = () => {
                 )}
               </NickBox>
               {memberId !== null ? (
-                <>
-                  <div className="nickName">
-                    {data?.nickname?.length > 6
-                      ? data?.nickname?.split("kakao")[0] + "kakao"
-                      : data?.nickname}
-                  </div>
-                  <div
-                    className="myPageEdit"
-                    onClick={() => {
-                      navigate("/myPageEdit");
-                    }}>
-                    프로필 수정
-                  </div>
-                </>
-              ) : (
-                <></>
-              )}
+              <>
+                {" "}
+                <MyGradeImgWrap
+                  onClick={() => memberId && navigate(`/myGrade/${memberId}`)}>
+                  {findGrade(data?.trustGrade)}
+                </MyGradeImgWrap>
+              </>
+            ) : (
+              <></>
+            )}
             </MyNickContainer>
           </MyProfileWrap>
 
