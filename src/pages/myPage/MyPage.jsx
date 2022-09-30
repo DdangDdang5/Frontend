@@ -130,12 +130,18 @@ const MyPage = () => {
               </NickBox>
               {memberId !== null ? (
                 <>
-                  {" "}
-                  <MyGradeImgWrap
-                    onClick={() => memberId && navigate(`/myGrade/${memberId}`)}
-                  >
-                    {findGrade(data?.trustGrade)}
-                  </MyGradeImgWrap>
+                  <div className="nickName">
+                    {data?.nickname.length > 6
+                      ? data?.nickname?.split("kakao")[0] + "kakao"
+                      : data?.nickname}
+                  </div>
+                  <div
+                    className="myPageEdit"
+                    onClick={() => {
+                      navigate("/myPageEdit");
+                    }}>
+                    프로필 수정
+                  </div>
                 </>
               ) : (
                 <></>
