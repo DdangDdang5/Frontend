@@ -35,6 +35,7 @@ import {
   TagRegion,
   TagWrap,
 } from "../auctionReview/AuctionReview.styled";
+import { clearAuction } from "../../redux/modules/AuctionSlice";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -103,7 +104,10 @@ const UserProfile = () => {
               {saleAuctionList?.map((item) => (
                 <ReviewItem
                   key={item.auctionId}
-                  onClick={() => navigate(`/auctionDetail/${item.auctionId}`)}>
+                  onClick={() => {
+										dispatch(clearAuction());
+										navigate(`/auctionDetail/${item.auctionId}`)
+									}}>
                   <img
                     src={item.multiImages[0]?.imgUrl}
                     alt="user-sale-auction-img"
@@ -136,7 +140,10 @@ const UserProfile = () => {
               {doneAuctionList?.map((item) => (
                 <ReviewItem
                   key={item.auctionId}
-                  onClick={() => navigate(`/auctionDetail/${item.auctionId}`)}>
+                  onClick={() => {
+										dispatch(clearAuction());
+										navigate(`/auctionDetail/${item.auctionId}`)
+									}}>
                   <img
                     src={item.multiImages[0]?.imgUrl}
                     alt="user-sale-auction-img"

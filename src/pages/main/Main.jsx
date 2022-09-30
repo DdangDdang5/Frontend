@@ -49,6 +49,7 @@ import {
   TagRegion,
   TagWrap,
 } from "./Main.styled";
+import { clearAuction } from "../../redux/modules/AuctionSlice";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -68,6 +69,8 @@ const Main = () => {
     (state) => state.auctionList.auctionDeadlineList,
   );
 
+	console.log(auctionHitList);
+
   const getAuctionData = async () => {
     await dispatch(getAuctionHitList());
     await dispatch(getAuctionNewList());
@@ -79,13 +82,12 @@ const Main = () => {
     getAuctionData();
   }, [
     JSON.stringify(auctionAllList),
-    // JSON.stringify(auctionHitList),
-    // JSON.stringify(auctionNewList),
-    // JSON.stringify(auctionDeadlineList),
   ]);
 
   const moveAuctionDetail = (auctionId) => {
-    navigate(`/auctionDetail/${auctionId}`);
+    dispatch(clearAuction());
+		navigate(`/auctionDetail/${auctionId}`);
+		// window.location.reload();
   };
 
   const moveAuctionList = () => {

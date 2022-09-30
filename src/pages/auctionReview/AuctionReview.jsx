@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 // React import
 import {
   auctionDetailData,
+  clearAuction,
   reviewAuction,
 } from "../../redux/modules/AuctionSlice";
 
@@ -159,7 +160,10 @@ const AuctionReview = () => {
               <img
                 src={auction.multiImages ? auction.multiImages[0].imgUrl : ""}
                 alt="auction-new-img"
-                onClick={() => navigate(`/auctionDetail/${auctionId}`)}
+                onClick={() => {
+									dispatch(clearAuction());
+									navigate(`/auctionDetail/${auctionId}`);
+								}}
               />
               <ReviewItemContent>
                 <TagWrap>
