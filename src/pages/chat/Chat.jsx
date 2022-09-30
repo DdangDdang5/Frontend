@@ -49,6 +49,7 @@ import {
   SendBtn,
   SendIOSContainer,
 } from "./Chat.styled";
+import { useCountdown } from "../../components/hooks/UseCountDown";
 
 var stompClient = null;
 
@@ -160,6 +161,8 @@ const Chat = () => {
         return <div>경매가 종료되었습니다.</div>;
     }
   };
+
+  const [days, hours, minutes, seconds] = useCountdown(auctionPeriod);
 
   // 채팅 입력창 클릭
   const onClickInput = () => {
@@ -367,7 +370,7 @@ const Chat = () => {
             {/* 경매 남은 시간 */}
             <AuctionTimeWrap isDetail={isDetail}>
               {isDetail ? (
-                auctionStatus ? (
+                auctionStatus || +minutes + +seconds > 0 ? (
                   <>
                     <span>남은 시간</span>
                     <CountdownTimer targetDate={timer(auctionPeriod)} />
@@ -455,8 +458,7 @@ const Chat = () => {
           <OptionModal
             minHeight="50px"
             visible={visible}
-            setVisible={setVisible}
-          >
+            setVisible={setVisible}>
             <MenuItemList>
               <MenuItem onClick={onClickFinishMenu}>거래 완료하기</MenuItem>
               {/* <MenuItem>차단하기</MenuItem>

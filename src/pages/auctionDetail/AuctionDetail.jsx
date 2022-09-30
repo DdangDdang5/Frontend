@@ -29,6 +29,7 @@ import PageModal from "../../components/modal/PageModal";
 // Element & Shared import
 import Button from "../../elements/button/Button";
 import { Claim, Close, Next, BasicProfile } from "../../shared/images";
+import { useCountdown } from "../../components/hooks/UseCountDown";
 
 var stompClient = null;
 
@@ -46,7 +47,7 @@ const AuctionDetail = () => {
 
   const [joinVisible, setJoinVisible] = useState(false);
   const [isMenuModal, setIsMenuModal] = useState(false);
-	
+
   const [optionVisible, setOptionVisible] = useState(false); // alert 모달
   const [optionContent, setOptionContent] = useState({
     modalText: "",
@@ -67,6 +68,8 @@ const AuctionDetail = () => {
     createdAt: "",
   });
 
+  const [days, hours, minutes, seconds] = useCountdown(data.auctionPeriod);
+
   const imgList = data?.multiImages;
 
   // console.log(chatList);
@@ -86,9 +89,9 @@ const AuctionDetail = () => {
     ?.toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-	useEffect(() => {
-		dispatch(clearAuction());
-	}, []);
+  useEffect(() => {
+    dispatch(clearAuction());
+  }, []);
 
   useEffect(() => {
     if (!params?.auctionId) {
@@ -115,7 +118,7 @@ const AuctionDetail = () => {
             setChatOther(
               [bid.seller, bid.bidder]
                 .filter((item) => item !== nickName)
-                .join(""),
+                .join("")
             );
           }
         }
@@ -196,7 +199,7 @@ const AuctionDetail = () => {
       data?.nowPrice,
       chatList.length > 0
         ? +chatList[chatList.length - 1]?.message
-        : data.startPrice,
+        : data.startPrice
     );
     // console.log(
     //   data?.nowPrice,
@@ -240,7 +243,7 @@ const AuctionDetail = () => {
   const onConnected = () => {
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived,
+      onMessageReceived
     );
 
     // 채팅방 들어감
@@ -390,7 +393,7 @@ const AuctionDetail = () => {
               </DetailBodyViewTag>
               <DetailBodyItemTag>
                 {tagsArray?.map((item, index) =>
-                  item !== null ? <div key={index}>{`#${item}`}</div> : "",
+                  item !== null ? <div key={index}>{`#${item}`}</div> : ""
                 )}
               </DetailBodyItemTag>
             </DetailBodyBox>
@@ -408,7 +411,7 @@ const AuctionDetail = () => {
         <DetailFooterWrap>
           {/* 타이머 기능 */}
           <DetailFooterTimeContainer>
-            {data?.auctionStatus ? (
+            {data?.auctionStatus || +minutes + +seconds > 0 ? (
               <>
                 <span>남은 시간</span>
                 <CountdownTimer targetDate={timer(data.auctionPeriod)} />
@@ -431,7 +434,7 @@ const AuctionDetail = () => {
                     data?.nowPrice,
                     chatList.length > 0
                       ? chatList[chatList.length - 1]?.message
-                      : data?.startPrice,
+                      : data?.startPrice
                   )
                     ?.toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -518,7 +521,7 @@ const AuctionDetail = () => {
                 data.nowPrice,
                 chatList.length > 0
                   ? +chatList[chatList.length - 1]?.message
-                  : data.startPrice,
+                  : data.startPrice
               )
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -551,7 +554,7 @@ const AuctionDetail = () => {
             data.nowPrice,
             chatList.length > 0
               ? +chatList[chatList.length - 1]?.message
-              : data.startPrice,
+              : data.startPrice
           ) ? (
             <AuctionJoinInputInfo>
               현재 최고가보다 낮은 호가입니다.
