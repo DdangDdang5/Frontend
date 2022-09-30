@@ -121,11 +121,11 @@ const Event = () => {
       </div>
 
       {/* 메뉴 모달의 옵션 클릭 모달 */}
-      <PageModal
+      {/* <PageModal
         visible={sendEvent}
         setVisible={setSendEvent}
         modalText="응모 완료 되었어요!"
-      />
+      /> */}
     </>
   );
 };
