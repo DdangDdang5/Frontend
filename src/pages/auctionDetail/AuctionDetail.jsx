@@ -353,7 +353,7 @@ const AuctionDetail = () => {
               <div className="DetailBodyProfile">
                 <DetailBodyProfileContent>
                   <div className="nickName">
-                    {data?.nickname.length > 6
+                    {data?.nickname?.length > 6
                       ? data?.nickname?.split("kakao")[0] + "kakao"
                       : data?.nickname}
                   </div>
@@ -708,7 +708,7 @@ const DetailBodyContent = styled.div`
   display: flex;
   padding: 0px 20px;
   word-break: break-all;
-  font-size: ${(props) => props.theme.fontSizes.lg};
+  font-size: ${(props) => props.theme.fontSizes.md};
   font-weight: ${(props) => props.theme.fontWeights.normal};
   line-height: 36px;
   height: 100%;

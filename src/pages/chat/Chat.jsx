@@ -70,7 +70,7 @@ const Chat = () => {
   const nickName = sessionStorage.getItem("memberNickname");
 
   const chatMessageList = useSelector(
-    (state) => state.chat.chatMessageList,
+    (state) => state.chat.chatMessageList
   ).filter((item) => item.roomId === roomId);
 
   const [loading, setLoading] = useState(true);
@@ -292,7 +292,7 @@ const Chat = () => {
       stompClient.send(
         "/app/chat/message",
         {},
-        JSON.stringify({ ...chatMessage, sender: chatOther }),
+        JSON.stringify({ ...chatMessage, sender: chatOther })
       );
     }
     setLoading(false);
@@ -426,7 +426,7 @@ const Chat = () => {
                           </ChatMessage>
                         )}
                       </div>
-                    ),
+                    )
                 )}
               </ChatMessageList>
             </ChatContent>

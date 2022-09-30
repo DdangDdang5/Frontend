@@ -131,7 +131,7 @@ const MyPage = () => {
               {memberId !== null ? (
                 <>
                   <div className="nickName">
-                    {data?.nickname.length > 6
+                    {data?.nickname?.length > 6
                       ? data?.nickname?.split("kakao")[0] + "kakao"
                       : data?.nickname}
                   </div>
