@@ -1,5 +1,5 @@
 // React import
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 // Redux import
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,7 @@ import Header from "../../components/header/Header";
 import styled from "styled-components";
 import Footer from "../../components/footer/Footer";
 import MyPageList from "../../components/pageElement/MyPageList";
+import PageModal from "../../components/modal/PageModal";
 
 // Element & Shared import
 import { findGrade } from "../../shared/Grade";
@@ -33,19 +34,46 @@ const MyPage = () => {
   const data = useSelector((state) => state.myPage?.myPage);
   const memberId = sessionStorage?.getItem("memberId");
 
+  const [optionVisible, setOptionVisible] = useState(false); // alert 모달
+  const [optionContent, setOptionContent] = useState({
+    modalText: "",
+    btnText: "",
+    isConfirm: false,
+    onClickBtn: () => {},
+  });
+
+  const auctionNickname = data?.nickname?.includes("kakao")
+    ? data.nickname.split("kakao")[0] + "kakao"
+    : data.nickname;
+
   const handleLogout = () => {
-    if (window.confirm("로그아웃 하시겠습니까? ")) {
-      sessionStorage.clear();
-      navigate("/");
-    }
+		setOptionContent({
+			modalText: "\n로그아웃 하시겠습니까?",
+			btnText: "로그아웃하기",
+			isConfirm: true,
+			onClickBtn: () => {
+				sessionStorage.clear();
+				navigate("/");
+			},
+		});
+		setOptionVisible(true);
+		
+    // if (window.confirm("로그아웃 하시겠습니까? ")) {
+    //   sessionStorage.clear();
+    //   navigate("/");
+    // }
   };
 
   const handleLogIn = () => {
-    if (window.confirm("로그인 하시겠습니까? ")) {
-      navigate("/login");
-    } else {
-      navigate("/myPage");
-    }
+		setOptionContent({
+			modalText: "로그인이 필요합니다.\n 로그인하시겠습니까?",
+			btnText: "로그인하기",
+			isConfirm: true,
+			onClickBtn: () => {
+				navigate("/login");
+			},
+		});
+		setOptionVisible(true);
   };
 
   const basicProfileImg = () => {
@@ -65,133 +93,150 @@ const MyPage = () => {
   }, [memberId, JSON.stringify[data]]);
 
   return (
-    <MyPageLayout>
-      {/* <Header pageName="마이페이지" alarm={true} /> */}
-      <Header pageName="마이페이지" />
+    <>
+      <MyPageLayout>
+        {/* <Header pageName="마이페이지" alarm={true} /> */}
+        <Header pageName="마이페이지" />
 
-      <MyPageWrap isIOS={isIOS}>
-        <MyProfileWrap>
-          <MyImgContainer>
-            <MyImgBox>{basicProfileImg()}</MyImgBox>
-          </MyImgContainer>
+        <MyPageWrap isIOS={isIOS}>
+          <MyProfileWrap>
+            <MyImgContainer>
+              <MyImgBox>{basicProfileImg()}</MyImgBox>
+            </MyImgContainer>
 
-          <MyNickContainer>
-            <NickBox>
+            <MyNickContainer>
+              <NickBox>
+                {memberId !== null ? (
+                  <>
+                    <div className="nickName">
+                      {data?.nickname?.split("kakao")[0] + "kakao"}
+                    </div>
+                    <div
+                      className="myPageEdit"
+                      onClick={() => {
+                        navigate("/myPageEdit");
+                      }}
+                    >
+                      프로필 수정
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className="needNickName" onClick={() => handleLogIn()}>
+                      로그인이 필요합니다.
+                    </div>
+                  </>
+                )}
+              </NickBox>
               {memberId !== null ? (
                 <>
-                  <div className="nickName">
-                    {data?.nickname?.split("kakao")[0] + "kakao"}
-                  </div>
-                  <div
-                    className="myPageEdit"
-                    onClick={() => {
-                      navigate("/myPageEdit");
-                    }}>
-                    프로필 수정
-                  </div>
+                  {" "}
+                  <MyGradeImgWrap
+                    onClick={() => memberId && navigate(`/myGrade/${memberId}`)}
+                  >
+                    {findGrade(data?.trustGrade)}
+                  </MyGradeImgWrap>
                 </>
               ) : (
-                <>
-                  <div className="needNickName" onClick={() => handleLogIn()}>
-                    로그인이 필요합니다.
-                  </div>
-                </>
+                <></>
               )}
-            </NickBox>
-            {memberId !== null ? (
+            </MyNickContainer>
+          </MyProfileWrap>
+
+          <MyStateWrap>
+            {memberId === null ? (
               <>
-                {" "}
-                <MyGradeImgWrap
-                  onClick={() => memberId && navigate(`/myGrade/${memberId}`)}>
-                  {findGrade(data?.trustGrade)}
-                </MyGradeImgWrap>
+                <div className="MyStateWrap" onClick={() => handleLogIn()}>
+                  <div className="stateBox">
+                    <div className="title">나의 경매</div>
+                    <div className="count">0</div>
+                  </div>
+                  <StateBox>
+                    <div className="title">참여 경매</div>
+                    <div className="count">0</div>
+                  </StateBox>
+                  <div className="stateBox">
+                    <div className="title">관심 경매</div>
+                    <div className="count">0</div>
+                  </div>
+                </div>{" "}
               </>
             ) : (
-              <></>
+              <>
+                <div className="MyStateWrap">
+                  <div
+                    className="stateBox"
+                    onClick={() => navigate("/myPageMyAuction")}
+                  >
+                    <div className="title">나의 경매</div>
+                    <div className="count">{data?.myAuctionCnt}</div>
+                  </div>
+                  <StateBox>
+                    <div
+                      className="title"
+                      onClick={() => navigate("/myPageParticipationAuction")}
+                    >
+                      참여 경매
+                    </div>
+                    <div
+                      className="count"
+                      onClick={() => navigate("/myPageParticipationAuction")}
+                    >
+                      {data?.myParticipantCnt}
+                    </div>
+                  </StateBox>
+                  <div
+                    className="stateBox"
+                    onClick={() => navigate("/MyPageInterestAuction")}
+                  >
+                    <div className="title">관심 경매</div>
+                    <div className="count">{data?.myFavoriteCnt}</div>
+                  </div>
+                </div>
+              </>
             )}
-          </MyNickContainer>
-        </MyProfileWrap>
-
-        <MyStateWrap>
-          {memberId === null ? (
-            <>
-              <div className="MyStateWrap" onClick={() => handleLogIn()}>
-                <div className="stateBox">
-                  <div className="title">나의 경매</div>
-                  <div className="count">0</div>
-                </div>
-                <StateBox>
-                  <div className="title">참여 경매</div>
-                  <div className="count">0</div>
-                </StateBox>
-                <div className="stateBox">
-                  <div className="title">관심 경매</div>
-                  <div className="count">0</div>
-                </div>
-              </div>{" "}
-            </>
-          ) : (
-            <>
-              <div className="MyStateWrap">
-                <div
-                  className="stateBox"
-                  onClick={() => navigate("/myPageMyAuction")}>
-                  <div className="title">나의 경매</div>
-                  <div className="count">{data?.myAuctionCnt}</div>
-                </div>
-                <StateBox>
-                  <div
-                    className="title"
-                    onClick={() => navigate("/myPageParticipationAuction")}>
-                    참여 경매
-                  </div>
-                  <div
-                    className="count"
-                    onClick={() => navigate("/myPageParticipationAuction")}>
-                    {data?.myParticipantCnt}
-                  </div>
-                </StateBox>
-                <div
-                  className="stateBox"
-                  onClick={() => navigate("/MyPageInterestAuction")}>
-                  <div className="title">관심 경매</div>
-                  <div className="count">{data?.myFavoriteCnt}</div>
-                </div>
-              </div>
-            </>
-          )}
-        </MyStateWrap>
-        <MyProfileListWrap>
-          <MyPageList
-            icon={<Event />}
-            listName={`이벤트`}
-            onClick={() => navigate(`/eventList`)}
-          />
-          <MyPageList icon={<Notice />} listName={`공지사항`} />
-          <MyPageList icon={<Questions />} listName={`자주 묻는 질문`} />
-          <MyPageList
-            icon={<ProfileEdit />}
-            listName={`개인 정보 수정`}
-            onClick={() => navigate(`/myPageEdit`)}
-          />
-
-          {memberId === null ? (
+          </MyStateWrap>
+          <MyProfileListWrap>
             <MyPageList
-              icon={<Login />}
-              listName={`로그인`}
-              onClick={() => handleLogIn()}
+              icon={<Event />}
+              listName={`이벤트`}
+              onClick={() => navigate(`/eventList`)}
             />
-          ) : (
+            <MyPageList icon={<Notice />} listName={`공지사항`} />
+            <MyPageList icon={<Questions />} listName={`자주 묻는 질문`} />
             <MyPageList
-              icon={<Logout />}
-              listName={`로그아웃`}
-              onClick={() => handleLogout()}
+              icon={<ProfileEdit />}
+              listName={`개인 정보 수정`}
+              onClick={() => navigate(`/myPageEdit`)}
             />
-          )}
-        </MyProfileListWrap>
-      </MyPageWrap>
-      <Footer myPage={true} />
-    </MyPageLayout>
+
+            {memberId === null ? (
+              <MyPageList
+                icon={<Login />}
+                listName={`로그인`}
+                onClick={() => handleLogIn()}
+              />
+            ) : (
+              <MyPageList
+                icon={<Logout />}
+                listName={`로그아웃`}
+                onClick={() => handleLogout()}
+              />
+            )}
+          </MyProfileListWrap>
+        </MyPageWrap>
+        <Footer myPage={true} />
+      </MyPageLayout>
+
+      <PageModal
+        visible={optionVisible}
+        setVisible={setOptionVisible}
+        modalText={optionContent.modalText}
+        btnText={optionContent.btnText}
+        isConfirm={optionContent.isConfirm}
+        onClickBtn={optionContent.onClickBtn}
+      />
+    </>
   );
 };
 

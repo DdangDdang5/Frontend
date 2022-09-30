@@ -337,6 +337,7 @@ const AuctionWrite = () => {
         <WriteTextArea
           type="text"
           name="content"
+					wrap="hard"
           value={inputForm.content}
           onChange={onChangeHandler}
           placeholder="경매 물품에 대한 상세한 설명을 적어주세요."

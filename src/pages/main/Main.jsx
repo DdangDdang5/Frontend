@@ -7,6 +7,7 @@ import {
   getAuctionHitList,
   getAuctionNewList,
 } from "../../redux/modules/AuctionListSlice";
+import { clearMode } from "../../redux/modules/ModalSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
@@ -20,6 +21,7 @@ import AuctionCategoryList from "../../components/auctionCategoryList/AuctionCat
 import SwipeImage from "../../components/swipeImage/SwipeImage";
 import { EventImg, InfoImg, Next } from "../../shared/images";
 import PlusButton from "../../elements/button/PlusButton";
+import { FontEvent, FontRegular } from "../../shared/fonts/font";
 import Loading from "../loading/Loading";
 
 // Style import
@@ -47,8 +49,6 @@ import {
   TagRegion,
   TagWrap,
 } from "./Main.styled";
-import { FontEvent, FontRegular } from "../../shared/fonts/font";
-import { clearMode } from "../../redux/modules/ModalSlice";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -59,13 +59,13 @@ const Main = () => {
   const auctionAllList = useSelector((state) => state.auctionList.auctionList);
 
   const auctionHitList = useSelector(
-    (state) => state.auctionList.auctionHitList
+    (state) => state.auctionList.auctionHitList,
   );
   const auctionNewList = useSelector(
-    (state) => state.auctionList.auctionNewList
+    (state) => state.auctionList.auctionNewList,
   );
   const auctionDeadlineList = useSelector(
-    (state) => state.auctionList.auctionDeadlineList
+    (state) => state.auctionList.auctionDeadlineList,
   );
 
   const getAuctionData = async () => {
@@ -88,10 +88,10 @@ const Main = () => {
     navigate(`/auctionDetail/${auctionId}`);
   };
 
-	const moveAuctionList = () => {
-		dispatch(clearMode());
-		navigate("/auctionList");
-	}
+  const moveAuctionList = () => {
+    dispatch(clearMode());
+    navigate("/auctionList");
+  };
 
   return (
     <MainContainer>
@@ -108,7 +108,12 @@ const Main = () => {
               {/* 마감임박 경매 배너 */}
               {/* <SwipeImage isMain={true} data={auctionNewList} height="100%" /> */}
 
-              <SwipeImage isMain={true} data={undefined} height="100%" width="100%"/>
+              <SwipeImage
+                isMain={true}
+                data={undefined}
+                height="100%"
+                width="100%"
+              />
             </BannerContainer>
 
             {/* 카테고리별, 지역별 TOP 6 */}
@@ -116,36 +121,44 @@ const Main = () => {
             <AuctionCategoryList isCategory={false} />
 
             {/* 인기 경매 */}
-            <ListContainer>
-              <ListHeader>지금 관심 폭발 중!</ListHeader>
+            {auctionHitList?.length > 0 && (
+              <ListContainer>
+                <ListHeader>지금 관심 폭발 중!</ListHeader>
 
-              <PopularList>
-                {auctionHitList?.map((item, idx) => (
-                  <PopularItem
-                    key={item.auctionId}
-                    onClick={() => moveAuctionDetail(item.auctionId)}>
-                    <img
-                      src={item.multiImages[0]?.imgUrl}
-                      alt="auction-popular-img"
-                    />
-                    <PopularItemContent idx={idx}>
-                      <div>
-                        <TagWrap isPopular={true} idx={idx}>
-                          {item.delivery ? <span>택배</span> : null}
-                          {item.direct ? <span>직거래</span> : null}
-                          <span>{item.region}</span>
-                        </TagWrap>
-                        <PopularTitle>{item.title}</PopularTitle>
-                      </div>
-                      <PopularPriceWrap>
-                        <span>현재 입찰가</span>
-                        <PopularPrice>{item.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</PopularPrice>
-                      </PopularPriceWrap>
-                    </PopularItemContent>
-                  </PopularItem>
-                ))}
-              </PopularList>
-            </ListContainer>
+                <PopularList>
+                  {auctionHitList?.map((item, idx) => (
+                    <PopularItem
+                      key={item.auctionId}
+                      onClick={() => moveAuctionDetail(item.auctionId)}
+                    >
+                      <img
+                        src={item.multiImages[0]?.imgUrl}
+                        alt="auction-popular-img"
+                      />
+                      <PopularItemContent idx={idx}>
+                        <div>
+                          <TagWrap isPopular={true} idx={idx}>
+                            {item.delivery ? <span>택배</span> : null}
+                            {item.direct ? <span>직거래</span> : null}
+                            <span>{item.region}</span>
+                          </TagWrap>
+                          <PopularTitle>{item.title}</PopularTitle>
+                        </div>
+                        <PopularPriceWrap>
+                          <span>현재 입찰가</span>
+                          <PopularPrice>
+                            {item.nowPrice
+                              .toString()
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                            원
+                          </PopularPrice>
+                        </PopularPriceWrap>
+                      </PopularItemContent>
+                    </PopularItem>
+                  ))}
+                </PopularList>
+              </ListContainer>
+            )}
 
             {/* 새로운 경매 */}
             <ListContainer>
@@ -161,7 +174,8 @@ const Main = () => {
                 {auctionNewList?.map((item) => (
                   <NewItem
                     key={item.auctionId}
-                    onClick={() => moveAuctionDetail(item.auctionId)}>
+                    onClick={() => moveAuctionDetail(item.auctionId)}
+                  >
                     <img
                       src={item.multiImages[0]?.imgUrl}
                       alt="auction-new-img"
@@ -175,7 +189,12 @@ const Main = () => {
                       <NewItemTitle>{item.title}</NewItemTitle>
                       <NewItemPriceWrap>
                         <span>현재입찰가</span>
-                        <NewItemPrice>{item.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</NewItemPrice>
+                        <NewItemPrice>
+                          {item.nowPrice
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                          원
+                        </NewItemPrice>
                       </NewItemPriceWrap>
                     </NewItemContent>
                   </NewItem>
@@ -184,11 +203,11 @@ const Main = () => {
             </ListContainer>
 
             {/* 마감임박 경매 */}
-            {auctionDeadlineList.length > 0 && (
+            {auctionDeadlineList?.length > 0 && (
               <ListContainer>
                 <ListHeader isLast={true}>
                   <span>서두르세요! 곧 경매가 끝나요</span>
-              		<ListHeaderMore onClick={moveAuctionList}>
+                  <ListHeaderMore onClick={moveAuctionList}>
                     <span>전체 보기</span>
                     <Next />
                   </ListHeaderMore>
@@ -198,7 +217,8 @@ const Main = () => {
                   {auctionDeadlineList?.map((item) => (
                     <LastItem
                       key={item.auctionId}
-                      onClick={() => moveAuctionDetail(item.auctionId)}>
+                      onClick={() => moveAuctionDetail(item.auctionId)}
+                    >
                       <img
                         src={item.multiImages[0]?.imgUrl}
                         alt="auction-last-img"
@@ -211,7 +231,12 @@ const Main = () => {
                       <NewItemTitle>{item.title}</NewItemTitle>
                       <NewItemPriceWrap>
                         <span>현재입찰가</span>
-                        <NewItemPrice>{item.nowPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</NewItemPrice>
+                        <NewItemPrice>
+                          {item.nowPrice
+                            .toString()
+                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                          원
+                        </NewItemPrice>
                       </NewItemPriceWrap>
                     </LastItem>
                   ))}
