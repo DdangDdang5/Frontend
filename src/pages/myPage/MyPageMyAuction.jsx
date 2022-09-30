@@ -12,13 +12,13 @@ import {
 // Package import
 import styled from "styled-components";
 import { isIOS } from "react-device-detect";
+import { useNavigate } from "react-router-dom";
 
 // Component import
 import Header from "../../components/header/Header";
 import AuctionStateNav from "../../components/auctionBody/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
 import AuctionRow from "../../components/auctionBody/AuctionRow";
-import { useNavigate } from "react-router-dom";
 
 function MyPageMyAuction() {
   const dispatch = useDispatch();
@@ -129,14 +129,14 @@ function MyPageMyAuction() {
                   <ActionBtn
                     onClick={() => {
 											console.log(item)
-                      // navigate(`/chat/${item.onoRoomId}`, {
-                      //   state: {
-                      //     auctionId: item.auctionId,
-                      //     isDetail: false,
-                      //     title: item.title,
-                      //   },
-                      // });
-                      // window.location.reload();
+                      navigate(`/chat/${item.onoRoomId}`, {
+                        state: {
+                          auctionId: item.auctionId,
+                          isDetail: false,
+                          title: item.title,
+                        },
+                      });
+                      window.location.reload();
                     }}>
                     채팅방 입장하기
                   </ActionBtn>

@@ -1,12 +1,13 @@
 // React import
-import React from "react";
+import React, { useState } from "react";
 
 // Package import
 import { useNavigate } from "react-router-dom";
 import { isIOS } from "react-device-detect";
 
-// Shared import
+// Component & Shared import
 import { Chat, Home, MyPage, SearchImg } from "../../shared/images";
+import PageModal from "../modal/PageModal";
 
 // Style import
 import {
@@ -20,37 +21,60 @@ const Footer = ({ home, search, chat, myPage }) => {
 
   const memberId = sessionStorage.getItem("memberId");
 
+  const [optionVisible, setOptionVisible] = useState(false); // alert 모달
+  const [optionContent, setOptionContent] = useState({
+    modalText: "",
+    btnText: "",
+    isConfirm: false,
+    onClickBtn: () => {},
+  });
+
   const moveChatList = (memberId) => {
     if (!memberId) {
-      if (window.confirm("로그인이 필요합니다. 로그인하시겠습니까?")) {
-        navigate("/login");
-      }
+      setOptionContent({
+        modalText: "로그인이 필요합니다.\n 로그인하시겠습니까?",
+        btnText: "로그인하기",
+        isConfirm: true,
+        onClickBtn: () => navigate("/login"),
+      });
+      setOptionVisible(true);
     } else {
       navigate("/chatList");
     }
   };
 
   return (
-    <FooterContainer isIOS={isIOS}>
-      <FooterItemContainer>
-        <FooterIcon onClick={() => navigate("/")}>
-          {home ? <Home nowpage="true" /> : <Home />}
-          <span>홈</span>
-        </FooterIcon>
-        <FooterIcon onClick={() => navigate("/search")}>
-          {search ? <SearchImg nowpage="true" /> : <SearchImg />}
-          <span>검색</span>
-        </FooterIcon>
-        <FooterIcon onClick={() => moveChatList(memberId)}>
-          {chat ? <Chat nowpage="true" /> : <Chat />}
-          <span>채팅</span>
-        </FooterIcon>
-        <FooterIcon onClick={() => navigate("/myPage")}>
-          {myPage ? <MyPage nowpage="true" /> : <MyPage />}
-          <span>마이페이지</span>
-        </FooterIcon>
-      </FooterItemContainer>
-    </FooterContainer>
+    <>
+      <FooterContainer isIOS={isIOS}>
+        <FooterItemContainer>
+          <FooterIcon onClick={() => navigate("/")}>
+            {home ? <Home nowpage="true" /> : <Home />}
+            <span>홈</span>
+          </FooterIcon>
+          <FooterIcon onClick={() => navigate("/search")}>
+            {search ? <SearchImg nowpage="true" /> : <SearchImg />}
+            <span>검색</span>
+          </FooterIcon>
+          <FooterIcon onClick={() => moveChatList(memberId)}>
+            {chat ? <Chat nowpage="true" /> : <Chat />}
+            <span>채팅</span>
+          </FooterIcon>
+          <FooterIcon onClick={() => navigate("/myPage")}>
+            {myPage ? <MyPage nowpage="true" /> : <MyPage />}
+            <span>마이페이지</span>
+          </FooterIcon>
+        </FooterItemContainer>
+      </FooterContainer>
+
+      <PageModal
+        visible={optionVisible}
+        setVisible={setOptionVisible}
+        modalText={optionContent.modalText}
+        btnText={optionContent.btnText}
+        isConfirm={optionContent.isConfirm}
+        onClickBtn={optionContent.onClickBtn}
+      />
+    </>
   );
 };
 
