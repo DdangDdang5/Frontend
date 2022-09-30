@@ -47,17 +47,19 @@ const MyPage = () => {
     : data.nickname;
 
   const handleLogout = () => {
-      setOptionContent({
-         modalText: "\n로그아웃 하시겠습니까?",
-         btnText: "로그아웃하기",
-         isConfirm: true,
-         onClickBtn: () => {
-            sessionStorage.clear();
-            navigate("/");
-         },
-      });
-      setOptionVisible(true);
-      
+
+    setOptionContent({
+      modalText: "\n로그아웃 하시겠습니까?",
+      btnText: "로그아웃하기",
+      isConfirm: true,
+      onClickBtn: () => {
+        sessionStorage.clear();
+        navigate("/");
+      },
+    });
+    setOptionVisible(true);
+
+
     // if (window.confirm("로그아웃 하시겠습니까? ")) {
     //   sessionStorage.clear();
     //   navigate("/");
@@ -65,15 +67,17 @@ const MyPage = () => {
   };
 
   const handleLogIn = () => {
-      setOptionContent({
-         modalText: "로그인이 필요합니다.\n 로그인하시겠습니까?",
-         btnText: "로그인하기",
-         isConfirm: true,
-         onClickBtn: () => {
-            navigate("/login");
-         },
-      });
-      setOptionVisible(true);
+
+    setOptionContent({
+      modalText: "로그인이 필요합니다.\n 로그인하시겠습니까?",
+      btnText: "로그인하기",
+      isConfirm: true,
+      onClickBtn: () => {
+        navigate("/login");
+      },
+    });
+    setOptionVisible(true);
+
   };
 
   const basicProfileImg = () => {
@@ -110,15 +114,16 @@ const MyPage = () => {
                   <>
                     <div className="nickName">
                       {data?.nickname?.length > 6
-                      ? data?.nickname?.split("kakao")[0] + "kakao"
-                      : data?.nickname}
+
+                        ? data?.nickname?.split("kakao")[0] + "kakao"
+                        : data?.nickname}
+
                     </div>
                     <div
                       className="myPageEdit"
                       onClick={() => {
                         navigate("/myPageEdit");
-                      }}
-                    >
+                      }}>
                       프로필 수정
                     </div>
                   </>
@@ -167,29 +172,25 @@ const MyPage = () => {
                 <div className="MyStateWrap">
                   <div
                     className="stateBox"
-                    onClick={() => navigate("/myPageMyAuction")}
-                  >
+                    onClick={() => navigate("/myPageMyAuction")}>
                     <div className="title">나의 경매</div>
                     <div className="count">{data?.myAuctionCnt}</div>
                   </div>
                   <StateBox>
                     <div
                       className="title"
-                      onClick={() => navigate("/myPageParticipationAuction")}
-                    >
+                      onClick={() => navigate("/myPageParticipationAuction")}>
                       참여 경매
                     </div>
                     <div
                       className="count"
-                      onClick={() => navigate("/myPageParticipationAuction")}
-                    >
+                      onClick={() => navigate("/myPageParticipationAuction")}>
                       {data?.myParticipantCnt}
                     </div>
                   </StateBox>
                   <div
                     className="stateBox"
-                    onClick={() => navigate("/MyPageInterestAuction")}
-                  >
+                    onClick={() => navigate("/MyPageInterestAuction")}>
                     <div className="title">관심 경매</div>
                     <div className="count">{data?.myFavoriteCnt}</div>
                   </div>

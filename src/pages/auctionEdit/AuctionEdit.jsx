@@ -16,6 +16,7 @@ import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import { ImgDelete, ImgPlus, UnderArrow } from "../../shared/images";
 import { isIOS } from "react-device-detect";
+import PageModal from "../../components/modal/PageModal";
 
 const AuctionEdit = () => {
   const dispatch = useDispatch();
@@ -48,6 +49,15 @@ const AuctionEdit = () => {
   const [tags, setTags] = useState([]);
   const regionName = useSelector((state) => state.modal.regionName);
   const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
+
+  const [optionVisible, setOptionVisible] = useState(false); // alert 모달
+  const [optionContent, setOptionContent] = useState({
+    modalText: "",
+    btnText: "",
+    isConfirm: false,
+    onClickBtn: () => {},
+    onClickCloseBtn: () => {},
+  });
 
   // 기존 데이터 수정페이지에 데이터 업데이트
   useEffect(() => {
@@ -149,107 +159,129 @@ const AuctionEdit = () => {
       formData.append("images", imgFile[i]);
     }
     if (imgFile.length === 0) {
-      return window.alert("상품 이미지를 추가하셔야 합니다");
+      return (
+        setOptionVisible(true),
+        setOptionContent({
+          modalText: "상품이미지를 \n 추가하셔야 합니다.",
+          btnText: "확인",
+          // isConfirm: true,
+          onClickBtn: () => setOptionVisible(false),
+        })
+      );
     } else {
-      window.alert("경매글이 게시 되었습니다.");
+      setOptionVisible(true);
+      setOptionContent({
+        modalText: "경매글이 \n 게시되었습니다.",
+        btnText: "확인",
+        // isConfirm: true,
+        onClickCloseBtn: () => navigate(-1, { replace: true }),
+      });
+      dispatch(
+        editAuctionItem({ formData: formData, auctionId: data.auctionId })
+      );
+      // 포스팅 완료후 새로고침
     }
-
-    dispatch(
-      editAuctionItem({ formData: formData, auctionId: data.auctionId })
-    );
-    // 포스팅 완료후 새로고침
-
-    navigate(-1, { replace: true });
   };
 
   return (
-    <AuctionWriteLayout>
-      <Header
-        back={true}
-        pageName="경매 수정하기"
-        save={{ type: "완료" }}
-        onClickSave={onTransmitHandler}
-      />
+    <>
+      <AuctionWriteLayout>
+        <Header
+          back={true}
+          pageName="경매 수정하기"
+          save={{ type: "완료" }}
+          onClickSave={onTransmitHandler}
+        />
 
-      <AuctionWriteWrap isIOS={isIOS}>
-        <WriteImgContainer>
-          <ImgBoxBtn>
-            <label className="inBoxBtnContainer" htmlFor="img_UpFile">
+        <AuctionWriteWrap isIOS={isIOS}>
+          <WriteImgContainer>
+            <ImgBoxBtn>
+              <label className="inBoxBtnContainer" htmlFor="img_UpFile">
+                <div>
+                  <ImgPlus />
+                </div>
+                <div className="imgCount">{`${imagePreview.length}/10`}</div>
+              </label>
+              <input
+                ref={img_ref}
+                type="file"
+                multiple="multiple"
+                accept="image/*"
+                id="img_UpFile"
+                onChange={onLoadFile}
+                style={{ display: "none" }}
+              />
+            </ImgBoxBtn>
+            <ImgBoxWrap>
+              {imagePreview.map((item, index) => {
+                return (
+                  <ImgBox key={index}>
+                    <img src={item?.img ? item?.img : item} id={index} alt="" />
+                    <div className="deleteBox" onClick={() => onRemove(index)}>
+                      <ImgDelete />
+                    </div>
+                  </ImgBox>
+                );
+              })}
+            </ImgBoxWrap>
+          </WriteImgContainer>
+
+          <WriteTitleContainer>제목</WriteTitleContainer>
+          <WriteInputBox
+            type="text"
+            value={inputForm.title}
+            name="title"
+            onChange={onChangeHandler}
+            placeholder="제목을 입력해주세요."
+          />
+
+          <WriteTitleContainer>지역 선택</WriteTitleContainer>
+          <WriteBtnBox
+            onClick={() => dispatch(showModal("regionList"), _regionList())}>
+            <div className="WriteBtnBoxWrap">
+              {regionNameCheck === "전체지역" ? (
+                <div>미선택</div>
+              ) : (
+                <div>{regionNameCheck}</div>
+              )}
               <div>
-                <ImgPlus />
+                <UnderArrow />
               </div>
-              <div className="imgCount">{`${imagePreview.length}/10`}</div>
-            </label>
-            <input
-              ref={img_ref}
-              type="file"
-              multiple="multiple"
-              accept="image/*"
-              id="img_UpFile"
-              onChange={onLoadFile}
-              style={{ display: "none" }}
-            />
-          </ImgBoxBtn>
-          <ImgBoxWrap>
-            {imagePreview.map((item, index) => {
-              return (
-                <ImgBox key={index}>
-                  <img src={item?.img ? item?.img : item} id={index} alt="" />
-                  <div className="deleteBox" onClick={() => onRemove(index)}>
-                    <ImgDelete />
-                  </div>
-                </ImgBox>
-              );
-            })}
-          </ImgBoxWrap>
-        </WriteImgContainer>
-
-        <WriteTitleContainer>제목</WriteTitleContainer>
-        <WriteInputBox
-          type="text"
-          value={inputForm.title}
-          name="title"
-          onChange={onChangeHandler}
-          placeholder="제목을 입력해주세요."
-        />
-
-        <WriteTitleContainer>지역 선택</WriteTitleContainer>
-        <WriteBtnBox
-          onClick={() => dispatch(showModal("regionList"), _regionList())}>
-          <div className="WriteBtnBoxWrap">
-            {regionNameCheck === "전체지역" ? (
-              <div>미선택</div>
-            ) : (
-              <div>{regionNameCheck}</div>
-            )}
-            <div>
-              <UnderArrow />
             </div>
-          </div>
-        </WriteBtnBox>
-        <WriteTitleContainer>상세 설명</WriteTitleContainer>
-        <WriteTextArea
-          type="text"
-          value={inputForm.content}
-          name="content"
-          onChange={onChangeHandler}
-          placeholder="경매 물품에 대한 상세한 설명을 적어주세요."
-        />
-        <WriteTitleContainer>
-          해시태그
-          <div>(최대 6개 까지 가능)</div>
-        </WriteTitleContainer>
-        <WriteInputBox
-          placeholder="태그 앞에 #을 붙여 주세요. (ex: #태그1 #태그2)"
-          value={tags}
-          onChange={(e) => setTags(e.target.value)}
-        />
-        {/* <WritePostBtn type="button" onClick={onTransmitHandler}>
-          버튼
-        </WritePostBtn> */}
-      </AuctionWriteWrap>
-      <Footer />
-    </AuctionWriteLayout>
+          </WriteBtnBox>
+          <WriteTitleContainer>상세 설명</WriteTitleContainer>
+          <WriteTextArea
+            type="text"
+            value={inputForm.content}
+            name="content"
+            onChange={onChangeHandler}
+            placeholder="경매 물품에 대한 상세한 설명을 적어주세요."
+          />
+          <WriteTitleContainer>
+            해시태그
+            <div>(최대 6개 까지 가능)</div>
+          </WriteTitleContainer>
+          <WriteInputBox
+            placeholder="태그 앞에 #을 붙여 주세요. (ex: #태그1 #태그2)"
+            value={tags}
+            onChange={(e) => setTags(e.target.value)}
+          />
+          {/* <WritePostBtn type="button" onClick={onTransmitHandler}>
+            버튼
+          </WritePostBtn> */}
+        </AuctionWriteWrap>
+        <Footer />
+      </AuctionWriteLayout>
+      <PageModal
+        visible={optionVisible}
+        setVisible={setOptionVisible}
+        modalText={optionContent.modalText}
+        btnText={optionContent.btnText}
+        isConfirm={optionContent.isConfirm}
+        onClickBtn={optionContent.onClickBtn}
+        onClickCloseBtn={optionContent.onClickCloseBtn}
+      />
+    </>
   );
 };
 
