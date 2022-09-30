@@ -80,7 +80,9 @@ const MyPage = () => {
               {memberId !== null ? (
                 <>
                   <div className="nickName">
-                    {data?.nickname?.split("kakao")[0] + "kakao"}
+                    {data?.nickname.length > 6
+                      ? data?.nickname?.split("kakao")[0] + "kakao"
+                      : data?.nickname}
                   </div>
                   <div
                     className="myPageEdit"

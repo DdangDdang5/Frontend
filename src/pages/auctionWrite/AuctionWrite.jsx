@@ -347,6 +347,7 @@ const AuctionWrite = () => {
         </WriteTitleContainer>
         <WriteInputBox
           placeholder="태그 앞에 #을 붙여 주세요. (ex: #태그1 #태그2)"
+          isIOS={isIOS}
           value={tags}
           onChange={(e) => setTags(e.target.value)}
         />
@@ -618,7 +619,7 @@ const WriteTextArea = styled.textarea`
   box-sizing: border-box;
   resize: none;
   letter-spacing: -0.05em;
-  word-spacing: -0.35em;
+  word-spacing: ${(props) => (props.isIOS ? "0" : "-0.35em")};
   line-height: 150%;
   border-radius: 8px;
   border: 1px solid ${(props) => props.theme.colors.Gray2};
