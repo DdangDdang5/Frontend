@@ -23,6 +23,7 @@ import AuctionJoinModal from "../../components/modal/AuctionJoinModal";
 import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
 import MenuModal from "../../components/modal/MenuModal";
 import AuctionHeart from "../../components/auctionBody/AuctionHeart";
+import PageModal from "../../components/modal/PageModal";
 
 // Element & Shared import
 import Button from "../../elements/button/Button";
@@ -39,14 +40,23 @@ const AuctionDetail = () => {
   const bid = useSelector((state) => state.auction.bid);
   const favoriteState = useSelector((state) => state.auction.favorite);
 
-  console.log(data);
-
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
 
   const [joinVisible, setJoinVisible] = useState(false);
   const [isMenuModal, setIsMenuModal] = useState(false);
+	
+  const [optionVisible, setOptionVisible] = useState(false); // alert 모달
+  const [optionContent, setOptionContent] = useState({
+    modalText: "",
+    btnText: "",
+    isConfirm: false,
+    onClickBtn: () => {},
+  });
+
   const [winBid, setWinBid] = useState(false);
+  const [chatOther, setChatOther] = useState("");
+
   const [chatList, setChatList] = useState([]);
   const [userData, setUserData] = useState({
     type: "",
@@ -55,8 +65,6 @@ const AuctionDetail = () => {
     message: data.nowPrice,
     createdAt: "",
   });
-
-  const [chatOther, setChatOther] = useState("");
 
   const imgList = data?.multiImages;
 
@@ -76,8 +84,6 @@ const AuctionDetail = () => {
   const postPrice = data?.nowPrice
     ?.toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-  console.log(chatList);
 
   useEffect(() => {
     if (!params?.auctionId) {
@@ -114,7 +120,7 @@ const AuctionDetail = () => {
 
   useEffect(() => {
     dispatch(auctionDetailData(+params?.auctionId));
-    console.log(chatList);
+    // console.log(chatList);
   }, [JSON.stringify(chatList)]);
 
   if (!data) {
@@ -124,12 +130,22 @@ const AuctionDetail = () => {
   const onClickAuctionJoin = () => {
     // 비로그인 -> 세션에 멤버아이디 없음
     if (!memberId) {
-      if (window.confirm("로그인이 필요합니다. 로그인하시겠습니까?")) {
-        navigate("/login");
-      }
+      setOptionContent({
+        modalText: "로그인이 필요합니다.\n로그인하시겠습니까?",
+        btnText: "로그인하기",
+        isConfirm: true,
+        onClickBtn: () => navigate("/login"),
+      });
+      setOptionVisible(true);
     } else {
       if (data?.nickname === nickName) {
-        window.alert("본인이 생성한 경매는 입찰할 수 없습니다.");
+        setOptionContent({
+          modalText: "본인이 생성한 경매는\n 입찰할 수 없습니다.",
+          btnText: "",
+          isConfirm: false,
+          onClickBtn: () => {},
+        });
+        setOptionVisible(true);
       } else {
         // 입찰 모달 보여줌
         setJoinVisible(true);
@@ -140,9 +156,13 @@ const AuctionDetail = () => {
 
   const onClickAuctionChatRoom = () => {
     if (!memberId) {
-      if (window.confirm("로그인이 필요합니다. 로그인하시겠습니까?")) {
-        navigate("/login");
-      }
+      setOptionContent({
+        modalText: "로그인이 필요합니다.\n로그인하시겠습니까?",
+        btnText: "로그인하기",
+        isConfirm: true,
+        onClickBtn: () => navigate("/login"),
+      });
+      setOptionVisible(true);
     } else {
       navigate(`/chat/${data.roomId}`, {
         state: {
@@ -167,22 +187,39 @@ const AuctionDetail = () => {
   };
 
   const onSubmitAuctionPrice = () => {
-    // if (userData.message > )
     const nowPrice = Math.max(
-      data.nowPrice,
+      data?.nowPrice,
       chatList.length > 0
         ? +chatList[chatList.length - 1]?.message
         : data.startPrice,
     );
+    console.log(
+      data?.nowPrice,
+      +chatList[chatList.length - 1]?.message,
+      nowPrice,
+    );
+    console.log(userData?.message);
 
     if (+userData.message > nowPrice) {
       if (+userData.message > 999999) {
-        window.alert("최대 999,999원까지 입력할 수 있습니다.");
+        setOptionContent({
+          modalText: "최대 999,999원까지 \n입력할 수 있습니다.",
+          btnText: "",
+          isConfirm: false,
+          onClickBtn: () => {},
+        });
+        setOptionVisible(true);
       } else {
         sendMessage();
       }
     } else {
-      window.alert("현재 최고가보다 높은 호가를 올려야합니다.");
+      setOptionContent({
+        modalText: "현재 최고가보다\n 높은 금액을 입력해야합니다.",
+        btnText: "",
+        isConfirm: false,
+        onClickBtn: () => {},
+      });
+      setOptionVisible(true);
     }
   };
 
@@ -190,7 +227,7 @@ const AuctionDetail = () => {
   const registerUser = () => {
     var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
     stompClient = Stomp.over(sockJS);
-    stompClient.debug = null; // stompJS console.log 막기
+    // stompClient.debug = null; // stompJS console.log 막기
 
     stompClient.connect({}, onConnected, onError);
   };
@@ -202,11 +239,22 @@ const AuctionDetail = () => {
     );
 
     // 채팅방 들어감
-    // userJoin();
+    userJoin();
   };
 
   const onError = (err) => {
     console.log(err);
+  };
+
+  const userJoin = () => {
+    let chatMessage = {
+      type: "ENTER",
+      roomId: data.bidRoomId,
+      sender: nickName,
+      message: userData.message,
+    };
+
+    stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
   };
 
   const onMessageReceived = (payload) => {
@@ -227,18 +275,11 @@ const AuctionDetail = () => {
         message: userData.message,
       };
 
-      // stompClient.send(
-      //   "/app/chat/bid",
-      //   {},
-
-      //   JSON.stringify({ ...chatMessage, type: "ENTER" }),
-      // );
-
       stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
       setUserData({ ...userData, message: "" });
+
       chatList.push(chatMessage);
       setChatList([...chatList]);
-      console.log(chatList);
 
       setJoinVisible(false);
     }
@@ -246,7 +287,8 @@ const AuctionDetail = () => {
 
   const onKeyPress = (event) => {
     if (event.key === "Enter") {
-      sendMessage();
+      // sendMessage();
+      onSubmitAuctionPrice();
     }
   };
 
@@ -311,7 +353,9 @@ const AuctionDetail = () => {
               <div className="DetailBodyProfile">
                 <DetailBodyProfileContent>
                   <div className="nickName">
-                    {data?.nickname?.split("kakao")[0] + "kakao"}
+                    {data?.nickname.length > 6
+                      ? data?.nickname?.split("kakao")[0] + "kakao"
+                      : data?.nickname}
                   </div>
                   <div className="trustCount">{data?.trustGrade}</div>
                 </DetailBodyProfileContent>
@@ -382,7 +426,7 @@ const AuctionDetail = () => {
                     data?.nowPrice,
                     chatList.length > 0
                       ? chatList[chatList.length - 1]?.message
-                      : 0,
+                      : data?.startPrice,
                   )
                     ?.toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -514,7 +558,7 @@ const AuctionDetail = () => {
             <Button
               type={"submit"}
               text={"입찰하기"}
-              _onClick={onSubmitAuctionPrice}
+              _onClick={() => onSubmitAuctionPrice()}
               style={{
                 width: "100%",
                 height: "56px",
@@ -524,6 +568,15 @@ const AuctionDetail = () => {
           </ButtonContainer>
         </AuctionJoinModalContent>
       </AuctionJoinModal>
+
+      <PageModal
+        visible={optionVisible}
+        setVisible={setOptionVisible}
+        modalText={optionContent.modalText}
+        btnText={optionContent.btnText}
+        isConfirm={optionContent.isConfirm}
+        onClickBtn={optionContent.onClickBtn}
+      />
     </>
   );
 };
@@ -659,6 +712,7 @@ const DetailBodyContent = styled.div`
   font-weight: ${(props) => props.theme.fontWeights.normal};
   line-height: 36px;
   height: 100%;
+  white-space: pre-line;
 `;
 const DetailBodyViewTag = styled.div`
   display: flex;
@@ -684,6 +738,7 @@ const DetailBodyItemTag = styled.div`
   height: 25px;
   gap: 6px;
   margin-bottom: 40px;
+  flex-wrap: wrap;
   div {
     display: flex;
     border-radius: 20px;

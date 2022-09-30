@@ -2,23 +2,25 @@
 import React, { useEffect, useState } from "react";
 import { isIOS } from "react-device-detect";
 
-// Package import
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
-import SockJS from "sockjs-client";
-import Stomp from "stompjs";
-import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
-
-// Component import
-import Header from "../../components/header/Header";
-import PageModal from "../../components/modal/PageModal";
-import OptionModal from "../../components/modal/OptionModal";
-import Button from "../../elements/button/Button";
+// Redux import
 import { doneAuction } from "../../redux/modules/AuctionSlice";
 import {
   clearChatMessageList,
   getChatMessageList,
 } from "../../redux/modules/ChatSlice";
+
+// Package import
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import SockJS from "sockjs-client";
+import Stomp from "stompjs";
+
+// Component & Element & Shared import
+import Header from "../../components/header/Header";
+import PageModal from "../../components/modal/PageModal";
+import OptionModal from "../../components/modal/OptionModal";
+import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
+import Button from "../../elements/button/Button";
 import { Add, BasicProfile, Send } from "../../shared/images";
 import Loading from "../loading/Loading";
 
@@ -74,7 +76,13 @@ const Chat = () => {
   const [loading, setLoading] = useState(true);
 
   const [visible, setVisible] = useState(false); // 채팅 메뉴 모달
-  const [optionVisible, setOptionVisible] = useState(false);
+  const [optionVisible, setOptionVisible] = useState(false); // alert 모달
+  const [optionContent, setOptionContent] = useState({
+    modalText: "",
+    btnText: "",
+    isConfirm: false,
+    onClickBtn: () => {},
+  });
 
   const [chatList, setChatList] = useState([]);
   const [userData, setUserData] = useState({
@@ -157,16 +165,26 @@ const Chat = () => {
   const onClickInput = () => {
     // 비로그인 -> 세션에 닉네임 없음
     if (!nickName) {
-      if (window.confirm("로그인이 필요합니다. 로그인하시겠습니까?")) {
-        navigate("/login");
-      }
+      setOptionContent({
+        modalText: "로그인이 필요합니다.\n 로그인하시겠습니까?",
+        btnText: "로그인하기",
+        isConfirm: true,
+        onClickBtn: () => navigate("/login"),
+      });
+      setOptionVisible(true);
     }
   };
 
   // 채팅 메뉴 모달 클릭
   const onClickMenu = () => {
     if (auctionStatus === false || auctionStatus === true) {
-      window.alert("1:1 채팅에서만 확인 가능합니다.");
+      setOptionContent({
+        modalText: "1:1 채팅에서만 확인 가능합니다.",
+        btnText: "",
+        isConfirm: false,
+        onClickBtn: () => {},
+      });
+      setOptionVisible(true);
     } else {
       setVisible(true);
     }
@@ -174,14 +192,34 @@ const Chat = () => {
 
   // 채팅 메뉴 모달 중 "거래 완료하기" 클릭
   const onClickFinishMenu = () => {
-    dispatch(doneAuction(auctionId)).then((res) => console.log(res));
-    setVisible(false);
-    setOptionVisible(true);
+    dispatch(doneAuction(auctionId)).then((res) => {
+      let state = res.payload.seller
+        ? res.payload.sellerDone
+        : res.payload.bidderDone;
+      if (state) {
+        setOptionContent({
+          modalText: "이미 평가가 완료되었습니다.",
+          btnText: "",
+          isConfirm: false,
+          onClickBtn: () => {},
+        });
+      } else {
+        setOptionContent({
+          modalText:
+            "거래가 완료되었나요?\n마이페이지에서 상대방 평가를 할 수 있어요.",
+          btnText: "완료할래요",
+          isConfirm: true,
+          onClickBtn: () => onDisconnected(true),
+        });
+      }
+      setVisible(false);
+      setOptionVisible(true);
+    });
   };
 
   const calcTime = (createdAt) => {
     if (isIOS) {
-      const [hours, minutes, seconds] = createdAt.split(" ")[1].split(":");
+      const [hours, minutes, seconds] = createdAt?.split(" ")[1]?.split(":");
       return (hours >= 12 ? "PM " : "AM ") + hours + ":" + minutes;
     } else {
       const date = new Date(createdAt);
@@ -429,37 +467,13 @@ const Chat = () => {
 
           {/* 메뉴 모달의 옵션 클릭 모달 */}
           <PageModal
-            minHeight="260px"
             visible={optionVisible}
             setVisible={setOptionVisible}
-          >
-            <OptionModalContainer>
-              <ModalTextWrap>
-                <span>거래가 완료되었나요?</span>
-                <span>마이페이지에서 상대방 평가를 할 수 있어요.</span>
-              </ModalTextWrap>
-              <ModalBtnWrap>
-                <Button
-                  text="완료할래요"
-                  _onClick={() => onDisconnected(true)}
-                  style={{
-                    width: "100%",
-                    ft_weight: "500",
-                    color: "#FFFFFF",
-                  }}
-                />
-                <Button
-                  text="취소"
-                  _onClick={() => setOptionVisible(false)}
-                  style={{
-                    width: "100%",
-                    color: "#646778",
-                    bg_color: "#EBEEF3",
-                  }}
-                />
-              </ModalBtnWrap>
-            </OptionModalContainer>
-          </PageModal>
+            modalText={optionContent.modalText}
+            btnText={optionContent.btnText}
+            isConfirm={optionContent.isConfirm}
+            onClickBtn={optionContent.onClickBtn}
+          />
         </>
       )}
     </>
