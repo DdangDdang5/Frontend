@@ -15,14 +15,14 @@ const PageModal = ({
   isConfirm,
   btnText,
   onClickBtn,
+  onClickCloseBtn,
 }) => {
   return (
     <ModalLayout visible={visible} onClick={() => setVisible(false)}>
       <ModalWrapper visible={visible}>
         <ModalInner
           // style={{ outline: "none" }}
-          onClick={(e) => e.stopPropagation()}
-        >
+          onClick={(e) => e.stopPropagation()}>
           {/* {children} */}
 
           <OptionModalContainer>
@@ -52,7 +52,9 @@ const PageModal = ({
               ) : (
                 <Button
                   text="닫기"
-                  _onClick={() => setVisible(false)}
+                  _onClick={
+                    onClickCloseBtn ? onClickCloseBtn : () => setVisible(false)
+                  }
                   style={{
                     width: "100%",
                     ft_weight: "500",
@@ -81,7 +83,7 @@ const ModalLayout = styled.div`
 
   display: ${(props) => (props.visible ? "block" : "none")};
 
-  z-index: 10;
+  z-index: 100;
 `;
 
 const ModalWrapper = styled.div`
@@ -132,11 +134,9 @@ export const ModalTextWrap = styled.div`
   line-height: ${(props) => (props.isConfirm ? "150%" : "140%")};
 
   text-align: center;
-
   display: flex;
   flex-direction: column;
   gap: 4px;
-
   white-space: pre-line;
 `;
 
