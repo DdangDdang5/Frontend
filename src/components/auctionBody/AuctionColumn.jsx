@@ -23,6 +23,7 @@ const Auction = ({ data }) => {
     <AuctionItemWrap>
       <AuctionItemContainer
         onClick={() => {
+					console.log('list to detail');
 					dispatch(clearAuction());
           navigate(`/auctionDetail/${data?.auctionId}`);
         }}>

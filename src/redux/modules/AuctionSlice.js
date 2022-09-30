@@ -99,6 +99,7 @@ const auctionSlice = createSlice({
 	reducers: {
 		clearAuction: (state, action) => {
 			state.auction = {};
+			state.bid = {};
 		}
 	},
   extraReducers: {
