@@ -132,11 +132,9 @@ export const ModalTextWrap = styled.div`
   line-height: ${(props) => (props.isConfirm ? "150%" : "140%")};
 
   text-align: center;
-
   display: flex;
   flex-direction: column;
   gap: 4px;
-
   white-space: pre-line;
 `;
 
