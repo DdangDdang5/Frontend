@@ -11,12 +11,7 @@ import styled from "styled-components";
 import { useCountdown } from "../hooks/UseCountDown";
 
 const ExpiredNotice = () => {
-  return (
-    <div className="expired-notice">
-      <span>Expired!!!</span>
-      <p>Please select a future date and time.</p>
-    </div>
-  );
+  return <AuctionState>경매가 마감되었습니다.</AuctionState>;
 };
 
 const ShowCounter = ({ days, hours, minutes, seconds }) => {
@@ -78,6 +73,11 @@ const CountdownTimer = ({ targetDate }) => {
 };
 
 const Time = styled.div`
+  font-size: ${(props) => props.theme.fontSizes.lg};
+  font-weight: ${(props) => props.theme.fontWeights.bold};
+  line-height: 30px;
+`;
+const AuctionState = styled.div`
   font-size: ${(props) => props.theme.fontSizes.lg};
   font-weight: ${(props) => props.theme.fontWeights.bold};
   line-height: 30px;
