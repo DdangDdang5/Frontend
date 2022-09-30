@@ -59,6 +59,7 @@ const AuctionWrite = () => {
     btnText: "",
     isConfirm: false,
     onClickBtn: () => {},
+    onClickCloseBtn: () => {},
   });
 
   const categoryName = useSelector((state) => state.modal.categoryName);
@@ -95,7 +96,15 @@ const AuctionWrite = () => {
     const imgUrlList = [];
 
     if (imagePreview.length > 9) {
-      return window.alert("이미지 개수는 10장을 초과 할 수 없습니다");
+      return (
+        setOptionVisible(true),
+        setOptionContent({
+          modalText: "이미지 개수는 \n 10장을 초과 할 수 없습니다.",
+          btnText: "확인",
+          // isConfirm: true,
+          onClickBtn: () => setOptionVisible(false),
+        })
+      );
     } else {
       for (let i = 0; i < imagePreview.length; i++) {
         imgUrlList.push(imagePreview[i]);
@@ -131,7 +140,13 @@ const AuctionWrite = () => {
 
     if (name === "startPrice") {
       if (Number(value) > 100000) {
-        window.alert(`시작가는 100,000원을 초과할 수 없습니다.`);
+        setOptionVisible(true);
+        setOptionContent({
+          modalText: "시작가는 100,000원을 \n 초과할 수 없습니다.",
+          btnText: "확인",
+          // isConfirm: true,
+          onClickBtn: () => setOptionVisible(false),
+        });
         setInputForm({ ...inputForm, [name]: "" });
       } else {
         setInputForm({
@@ -239,8 +254,8 @@ const AuctionWrite = () => {
       setOptionContent({
         modalText: "경매글이 \n 게시되었습니다.",
         btnText: "확인",
-        isConfirm: true,
-        onClickBtn: () => navigate(-1, { replace: true }),
+        // isConfirm: true,
+        onClickCloseBtn: () => navigate(-1, { replace: true }),
       });
       dispatch(addAuctionItem(formData));
     }
@@ -429,6 +444,7 @@ const AuctionWrite = () => {
         btnText={optionContent.btnText}
         isConfirm={optionContent.isConfirm}
         onClickBtn={optionContent.onClickBtn}
+        onClickCloseBtn={optionContent.onClickCloseBtn}
       />
     </>
   );
