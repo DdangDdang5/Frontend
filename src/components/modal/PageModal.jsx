@@ -11,7 +11,6 @@ const PageModal = ({
   children,
   visible,
   setVisible,
-
   modalText,
   isConfirm,
   btnText,
@@ -27,7 +26,6 @@ const PageModal = ({
           {/* {children} */}
 
           <OptionModalContainer>
-
             <ModalTextWrap isConfirm={isConfirm}>{modalText}</ModalTextWrap>
             <ModalBtnWrap isConfirm={isConfirm}>
               {isConfirm ? (
@@ -82,6 +80,7 @@ const ModalLayout = styled.div`
   right: 0;
 
   display: ${(props) => (props.visible ? "block" : "none")};
+
   z-index: 10;
 `;
 
@@ -112,39 +111,38 @@ const ModalInner = styled.div`
   border-radius: 8px;
 
   position: relative;
+
   z-index: 20;
 `;
 
-
 export const OptionModalContainer = styled.div`
-   width: calc(100% - 64px);
-   height: calc(100% - 64px);
+  width: calc(100% - 64px);
+  height: calc(100% - 64px);
   padding: 32px;
 `;
 
 export const ModalTextWrap = styled.div`
-   margin-top: ${(props) => props.isConfirm ? "0px" : "60px"};
-   margin-bottom: ${(props) => props.isConfirm ? "28px" : "60px"};
+  margin-top: ${(props) => (props.isConfirm ? "0px" : "60px")};
+  margin-bottom: ${(props) => (props.isConfirm ? "28px" : "60px")};
 
   color: ${(props) => props.theme.colors.Black};
-  font-size: ${(props) => props.isConfirm ? props.theme.fontSizes.ms : props.theme.fontSizes.md};
+  font-size: ${(props) =>
+    props.isConfirm ? props.theme.fontSizes.ms : props.theme.fontSizes.md};
   font-weight: ${(props) => props.theme.fontWeights.normal};
-   line-height: ${(props) => props.isConfirm ? "150%" : "140%"};
+  line-height: ${(props) => (props.isConfirm ? "150%" : "140%")};
 
-   text-align: center;
-
+  text-align: center;
   display: flex;
   flex-direction: column;
   gap: 4px;
-   
-   white-space: pre-line;
+  white-space: pre-line;
 `;
 
 export const ModalBtnWrap = styled.div`
-   /* position: absolute;
-   bottom: 32px;
-   left: 32px;
-   right: 32px; */
+  /* position: absolute;
+	bottom: 32px;
+	left: 32px;
+	right: 32px; */
 
   display: flex;
   flex-direction: column;
