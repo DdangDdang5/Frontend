@@ -18,7 +18,6 @@ import SearchResult from "../../components/search/SearchResult";
 import { getCookie } from "../../shared/Cookie";
 import { SearchImg } from "../../shared/images";
 import PageModal from "../../components/modal/PageModal";
-import Button from "../../elements/button/Button";
 
 // Style import
 import {
@@ -37,7 +36,6 @@ import {
   SearchItemPrice,
   SearchItemList,
 } from "./Search.styled";
-import { ModalBtnWrap, OptionModalContainer } from "../event/Event.styled";
 
 const Search = () => {
   const dispatch = useDispatch();
@@ -140,25 +138,10 @@ const Search = () => {
 
       {/* 메뉴 모달의 옵션 클릭 모달 */}
       <PageModal
-        minHeight="260px"
         visible={sendEvent}
         setVisible={setSendEvent}
-      >
-        <OptionModalContainer>
-          <span>검색어를 입력해주세요.</span>
-          <ModalBtnWrap>
-            <Button
-              text="닫기"
-              _onClick={() => setSendEvent(false)}
-              style={{
-                width: "100%",
-                ft_weight: "500",
-                color: "#FFFFFF",
-              }}
-            />
-          </ModalBtnWrap>
-        </OptionModalContainer>
-      </PageModal>
+        modalText="검색어를 입력해주세요!"
+      ></PageModal>
     </Fragment>
   );
 };
