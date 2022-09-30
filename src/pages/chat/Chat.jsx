@@ -71,7 +71,7 @@ const Chat = () => {
   const nickName = sessionStorage.getItem("memberNickname");
 
   const chatMessageList = useSelector(
-    (state) => state.chat.chatMessageList
+    (state) => state.chat.chatMessageList,
   ).filter((item) => item.roomId === roomId);
 
   const [loading, setLoading] = useState(true);
@@ -93,6 +93,30 @@ const Chat = () => {
     message: "",
     createdAt: "",
   });
+
+  // 타이머 기능
+  const timer = (countDown) => {
+    const tenMinute = 10 * 60 * 1000;
+    const thirtyMinute = tenMinute * 3;
+    const sixtyMinute = tenMinute * 6;
+    const startTime = Date.parse(auctionCreatedAt);
+    const dateTimeAfterTenMinute = startTime + tenMinute;
+    const dateTimeAfterThirtyMinute = startTime + thirtyMinute;
+    const dateTimeAfterSixtyMinute = startTime + sixtyMinute;
+
+    switch (countDown) {
+      case 10:
+        return dateTimeAfterTenMinute;
+      case 30:
+        return dateTimeAfterThirtyMinute;
+      case 60:
+        return dateTimeAfterSixtyMinute;
+      default:
+        return <div>경매가 종료되었습니다.</div>;
+    }
+  };
+
+  const [days, hours, minutes, seconds] = useCountdown(timer(auctionPeriod));
 
   const initialChat = async () => {
     await setLoading(true);
@@ -139,30 +163,6 @@ const Chat = () => {
   useEffect(() => {
     scrollToBottom();
   }, [chatList]);
-
-  // 타이머 기능
-  const timer = (countDown) => {
-    const tenMinute = 10 * 60 * 1000;
-    const thirtyMinute = tenMinute * 3;
-    const sixtyMinute = tenMinute * 6;
-    const startTime = Date.parse(auctionCreatedAt);
-    const dateTimeAfterTenMinute = startTime + tenMinute;
-    const dateTimeAfterThirtyMinute = startTime + thirtyMinute;
-    const dateTimeAfterSixtyMinute = startTime + sixtyMinute;
-
-    switch (countDown) {
-      case 10:
-        return dateTimeAfterTenMinute;
-      case 30:
-        return dateTimeAfterThirtyMinute;
-      case 60:
-        return dateTimeAfterSixtyMinute;
-      default:
-        return <div>경매가 종료되었습니다.</div>;
-    }
-  };
-
-  const [days, hours, minutes, seconds] = useCountdown(auctionPeriod);
 
   // 채팅 입력창 클릭
   const onClickInput = () => {
@@ -295,7 +295,7 @@ const Chat = () => {
       stompClient.send(
         "/app/chat/message",
         {},
-        JSON.stringify({ ...chatMessage, sender: chatOther })
+        JSON.stringify({ ...chatMessage, sender: chatOther }),
       );
     }
     setLoading(false);
@@ -351,6 +351,8 @@ const Chat = () => {
     }
   };
 
+	// console.log(+minutes, +seconds, +minutes + +seconds);
+
   return (
     <>
       {loading ? (
@@ -369,8 +371,8 @@ const Chat = () => {
 
             {/* 경매 남은 시간 */}
             <AuctionTimeWrap isDetail={isDetail}>
-              {isDetail ? (
-                auctionStatus || +minutes + +seconds > 0 ? (
+							{isDetail ? (
+                auctionStatus && +minutes + +seconds > 0 ? (
                   <>
                     <span>남은 시간</span>
                     <CountdownTimer targetDate={timer(auctionPeriod)} />
@@ -429,7 +431,7 @@ const Chat = () => {
                           </ChatMessage>
                         )}
                       </div>
-                    )
+                    ),
                 )}
               </ChatMessageList>
             </ChatContent>
@@ -458,7 +460,8 @@ const Chat = () => {
           <OptionModal
             minHeight="50px"
             visible={visible}
-            setVisible={setVisible}>
+            setVisible={setVisible}
+          >
             <MenuItemList>
               <MenuItem onClick={onClickFinishMenu}>거래 완료하기</MenuItem>
               {/* <MenuItem>차단하기</MenuItem>

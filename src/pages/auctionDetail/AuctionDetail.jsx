@@ -42,7 +42,7 @@ const AuctionDetail = () => {
   const bid = useSelector((state) => state.auction.bid);
   const favoriteState = useSelector((state) => state.auction.favorite);
 
-	// console.log(data);
+  // console.log(data);
 
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
@@ -70,7 +70,31 @@ const AuctionDetail = () => {
     createdAt: "",
   });
 
-  const [days, hours, minutes, seconds] = useCountdown(data.auctionPeriod);
+  // 타이머 기능
+  const timer = (countDown) => {
+    const tenMinute = 10 * 60 * 1000;
+    const thirtyMinute = tenMinute * 3;
+    const sixtyMinute = tenMinute * 6;
+    const startTime = Date.parse(data.createdAt);
+    const dateTimeAfterTenMinute = startTime + tenMinute;
+    const dateTimeAfterThirtyMinute = startTime + thirtyMinute;
+    const dateTimeAfterSixtyMinute = startTime + sixtyMinute;
+
+    switch (countDown) {
+      case 10:
+        return dateTimeAfterTenMinute;
+      case 30:
+        return dateTimeAfterThirtyMinute;
+      case 60:
+        return dateTimeAfterSixtyMinute;
+      default:
+        return <div>경매가 종료되었습니다.</div>;
+    }
+  };
+
+  const [days, hours, minutes, seconds] = useCountdown(
+    timer(data?.auctionPeriod),
+  );
 
   const imgList = data?.multiImages;
 
@@ -91,9 +115,6 @@ const AuctionDetail = () => {
     ?.toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-  // useEffect(() => {
-  // }, []);
-
   useEffect(() => {
     if (!params?.auctionId) {
       return <></>;
@@ -112,7 +133,7 @@ const AuctionDetail = () => {
         dispatch(winAuctionItem(params.auctionId));
 
         // console.log(bid);
-				console.log(data);
+        // console.log(data);
 
         if (bid) {
           if (bid.seller === nickName || bid.bidder === nickName) {
@@ -120,7 +141,7 @@ const AuctionDetail = () => {
             setChatOther(
               [bid.seller, bid.bidder]
                 .filter((item) => item !== nickName)
-                .join("")
+                .join(""),
             );
           }
         }
@@ -201,7 +222,7 @@ const AuctionDetail = () => {
       data?.nowPrice,
       chatList.length > 0
         ? +chatList[chatList.length - 1]?.message
-        : data.startPrice
+        : data.startPrice,
     );
     // console.log(
     //   data?.nowPrice,
@@ -237,7 +258,7 @@ const AuctionDetail = () => {
   const registerUser = () => {
     var sockJS = new SockJS(process.env.REACT_APP_URL + "/wss/chat");
     stompClient = Stomp.over(sockJS);
-    // stompClient.debug = null; // stompJS console.log 막기
+    stompClient.debug = null; // stompJS console.log 막기
 
     stompClient.connect({}, onConnected, onError);
   };
@@ -245,7 +266,7 @@ const AuctionDetail = () => {
   const onConnected = () => {
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived
+      onMessageReceived,
     );
 
     // 채팅방 들어감
@@ -312,28 +333,6 @@ const AuctionDetail = () => {
     }
   };
 
-  // 타이머 기능
-  const timer = (countDown) => {
-    const tenMinute = 10 * 60 * 1000;
-    const thirtyMinute = tenMinute * 3;
-    const sixtyMinute = tenMinute * 6;
-    const startTime = Date.parse(data.createdAt);
-    const dateTimeAfterTenMinute = startTime + tenMinute;
-    const dateTimeAfterThirtyMinute = startTime + thirtyMinute;
-    const dateTimeAfterSixtyMinute = startTime + sixtyMinute;
-
-    switch (countDown) {
-      case 10:
-        return dateTimeAfterTenMinute;
-      case 30:
-        return dateTimeAfterThirtyMinute;
-      case 60:
-        return dateTimeAfterSixtyMinute;
-      default:
-        return <div>경매가 종료되었습니다.</div>;
-    }
-  };
-
   return (
     <>
       <AuctionDetailLayout>
@@ -395,7 +394,7 @@ const AuctionDetail = () => {
               </DetailBodyViewTag>
               <DetailBodyItemTag>
                 {tagsArray?.map((item, index) =>
-                  item !== null ? <div key={index}>{`#${item}`}</div> : ""
+                  item !== null ? <div key={index}>{`#${item}`}</div> : "",
                 )}
               </DetailBodyItemTag>
             </DetailBodyBox>
@@ -413,7 +412,7 @@ const AuctionDetail = () => {
         <DetailFooterWrap>
           {/* 타이머 기능 */}
           <DetailFooterTimeContainer>
-            {data?.auctionStatus || +minutes + +seconds > 0 ? (
+            {data?.auctionStatus && +minutes + +seconds > 0 ? (
               <>
                 <span>남은 시간</span>
                 <CountdownTimer targetDate={timer(data.auctionPeriod)} />
@@ -436,7 +435,7 @@ const AuctionDetail = () => {
                     data?.nowPrice,
                     chatList.length > 0
                       ? chatList[chatList.length - 1]?.message
-                      : data?.startPrice
+                      : data?.startPrice,
                   )
                     ?.toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -523,7 +522,7 @@ const AuctionDetail = () => {
                 data.nowPrice,
                 chatList.length > 0
                   ? +chatList[chatList.length - 1]?.message
-                  : data.startPrice
+                  : data.startPrice,
               )
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -556,7 +555,7 @@ const AuctionDetail = () => {
             data.nowPrice,
             chatList.length > 0
               ? +chatList[chatList.length - 1]?.message
-              : data.startPrice
+              : data.startPrice,
           ) ? (
             <AuctionJoinInputInfo>
               현재 최고가보다 낮은 호가입니다.
