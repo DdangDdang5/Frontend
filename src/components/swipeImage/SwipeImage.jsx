@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { FontEvent } from "../../shared/fonts/font";
 
 // Shared import
-import { Back, EventImg, InfoImg, Next } from "../../shared/images";
+import { Back, EventImg, InfoImg, Next, NextImg } from "../../shared/images";
 
 // Style import
 import {
@@ -66,49 +66,49 @@ const SwipeImage = ({
     });
   };
 
-  useEffect(() => {
-    var timeout;
-    // 메인화면 5초마다 슬라이드 움직임
-    if (isMain && data) {
-      if (data?.length > 1) {
-        timeout = setTimeout(() => {
-          if (currentImgIndex !== data.length - 1) {
-            nextSlide();
-          } else {
-            setCurrentImgIndex(0);
-            setStyle({
-              transfrom: 0,
-              transition: "all 0.4s ease-in-out",
-            });
-          }
-        }, 5000);
-      }
-    } else if (isMain && data === undefined) {
-      timeout = setTimeout(() => {
-        if (currentImgIndex !== 1) {
-          nextSlide();
-          // setCurrentImgIndex(currentImgIndex + 1);
-          // const index = (currentImgIndex + 1) * 50;
-          // setStyle({
-          // 	transfrom: `translateX(-${index}%)`,
-          // 	transition: "all 0.4s ease-in-out",
-          // });
-        } else {
-          setCurrentImgIndex(0);
-          setStyle({
-            transfrom: 0,
-            transition: "all 0.4s ease-in-out",
-          });
-        }
-      }, 5000);
-    }
+  // useEffect(() => {
+  //   var timeout;
+  //   // 메인화면 5초마다 슬라이드 움직임
+  //   if (isMain && data) {
+  //     if (data?.length > 1) {
+  //       timeout = setTimeout(() => {
+  //         if (currentImgIndex !== data.length - 1) {
+  //           nextSlide();
+  //         } else {
+  //           setCurrentImgIndex(0);
+  //           setStyle({
+  //             transfrom: 0,
+  //             transition: "all 0.4s ease-in-out",
+  //           });
+  //         }
+  //       }, 5000);
+  //     }
+  //   } else if (isMain && data === undefined) {
+  //     timeout = setTimeout(() => {
+  //       if (currentImgIndex !== 1) {
+  //         nextSlide();
+  //         // setCurrentImgIndex(currentImgIndex + 1);
+  //         // const index = (currentImgIndex + 1) * 50;
+  //         // setStyle({
+  //         // 	transfrom: `translateX(-${index}%)`,
+  //         // 	transition: "all 0.4s ease-in-out",
+  //         // });
+  //       } else {
+  //         setCurrentImgIndex(0);
+  //         setStyle({
+  //           transfrom: 0,
+  //           transition: "all 0.4s ease-in-out",
+  //         });
+  //       }
+  //     }, 5000);
+  //   }
 
-    return () => {
-      if (isMain) {
-        setTimeout(timeout);
-      }
-    };
-  });
+  //   return () => {
+  //     if (isMain) {
+  //       setTimeout(timeout);
+  //     }
+  //   };
+  // });
 
   return (
     <SwipeContainer width={width} maxWidth={maxWidth} height={height}>
@@ -202,17 +202,19 @@ const SwipeImage = ({
       </SwipeShowContainer>
 
       {/* 메인화면 버튼 안보임 */}
-      {isMain ? null : (
+      {isMain && (
         <>
           {currentImgIndex !== 0 ? (
             <SwipeBtn location="prev" onClick={prevSlide}>
-              <Back className="back-btn" />
+              {/* <Back className="back-btn" /> */}
+							<NextImg />
             </SwipeBtn>
           ) : null}
 
-          {currentImgIndex !== data.length - 1 ? (
+          {currentImgIndex !== 1 ? (
             <SwipeBtn location="next" onClick={nextSlide}>
-              <Next className="next-btn" />
+              {/* <Next className="next-btn" /> */}
+							<NextImg />
             </SwipeBtn>
           ) : null}
         </>

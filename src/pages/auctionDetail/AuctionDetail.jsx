@@ -28,7 +28,7 @@ import PageModal from "../../components/modal/PageModal";
 
 // Element & Shared import
 import Button from "../../elements/button/Button";
-import { Claim, Close, Next, BasicProfile } from "../../shared/images";
+import { Claim, Close, Next, BasicProfile, LogoClassic } from "../../shared/images";
 import { useCountdown } from "../../components/hooks/UseCountDown";
 
 var stompClient = null;
@@ -41,8 +41,6 @@ const AuctionDetail = () => {
   const data = useSelector((state) => state.auction.auction);
   const bid = useSelector((state) => state.auction.bid);
   const favoriteState = useSelector((state) => state.auction.favorite);
-
-  // console.log(data);
 
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
@@ -93,7 +91,7 @@ const AuctionDetail = () => {
   };
 
   const [days, hours, minutes, seconds] = useCountdown(
-    timer(data?.auctionPeriod),
+    timer(data?.auctionPeriod)
   );
 
   const imgList = data?.multiImages;
@@ -141,7 +139,7 @@ const AuctionDetail = () => {
             setChatOther(
               [bid.seller, bid.bidder]
                 .filter((item) => item !== nickName)
-                .join(""),
+                .join("")
             );
           }
         }
@@ -222,7 +220,7 @@ const AuctionDetail = () => {
       data?.nowPrice,
       chatList.length > 0
         ? +chatList[chatList.length - 1]?.message
-        : data.startPrice,
+        : data.startPrice
     );
     // console.log(
     //   data?.nowPrice,
@@ -266,7 +264,7 @@ const AuctionDetail = () => {
   const onConnected = () => {
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
-      onMessageReceived,
+      onMessageReceived
     );
 
     // 채팅방 들어감
@@ -394,7 +392,7 @@ const AuctionDetail = () => {
               </DetailBodyViewTag>
               <DetailBodyItemTag>
                 {tagsArray?.map((item, index) =>
-                  item !== null ? <div key={index}>{`#${item}`}</div> : "",
+                  item !== null ? <div key={index}>{`#${item}`}</div> : ""
                 )}
               </DetailBodyItemTag>
             </DetailBodyBox>
@@ -435,7 +433,7 @@ const AuctionDetail = () => {
                     data?.nowPrice,
                     chatList.length > 0
                       ? chatList[chatList.length - 1]?.message
-                      : data?.startPrice,
+                      : data?.startPrice
                   )
                     ?.toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -508,8 +506,9 @@ const AuctionDetail = () => {
       {/* 경매 입찰 모달 */}
       <AuctionJoinModal visible={joinVisible} setVisible={setJoinVisible}>
         <AuctionJoinModalContent>
-          <AuctionJoinIcon>
-            <img src="/maskable.png" alt="auction-join" />
+          <AuctionJoinIcon>h
+						<AuctionJoinIconBackground />
+						<LogoClassic />
           </AuctionJoinIcon>
 
           <AuctionJoinCloseWrap>
@@ -522,7 +521,7 @@ const AuctionDetail = () => {
                 data.nowPrice,
                 chatList.length > 0
                   ? +chatList[chatList.length - 1]?.message
-                  : data.startPrice,
+                  : data.startPrice
               )
                 .toString()
                 .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
@@ -555,7 +554,7 @@ const AuctionDetail = () => {
             data.nowPrice,
             chatList.length > 0
               ? +chatList[chatList.length - 1]?.message
-              : data.startPrice,
+              : data.startPrice
           ) ? (
             <AuctionJoinInputInfo>
               현재 최고가보다 낮은 호가입니다.
@@ -604,7 +603,7 @@ const DetailBodyWrap = styled.div`
 `;
 const ItemImgContainer = styled.div`
   display: flex;
-  width: 100%;
+  /* width: 100%; */
   /* img {
     width: 100%;
     height: 390px;
@@ -899,6 +898,8 @@ const FooterRightBox = styled.div`
     font-weight: 500;
     border: none;
     border-radius: 8px;
+		color: ${(props) => props.theme.colors.White};
+		background-color: ${(props) => props.theme.colors.Blue1};
   }
 `;
 
@@ -928,12 +929,26 @@ const AuctionJoinIcon = styled.div`
   justify-content: center;
   align-items: center;
 
-  img {
-    width: 82px;
-    height: 82px;
+	svg {
+		width: 68px;
+		height: 70px;
 
-    border-radius: 50%;
-  }
+		position: absolute;
+		top : 50%;
+		transform: translate(0, -50%);
+	}
+`;
+
+const AuctionJoinIconBackground = styled.div`
+  width: 82px;
+  height: 82px;
+
+  background-color: ${(props) => props.theme.colors.Gray1};
+  border-radius: 50%;
+	
+	position: absolute;
+	top : 50%;
+	transform: translate(0, -50%);
 `;
 
 const AuctionJoinModalContent = styled.div`

@@ -48,10 +48,12 @@ const UserProfile = () => {
   const doneAuctionList = [];
 
   member?.auctionResponseDtoList?.map((item) =>
-    item.auctionStatus ? saleAuctionList.push(item) : doneAuctionList.push(item)
+    item.auctionStatus
+      ? saleAuctionList.push(item)
+      : doneAuctionList.push(item),
   );
 
-	// console.log(saleAuctionList, doneAuctionList);
+  // console.log(saleAuctionList, doneAuctionList);
 
   useEffect(() => {
     dispatch(getMember(memberId));
@@ -70,7 +72,11 @@ const UserProfile = () => {
             ) : (
               <BasicProfile />
             )}
-            <span>{member?.nickname}</span>
+            <span>
+              {member?.nickname?.length > 6
+                ? member?.nickname?.split("kakao")[0] + "kakao"
+                : member?.nickname}
+            </span>
           </UserProfileInfo>
           <MyGradeImgWrap>
             <div></div>
@@ -105,9 +111,10 @@ const UserProfile = () => {
                 <ReviewItem
                   key={item.auctionId}
                   onClick={() => {
-										dispatch(clearAuction());
-										navigate(`/auctionDetail/${item.auctionId}`)
-									}}>
+                    dispatch(clearAuction());
+                    navigate(`/auctionDetail/${item.auctionId}`);
+                  }}
+                >
                   <img
                     src={item.multiImages[0]?.imgUrl}
                     alt="user-sale-auction-img"
@@ -141,9 +148,10 @@ const UserProfile = () => {
                 <ReviewItem
                   key={item.auctionId}
                   onClick={() => {
-										dispatch(clearAuction());
-										navigate(`/auctionDetail/${item.auctionId}`)
-									}}>
+                    dispatch(clearAuction());
+                    navigate(`/auctionDetail/${item.auctionId}`);
+                  }}
+                >
                   <img
                     src={item.multiImages[0]?.imgUrl}
                     alt="user-sale-auction-img"
