@@ -13,7 +13,7 @@ import { isIOS } from "react-device-detect";
 import Header from "../../components/header/Header";
 import styled from "styled-components";
 import Footer from "../../components/footer/Footer";
-import MyPageList from "../../components/pageElement/MyPageList";
+import MyPageList from "../../components/myPage/MyPageList";
 import PageModal from "../../components/modal/PageModal";
 
 // Element & Shared import
