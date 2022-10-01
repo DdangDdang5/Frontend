@@ -131,7 +131,6 @@ const SliderWrap = styled.div`
   position: relative;
   overflow: hidden;
   flex-direction: row;
-  background-color: yellow;
   /* span {
     z-index: 100;
     position: absolute;

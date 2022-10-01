@@ -27,6 +27,7 @@ import Loading from "../loading/Loading";
 
 // Shared import
 import { Open } from "../../shared/images";
+import { resetList, resetPaging } from "../../redux/modules/MyPageSlice";
 
 const AuctionList = () => {
   const dispatch = useDispatch();
@@ -77,6 +78,12 @@ const AuctionList = () => {
       }
     }
   }
+  useEffect(() => {
+    return () => {
+      dispatch(resetPaging());
+      dispatch(resetList());
+    };
+  }, []);
 
   if (!AuctionListData) {
     return <></>;
@@ -97,8 +104,7 @@ const AuctionList = () => {
                   state={categoryName}
                   onClick={() =>
                     dispatch(showModal("categoryList"), _categoryList())
-                  }
-                >
+                  }>
                   <CategoryBtnText>{categoryName}</CategoryBtnText>
                   <Open />
                 </CategoryBtn>
@@ -110,8 +116,7 @@ const AuctionList = () => {
                   state={regionName}
                   onClick={() =>
                     dispatch(showModal("regionList"), _regionList())
-                  }
-                >
+                  }>
                   <CategoryBtnText>{regionName}</CategoryBtnText>
                   <Open />
                 </CategoryBtn>
@@ -231,7 +236,7 @@ const CategoryBtnTimeText = styled.div`
 `;
 
 const ListContents = styled.div`
-	width: calc(100% - 40px);
+  width: calc(100% - 40px);
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -241,7 +246,7 @@ const ListContents = styled.div`
     props.isIOS ? `calc(100vh - 200px)` : `calc(100vh - 190px)`};
   overflow: auto;
   padding: 0px 20px;
-	margin: auto;
+  margin: auto;
 `;
 
 export default AuctionList;
