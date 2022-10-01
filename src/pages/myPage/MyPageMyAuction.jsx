@@ -16,9 +16,9 @@ import { useNavigate } from "react-router-dom";
 
 // Component import
 import Header from "../../components/header/Header";
-import AuctionStateNav from "../../components/auctionBody/AuctionStateNav";
+import AuctionStateNav from "../../components/auctionElement/AuctionStateNav";
 import Footer from "../../components/footer/Footer";
-import AuctionRow from "../../components/auctionBody/AuctionRow";
+import AuctionRow from "../../components/auctionElement/AuctionRow";
 
 function MyPageMyAuction() {
   const dispatch = useDispatch();

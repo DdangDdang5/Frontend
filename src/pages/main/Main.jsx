@@ -17,12 +17,12 @@ import { isIOS } from "react-device-detect";
 // Component & Element & Shared import
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
-import AuctionCategoryList from "../../components/auctionCategoryList/AuctionCategoryList";
+import AuctionCategoryList from "../../components/auctionCategory/AuctionCategoryList";
 import SwipeImage from "../../components/swipeImage/SwipeImage";
 import { EventImg, InfoImg, Next } from "../../shared/images";
 import PlusButton from "../../elements/button/PlusButton";
 import { FontEvent, FontRegular } from "../../shared/fonts/font";
-import Loading from "../loading/Loading";
+import Loading from "../etcPage/Loading";
 
 // Style import
 import {
