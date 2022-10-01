@@ -310,6 +310,7 @@ const AuctionWrite = () => {
             name="title"
             value={inputForm.title}
             onChange={onChangeHandler}
+            maxLength="25"
             placeholder="제목을 입력해주세요."
           />
           {/* <WriteTitleContainer>상품명</WriteTitleContainer>
@@ -419,6 +420,7 @@ const AuctionWrite = () => {
             wrap="hard"
             value={inputForm.content}
             onChange={onChangeHandler}
+            maxLength="250"
             placeholder="경매 물품에 대한 상세한 설명을 적어주세요."
           />
           <WriteTitleContainer>
@@ -590,6 +592,12 @@ const WriteInputBox = styled.input`
   font-weight: ${(props) => props.theme.fontWeights.fontWeights};
   letter-spacing: -0.05em;
   line-height: 150%;
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;
 const WriteBtnBox = styled.button`
   display: flex;
