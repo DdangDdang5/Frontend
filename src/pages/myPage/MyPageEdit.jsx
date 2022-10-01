@@ -4,7 +4,10 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 // Redux import
 import { editMyPage, _MyPageData } from "../../redux/modules/MyPageSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { nickNameCheckThunk } from "../../redux/modules/MemberSlice";
+import {
+  nickNameCheckThunk,
+  signUpMemberThunk,
+} from "../../redux/modules/MemberSlice";
 
 // Package import
 import styled from "styled-components";
@@ -15,8 +18,9 @@ import { debounce } from "lodash";
 import Header from "../../components/header/Header";
 
 // Element & Shared import
-import { BasicProfile, Camera, Delete } from "../../shared/images";
+import { BasicProfile, Camera, Delete, Ok } from "../../shared/images";
 import PageModal from "../../components/modal/PageModal";
+import { SignUpBoxInputIcon } from "../signUp/SignUp.styled";
 
 const MyPageEdit = () => {
   const dispatch = useDispatch();
@@ -46,64 +50,42 @@ const MyPageEdit = () => {
     onClickBtn: () => {},
     onClickCloseBtn: () => {},
   });
-
+  const [nickNameCheck, setNickNameCheck] = useState(false);
+  const [nickName, setNickName] = useState("");
   const memberId = sessionStorage?.getItem("memberId");
 
   useEffect(() => {
     dispatch(nickNameCheckThunk(data));
   }, []);
 
-  // useEffect(() => {
-  //   if (nickName !== "") {
-  //     checkNickName(nickName);
-  //   } else {
-  //     nickNameSpanRef.current.innerText = "";
-  //     nickNameSpanRef.current.style.color = "";
-  //   }
-  // }, [nickName]);
-
-  // 닉네임 체크
-  // const checkNickName = useCallback(
-  //   debounce((nickName) => {
-  //     const nickNameRegExp = /^([a-z0-9가-힣])[a-z0-9가-힣]{3,7}$/i;
-  //     if (!nickNameRegExp.test(nickName)) {
-  //       nickNameSpanRef.current.innerText =
-  //         "닉네임은 공백 없이 4~6자 이내의 한글, 영문, 숫자를 이용하여 입력해주세요.";
-  //       nickNameSpanRef.current.style.color = "#EF664D";
-  //       nickNameRef.current.style.borderColor = "#EF664D";
-  //       nickNameIconRef.current.style.color = "#EF664D";
-  //       setNickNameCheck(true);
-  //     } else {
-  //       dispatch(nickNameCheckThunk({ nickName })).then((res) => {
-  //         if (!res.payload) {
-  //           nickNameSpanRef.current.innerText = "중복되는 닉네임입니다.";
-  //           nickNameSpanRef.current.style.color = "#FF664D";
-  //           nickNameIconRef.current.style.color = "#FF664D";
-  //           nickNameRef.current.style.borderColor = "#FF664D";
-  //           setNickNameCheck(true);
-  //         } else {
-  //           nickNameSpanRef.current.innerText = "사용가능한 닉네임입니다.";
-  //           nickNameSpanRef.current.style.color = "#1DC79A";
-  //           nickNameIconRef.current.style.color = "#1DC79A";
-  //           nickNameRef.current.style.borderColor = "#1DC79A";
-  //           setNickNameCheck(false);
-  //         }
-  //       });
-  //     }
-  //   }, 500),
-  //   [nickName]
-  // );
-
-  // const onsubmitHandler = useCallback((event) => {
-  //   event.preventDefault();
-  //   if (nickNameCheck === false) {
-  //     nickNameRef.current.focus();
-  //     nickNameRef.current.style.color = "#BCBCBC";
-  //     nickNameRef.current.innerText = "중복되는 닉네임입니다.";
-  //   } else {
-  //     dispatch(signUpMemberThunk(newMember));
-  //   }
-  // });
+  // 닉네임 확인
+  const checkNickName = useCallback(
+    debounce((nickName) => {
+      const nickNameRegExp = /^([a-z0-9가-힣])[a-z0-9가-힣]{3,7}$/i;
+      if (!nickNameRegExp.test(nickName)) {
+        nickNameSpanRef.current.innerText =
+          "닉네임은 공백 없이 4~6자 이내의 한글, 영문, 숫자를 이용하여 입력해주세요.";
+        nickNameSpanRef.current.style.color = "#EF664D";
+        nickNameRef.current.style.borderColor = "#EF664D";
+        setNickNameCheck(false);
+      } else {
+        dispatch(nickNameCheckThunk({ nickName })).then((res) => {
+          if (!res.payload) {
+            nickNameSpanRef.current.innerText = "중복되는 닉네임입니다.";
+            nickNameSpanRef.current.style.color = "#FF664D";
+            nickNameRef.current.style.borderColor = "#FF664D";
+            setNickNameCheck(false);
+          } else {
+            nickNameSpanRef.current.innerText = "사용가능한 닉네임입니다.";
+            nickNameSpanRef.current.style.color = "#1DC79A";
+            nickNameRef.current.style.borderColor = "#1DC79A";
+            setNickNameCheck(true);
+          }
+        });
+      }
+    }, 500),
+    [nickName]
+  );
 
   const onLoadFile = (e) => {
     const reader = new FileReader();
@@ -149,6 +131,8 @@ const MyPageEdit = () => {
   useEffect(() => {
     dispatch(_MyPageData(memberId));
   }, [imagePreview]);
+
+  useEffect(() => {}, [nickNameCheck]);
 
   return (
     <>
@@ -199,15 +183,23 @@ const MyPageEdit = () => {
                 maxLength="6"
               />
 
-              <Delete />
+              {nickName.length > 0 ? (
+                nickNameCheck ? (
+                  <SignUpBoxInputIcon ref={nickNameIconRef} state={true}>
+                    <Ok />
+                  </SignUpBoxInputIcon>
+                ) : (
+                  <SignUpBoxInputIcon ref={nickNameIconRef} state={false}>
+                    <Delete />
+                  </SignUpBoxInputIcon>
+                )
+              ) : null}
             </div>
             <span className="MyTextCheck"></span>
           </MyTextWrap>
         </MyProfile>
         <MyDoneBtnWrap>
-          <MyDoneBtn type="button" onClick={onSubmitHandler}>
-            완료
-          </MyDoneBtn>
+
         </MyDoneBtnWrap>
       </ProfileEditLayout>
       <PageModal
