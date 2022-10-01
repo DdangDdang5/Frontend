@@ -28,7 +28,7 @@ import PageModal from "../../components/modal/PageModal";
 
 // Element & Shared import
 import Button from "../../elements/button/Button";
-import { Claim, Close, Next, BasicProfile } from "../../shared/images";
+import { Claim, Close, Next, BasicProfile, LogoClassic } from "../../shared/images";
 import { useCountdown } from "../../components/hooks/UseCountDown";
 
 var stompClient = null;
@@ -506,8 +506,9 @@ const AuctionDetail = () => {
       {/* 경매 입찰 모달 */}
       <AuctionJoinModal visible={joinVisible} setVisible={setJoinVisible}>
         <AuctionJoinModalContent>
-          <AuctionJoinIcon>
-            <img src="/maskable.png" alt="auction-join" />
+          <AuctionJoinIcon>h
+						<AuctionJoinIconBackground />
+						<LogoClassic />
           </AuctionJoinIcon>
 
           <AuctionJoinCloseWrap>
@@ -897,6 +898,8 @@ const FooterRightBox = styled.div`
     font-weight: 500;
     border: none;
     border-radius: 8px;
+		color: ${(props) => props.theme.colors.White};
+		background-color: ${(props) => props.theme.colors.Blue1};
   }
 `;
 
@@ -926,12 +929,26 @@ const AuctionJoinIcon = styled.div`
   justify-content: center;
   align-items: center;
 
-  img {
-    width: 82px;
-    height: 82px;
+	svg {
+		width: 68px;
+		height: 70px;
 
-    border-radius: 50%;
-  }
+		position: absolute;
+		top : 50%;
+		transform: translate(0, -50%);
+	}
+`;
+
+const AuctionJoinIconBackground = styled.div`
+  width: 82px;
+  height: 82px;
+
+  background-color: ${(props) => props.theme.colors.Gray1};
+  border-radius: 50%;
+	
+	position: absolute;
+	top : 50%;
+	transform: translate(0, -50%);
 `;
 
 const AuctionJoinModalContent = styled.div`

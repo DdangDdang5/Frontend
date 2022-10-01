@@ -37,6 +37,7 @@ import { ReactComponent as imgPlus } from "./icon/ImgPlus.svg";
 import { ReactComponent as imgDelete } from "./icon/ImgDelete.svg";
 import { ReactComponent as underArrow } from "./icon/UnderArrow.svg";
 import { ReactComponent as notificationChat } from "./icon/NotificationChat.svg";
+import { ReactComponent as nextImg } from "./icon/NextImg.svg";
 
 // Category import
 import { ReactComponent as accessory } from "./category/Accessory.svg";
@@ -126,6 +127,7 @@ export const ImgPlus = imgPlus;
 export const ImgDelete = imgDelete;
 export const UnderArrow = underArrow;
 export const NotificationChat = notificationChat;
+export const NextImg = nextImg;
 
 // category
 export const Accessory = accessory;

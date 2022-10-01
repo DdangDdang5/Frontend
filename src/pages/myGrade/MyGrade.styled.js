@@ -14,7 +14,8 @@ export const MyGradeContent = styled.div`
 
   position: absolute;
   top: 70px;
-  bottom: ${(props) => props.isIOS ? "80px" : "70px"};
+	bottom: 0px;
+  /* bottom: ${(props) => props.isIOS ? "80px" : "70px"}; */
 `;
 
 export const MyGradeImgWrap = styled.div`
@@ -133,4 +134,51 @@ export const MyGradeText = styled.div`
   color: ${(props) => props.theme.colors.Gray3};
   font-size: ${(props) => props.theme.fontSizes.sm};
   font-weight: ${(props) => props.theme.fontWeights.normal};
+`;
+
+export const GradeRankList = styled.div`
+	margin: 20px;
+
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+`;
+
+export const GradeItem = styled.div`
+	height: 50px;
+	padding: 9px 20px;
+
+	background-color: ${(props) => props.theme.colors.Gray1};
+	border-radius: 8px;
+
+	display: flex;
+	align-items: center;
+
+
+	svg {
+		width: 60px;
+		height: 60px;
+	}
+`;
+
+export const GradeInfo = styled.div`
+	width: 100%;
+	margin: 9px 20px;
+
+	color: ${(props) => props.theme.colors.Gray4};
+	font-weight: ${(props) => props.theme.fontWeights.normal};
+	font-size: ${(props) => props.theme.fontSizes.sm};
+	line-height: 140%;
+	letter-spacing: -0.05em;
+
+	display: flex;
+	flex-direction: column;
+	align-items: baseline;
+	gap: 1px;
+`;
+
+export const GradeItemName = styled.span`
+	font-weight: ${(props) => props.theme.fontWeights.bold};
+	font-size: ${(props) => props.theme.fontSizes.ms};
+	line-height: 150%;
 `;
