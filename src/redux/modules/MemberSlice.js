@@ -1,14 +1,8 @@
 // Redux import
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-// Package import
-import { Cookies } from "react-cookie";
-
 // Shared import
 import api from "../../shared/Api";
-import { getCookie, setCookie } from "../../shared/Cookie";
-
-const cookies = new Cookies();
 
 // 이메일 중복 체크
 export const emailCheckThunk = createAsyncThunk(

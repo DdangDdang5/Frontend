@@ -300,41 +300,54 @@ export const EventCircle = styled.div`
   bottom: -50.49%;
 `;
 
-export const SwipeBtn = styled.button`
-  width: 30px;
-  height: 30px;
+// export const SwipeBtn = styled.button`
+//   width: 18px;
+//   height: 18px;
 
-  border: none;
-  border-radius: 15px;
-  opacity: 0.6;
+//   border: none;
+//   border-radius: 15px;
+//   /* opacity: 0.6; */
+// 	background: rgba(255, 255, 255, 0.5);
+// 	text-shadow: 0px 0px 4px rgba(0, 0, 0, 0.3);
 
-  position: absolute;
-  top: 50%;
-  left: ${(props) => (props.location === "prev" ? "10px" : null)};
-  right: ${(props) => (props.location === "next" ? "10px" : null)};
+//   position: absolute;
+//   /* top: 50%; */
+// 	bottom: 10%;
+// 	left: 20px;
+//   /* left: ${(props) => (props.location === "prev" ? "20px" : "46px")}; */
+//   /* right: ${(props) => (props.location === "next" ? "10px" : null)}; */
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
 
-  &:hover {
-    opacity: 1;
-  }
+//   /* &:hover {
+//     opacity: 1;
+//   } */
 
-  svg {
-    width: 15px;
-    height: 15px;
+//   svg {
+// 	  width: 18px;
+// 	  height: 18px;
 
-    path {
-      fill: ${(props) => props.theme.colors.Gray4};
-    }
-  }
+//     /* path {
+//       fill: ${(props) => props.theme.colors.White};
+//     } */
+//   }
 
-  .back-btn {
-    margin-right: 2px;
-  }
+//   .back-btn {
+//     margin-right: 2px;
+//   }
 
-  .next-btn {
-    margin-left: 2px;
-  }
+//   .next-btn {
+//     margin-left: 2px;
+//   }
+// `;
+
+export const SwipeBtn = styled.div`
+	position: absolute;
+	left: 14px;
+	bottom: 14px;
+
+	
+	transform: ${(props) => props.location === "next" ? "scaleX(-1)" : null};
 `;
