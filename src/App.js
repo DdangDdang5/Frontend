@@ -9,33 +9,37 @@ import styled from "styled-components";
 
 // Page import
 import Main from "../src/pages/main/Main";
-import Login from "../src/pages/login/Login";
-import SignUp from "../src/pages/signUp/SignUp";
+import InfoDetail from "./pages/main/InfoDetail";
+import Login from "../src/pages/accountPage/Login";
+import SignUp from "../src/pages/accountPage/SignUp";
+
+import Search from "../src/pages/searchPage/Search";
+import Chat from "../src/pages/chatPage/Chat";
+import ChatList from "../src/pages/chatPage/ChatList";
+
+import AuctionList from "../src/pages/auctionPage/AuctionList";
+import AuctionWrite from "../src/pages/auctionPage/AuctionWrite";
+import AuctionDetail from "../src/pages/auctionPage/AuctionDetail";
+import AuctionReview from "./pages/auctionPage/AuctionReview";
+import AuctionEdit from "./pages/auctionPage/AuctionEdit";
+import UserProfile from "./pages/auctionPage/UserProfile";
+
 import MyPage from "./pages/myPage/MyPage";
 import MyPageEdit from "./pages/myPage/MyPageEdit";
-import Search from "../src/pages/search/Search";
-import Chat from "../src/pages/chat/Chat";
-import ChatList from "../src/pages/chatList/ChatList";
-import AuctionList from "../src/pages/auctionList/AuctionList";
-import AuctionWrite from "../src/pages/auctionWrite/AuctionWrite";
-import AuctionDetail from "../src/pages/auctionDetail/AuctionDetail";
-import AuctionReview from "./pages/auctionReview/AuctionReview";
-import MyGrade from "./pages/myGrade/MyGrade";
+import MyGrade from "./pages/myPage/MyGrade";
 import MyPageParticipationAuction from "./pages/myPage/MyPageParticipationAuction";
 import MyPageInterestAuction from "./pages/myPage/MyPageInterestAuction";
 import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
-import AuctionEdit from "./pages/auctionEdit/AuctionEdit";
-// import Notification from "./pages/notification/Notification";
-import NotFound from "./pages/notFound/NotFound";
-import Event from "./pages/event/Event";
-import EventList from "./pages/eventList/EventList";
-import Loading from "./pages/loading/Loading";
-import InfoDetail from "./pages/infoDetail/InfoDetail";
+
+import Event from "./pages/eventPage/Event";
+import EventList from "./pages/eventPage/EventList";
+
+import NotFound from "./pages/etcPage/NotFound";
+import Loading from "./pages/etcPage/Loading";
 
 // Component & Shared import
 import Kakao from "./shared/Kakao";
 import CategoryModal from "./components/modal/CategoryModal";
-import UserProfile from "./pages/userProfile/UserProfile";
 
 // Style import
 import { FontRegular } from "./shared/fonts/font";

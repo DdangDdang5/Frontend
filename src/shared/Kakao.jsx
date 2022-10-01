@@ -6,7 +6,6 @@ import { kakaoOauthThunk } from "../redux/modules/MemberSlice";
 
 // Package import
 import { useNavigate, useParams } from "react-router-dom";
-import { Cookies } from "react-cookie";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 
@@ -17,7 +16,6 @@ import { KAKAO_OAUTH_URL } from "./SocialAuth";
 const Kakao = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const cookies = new Cookies();
 
   // 리다이렉트된 주소의 params query code를 가져옴
   const code = new URL(window.location.href).searchParams.get("code");

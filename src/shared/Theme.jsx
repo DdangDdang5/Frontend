@@ -14,11 +14,7 @@ const fontWeights = {
   bold: 700,
 };
 
-const lineHeight = {};
-
 const colors = {
-  Primary: "",
-  Secondary: "",
   Background: "#1E1E1E",
   Black: "#3A3A3A",
   Gray5: "#353535",
@@ -40,7 +36,6 @@ export const Theme = {
   fontSizes,
   fontWeights,
   colors,
-  lineHeight,
 };
 
 export default Theme;
