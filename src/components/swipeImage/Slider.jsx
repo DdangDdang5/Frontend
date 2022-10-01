@@ -84,7 +84,6 @@ const Slider = ({ data }) => {
       <BtnBox>
         <div className="left" onClick={prevSlide}>
           <svg
-            onClick={prevSlide}
             width="18"
             height="10"
             viewBox="0 0 18 10"
@@ -98,7 +97,6 @@ const Slider = ({ data }) => {
         </div>
         <div className="right" onClick={nextSlide}>
           <svg
-            onClick={nextSlide}
             width="18"
             height="10"
             viewBox="0 0 18 10"
