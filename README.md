@@ -46,7 +46,7 @@
 <br><br>
 
 ## ⚒️ 프로젝트 아키텍처
-<img src ="https://user-images.githubusercontent.com/109058715/192777510-1010801f-5bef-4849-b6aa-6ac4c55c7c6b.png" width="900px" height="600px" >
+<img src ="https://user-images.githubusercontent.com/50540673/193460656-22aa5fc0-886c-430b-a17f-fd27070789eb.png" width="1000px" height="600px" >
 
 <br>
 
