@@ -19,79 +19,79 @@ import { ReactComponent as LogoClassic } from "../../shared/images/logo/LogoClas
 
 // import { Accessory, Beauty, Digital, Dobong, Dongdaemun, Dongjak, Eunpyeong, Gangbuk, Gangdong, Gangnam, Gangseo, Geumcheon, Guro, Gwanak, Gwangjin, Hobby, HomeElectronics, Interior, Jongno, Jung, Jungnang, LogoClassic, ManFashion, Mapo, Nowon, Seocho, Seodaemun, Seongbuk, Seongdong, Seoul, Songpa, Sport, WomanFashion, Yangcheon, Yeoungdeongpo, Yongsan } from "../../shared/images";
 
-// import { ReactComponent as Accessory } from "../../shared/images/category/Accessory.svg";
-// import { ReactComponent as Beauty } from "../../shared/images/category/Beauty.svg";
-// import { ReactComponent as Digital } from "../../shared/images/category/Digital.svg";
-// import { ReactComponent as Hobby } from "../../shared/images/category/Hobby.svg";
-// import { ReactComponent as HomeElectronics } from "../../shared/images/category/HomeElectronics.svg";
-// import { ReactComponent as Interior } from "../../shared/images/category/Interior.svg";
-// import { ReactComponent as ManFashion } from "../../shared/images/category/ManFashion.svg";
-// import { ReactComponent as Sport } from "../../shared/images/category/Sport.svg";
-// import { ReactComponent as WomanFashion } from "../../shared/images/category/WomanFashion.svg";
+import Accessory from "../../shared/images/category/Accessory.png";
+import Beauty from "../../shared/images/category/Beauty.png";
+import Digital from "../../shared/images/category/Digital.png";
+import Hobby from "../../shared/images/category/Hobby.png";
+import HomeElectronics from "../../shared/images/category/HomeElectronics.png";
+import Interior from "../../shared/images/category/Interior.png";
+import ManFashion from "../../shared/images/category/ManFashion.png";
+import Sport from "../../shared/images/category/Sport.png";
+import WomanFashion from "../../shared/images/category/WomanFashion.png";
 
-// import { ReactComponent as Dobong } from "../../shared/images/region/Dobong.svg";
-// import { ReactComponent as Dongdaemun } from "../../shared/images/region/Dongdaemun.svg";
-// import { ReactComponent as Dongjak } from "../../shared/images/region/Dongjak.svg";
-// import { ReactComponent as Eunpyeong } from "../../shared/images/region/Eunpyeong.svg";
-// import { ReactComponent as Gangbuk } from "../../shared/images/region/Gangbuk.svg";
-// import { ReactComponent as Gangdong } from "../../shared/images/region/Gangdong.svg";
-// import { ReactComponent as Gangnam } from "../../shared/images/region/Gangnam.svg";
-// import { ReactComponent as Gangseo } from "../../shared/images/region/Gangseo.svg";
-// import { ReactComponent as Geumcheon } from "../../shared/images/region/Geumcheon.svg";
-// import { ReactComponent as Guro } from "../../shared/images/region/Guro.svg";
-// import { ReactComponent as Gwanak } from "../../shared/images/region/Gwanak.svg";
-// import { ReactComponent as Gwangjin } from "../../shared/images/region/Gwangjin.svg";
-// import { ReactComponent as Jongno } from "../../shared/images/region/Jongno.svg";
-// import { ReactComponent as Jung } from "../../shared/images/region/Jung.svg";
-// import { ReactComponent as Jungnang } from "../../shared/images/region/Jungnang.svg";
-// import { ReactComponent as Mapo } from "../../shared/images/region/Mapo.svg";
-// import { ReactComponent as Nowon } from "../../shared/images/region/Nowon.svg";
-// import { ReactComponent as Seocho } from "../../shared/images/region/Seocho.svg";
-// import { ReactComponent as Seodaemun } from "../../shared/images/region/Seodaemun.svg";
-// import { ReactComponent as Seongbuk } from "../../shared/images/region/Seongbuk.svg";
-// import { ReactComponent as Seongdong } from "../../shared/images/region/Seongdong.svg";
-// import { ReactComponent as Seoul } from "../../shared/images/region/Seoul.svg";
-// import { ReactComponent as Songpa } from "../../shared/images/region/Songpa.svg";
-// import { ReactComponent as Yangcheon } from "../../shared/images/region/Yangcheon.svg";
-// import { ReactComponent as Yeoungdeongpo } from "../../shared/images/region/Yeoungdeongpo.svg";
-// import { ReactComponent as Yongsan } from "../../shared/images/region/Yongsan.svg";
+import Dobong from "../../shared/images/region/Dobong.png";
+import Dongdaemun from "../../shared/images/region/Dongdaemun.png";
+import Dongjak from "../../shared/images/region/Dongjak.png";
+import Eunpyeong from "../../shared/images/region/Eunpyeong.png";
+import Gangbuk from "../../shared/images/region/Gangbuk.png";
+import Gangdong from "../../shared/images/region/Gangdong.png";
+import Gangnam from "../../shared/images/region/Gangnam.png";
+import Gangseo from "../../shared/images/region/Gangseo.png";
+import Geumcheon from "../../shared/images/region/Geumcheon.png";
+import Guro from "../../shared/images/region/Guro.png";
+import Gwanak from "../../shared/images/region/Gwanak.png";
+import Gwangjin from "../../shared/images/region/Gwangjin.png";
+import Jongno from "../../shared/images/region/Jongno.png";
+import Jung from "../../shared/images/region/Jung.png";
+import Jungnang from "../../shared/images/region/Jungnang.png";
+import Mapo from "../../shared/images/region/Mapo.png";
+import Nowon from "../../shared/images/region/Nowon.png";
+import Seocho from "../../shared/images/region/Seocho.png";
+import Seodaemun from "../../shared/images/region/Seodaemun.png";
+import Seongbuk from "../../shared/images/region/Seongbuk.png";
+import Seongdong from "../../shared/images/region/Seongdong.png";
+import Seoul from "../../shared/images/region/Seoul.png";
+import Songpa from "../../shared/images/region/Songpa.png";
+import Yangcheon from "../../shared/images/region/Yangcheon.png";
+import Yeoungdeongpo from "../../shared/images/region/Yeoungdeongpo.png";
+import Yongsan from "../../shared/images/region/Yongsan.png";
 
-import Accessory from "../../shared/images/category/Accessory.svg";
-import Beauty from "../../shared/images/category/Beauty.svg";
-import Digital from "../../shared/images/category/Digital.svg";
-import Hobby from "../../shared/images/category/Hobby.svg";
-import HomeElectronics from "../../shared/images/category/HomeElectronics.svg";
-import Interior from "../../shared/images/category/Interior.svg";
-import ManFashion from "../../shared/images/category/ManFashion.svg";
-import Sport from "../../shared/images/category/Sport.svg";
-import WomanFashion from "../../shared/images/category/WomanFashion.svg";
+// import Accessory from "../../shared/images/category/Accessory.svg";
+// import Beauty from "../../shared/images/category/Beauty.svg";
+// import Digital from "../../shared/images/category/Digital.svg";
+// import Hobby from "../../shared/images/category/Hobby.svg";
+// import HomeElectronics from "../../shared/images/category/HomeElectronics.svg";
+// import Interior from "../../shared/images/category/Interior.svg";
+// import ManFashion from "../../shared/images/category/ManFashion.svg";
+// import Sport from "../../shared/images/category/Sport.svg";
+// import WomanFashion from "../../shared/images/category/WomanFashion.svg";
 
-import Dobong from "../../shared/images/region/Dobong.svg";
-import Dongdaemun from "../../shared/images/region/Dongdaemun.svg";
-import Dongjak from "../../shared/images/region/Dongjak.svg";
-import Eunpyeong from "../../shared/images/region/Eunpyeong.svg";
-import Gangbuk from "../../shared/images/region/Gangbuk.svg";
-import Gangdong from "../../shared/images/region/Gangdong.svg";
-import Gangnam from "../../shared/images/region/Gangnam.svg";
-import Gangseo from "../../shared/images/region/Gangseo.svg";
-import Geumcheon from "../../shared/images/region/Geumcheon.svg";
-import Guro from "../../shared/images/region/Guro.svg";
-import Gwanak from "../../shared/images/region/Gwanak.svg";
-import Gwangjin from "../../shared/images/region/Gwangjin.svg";
-import Jongno from "../../shared/images/region/Jongno.svg";
-import Jung from "../../shared/images/region/Jung.svg";
-import Jungnang from "../../shared/images/region/Jungnang.svg";
-import Mapo from "../../shared/images/region/Mapo.svg";
-import Nowon from "../../shared/images/region/Nowon.svg";
-import Seocho from "../../shared/images/region/Seocho.svg";
-import Seodaemun from "../../shared/images/region/Seodaemun.svg";
-import Seongbuk from "../../shared/images/region/Seongbuk.svg";
-import Seongdong from "../../shared/images/region/Seongdong.svg";
-import Seoul from "../../shared/images/region/Seoul.svg";
-import Songpa from "../../shared/images/region/Songpa.svg";
-import Yangcheon from "../../shared/images/region/Yangcheon.svg";
-import Yeoungdeongpo from "../../shared/images/region/Yeoungdeongpo.svg";
-import Yongsan from "../../shared/images/region/Yongsan.svg";
+// import Dobong from "../../shared/images/region/Dobong.svg";
+// import Dongdaemun from "../../shared/images/region/Dongdaemun.svg";
+// import Dongjak from "../../shared/images/region/Dongjak.svg";
+// import Eunpyeong from "../../shared/images/region/Eunpyeong.svg";
+// import Gangbuk from "../../shared/images/region/Gangbuk.svg";
+// import Gangdong from "../../shared/images/region/Gangdong.svg";
+// import Gangnam from "../../shared/images/region/Gangnam.svg";
+// import Gangseo from "../../shared/images/region/Gangseo.svg";
+// import Geumcheon from "../../shared/images/region/Geumcheon.svg";
+// import Guro from "../../shared/images/region/Guro.svg";
+// import Gwanak from "../../shared/images/region/Gwanak.svg";
+// import Gwangjin from "../../shared/images/region/Gwangjin.svg";
+// import Jongno from "../../shared/images/region/Jongno.svg";
+// import Jung from "../../shared/images/region/Jung.svg";
+// import Jungnang from "../../shared/images/region/Jungnang.svg";
+// import Mapo from "../../shared/images/region/Mapo.svg";
+// import Nowon from "../../shared/images/region/Nowon.svg";
+// import Seocho from "../../shared/images/region/Seocho.svg";
+// import Seodaemun from "../../shared/images/region/Seodaemun.svg";
+// import Seongbuk from "../../shared/images/region/Seongbuk.svg";
+// import Seongdong from "../../shared/images/region/Seongdong.svg";
+// import Seoul from "../../shared/images/region/Seoul.svg";
+// import Songpa from "../../shared/images/region/Songpa.svg";
+// import Yangcheon from "../../shared/images/region/Yangcheon.svg";
+// import Yeoungdeongpo from "../../shared/images/region/Yeoungdeongpo.svg";
+// import Yongsan from "../../shared/images/region/Yongsan.svg";
 
 // Style import
 import { CategoryItem, CategoryName } from "./AuctionCategory.styled";
@@ -114,7 +114,7 @@ const AuctionCategory = ({ division, divisionName }) => {
         auctionCategoryRegionList({
           categoryName: categoryNameCheck,
           regionName: regionNameCheck,
-        })
+        }),
       );
     } else if (categoryNameCheck !== "전체품목") {
       dispatch(auctionCategoryList(categoryNameCheck));
@@ -126,12 +126,12 @@ const AuctionCategory = ({ division, divisionName }) => {
   const onClickModalItem = (division, divisionName) => {
     if (division === "regionList") {
       dispatch(
-        hideModal({ categoryName: "전체 품목", regionName: divisionName })
+        hideModal({ categoryName: "전체 품목", regionName: divisionName }),
       );
       onCheckCategoryRegion("전체 품목", divisionName);
     } else if (division === "categoryList") {
       dispatch(
-        hideModal({ categoryName: divisionName, regionName: "서울 전체" })
+        hideModal({ categoryName: divisionName, regionName: "서울 전체" }),
       );
       onCheckCategoryRegion(divisionName, "서울 전체");
     }
@@ -148,6 +148,7 @@ const AuctionCategory = ({ division, divisionName }) => {
       {
         {
           "전체 품목": <LogoClassic />,
+
           가전: <img src={HomeElectronics} />,
           "가구/인테리어": <img src={Interior} />,
           "남성 패션": <img src={ManFashion} />,
