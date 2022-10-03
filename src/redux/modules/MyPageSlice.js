@@ -29,7 +29,6 @@ export const _MyPageInAuction = createAsyncThunk(
       const response = await api.get(
         `/pagination/member/mypage/myauction?page=${paging}&size=6&sortBy=id&isAsc=false`
       );
-      // console.log(paging);
 
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());
@@ -50,7 +49,6 @@ export const _MyPageInterestAuction = createAsyncThunk(
       const response = await api.get(
         `/pagination/member/favorite?page=${paging}&size=6&sortBy=id&isAsc=false`
       );
-      // console.log(paging);
 
       if (response?.data?.data && response?.data?.data <= 0) {
         thunkAPI.dispatch(noFollowingItem());

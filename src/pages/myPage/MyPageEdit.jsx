@@ -193,7 +193,9 @@ const MyPageEdit = () => {
                 placeholder={
                   profileData.nickname === null
                     ? "닉네임을 입력해주세요."
-                    : profileData.nickname
+                    : profileData?.nickname?.length > 6
+                    ? profileData?.nickname?.split("kakao")[0] + "kakao"
+                    : profileData?.nickname
                 }
                 minLength="4"
                 maxLength="6"
