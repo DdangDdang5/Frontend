@@ -50,6 +50,7 @@ import {
   TagWrap,
 } from "./Main.styled";
 import { clearAuction } from "../../redux/modules/AuctionSlice";
+import AuctionRow from "../../components/auctionElement/AuctionRow";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -78,14 +79,12 @@ const Main = () => {
 
   useEffect(() => {
     getAuctionData();
-  }, [
-    JSON.stringify(auctionAllList),
-  ]);
+  }, [JSON.stringify(auctionAllList)]);
 
   const moveAuctionDetail = (auctionId) => {
     dispatch(clearAuction());
-		navigate(`/auctionDetail/${auctionId}`);
-		// window.location.reload();
+    navigate(`/auctionDetail/${auctionId}`);
+    // window.location.reload();
   };
 
   const moveAuctionList = () => {
@@ -171,40 +170,17 @@ const Main = () => {
               </ListHeader>
 
               <NewList>
-                {auctionNewList?.map((item) => (
-                  <NewItem
-                    key={item.auctionId}
-                    onClick={() => moveAuctionDetail(item.auctionId)}
-                  >
-                    <img
-                      src={item.multiImages[0]?.imgUrl}
-                      alt="auction-new-img"
-                    />
-                    <NewItemContent>
-                      <TagWrap>
-                        {item.delivery ? <span>택배</span> : null}
-                        {item.direct ? <span>직거래</span> : null}
-                        <TagRegion>{item.region}</TagRegion>
-                      </TagWrap>
-                      <NewItemTitle>{item.title}</NewItemTitle>
-                      <NewItemPriceWrap>
-                        <span>현재입찰가</span>
-                        <NewItemPrice>
-                          {item.nowPrice
-                            .toString()
-                            .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                          원
-                        </NewItemPrice>
-                      </NewItemPriceWrap>
-                    </NewItemContent>
-                  </NewItem>
+                {auctionNewList?.map((item, idx) => (
+                  <React.Fragment key={idx}>
+                    <AuctionRow item={item} index={idx} />
+                  </React.Fragment>
                 ))}
               </NewList>
             </ListContainer>
 
             {/* 마감임박 경매 */}
             {auctionDeadlineList?.length > 0 && (
-              <ListContainer>
+              <ListContainer isLast={true}>
                 <ListHeader isLast={true}>
                   <span>서두르세요! 곧 경매가 끝나요</span>
                   <ListHeaderMore onClick={moveAuctionList}>

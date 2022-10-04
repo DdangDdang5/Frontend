@@ -117,7 +117,7 @@ export const EventCircle = styled.div`
 `;
 
 export const ListContainer = styled.div`
-  margin: 32px 20px;
+  margin: ${(props) => props.isLast ? "auto 20px 32px 20px" : "32px 20px auto 20px"};
 `;
 
 export const ListHeader = styled.span`
@@ -316,7 +316,6 @@ export const NewList = styled.div`
 
   display: flex;
   flex-direction: column;
-  gap: 19px;
 `;
 
 export const NewItem = styled.div`

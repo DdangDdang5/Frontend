@@ -36,6 +36,7 @@ import {
   TagWrap,
 } from "../auctionPage/AuctionReview.styled";
 import { clearAuction } from "../../redux/modules/AuctionSlice";
+import AuctionRow from "../../components/auctionElement/AuctionRow";
 
 const UserProfile = () => {
   const navigate = useNavigate();
@@ -107,36 +108,10 @@ const UserProfile = () => {
           {/* 경매중 목록 */}
           <MidTabContent id="auction-sale-content">
             <ItemList>
-              {saleAuctionList?.map((item) => (
-                <ReviewItem
-                  key={item.auctionId}
-                  onClick={() => {
-                    dispatch(clearAuction());
-                    navigate(`/auctionDetail/${item.auctionId}`);
-                  }}
-                >
-                  <img
-                    src={item.multiImages[0]?.imgUrl}
-                    alt="user-sale-auction-img"
-                  />
-                  <ReviewItemContent>
-                    <TagWrap backgroundColor="gray">
-                      {item.delivery ? <span>택배</span> : null}
-                      {item.direct ? <span>직거래</span> : null}
-                      <TagRegion>{item.region}</TagRegion>
-                    </TagWrap>
-                    <ReviewItemTitle>{item.title}</ReviewItemTitle>
-                    <ReviewItemPriceWrap>
-                      <span>최근입찰가</span>
-                      <ReviewItemPrice>
-                        {item.nowPrice
-                          .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                        원
-                      </ReviewItemPrice>
-                    </ReviewItemPriceWrap>
-                  </ReviewItemContent>
-                </ReviewItem>
+              {saleAuctionList?.map((item, idx) => (
+                <React.Fragment key={idx}>
+                  <AuctionRow item={item} index={idx} />
+                </React.Fragment>
               ))}
             </ItemList>
           </MidTabContent>
