@@ -17,6 +17,7 @@ import Footer from "../../components/footer/Footer";
 import { ImgDelete, ImgPlus, UnderArrow } from "../../shared/images";
 import { isIOS } from "react-device-detect";
 import PageModal from "../../components/modal/PageModal";
+import { handleFileOnChange, handleUrlOnChange } from "../../shared/ImgResize";
 
 const AuctionEdit = () => {
   const dispatch = useDispatch();
@@ -89,7 +90,7 @@ const AuctionEdit = () => {
 
   useEffect(() => {}, [imagePreview, inputForm.auctionPeriod]);
 
-  const onLoadFile = (e) => {
+  const onLoadFile = async (e) => {
     const imgList = e.target.files;
     const imgFileList = [];
     const imgUrlList = [];
@@ -99,13 +100,17 @@ const AuctionEdit = () => {
       imgFileList.push(imgFile[i]);
     }
 
-    for (let i = 0; i < imgList.length; i++) {
+		// resize img
+		for (let i = 0; i < imgList.length; i++) {
+			let newFile = await handleFileOnChange(imgList[i]);
+			let newFileURL = await handleUrlOnChange(newFile);
+
       imgUrlList.push({
         id: imagePreview.length,
-        img: URL.createObjectURL(imgList[i]),
+        img: newFileURL,
       });
-      imgFileList.push(imgList[i]);
-    }
+      imgFileList.push(newFile);
+		}
 
     setImgFile(imgFileList);
     setImagePreview(imgUrlList);

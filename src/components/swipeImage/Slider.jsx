@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 
 // Package import
 import styled from "styled-components";
-import { Back } from "../../shared/images";
+import { UnderArrow } from "../../shared/images/index";
 
 const Slider = ({ data }) => {
   const cnt = data?.map((item, index) => {
@@ -12,9 +12,9 @@ const Slider = ({ data }) => {
 
   const totalSlides = cnt?.length - 1;
 
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [count, setCount] = useState(0);
   const slideRef = useRef(null);
+  // console.log(count);
 
   // const [styled, setStyled] = useState({
   //   transform: `translateX(-${currentIndex}00%)`,
@@ -23,7 +23,7 @@ const Slider = ({ data }) => {
 
   const nextSlide = () => {
     if (count >= totalSlides) {
-      setCount(0);
+      setCount(count);
     } else {
       setCount((prev) => prev + 1);
     }
@@ -31,9 +31,9 @@ const Slider = ({ data }) => {
 
   const prevSlide = () => {
     if (count === 0) {
-      setCount(totalSlides);
+      setCount(count);
     } else {
-      setCount((prev) => prev - 1);
+      setCount(count - 1);
     }
   };
 
@@ -82,32 +82,21 @@ const Slider = ({ data }) => {
         })}
       </ImgBox>
       <BtnBox>
-        <div className="left" onClick={prevSlide}>
-          <svg
-            width="18"
-            height="10"
-            viewBox="0 0 18 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M17.7048 0.29272C17.3145 -0.0975732 16.684 -0.0975732 16.2938 0.29272L8.99872 7.58819L1.70368 0.29272C1.31341 -0.0975732 0.682972 -0.0975732 0.292702 0.29272C-0.0975675 0.683012 -0.0975675 1.31348 0.292702 1.70377L8.29824 9.70979C8.49838 9.90994 8.74856 10 9.00874 10C9.26892 10 9.51908 9.89993 9.71922 9.70979L17.7248 1.70377C18.095 1.31348 18.095 0.683012 17.7048 0.29272Z"
-              fill="#A5A9B6"
-            />
-          </svg>
-        </div>
-        <div className="right" onClick={nextSlide}>
-          <svg
-            width="18"
-            height="10"
-            viewBox="0 0 18 10"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg">
-            <path
-              d="M17.7048 0.29272C17.3145 -0.0975732 16.684 -0.0975732 16.2938 0.29272L8.99872 7.58819L1.70368 0.29272C1.31341 -0.0975732 0.682972 -0.0975732 0.292702 0.29272C-0.0975675 0.683012 -0.0975675 1.31348 0.292702 1.70377L8.29824 9.70979C8.49838 9.90994 8.74856 10 9.00874 10C9.26892 10 9.51908 9.89993 9.71922 9.70979L17.7248 1.70377C18.095 1.31348 18.095 0.683012 17.7048 0.29272Z"
-              fill="#A5A9B6"
-            />
-          </svg>
-        </div>
+        {cnt?.length < 2 ? (
+          ""
+        ) : (
+          <div className="left" onClick={prevSlide}>
+            <UnderArrow />
+          </div>
+        )}
+
+        {cnt?.length < 2 ? (
+          ""
+        ) : (
+          <div className="right" onClick={nextSlide}>
+            <UnderArrow />
+          </div>
+        )}
       </BtnBox>
       <Bullets>
         {cnt?.map((item, index) => {
@@ -143,7 +132,9 @@ const SliderWrap = styled.div`
 const ImgBox = styled.div`
   display: flex;
   width: 100%;
-  transition: ${(props) => (!props.count ? "" : "all 0.5s ease-in-out")};
+  transition: all 0.5s ease-in-out;
+  /* transition: ${(props) => (!props.count ? "" : "all 0.5s ease-in-out")}; */
+
   transform: ${(props) => "translateX(-" + props.count * 410 + "px)"};
   /* div {
     display: flex;

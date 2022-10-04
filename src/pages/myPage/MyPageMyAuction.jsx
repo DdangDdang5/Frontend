@@ -81,7 +81,6 @@ function MyPageMyAuction() {
 
   useEffect(() => {
     return () => {
-      setShouldShownData([]);
       dispatch(resetPaging());
       dispatch(resetList());
     };

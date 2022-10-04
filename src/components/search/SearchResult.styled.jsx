@@ -20,6 +20,11 @@ export const SearchResultBox = styled.div`
 
 export const SearchResultLogo = styled.div`
   margin-bottom: 25px;
+
+	img {
+		width: 150px;
+		height: 150px;
+	}
 `;
 
 export const SearchResultSpan = styled.div`
