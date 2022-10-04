@@ -2,14 +2,16 @@ import React from "react";
 import styled from "styled-components";
 import { UnderArrow } from "../../shared/images";
 
-const QuestionContent = ({ text, isClick, setIsClick }) => {
+const QuestionContent = ({ text, onClick, isClick }) => {
+  // console.log(isClick);
+
   return (
-    <ContentWrap onClick={() => setIsClick(!isClick)}>
+    <ContentWrap onClick={onClick}>
       <Body>
         <div className="Q">Q.</div>
         <div>{text}</div>
       </Body>
-      <Img>
+      <Img isClick={isClick}>
         <UnderArrow />
       </Img>
     </ContentWrap>
@@ -44,5 +46,6 @@ const Body = styled.div`
 `;
 const Img = styled.div`
   display: flex;
+  transform: ${(props) => (props.isClick ? "rotate(180deg)" : "")};
 `;
 export default QuestionContent;

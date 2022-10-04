@@ -6,27 +6,38 @@ import QuestionContent from "../../components/myPage/QuestionContent";
 
 const Question = () => {
   const [isClick, setIsClick] = useState({
-    Question1: false,
-    Question2: false,
+    question1: false,
+    question2: false,
   });
-  console.log(isClick.Question1);
 
+  console.log(isClick.question1);
+  //   setIsClick({ ...isClick, Question1: !isClick.Question1 });
   return (
     <QuestionLayout>
       <Header back={true} pageName="자주 묻는 질문" />
       <QuestionWrap>
         <QuestionContent
+          onClick={() =>
+            setIsClick((prev) => ({
+              ...prev,
+              question1: !prev.question1,
+            }))
+          }
           text={"알림기능은 작동을 안하나요?"}
-          isClick={isClick.Question1}
-          setIsClick={setIsClick.Question1}
+          isClick={isClick.question1}
         />
-        <AnswerContent text={"나는 모르오"} isClick={isClick.Question1} />
+        <AnswerContent text={"나는 모르오"} isClick={isClick.question1} />
         <QuestionContent
           text={"배성열은 그렇게 못생겼다는게 사실인가요?"}
-          isClick={isClick.Question2}
-          setIsClick={setIsClick.Question2}
+          isClick={isClick.question2}
+          onClick={() =>
+            setIsClick((prev) => ({
+              ...prev,
+              question2: !prev.question2,
+            }))
+          }
         />
-        <AnswerContent text={"맞는다"} isClick={isClick.Q2} />
+        <AnswerContent text={"맞는다"} isClick={isClick.question2} />
       </QuestionWrap>
     </QuestionLayout>
   );

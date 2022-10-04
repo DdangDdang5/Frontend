@@ -1,9 +1,10 @@
 import React from "react";
 import styled from "styled-components";
 
-const AnswerContent = ({ text, isClick, setIsClick }) => {
+const AnswerContent = ({ text, isClick }) => {
+  console.log(isClick);
   return (
-    <ContentWrap>
+    <ContentWrap isClick={isClick}>
       <Body>
         <div className="Q">A.</div>
         <div>{text}</div>
@@ -12,7 +13,7 @@ const AnswerContent = ({ text, isClick, setIsClick }) => {
   );
 };
 const ContentWrap = styled.div`
-  display: flex;
+  display: ${(props) => (props.isClick ? "flex" : "none")};
   flex-direction: row;
   padding: 20px;
   background-color: ${(props) => props.theme.colors.Gray1};
