@@ -717,7 +717,7 @@ const WriteTextArea = styled.textarea`
   box-sizing: border-box;
   resize: none;
   letter-spacing: -0.05em;
-  word-spacing: ${(props) => (props.isIOS ? "0" : "-0.35em")};
+  word-spacing: -0.05em;
   line-height: 150%;
   border-radius: 8px;
   border: 1px solid ${(props) => props.theme.colors.Gray2};

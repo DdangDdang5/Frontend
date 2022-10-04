@@ -26,7 +26,10 @@ const Question = () => {
           text={"알림기능은 작동을 안하나요?"}
           isClick={isClick.question1}
         />
-        <AnswerContent text={"나는 모르오"} isClick={isClick.question1} />
+        <AnswerContent
+          text={"현재 개발중입니다."}
+          isClick={isClick.question1}
+        />
         <QuestionContent
           text={"배성열은 그렇게 못생겼다는게 사실인가요?"}
           isClick={isClick.question2}
