@@ -10,16 +10,11 @@ export const CategoryItem = styled.div`
   flex-direction: column;
   align-items: center;
   gap: ${(props) => (props.division === "categoryList" ? "8px" : "12px")};
+`;
 
-  svg {
-    width: 56px;
-    height: 56px;
-  }
-
-  img {
-    width: 60px;
-    height: 56px;
-  }
+export const CategoryImg = styled.img`
+	width: ${(props) => props.division === "region" ? "56px" : "60px"};
+	height: 56px;
 `;
 
 export const CategoryName = styled.span`
