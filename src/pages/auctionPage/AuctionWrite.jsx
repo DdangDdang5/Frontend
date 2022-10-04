@@ -23,6 +23,7 @@ import {
 import styled from "styled-components";
 import { ImgDelete, ImgPlus, UnderArrow } from "../../shared/images";
 import PageModal from "../../components/modal/PageModal";
+import { handleFileOnChange, handleUrlOnChange } from "../../shared/ImgResize";
 
 const AuctionWrite = () => {
   const dispatch = useDispatch();
@@ -89,8 +90,8 @@ const AuctionWrite = () => {
   }, [regionNameCheck]);
 
   useEffect(() => {}, [imagePreview, inputForm.auctionPeriod]);
-
-  const onLoadFile = (e) => {
+	
+  const onLoadFile = async (e) => {
     const imgList = e.target.files;
     const imgFileList = [];
     const imgUrlList = [];
@@ -111,13 +112,17 @@ const AuctionWrite = () => {
         imgFileList.push(imgFile[i]);
       }
 
-      for (let i = 0; i < imgList.length; i++) {
+			// resize img
+			for (let i = 0; i < imgList.length; i++) {
+				let newFile = await handleFileOnChange(imgList[i]);
+				let newFileURL = await handleUrlOnChange(newFile);
+
         imgUrlList.push({
           id: imagePreview.length,
-          img: URL.createObjectURL(imgList[i]),
+          img: newFileURL,
         });
-        imgFileList.push(imgList[i]);
-      }
+        imgFileList.push(newFile);
+			}
 
       setImgFile(imgFileList);
       setImagePreview(imgUrlList);
