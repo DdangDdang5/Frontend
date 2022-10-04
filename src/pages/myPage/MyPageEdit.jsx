@@ -1,15 +1,13 @@
 // React import
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // Redux import
 import { editMyPage, _MyPageData } from "../../redux/modules/MyPageSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { nickNameCheckThunk } from "../../redux/modules/MemberSlice";
 
 // Package import
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { debounce } from "lodash";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -29,14 +27,10 @@ const MyPageEdit = () => {
   const profileData = useSelector((state) => state?.myPage?.myPage);
   const img_ref = useRef(null);
 
-  const nickNameRef = useRef();
-  const nickNameIconRef = useRef();
-  const nickNameSpanRef = useRef();
-
   const [inputForm, setInputForm] = useState(data);
   const [imgFile, setImgFile] = useState([]);
   const [imagePreview, setImagePreview] = useState(profileData?.profileImgUrl);
-  // console.log("preview", imagePreview);
+  console.log("preview", imagePreview);
 
   const [optionVisible, setOptionVisible] = useState(false); // alert 모달
   const [optionContent, setOptionContent] = useState({
@@ -48,62 +42,6 @@ const MyPageEdit = () => {
   });
 
   const memberId = sessionStorage?.getItem("memberId");
-
-  useEffect(() => {
-    dispatch(nickNameCheckThunk(data));
-  }, []);
-
-  // useEffect(() => {
-  //   if (nickName !== "") {
-  //     checkNickName(nickName);
-  //   } else {
-  //     nickNameSpanRef.current.innerText = "";
-  //     nickNameSpanRef.current.style.color = "";
-  //   }
-  // }, [nickName]);
-
-  // 닉네임 체크
-  // const checkNickName = useCallback(
-  //   debounce((nickName) => {
-  //     const nickNameRegExp = /^([a-z0-9가-힣])[a-z0-9가-힣]{3,7}$/i;
-  //     if (!nickNameRegExp.test(nickName)) {
-  //       nickNameSpanRef.current.innerText =
-  //         "닉네임은 공백 없이 4~6자 이내의 한글, 영문, 숫자를 이용하여 입력해주세요.";
-  //       nickNameSpanRef.current.style.color = "#EF664D";
-  //       nickNameRef.current.style.borderColor = "#EF664D";
-  //       nickNameIconRef.current.style.color = "#EF664D";
-  //       setNickNameCheck(true);
-  //     } else {
-  //       dispatch(nickNameCheckThunk({ nickName })).then((res) => {
-  //         if (!res.payload) {
-  //           nickNameSpanRef.current.innerText = "중복되는 닉네임입니다.";
-  //           nickNameSpanRef.current.style.color = "#FF664D";
-  //           nickNameIconRef.current.style.color = "#FF664D";
-  //           nickNameRef.current.style.borderColor = "#FF664D";
-  //           setNickNameCheck(true);
-  //         } else {
-  //           nickNameSpanRef.current.innerText = "사용가능한 닉네임입니다.";
-  //           nickNameSpanRef.current.style.color = "#1DC79A";
-  //           nickNameIconRef.current.style.color = "#1DC79A";
-  //           nickNameRef.current.style.borderColor = "#1DC79A";
-  //           setNickNameCheck(false);
-  //         }
-  //       });
-  //     }
-  //   }, 500),
-  //   [nickName]
-  // );
-
-  // const onsubmitHandler = useCallback((event) => {
-  //   event.preventDefault();
-  //   if (nickNameCheck === false) {
-  //     nickNameRef.current.focus();
-  //     nickNameRef.current.style.color = "#BCBCBC";
-  //     nickNameRef.current.innerText = "중복되는 닉네임입니다.";
-  //   } else {
-  //     dispatch(signUpMemberThunk(newMember));
-  //   }
-  // });
 
   const onLoadFile = (e) => {
     const reader = new FileReader();
@@ -129,7 +67,11 @@ const MyPageEdit = () => {
       "data",
       new Blob([JSON.stringify(inputForm)], { type: "application/json" })
     );
-    formData.append("profileImg", uploadImg.files[0]);
+    if (imgFile === []) {
+      return formData.append("profileImg", null);
+    } else {
+      formData.append("profileImg", uploadImg.files[0]);
+    }
 
     const data = dispatch(
       editMyPage({ memberId: memberId, formData: formData })
@@ -193,7 +135,9 @@ const MyPageEdit = () => {
                 placeholder={
                   profileData.nickname === null
                     ? "닉네임을 입력해주세요."
-                    : profileData.nickname
+                    : profileData?.nickname?.length > 6
+                    ? profileData?.nickname?.split("kakao")[0] + "kakao"
+                    : profileData?.nickname
                 }
                 minLength="4"
                 maxLength="6"

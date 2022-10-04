@@ -68,9 +68,7 @@ const Header = ({
               onClick={onClickBackBtn ? onClickBackBtn : () => navigate(-1)}
             />
           ) : null}
-          {close ? (
-            <Close id="close" onClick={() => navigate(-1)} />
-          ) : null}
+          {close ? <Close id="close" onClick={() => navigate(-1)} /> : null}
           {pageName ? (
             <PageTitle onClick={onClickTitle}>{pageName}</PageTitle>
           ) : null}

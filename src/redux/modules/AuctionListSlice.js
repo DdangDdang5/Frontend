@@ -195,7 +195,6 @@ const auctionListSlice = createSlice({
   },
   extraReducers: {
     [auctionItemListNotPage.fulfilled]: (state, action) => {
-      // console.log(action.payload);
       state.auctionList = action.payload;
     },
 
