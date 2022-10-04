@@ -2,7 +2,7 @@
 import React, { Fragment } from "react";
 
 // Shared import
-import { NoSearch } from "../../shared/images";
+import NoSearch from "../../shared/images/icon/NoSearch.png";
 
 // Style import
 import {
@@ -18,7 +18,7 @@ const SearchResult = () => {
       <SearchResultContainer>
         <SearchResultBox>
           <SearchResultLogo>
-            <NoSearch />
+						<img src={NoSearch} alt="no-search" />
           </SearchResultLogo>
           <SearchResultSpan>
             <span>검색 결과가 없어요.</span>
