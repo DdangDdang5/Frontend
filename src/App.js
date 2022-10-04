@@ -31,6 +31,7 @@ import MyPageParticipationAuction from "./pages/myPage/MyPageParticipationAuctio
 import MyPageInterestAuction from "./pages/myPage/MyPageInterestAuction";
 import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
 import Notice from "./pages/myPage/Notice";
+import Notice1 from "./pages/myPage/Notice1";
 import Question from "./pages/myPage/Question";
 
 import Event from "./pages/eventPage/Event";
@@ -194,6 +195,7 @@ function App() {
           <Route path="/event/:eventId" element={<Event />} />
           <Route path="/eventList" element={<EventList />} />
           <Route path="/notice" element={<Notice />} />
+          <Route path="/notice/notice1" element={<Notice1 />} />
           <Route path="/question" element={<Question />} />
           <Route path="/loading" element={<Loading />} />
           <Route path="/infoDetail" element={<InfoDetail />} />

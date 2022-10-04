@@ -1,9 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
-const NoticeContent = ({ noticeName, date, content }) => {
+const NoticeContent = ({ noticeName, date, content, onClick }) => {
+  const navigate = useNavigate();
+
   return (
-    <ContentWrap>
+    <ContentWrap
+      onClick={() =>
+        navigate("/notice/notice1", {
+          state: { noticeName: noticeName, date: date, content: content },
+        })
+      }>
       <Header>
         <span>{noticeName}</span>
         <span>{date}</span>
