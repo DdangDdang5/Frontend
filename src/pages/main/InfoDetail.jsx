@@ -1,6 +1,11 @@
+// React import
 import React from "react";
+
+// Package import
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+
+// Shared import
 import { Close } from "../../shared/images";
 
 const InfoDetail = () => {

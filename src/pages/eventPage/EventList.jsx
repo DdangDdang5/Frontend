@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 // Component import
 import Header from "../../components/header/Header";
 import { FontEvent } from "../../shared/fonts/font";
-import { EventImg } from "../../shared/images";
+import EventImg from "../../shared/images/EventImg.png";
 
 // Style import
 import {
@@ -27,7 +27,6 @@ const EventList = () => {
 
   return (
     <EventListContainer>
-      {/* <Header back={true} pageName="이벤트" alarm={true} /> */}
       <Header back={true} pageName="이벤트" />
 
       <EventListContent>
@@ -43,7 +42,7 @@ const EventList = () => {
                   <span>교촌치킨 기프티콘을 드려요</span>
                 </EventText>
               </EventContent>
-              <EventImg />
+							<img src={EventImg} alt="event-img" />
               <EventCircle />
             </EventBanner>
           </EventItem>

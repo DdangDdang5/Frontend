@@ -77,20 +77,3 @@ export const EventInfoContent = styled.div`
 
 	white-space: pre-line;
 `;
-
-export const OptionModalContainer = styled.div`
-	padding: 89px 32px 32px 32px;
-
-	span {
-		color: ${(props) => props.theme.colors.Black};
-		font-size: ${(props) => props.theme.fontSizes.md};
-		font-weight: ${(props) => props.theme.fontWeights.normal};
-		line-height: 140%;
-
-		text-align: center;
-	}
-`;
-
-export const ModalBtnWrap = styled.div`
-	margin-top: 60px;
-`;

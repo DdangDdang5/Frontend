@@ -5,9 +5,6 @@ import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import {
   auctionDetailData,
-  auctionFavorite,
-  clearAuction,
-  joinAuction,
   winAuctionItem,
 } from "../../redux/modules/AuctionSlice";
 
@@ -25,11 +22,12 @@ import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
 import MenuModal from "../../components/modal/MenuModal";
 import AuctionHeart from "../../components/auctionElement/AuctionHeart";
 import PageModal from "../../components/modal/PageModal";
+import { useCountdown } from "../../components/hooks/UseCountDown";
 
 // Element & Shared import
 import Button from "../../elements/button/Button";
-import { Claim, Close, Next, BasicProfile, LogoClassic } from "../../shared/images";
-import { useCountdown } from "../../components/hooks/UseCountDown";
+import { Claim, Close, Next, BasicProfile } from "../../shared/images";
+import LogoClassic from "../../shared/images/logo/LogoClassic.png";
 
 var stompClient = null;
 
@@ -40,13 +38,12 @@ const AuctionDetail = () => {
 
   const data = useSelector((state) => state.auction.auction);
   const bid = useSelector((state) => state.auction.bid);
-  const favoriteState = useSelector((state) => state.auction.favorite);
 
   const nickName = sessionStorage.getItem("memberNickname");
   const memberId = sessionStorage.getItem("memberId");
 
-  const [joinVisible, setJoinVisible] = useState(false);
-  const [isMenuModal, setIsMenuModal] = useState(false);
+  const [joinVisible, setJoinVisible] = useState(false);	// 입찰 모달
+  const [isMenuModal, setIsMenuModal] = useState(false);	// 상단 메뉴버튼 모달
 
   const [optionVisible, setOptionVisible] = useState(false); // alert 모달
   const [optionContent, setOptionContent] = useState({
@@ -56,10 +53,10 @@ const AuctionDetail = () => {
     onClickBtn: () => {},
   });
 
-  const [winBid, setWinBid] = useState(false);
-  const [chatOther, setChatOther] = useState("");
+  const [winBid, setWinBid] = useState(false);	// 판매자, 낙찰자인지 확인
+  const [chatOther, setChatOther] = useState("");	// 1:1 채팅 상대방 닉네임
 
-  const [chatList, setChatList] = useState([]);
+  const [chatList, setChatList] = useState([]);	// 웹소켓 연결 시 메시지 저장
   const [userData, setUserData] = useState({
     type: "",
     roomId: data.bidRoomId,
@@ -96,9 +93,6 @@ const AuctionDetail = () => {
 
   const imgList = data?.multiImages;
 
-  // console.log(chatList);
-  // console.log(userData);
-
   const tagsArray = [
     data.tags?.tag2,
     data.tags?.tag1,
@@ -108,16 +102,12 @@ const AuctionDetail = () => {
     data.tags?.tag6,
   ];
 
-  // 가격표 세자리 변경
-  const postPrice = data?.nowPrice
-    ?.toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
   useEffect(() => {
     if (!params?.auctionId) {
       return <></>;
     } else {
       dispatch(auctionDetailData(+params?.auctionId)).then((res) => {
+				// 상세화면에 처음 입장 시
         if (
           data?.bidRoomId !== undefined &&
           chatList.length === 0 &&
@@ -127,11 +117,9 @@ const AuctionDetail = () => {
         }
       });
 
+			// 경매 마감시 낙찰 API 호출
       if (data?.auctionStatus === false) {
         dispatch(winAuctionItem(params.auctionId));
-
-        // console.log(bid);
-        // console.log(data);
 
         if (bid) {
           if (bid.seller === nickName || bid.bidder === nickName) {
@@ -149,13 +137,13 @@ const AuctionDetail = () => {
 
   useEffect(() => {
     dispatch(auctionDetailData(+params?.auctionId));
-    // console.log(chatList);
   }, [JSON.stringify(chatList)]);
 
   if (!data) {
     return navigate(-1);
   }
 
+	// 입찰하기 버튼 클릭 -> 입찰 모달 보여줌
   const onClickAuctionJoin = () => {
     // 비로그인 -> 세션에 멤버아이디 없음
     if (!memberId) {
@@ -183,6 +171,7 @@ const AuctionDetail = () => {
     }
   };
 
+	// 실시간 질문방 클릭
   const onClickAuctionChatRoom = () => {
     if (!memberId) {
       setOptionContent({
@@ -207,6 +196,7 @@ const AuctionDetail = () => {
     }
   };
 
+	// 경매 판매자(작성자) 프로필 클릭
   const onClickAuctionSeller = () => {
     if (nickName && nickName === data?.nickName) {
       navigate("/myPage");
@@ -215,6 +205,7 @@ const AuctionDetail = () => {
     }
   };
 
+	// 경매 입찰 가격 확인 및 적용
   const onSubmitAuctionPrice = () => {
     const nowPrice = Math.max(
       data?.nowPrice,
@@ -222,12 +213,6 @@ const AuctionDetail = () => {
         ? +chatList[chatList.length - 1]?.message
         : data.startPrice
     );
-    // console.log(
-    //   data?.nowPrice,
-    //   +chatList[chatList.length - 1]?.message,
-    //   nowPrice,
-    // );
-    // console.log(userData?.message);
 
     if (+userData.message > nowPrice) {
       if (+userData.message > 999999) {
@@ -262,12 +247,12 @@ const AuctionDetail = () => {
   };
 
   const onConnected = () => {
+		// 웹소켓 구독
     stompClient.subscribe(
       `/topic/chat/room/${data.bidRoomId}`,
       onMessageReceived
     );
 
-    // 채팅방 들어감
     userJoin();
   };
 
@@ -275,6 +260,7 @@ const AuctionDetail = () => {
     console.log(err);
   };
 
+  // 웹소켓 채팅방 입장(호가)
   const userJoin = () => {
     let chatMessage = {
       type: "ENTER",
@@ -286,6 +272,7 @@ const AuctionDetail = () => {
     stompClient.send("/app/chat/bid", {}, JSON.stringify(chatMessage));
   };
 
+	// 웹소켓 메시지 수신
   const onMessageReceived = (payload) => {
     let payloadData = JSON.parse(payload.body);
 
@@ -295,6 +282,7 @@ const AuctionDetail = () => {
     }
   };
 
+	// 웹소켓 메시지 송신
   const sendMessage = () => {
     if (stompClient && userData.message) {
       let chatMessage = {
@@ -314,13 +302,14 @@ const AuctionDetail = () => {
     }
   };
 
+	// 경매 입찰 시 엔터키 입력 -> 입찰
   const onKeyPress = (event) => {
     if (event.key === "Enter") {
-      // sendMessage();
       onSubmitAuctionPrice();
     }
   };
 
+	// 웹소켓 연결 해제
   const onDisconnected = () => {
     if (stompClient !== null) {
       stompClient.disconnect();
@@ -490,25 +479,23 @@ const AuctionDetail = () => {
       </AuctionDetailLayout>
 
       {/* 경매 메뉴 모달 */}
-      <>
-        {isMenuModal ? (
-          <MenuModal
-            data={data}
-            isMenuModal={isMenuModal}
-            setIsMenuModal={setIsMenuModal}
-            id={params.auctionId.toString()}
-          />
-        ) : (
-          ""
-        )}
-      </>
+      {isMenuModal ? (
+        <MenuModal
+          data={data}
+          isMenuModal={isMenuModal}
+          setIsMenuModal={setIsMenuModal}
+          id={params.auctionId.toString()}
+        />
+      ) : (
+        ""
+      )}
 
       {/* 경매 입찰 모달 */}
       <AuctionJoinModal visible={joinVisible} setVisible={setJoinVisible}>
         <AuctionJoinModalContent>
-          <AuctionJoinIcon>h
+          <AuctionJoinIcon>
 						<AuctionJoinIconBackground />
-						<LogoClassic />
+						<img src={LogoClassic} alt="logo" />
           </AuctionJoinIcon>
 
           <AuctionJoinCloseWrap>
@@ -537,18 +524,12 @@ const AuctionDetail = () => {
             type="number"
             value={userData.message}
             maxLength="6"
-            // onInput={(event) =>
-            //   event.value.length > event.maxLength
-            //     ? (event.value = event.value.slice(0, event.maxLength))
-            //     : null
-            // }
             onChange={(event) =>
               setUserData({ ...userData, message: event.target.value })
             }
             onKeyDown={(event) => onKeyPress(event)}
             placeholder="입찰 가격을 입력해주세요."
           />
-          {/* {console.log(+userData.message, data.nowPrice)} */}
           {+userData.message <=
           Math.max(
             data.nowPrice,
@@ -577,6 +558,7 @@ const AuctionDetail = () => {
         </AuctionJoinModalContent>
       </AuctionJoinModal>
 
+			{/* alert 모달 */}
       <PageModal
         visible={optionVisible}
         setVisible={setOptionVisible}
@@ -929,7 +911,7 @@ const AuctionJoinIcon = styled.div`
   justify-content: center;
   align-items: center;
 
-	svg {
+	img {
 		width: 68px;
 		height: 70px;
 

@@ -76,6 +76,7 @@ const AuctionReview = () => {
 
   useEffect(() => {}, [auction]);
 
+	// 경매 평가 문항 항목 클릭
   const onCheckRadioBtn = (event) => {
     const { id, name } = event.target;
     let num = 0;
@@ -153,7 +154,7 @@ const AuctionReview = () => {
         />
 
         <AuctionReviewContent isIOS={isIOS}>
-          {/* 평가 경매 */}
+          {/* 평가하는 경매 */}
           <ReviewItemWrap>
             <ReviewItemWrapTitle>평가하는 경매</ReviewItemWrapTitle>
             <ReviewItem>
@@ -180,6 +181,7 @@ const AuctionReview = () => {
             </ReviewItem>
           </ReviewItemWrap>
 
+					{/* 평가 항목 */}
           <QuestionList>
             {questionList.map((item, idx) => (
               <AnswerContainer key={idx}>

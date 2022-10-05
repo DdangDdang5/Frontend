@@ -6,8 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { isIOS } from "react-device-detect";
 
 // Component & Shared import
-import { Chat, Home, MyPage, SearchImg } from "../../shared/images";
 import PageModal from "../modal/PageModal";
+import { Chat, Home, MyPage, SearchImg } from "../../shared/images";
 
 // Style import
 import {
@@ -29,6 +29,7 @@ const Footer = ({ home, search, chat, myPage }) => {
     onClickBtn: () => {},
   });
 
+	// 1:1 채팅방 목록 화면으로 이동
   const moveChatList = (memberId) => {
     if (!memberId) {
       setOptionContent({
@@ -66,6 +67,7 @@ const Footer = ({ home, search, chat, myPage }) => {
         </FooterItemContainer>
       </FooterContainer>
 
+			{/* alert 모달 */}
       <PageModal
         visible={optionVisible}
         setVisible={setOptionVisible}

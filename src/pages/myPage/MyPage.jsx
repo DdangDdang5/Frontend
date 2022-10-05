@@ -136,6 +136,7 @@ const MyPage = () => {
                     onClick={() =>
                       memberId && navigate(`/myGrade/${memberId}`)
                     }>
+										<div></div>
                     {findGrade(data?.trustGrade)}
                   </MyGradeImgWrap>
                 </>
@@ -326,9 +327,9 @@ const NickBox = styled.div`
 
 export const MyGradeImgWrap = styled.div`
   position: relative;
-  right: 20px;
+	right: 20px;
 
-  svg {
+  img {
     width: 38px;
     height: 38px;
 
@@ -342,13 +343,12 @@ export const MyGradeImgWrap = styled.div`
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    background-color: ${(props) => props.theme.colors.Gray2};
+    background-color: ${(props) => props.theme.colors.Gray1};
 
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: -10;
   }
 `;
 

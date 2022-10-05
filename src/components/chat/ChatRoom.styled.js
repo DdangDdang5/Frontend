@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 export const ChatRoomContainer = styled.div`
   padding: 10px 20px;
-  /* border-bottom: 1px solid gray; */
 
   display: flex;
   align-items: flex-start;

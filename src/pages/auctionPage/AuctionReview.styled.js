@@ -47,20 +47,6 @@ export const ReviewItemContent = styled.div`
   margin-left: 18px;
 `;
 
-
-export const ReviewItemTitle = styled.span`
-  width: 100%;
-  margin: 4px auto;
-
-  font-size: ${(props) => props.theme.fontSizes.md};
-  font-weight: ${(props) => props.theme.fontWeights.normal};
-
-  display: block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-`;
-
 export const TagWrap = styled.div`
 	margin-bottom: 10px;
 
@@ -83,6 +69,19 @@ export const TagRegion = styled.span`
   color: ${(props) => props.theme.colors.Blue1} !important;
   background-color: ${(props) => props.theme.colors.White} !important;
   border: 1px solid ${(props) => props.theme.colors.Blue1};
+`;
+
+export const ReviewItemTitle = styled.span`
+  width: 100%;
+  margin: 4px auto;
+
+  font-size: ${(props) => props.theme.fontSizes.md};
+  font-weight: ${(props) => props.theme.fontWeights.normal};
+
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export const ReviewItemPriceWrap = styled.div`
@@ -137,9 +136,6 @@ export const AnswerList = styled.div`
 `;
 
 export const AnswerItem = styled.label`
-  /* width: 20%; */
-
-  /* background-color: beige; */
   font-size: ${(props) => props.theme.fontSizes.sm};
   font-weight: ${(props) => props.theme.fontWeights.normal};
 
@@ -161,12 +157,9 @@ export const AnswerRadioBtn = styled.input.attrs({ type: "radio" })`
   color: ${(props) => props.theme.colors.Gray1};
 
   &:checked {
-    /* display: none; */
-    /* background: ${(props) => props.theme.colors.Gray3}; */
 		color: ${(props) => props.theme.colors.Blue1};
 
     & + span {
-      /* border: 2px solid black; */
       display: inline-block;
     }
   }

@@ -1,8 +1,6 @@
 // Package import
 import styled from "styled-components";
 
-export const UserProfileContainer = styled.div``;
-
 export const UserProfileContent = styled.div`
   width: 100%;
 
@@ -70,14 +68,6 @@ export const MyGradeImgWrap = styled.div`
   }
 `;
 
-export const UserGrade = styled.div`
-  width: 46px;
-  height: 46px;
-
-  background-color: ${(props) => props.theme.colors.Gray2};
-  border-radius: 50%;
-`;
-
 export const MidTabContainer = styled.div`
   margin: auto 20px 40px 20px;
 	
@@ -93,10 +83,6 @@ export const MidTabContainer = styled.div`
     font-weight: ${(props) => props.theme.fontWeights.bold};
     border-bottom: 3px solid black;
   }
-`;
-
-export const MidTabHeader = styled.div`
-  display: flex;
 `;
 
 export const MidTabRadioBtn = styled.input`
@@ -130,8 +116,6 @@ export const MidTabContent = styled.div`
 
   display: none;
   overflow: hidden;
-  /* text-overflow: ellipsis; */
-  /* white-space: nowrap; */
 `;
 
 export const ItemList = styled.div`

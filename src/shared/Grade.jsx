@@ -1,25 +1,23 @@
-import {
-  LogoClassic,
-  LogoGold,
-  LogoRainbow,
-  LogoSilver,
-  LogoWood,
-} from "./images";
+import LogoClassic from "./images/logo/LogoClassic.png";
+import LogoWood from "./images/logo/LogoWood.png";
+import LogoSilver from "./images/logo/LogoSliver.png";
+import LogoGold from "./images/logo/LogoGold.png";
+import LogoRainbow from "./images/logo/LogoRainbow.png";
 
 export const findGrade = (trustGrade) => {
   switch (trustGrade) {
     case "rainbow":
-      return <LogoRainbow />;
+      return <img src={LogoRainbow} alt="grade" />;
     case "gold":
-      return <LogoGold />;
+      return <img src={LogoGold} alt="grade" />;
     case "silver":
-      return <LogoSilver />;
+      return <img src={LogoSilver} alt="grade" />;
     case "classic":
-      return <LogoClassic />;
+      return <img src={LogoClassic} alt="grade" />;
     case "wood":
-      return <LogoWood />;
+      return <img src={LogoWood} alt="grade" />;
     default:
-      return <LogoClassic />;
+      return <img src={LogoClassic} alt="grade" />;
   }
 };
 

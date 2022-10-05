@@ -7,7 +7,6 @@ import { useParams } from "react-router-dom";
 import { isIOS } from "react-device-detect";
 
 // Component import
-import Footer from "../../components/footer/Footer";
 import Header from "../../components/header/Header";
 import { getMemberTrustPoint } from "../../redux/modules/MemberSlice";
 
@@ -32,13 +31,12 @@ import {
   NextGrade,
   NowGrade,
 } from "./MyGrade.styled";
-// import { LogoClassic, LogoGold, LogoRainbow, LogoSilver, LogoWood } from "../../shared/images";
 
-import { ReactComponent as LogoClassic } from "../../shared/images/logo/LogoClassic.svg";
-import { ReactComponent as LogoWood } from "../../shared/images/logo/LogoWood.svg";
-import { ReactComponent as LogoSilver } from "../../shared/images/logo/LogoSliver.svg";
-import { ReactComponent as LogoGold } from "../../shared/images/logo/LogoGold.svg";
-import { ReactComponent as LogoRainbow } from "../../shared/images/logo/LogoRainbow.svg";
+import LogoClassic from "../../shared/images/logo/LogoClassic.png";
+import LogoWood from "../../shared/images/logo/LogoWood.png";
+import LogoSilver from "../../shared/images/logo/LogoSliver.png";
+import LogoGold from "../../shared/images/logo/LogoGold.png";
+import LogoRainbow from "../../shared/images/logo/LogoRainbow.png";
 
 const MyGrade = () => {
   const dispatch = useDispatch();
@@ -47,50 +45,34 @@ const MyGrade = () => {
   const trustPoint = useSelector((state) => state.member.trustPoint);
   const nextPoint = findNextGrade(trustPoint?.trustGrade);
 
+	// 등급 표시
   const gradeList = [
     {
       name: "나무망치",
       content: "content",
-      logo: <LogoWood />,
+      logo: <img src={LogoWood} alt="logo-wood" />,
     },
     {
       name: "기본망치",
-      content: "content",
-      logo: <LogoClassic />,
+      content: "기본 점수",
+      logo: <img src={LogoClassic} alt="logo-classic" />,
     },
     {
       name: "은망치",
       content: "content",
-      logo: <LogoSilver />,
+      logo: <img src={LogoSilver} alt="logo-silver" />,
     },
     {
       name: "금망치",
       content: "content",
-      logo: <LogoGold />,
+      logo: <img src={LogoGold} alt="logo-gold" />,
     },
     {
       name: "무지개망치",
       content: "content",
-      logo: <LogoRainbow />,
+      logo: <img src={LogoRainbow} alt="logo-rainbow" />,
     },
   ];
-
-	const getLogo = (idx) => {
-		switch(idx) {
-			case 0:
-				return <LogoWood />
-			case 1:
-				return <LogoClassic />
-			case 2:
-				return <LogoSilver />
-			case 3:
-				return <LogoGold />
-			case 4:
-				return <LogoRainbow />
-			default:
-				return ;
-		}
-	}
 
   const nowState = (
     <svg
@@ -120,15 +102,18 @@ const MyGrade = () => {
       <Header close={true} pageName="신뢰도 안내" />
 
       <MyGradeContent isIOS={isIOS}>
+				{/* 현재 등급 */}
         <MyGradeImgWrap>
           <div></div>
           {findGrade(trustPoint?.trustGrade)}
         </MyGradeImgWrap>
+
         <MyGradeInfo>
           <span>기본망치</span>
           <MyGradeNickname>닉네임 예시</MyGradeNickname>
         </MyGradeInfo>
 
+				{/* 현재 점수 표시 바 */}
         <MyGradeGrade>
           <p>신뢰도</p>
           <MyGradeBarWrap>
@@ -147,7 +132,8 @@ const MyGrade = () => {
           경매 완료 후 상호 평가된 점수로 신뢰도가 매겨집니다.
         </MyGradeText>
 
-        {/* <GradeRankList>
+				{/* 등급 안내 */}
+        <GradeRankList>
 					{gradeList.map((item, idx) => (
             <GradeItem key={idx}>
 							{item.logo}
@@ -158,11 +144,8 @@ const MyGrade = () => {
               </GradeInfo>
             </GradeItem>
           ))}
-        </GradeRankList> */}
-				
+        </GradeRankList>
       </MyGradeContent>
-
-      {/* <Footer /> */}
     </MyGradeContainer>
   );
 };

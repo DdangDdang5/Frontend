@@ -11,7 +11,7 @@ import notification from "../modules/NotificationSlice";
 
 // Package import
 import { configureStore } from "@reduxjs/toolkit";
-import { connectRouter } from "connected-react-router";
+// import { connectRouter } from "connected-react-router";
 import { createBrowserHistory } from "history";
 
 export const history = createBrowserHistory();
@@ -23,7 +23,7 @@ export default configureStore({
     auctionDivision,
     member,
     modal,
-    router: connectRouter(history),
+    // router: connectRouter(history),
     search,
     chat,
     myPage,

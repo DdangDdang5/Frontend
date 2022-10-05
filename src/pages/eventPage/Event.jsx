@@ -3,10 +3,9 @@ import React, { useState } from "react";
 
 // Package & Element & Shared import
 import Header from "../../components/header/Header";
-import PageModal from "../../components/modal/PageModal";
 import Button from "../../elements/button/Button";
 import { FontEvent } from "../../shared/fonts/font";
-import { EventImg } from "../../shared/images";
+import EventImg from "../../shared/images/EventImg.png";
 
 // Style import
 import {
@@ -18,21 +17,18 @@ import {
   EventTitle,
 } from "../../components/swipeImage/SwipeImage.styled";
 import {
-  EventBtnWrap,
   EventContentTitle,
   EventContentWrap,
   EventImgWrap,
   EventInfo,
   EventInfoContent,
   EventInfoType,
-  ModalBtnWrap,
-  ModalTextWrap,
-  OptionModalContainer,
 } from "./Event.styled";
 
 const Event = () => {
   const [sendEvent, setSendEvent] = useState(false);
 
+	// 이벤트 응모하기 버튼 클릭
   const onClickSendEvent = () => {
     window.open(
       "https://docs.google.com/forms/d/e/1FAIpQLSeb5BmihSk7ltyQiUnREPJfi3pv2PrDQ4RurPm5IlicOitZHA/viewform",
@@ -51,6 +47,7 @@ const Event = () => {
             <EventContentTitle>땅땅 설문조사 피드백 이벤트</EventContentTitle>
           </div>
 
+					{/* 이벤트 이미지 -> 메인 배너 이미지 */}
           <EventImgWrap>
             <EventBanner idx={1} isMain={false}>
               <FontEvent />
@@ -62,11 +59,12 @@ const Event = () => {
                   <span>교촌치킨 기프티콘을 드려요</span>
                 </EventText>
               </EventContent>
-              <EventImg />
+							<img src={EventImg} alt="event-img" />
               <EventCircle />
             </EventBanner>
           </EventImgWrap>
 
+					{/* 이벤트 내용 */}
           <EventInfo>
             <div>
               <EventInfoType>이벤트 기간</EventInfoType>
@@ -119,13 +117,6 @@ const Event = () => {
           </div>
         </EventContentWrap>
       </div>
-
-      {/* 메뉴 모달의 옵션 클릭 모달 */}
-      {/* <PageModal
-        visible={sendEvent}
-        setVisible={setSendEvent}
-        modalText="응모 완료 되었어요!"
-      /> */}
     </>
   );
 };

@@ -46,6 +46,7 @@ const AuctionCategoryList = ({ isCategory }) => {
     dispatch(regionHitList());
   }, [dispatch]);
 	
+	// 경매 목록 화면으로 이동
 	const moveAuctionList = () => {
 		dispatch(clearMode())
 		navigate("/auctionList");
@@ -63,24 +64,7 @@ const AuctionCategoryList = ({ isCategory }) => {
           <Next />
         </CategoryMore>
       </CategoryHeader>
-      {/* <CategoryList division={title}>
-        {list6?.map((item, idx) =>
-          isCategory ? (
-            <AuctionCategory
-              division="categoryList"
-              divisionName={item.categoryName}
-              key={idx}
-            />
-          ) : (
-            <AuctionCategory
-              division="regionList"
-              divisionName={item.regionName}
-              key={idx}
-            />
-          ),
-        )}
-      </CategoryList> */}
-
+			
       {isCategory ? (
         <CategoryList division="category">
           {list6?.map((item, idx) => (
