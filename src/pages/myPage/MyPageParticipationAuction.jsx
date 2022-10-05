@@ -30,6 +30,8 @@ const MyPageParticipationAuction = () => {
     followingItem,
   } = useSelector((state) => state.myPage);
 
+  console.log(data);
+
   const [shouldShownData, setShouldShownData] = useState([]);
 
   const auctionIng = data?.filter(
@@ -101,7 +103,17 @@ const MyPageParticipationAuction = () => {
               <React.Fragment key={`${index}_${item.id}`}>
                 <AuctionRow item={item} index={index} />
                 {/* 일단 추후 업데이트 예정 */}
-                {/* {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>} */}
+                {isAuction ? (
+                  <></>
+                ) : item.auctionDone ? (
+                  item.reviewDone ? (
+                    <ActionBtn>평가완료</ActionBtn>
+                  ) : (
+                    <ActionBtn>평가하기</ActionBtn>
+                  )
+                ) : (
+                  <ActionBtn>채팅방 입장하기</ActionBtn>
+                )}
               </React.Fragment>
             );
           })}
