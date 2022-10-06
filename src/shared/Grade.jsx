@@ -23,15 +23,15 @@ export const findGrade = (trustGrade) => {
 
 export const findNextGrade = (trustGrade) => {
 	switch (trustGrade) {
-    case "rainbow":
+    case "무지개 망치":
 			return 100;
-    case "gold":
+    case "금 망치":
       return 50;
-    case "silver":
+    case "은 망치":
       return 25;
-    case "classic":
+    case "기본 망치":
       return 10;
-    case "wood":
+    case "나무 망치":
       return -10;
     default:
       return 10;

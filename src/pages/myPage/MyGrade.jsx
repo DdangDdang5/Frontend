@@ -42,6 +42,8 @@ const MyGrade = () => {
   const dispatch = useDispatch();
   const { memberId } = useParams();
 
+	const memberNickname = sessionStorage.getItem("memberNickname");
+
   const trustPoint = useSelector((state) => state.member.trustPoint);
   const nextPoint = findNextGrade(trustPoint?.trustGrade);
 
@@ -109,8 +111,8 @@ const MyGrade = () => {
         </MyGradeImgWrap>
 
         <MyGradeInfo>
-          <span>기본망치</span>
-          <MyGradeNickname>닉네임 예시</MyGradeNickname>
+          <span>{trustPoint?.trustGrade}</span>
+          <MyGradeNickname>{memberNickname}</MyGradeNickname>
         </MyGradeInfo>
 
 				{/* 현재 점수 표시 바 */}
