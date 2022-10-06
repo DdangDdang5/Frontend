@@ -23,6 +23,7 @@ import {
 import styled from "styled-components";
 import { ImgDelete, ImgPlus, UnderArrow } from "../../shared/images";
 import PageModal from "../../components/modal/PageModal";
+import { handleFileOnChange, handleUrlOnChange } from "../../shared/ImgResize";
 
 const AuctionWrite = () => {
   const dispatch = useDispatch();
@@ -89,8 +90,8 @@ const AuctionWrite = () => {
   }, [regionNameCheck]);
 
   useEffect(() => {}, [imagePreview, inputForm.auctionPeriod]);
-
-  const onLoadFile = (e) => {
+	
+  const onLoadFile = async (e) => {
     const imgList = e.target.files;
     const imgFileList = [];
     const imgUrlList = [];
@@ -111,13 +112,17 @@ const AuctionWrite = () => {
         imgFileList.push(imgFile[i]);
       }
 
-      for (let i = 0; i < imgList.length; i++) {
+			// resize img
+			for (let i = 0; i < imgList.length; i++) {
+				let newFile = await handleFileOnChange(imgList[i]);
+				let newFileURL = await handleUrlOnChange(newFile);
+
         imgUrlList.push({
           id: imagePreview.length,
-          img: URL.createObjectURL(imgList[i]),
+          img: newFileURL,
         });
-        imgFileList.push(imgList[i]);
-      }
+        imgFileList.push(newFile);
+			}
 
       setImgFile(imgFileList);
       setImagePreview(imgUrlList);
@@ -717,7 +722,7 @@ const WriteTextArea = styled.textarea`
   box-sizing: border-box;
   resize: none;
   letter-spacing: -0.05em;
-  word-spacing: ${(props) => (props.isIOS ? "0" : "-0.35em")};
+  word-spacing: -0.05em;
   line-height: 150%;
   border-radius: 8px;
   border: 1px solid ${(props) => props.theme.colors.Gray2};

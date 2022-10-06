@@ -3,25 +3,23 @@ import React, { useEffect, useState } from "react";
 
 // Redux import
 import {
-  getChatRoomList,
   getChatRoomListByMember,
-  makeChatRoom,
 } from "../../redux/modules/ChatSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { isIOS } from "react-device-detect";
 
-// Component import
+// Component & Page & Shared import
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
 import ChatRoom from "../../components/chat/ChatRoom";
+import Loading from "../etcPage/Loading";
+import NoChat from "../../shared/images/icon/NoChat.png"
 
 // Style import
 import { ChatListContainer, ChatRoomList, NoChatRoom, NoChatRoomTitle } from "./ChatList.styled";
-import { useNavigate } from "react-router-dom";
-import Loading from "../etcPage/Loading";
-import { NotificationChat } from "../../shared/images";
 
 const ChatList = () => {
   const dispatch = useDispatch();
@@ -40,9 +38,6 @@ const ChatList = () => {
 	};
 
   useEffect(() => {
-    // dispatch(makeChatRoom());
-    // dispatch(getChatRoomList());
-
     getChatRoomtList();
   }, [JSON.stringify(chatRoomList)]);
 
@@ -52,7 +47,6 @@ const ChatList = () => {
         <Loading />
       ) : (
         <>
-          {/* <Header pageName="채팅" alarm={true} /> */}
           <Header pageName="채팅" />
           <ChatRoomList isIOS={isIOS}>
             {chatRoomList.length > 0 ? (
@@ -61,7 +55,7 @@ const ChatList = () => {
               ))
             ) : (
               <NoChatRoom>
-								<NotificationChat />
+								<img src={NoChat} alt="no-chat" />
 								<NoChatRoomTitle>아직 낙찰된 경매가 없어요.</NoChatRoomTitle>
 								<span>경매가 낙찰되면 판매자와 구매자 간의</span>
 								<span>1:1 채팅방이 자동 생성됩니다.</span>

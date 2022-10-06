@@ -9,10 +9,10 @@ const AuctionRow = ({ item, index, isAuction }) => {
 	const dispatch = useDispatch();
 
   const nowPrice = item.nowPrice
-    .toString()
+    ?.toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   const startPrice = item?.startPrice
-    .toString()
+    ?.toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
   if (!item || !item?.auctionId) {
@@ -39,12 +39,12 @@ const AuctionRow = ({ item, index, isAuction }) => {
           {startPrice === nowPrice ? (
             <>
               <div>경매시작가</div>
-              <div className="price">{startPrice}</div>
+              <div className="price">{startPrice}원</div>
             </>
           ) : (
             <>
               <div>현재입찰가</div>
-              <div className="price">{nowPrice}</div>
+              <div className="price">{nowPrice}원</div>
             </>
           )}
         </div>

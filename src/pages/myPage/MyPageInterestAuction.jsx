@@ -30,8 +30,6 @@ const MyPageInterestAuction = () => {
     followingItem,
   } = useSelector((state) => state.myPage);
 
-  // console.log("관심 옥션 데이터", data);
-
   const [isAuction, setIsAuction] = useState(true);
 
   const [shouldShownData, setShouldShownData] = useState([]);
@@ -77,7 +75,6 @@ const MyPageInterestAuction = () => {
     }
     return () => {
       setShouldShownData([]);
-      // dispatch(resetPaging());
     };
   }, [isAuction, JSON.stringify(data)]);
 

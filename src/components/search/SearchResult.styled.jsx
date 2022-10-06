@@ -3,11 +3,12 @@ import styled from "styled-components";
 
 export const SearchResultContainer = styled.div`
   width: 90%;
+  margin-top: 100px;
+
+  position: absolute;
   justify-content: center;
   align-items: center;
-  position: absolute;
   display: flex;
-  margin-top: 100px;
 `;
 
 export const SearchResultBox = styled.div`
@@ -20,6 +21,11 @@ export const SearchResultBox = styled.div`
 
 export const SearchResultLogo = styled.div`
   margin-bottom: 25px;
+
+	img {
+		width: 150px;
+		height: 150px;
+	}
 `;
 
 export const SearchResultSpan = styled.div`

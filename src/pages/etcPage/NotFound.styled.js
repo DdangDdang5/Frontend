@@ -18,7 +18,7 @@ export const NotFoundContent = styled.div`
   align-items: center;
   gap: 24px;
 
-  svg {
+  img {
     width: 200px;
     height: 150px;
   }

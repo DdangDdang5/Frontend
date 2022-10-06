@@ -33,9 +33,9 @@ export const NoChatRoom = styled.div`
 	justify-content: center;
 	align-items: center;
 
-	svg {
+	img {
 		width: 150px;
-		height: 130px;
+		height: 150px;
 		margin-bottom: 34px;
 	}
 `;

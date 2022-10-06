@@ -1,26 +1,20 @@
 // React import
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 // Redux import
 import { editMyPage, _MyPageData } from "../../redux/modules/MyPageSlice";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  nickNameCheckThunk,
-  signUpMemberThunk,
-} from "../../redux/modules/MemberSlice";
 
 // Package import
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
-import { debounce } from "lodash";
 
 // Component import
 import Header from "../../components/header/Header";
 
 // Element & Shared import
-import { BasicProfile, Camera, Delete, Ok } from "../../shared/images";
+import { BasicProfile, Camera, Delete } from "../../shared/images";
 import PageModal from "../../components/modal/PageModal";
-import { SignUpBoxInputIcon } from "../accountPage/SignUp.styled";
 
 const MyPageEdit = () => {
   const dispatch = useDispatch();
@@ -33,14 +27,9 @@ const MyPageEdit = () => {
   const profileData = useSelector((state) => state?.myPage?.myPage);
   const img_ref = useRef(null);
 
-  const nickNameRef = useRef();
-  const nickNameIconRef = useRef();
-  const nickNameSpanRef = useRef();
-
   const [inputForm, setInputForm] = useState(data);
   const [imgFile, setImgFile] = useState([]);
   const [imagePreview, setImagePreview] = useState(profileData?.profileImgUrl);
-  // console.log("preview", imagePreview);
 
   const [optionVisible, setOptionVisible] = useState(false); // alert 모달
   const [optionContent, setOptionContent] = useState({
@@ -50,42 +39,8 @@ const MyPageEdit = () => {
     onClickBtn: () => {},
     onClickCloseBtn: () => {},
   });
-  const [nickNameCheck, setNickNameCheck] = useState(false);
-  const [nickName, setNickName] = useState("");
+
   const memberId = sessionStorage?.getItem("memberId");
-
-  useEffect(() => {
-    dispatch(nickNameCheckThunk(data));
-  }, []);
-
-  // 닉네임 확인
-  const checkNickName = useCallback(
-    debounce((nickName) => {
-      const nickNameRegExp = /^([a-z0-9가-힣])[a-z0-9가-힣]{3,7}$/i;
-      if (!nickNameRegExp.test(nickName)) {
-        nickNameSpanRef.current.innerText =
-          "닉네임은 공백 없이 4~6자 이내의 한글, 영문, 숫자를 이용하여 입력해주세요.";
-        nickNameSpanRef.current.style.color = "#EF664D";
-        nickNameRef.current.style.borderColor = "#EF664D";
-        setNickNameCheck(false);
-      } else {
-        dispatch(nickNameCheckThunk({ nickName })).then((res) => {
-          if (!res.payload) {
-            nickNameSpanRef.current.innerText = "중복되는 닉네임입니다.";
-            nickNameSpanRef.current.style.color = "#FF664D";
-            nickNameRef.current.style.borderColor = "#FF664D";
-            setNickNameCheck(false);
-          } else {
-            nickNameSpanRef.current.innerText = "사용가능한 닉네임입니다.";
-            nickNameSpanRef.current.style.color = "#1DC79A";
-            nickNameRef.current.style.borderColor = "#1DC79A";
-            setNickNameCheck(true);
-          }
-        });
-      }
-    }, 500),
-    [nickName]
-  );
 
   const onLoadFile = (e) => {
     const reader = new FileReader();
@@ -111,7 +66,11 @@ const MyPageEdit = () => {
       "data",
       new Blob([JSON.stringify(inputForm)], { type: "application/json" })
     );
-    formData.append("profileImg", uploadImg.files[0]);
+    if (imgFile === []) {
+      return formData.append("profileImg", null);
+    } else {
+      formData.append("profileImg", uploadImg.files[0]);
+    }
 
     const data = dispatch(
       editMyPage({ memberId: memberId, formData: formData })
@@ -131,8 +90,6 @@ const MyPageEdit = () => {
   useEffect(() => {
     dispatch(_MyPageData(memberId));
   }, [imagePreview]);
-
-  useEffect(() => {}, [nickNameCheck]);
 
   return (
     <>
@@ -177,29 +134,23 @@ const MyPageEdit = () => {
                 placeholder={
                   profileData.nickname === null
                     ? "닉네임을 입력해주세요."
-                    : profileData.nickname
+                    : profileData?.nickname?.length > 6
+                    ? profileData?.nickname?.split("kakao")[0] + "kakao"
+                    : profileData?.nickname
                 }
                 minLength="4"
                 maxLength="6"
               />
 
-              {nickName.length > 0 ? (
-                nickNameCheck ? (
-                  <SignUpBoxInputIcon ref={nickNameIconRef} state={true}>
-                    <Ok />
-                  </SignUpBoxInputIcon>
-                ) : (
-                  <SignUpBoxInputIcon ref={nickNameIconRef} state={false}>
-                    <Delete />
-                  </SignUpBoxInputIcon>
-                )
-              ) : null}
+              <Delete />
             </div>
             <span className="MyTextCheck"></span>
           </MyTextWrap>
         </MyProfile>
         <MyDoneBtnWrap>
-
+          <MyDoneBtn type="button" onClick={onSubmitHandler}>
+            완료
+          </MyDoneBtn>
         </MyDoneBtnWrap>
       </ProfileEditLayout>
       <PageModal

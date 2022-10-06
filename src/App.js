@@ -30,6 +30,9 @@ import MyGrade from "./pages/myPage/MyGrade";
 import MyPageParticipationAuction from "./pages/myPage/MyPageParticipationAuction";
 import MyPageInterestAuction from "./pages/myPage/MyPageInterestAuction";
 import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
+import Notice from "./pages/myPage/Notice";
+import Notice1 from "./pages/myPage/Notice1";
+import Question from "./pages/myPage/Question";
 
 import Event from "./pages/eventPage/Event";
 import EventList from "./pages/eventPage/EventList";
@@ -124,14 +127,14 @@ function App() {
   //     // const data = JSON.parse(event.data);
   //     // console.log(data);
 
-	// 		// dispatch(add({ newNotifs: data }));
+  // 		// dispatch(add({ newNotifs: data }));
 
-	// 		if (event.type === 'message' && event.data.startsWith('{')) {
-	// 			setNotification((prev) => [JSON.parse(event.data)]);
+  // 		if (event.type === 'message' && event.data.startsWith('{')) {
+  // 			setNotification((prev) => [JSON.parse(event.data)]);
 
-	// 			// queryClient.invalidateQueries('alertList');
-	// 		}
-			
+  // 			// queryClient.invalidateQueries('alertList');
+  // 		}
+
   //   });
 
   //   sse.onerror = (error) => {
@@ -191,6 +194,9 @@ function App() {
           {/* <Route path="/notification" element={<Notification />} /> */}
           <Route path="/event/:eventId" element={<Event />} />
           <Route path="/eventList" element={<EventList />} />
+          <Route path="/notice" element={<Notice />} />
+          <Route path="/notice/notice1" element={<Notice1 />} />
+          <Route path="/question" element={<Question />} />
           <Route path="/loading" element={<Loading />} />
           <Route path="/infoDetail" element={<InfoDetail />} />
         </Routes>
@@ -202,7 +208,7 @@ function App() {
           <div id="none-background"></div>
           <img src="/logo192.png" alt="logo"></img>
         </SmallAppContent>
-      	<span>지원하지 않는 디바이스입니다.</span>
+        <span>지원하지 않는 디바이스입니다.</span>
       </SmallApp>
     </AppContainer>
   );
@@ -219,54 +225,54 @@ const AppContent = styled.div`
 `;
 
 const SmallApp = styled.div`
-	@media all and (min-width: 360px) {
+  @media all and (min-width: 360px) {
     display: none;
   }
 
-	@media all and (max-width: 359px) {
+  @media all and (max-width: 359px) {
     width: 100%;
-		height: 100vh;
+    height: 100vh;
 
-		color: #3A3A3A;
-		background-color: #EBEEF3;
-		font-weight: 400;
-		font-size: 18px;
-		line-height: 140%;
+    color: #3a3a3a;
+    background-color: #ebeef3;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 140%;
 
-		position: relative;
+    position: relative;
 
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		gap: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 70px;
   }
 `;
 
 const SmallAppContent = styled.div`
-	position: relative;
+  position: relative;
 
-	div {
-		width: 74px;
-		height: 74px;
-		background-color: #FFFFFF;
-		border-radius: 50%;
+  div {
+    width: 74px;
+    height: 74px;
+    background-color: #ffffff;
+    border-radius: 50%;
 
-		position: absolute;
-		top: 40%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
-	img {
-		width: 100px;
-		height: 100px;
+  img {
+    width: 100px;
+    height: 100px;
 
-		position: absolute;
-		top: 40%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 `;
 
 export default App;
