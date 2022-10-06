@@ -6,9 +6,9 @@ export const UserProfileContent = styled.div`
 
   position: absolute;
   top: 70px;
-	bottom: 0;
+  bottom: 0;
 
-	overflow: scroll;
+  overflow: scroll;
 `;
 
 export const UserProfileWrap = styled.div`
@@ -34,17 +34,17 @@ export const UserProfileInfo = styled.div`
     border-radius: 50%;
   }
 
-	svg {
-		width: 73px;
-		height: 73px;
-	}
+  svg {
+    width: 73px;
+    height: 73px;
+  }
 `;
 
 export const MyGradeImgWrap = styled.div`
   position: relative;
-	right: 20px;
+  right: 20px;
 
-  svg {
+  img {
     width: 38px;
     height: 38px;
 
@@ -58,22 +58,21 @@ export const MyGradeImgWrap = styled.div`
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    background-color: ${(props) => props.theme.colors.Gray2};
+    background-color: ${(props) => props.theme.colors.Gray1};
 
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: -10;
   }
 `;
 
 export const MidTabContainer = styled.div`
   margin: auto 20px 40px 20px;
-	
+
   #auction-sale:checked ~ #auction-sale-content,
   #auction-done:checked ~ #auction-done-content {
-		display: block;
+    display: block;
   }
 
   input:checked + label {
@@ -90,9 +89,9 @@ export const MidTabRadioBtn = styled.input`
 `;
 
 export const MidTabLabel = styled.label`
-	height: fit-content;
-	margin-right: 30px;
-	margin-bottom: 20px;
+  height: fit-content;
+  margin-right: 30px;
+  margin-bottom: 20px;
   padding: 4px;
 
   color: ${(props) => props.theme.colors.Gray3};
@@ -100,26 +99,26 @@ export const MidTabLabel = styled.label`
   font-weight: ${(props) => props.theme.fontWeights.normal};
 
   display: block;
-	float: left;
+  float: left;
 
-	&:checked {
+  &:checked {
     width: fit-content;
 
     color: ${(props) => props.theme.colors.Black};
     font-weight: ${(props) => props.theme.fontWeights.bold};
     border-bottom: 3px solid;
-	}
+  }
 `;
 
 export const MidTabContent = styled.div`
-	width: 100%;
+  width: 100%;
 
   display: none;
   overflow: hidden;
 `;
 
 export const ItemList = styled.div`
-	width: 100%;
+  width: 100%;
 
   display: flex;
   flex-direction: column;
