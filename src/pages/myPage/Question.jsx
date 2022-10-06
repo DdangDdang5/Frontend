@@ -15,8 +15,6 @@ const Question = () => {
     question2: false,
   });
 
-  console.log(isClick.question1);
-  //   setIsClick({ ...isClick, Question1: !isClick.Question1 });
   return (
     <QuestionLayout>
       <Header back={true} pageName="자주 묻는 질문" />
@@ -36,7 +34,7 @@ const Question = () => {
           isClick={isClick.question1}
         />
         <QuestionContent
-          text={"배성열은 그렇게 못생겼다는게 사실인가요?"}
+          text={"신고기능은 작동을 안하나요?"}
           isClick={isClick.question2}
           onClick={() =>
             setIsClick((prev) => ({
@@ -45,7 +43,10 @@ const Question = () => {
             }))
           }
         />
-        <AnswerContent text={"맞는다"} isClick={isClick.question2} />
+        <AnswerContent
+          text={"현재 개발중입니다."}
+          isClick={isClick.question2}
+        />
       </QuestionWrap>
     </QuestionLayout>
   );
