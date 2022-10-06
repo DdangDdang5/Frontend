@@ -40,8 +40,8 @@ const Auction = ({ data }) => {
     <AuctionItemWrap>
       <AuctionItemContainer
         onClick={() => {
-          console.log("list to detail");
-          dispatch(clearAuction());
+
+					dispatch(clearAuction());
           navigate(`/auctionDetail/${data?.auctionId}`);
         }}>
         {data?.multiImages[0]?.imgUrl && (

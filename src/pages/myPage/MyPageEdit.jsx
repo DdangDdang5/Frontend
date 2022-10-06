@@ -40,7 +40,6 @@ const MyPageEdit = () => {
   const [inputForm, setInputForm] = useState(data);
   const [imgFile, setImgFile] = useState([]);
   const [imagePreview, setImagePreview] = useState(profileData?.profileImgUrl);
-  console.log("preview", imagePreview);
 
   const [optionVisible, setOptionVisible] = useState(false); // alert 모달
   const [optionContent, setOptionContent] = useState({
@@ -178,3 +177,4 @@ const MyPageEdit = () => {
 };
 
 export default MyPageEdit;
+
