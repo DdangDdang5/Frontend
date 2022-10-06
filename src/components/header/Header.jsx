@@ -112,7 +112,6 @@ const Header = ({
         isConfirm={optionContent.isConfirm}
         onClickBtn={optionContent.onClickBtn}
       />
-      ;
     </>
   );
 };
