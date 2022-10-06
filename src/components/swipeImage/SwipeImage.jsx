@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { NextImg } from "../../shared/images";
 import InfoImg from "../../shared/images/InfoImg.png";
 import EventImg from "../../shared/images/EventImg.png";
+import { FontEvent } from "../../shared/fonts/font";
 
 // Style import
 import {

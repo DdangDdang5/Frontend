@@ -51,27 +51,27 @@ const MyGrade = () => {
   const gradeList = [
     {
       name: "나무망치",
-      content: "content",
+      content: "~ -11점",
       logo: <img src={LogoWood} alt="logo-wood" />,
     },
     {
       name: "기본망치",
-      content: "기본 점수",
+      content: "-10점 ~ 9점",
       logo: <img src={LogoClassic} alt="logo-classic" />,
     },
     {
       name: "은망치",
-      content: "content",
+      content: "10점 ~ 24점",
       logo: <img src={LogoSilver} alt="logo-silver" />,
     },
     {
       name: "금망치",
-      content: "content",
+      content: "25점 ~ 49점",
       logo: <img src={LogoGold} alt="logo-gold" />,
     },
     {
       name: "무지개망치",
-      content: "content",
+      content: "50점 ~",
       logo: <img src={LogoRainbow} alt="logo-rainbow" />,
     },
   ];
