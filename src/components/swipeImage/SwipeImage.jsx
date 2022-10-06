@@ -1,7 +1,8 @@
 // React import
 import React, { useState } from "react";
+
+// Package import
 import { useNavigate } from "react-router-dom";
-import { FontEvent } from "../../shared/fonts/font";
 
 // Shared import
 import { NextImg } from "../../shared/images";

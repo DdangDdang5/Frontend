@@ -3,6 +3,8 @@ import React, { useRef, useState } from "react";
 
 // Package import
 import styled from "styled-components";
+
+// Shared import
 import { UnderArrow } from "../../shared/images/index";
 
 const Slider = ({ data }) => {
@@ -14,12 +16,6 @@ const Slider = ({ data }) => {
 
   const [count, setCount] = useState(0);
   const slideRef = useRef(null);
-  // console.log(count);
-
-  // const [styled, setStyled] = useState({
-  //   transform: `translateX(-${currentIndex}00%)`,
-  //   transition: `all 0.4s ease-in-out`,
-  // });
 
   const nextSlide = () => {
     if (count >= totalSlides) {
@@ -36,38 +32,6 @@ const Slider = ({ data }) => {
       setCount(count - 1);
     }
   };
-
-  // const nextSlide = () => {
-  //   if (cnt.length - 1 <= currentIndex) {
-  //     setCurrentIndex(currentIndex);
-  //     setStyled({
-  //       transform: `translateX(-${cnt.length - 1}00%)`,
-  //       transition: `all 0.4s ease-in-out`,
-  //     });
-  //   } else {
-  //     setCurrentIndex(currentIndex + 1);
-  //     setStyled({
-  //       transform: `translateX(-${currentIndex + 1}00%)`,
-  //       transition: `all 0.4s ease-in-out`,
-  //     });
-  //   }
-  // };
-
-  // const prevSlide = () => {
-  //   if (currentIndex == 0) {
-  //     setCurrentIndex(0);
-  //     setStyled({
-  //       transform: `translateX(-${currentIndex}00%)`,
-  //       transition: `all 0.4s ease-in-out`,
-  //     });
-  //   } else {
-  //     setCurrentIndex(currentIndex - 1);
-  //     setStyled({
-  //       transform: `translateX(-${currentIndex - 1}00%)`,
-  //       transition: `all 0.4s ease-in-out`,
-  //     });
-  //   }
-  // };
 
   return (
     <SliderWrap>
@@ -120,13 +84,6 @@ const SliderWrap = styled.div`
   position: relative;
   overflow: hidden;
   flex-direction: row;
-  /* span {
-    z-index: 100;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translate(-50%);
-  } */
 `;
 
 const ImgBox = styled.div`
@@ -136,19 +93,7 @@ const ImgBox = styled.div`
   /* transition: ${(props) => (!props.count ? "" : "all 0.5s ease-in-out")}; */
 
   transform: ${(props) => "translateX(-" + props.count * 410 + "px)"};
-  /* div {
-    display: flex;
-    min-width: 410px;
-    max-width: 410px;
-    min-height: 390px;
-    max-height: 390px;
-    img {
-      display: flex;
-      min-width: 100%;
-      min-height: 100%;
-      object-fit: cover;
-    } 
-  } */
+
   img {
     flex: none;
     width: 410px;

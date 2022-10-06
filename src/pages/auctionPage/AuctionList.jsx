@@ -28,7 +28,7 @@ import AuctionColumn from "../../components/auctionElement/AuctionColumn";
 import Loading from "../etcPage/Loading";
 import { Open } from "../../shared/images";
 
-// Styled import
+// Style import
 import {
   AuctionListLayout,
   CategoryBtn,

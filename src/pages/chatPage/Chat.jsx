@@ -254,7 +254,6 @@ const Chat = () => {
   };
 
   const onError = (err) => {
-    console.log(err);
   };
 
   // 웹소켓 채팅방 입장

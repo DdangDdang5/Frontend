@@ -9,13 +9,13 @@ import styled from "styled-components";
 import { Close } from "../../shared/images";
 
 const InfoDetail = () => {
-	const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <InfoDetailContainer>
-			<InfoDetailHeader>
-				<Close className="close" onClick={() => navigate(-1)} />
-			</InfoDetailHeader>
+      <InfoDetailHeader>
+        <Close className="close" onClick={() => navigate(-1)} />
+      </InfoDetailHeader>
       <img src="/InfoDetailImg.png" alt="" />
     </InfoDetailContainer>
   );
@@ -27,21 +27,21 @@ const InfoDetailContainer = styled.div`
   position: absolute;
   top: 0;
   bottom: 0;
-	
+
   img {
     width: 100%;
   }
 `;
 
 const InfoDetailHeader = styled.div`
-	padding: 20px;
+  padding: 20px;
 
-	position: fixed;
+  position: fixed;
 
-	svg {
-		width: 20px;
-		height: 20px;
-	}
+  svg {
+    width: 20px;
+    height: 20px;
+  }
 `;
 
 export default InfoDetail;

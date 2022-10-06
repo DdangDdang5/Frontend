@@ -1,5 +1,10 @@
+// React import
 import React from "react";
+
+// Package import
 import styled from "styled-components";
+
+// Shared import
 import { UnderArrow } from "../../shared/images";
 
 const QuestionContent = ({ text, onClick, isClick }) => {

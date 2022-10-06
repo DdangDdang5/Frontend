@@ -37,36 +37,45 @@ const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
 
   // 게시글 삭제하기
   const handleDelete = async () => {
-		setOptionContent({
-			modalText: "\n경매글을 삭제하시겠습니까?",
-			btnText: "삭제할래요",
-			isConfirm: true,
-			onClickBtn: async () => {
-				try {
-					const response = await dispatch(
-						deleteAuctionItem(data.auctionId),
-					).unwrap();
-					if (response) {
-						return navigate(-1, { replace: true });
-					}
-				} catch {}
-			},
-		});
-		setOptionVisible(true);
+    setOptionContent({
+      modalText: "\n경매글을 삭제하시겠습니까?",
+      btnText: "삭제할래요",
+      isConfirm: true,
+      onClickBtn: async () => {
+        try {
+          const response = await dispatch(
+            deleteAuctionItem(data.auctionId)
+          ).unwrap();
+          if (response) {
+            return navigate(-1, { replace: true });
+          }
+        } catch {}
+      },
+    });
+    setOptionVisible(true);
   };
 
   // 게시글 수정하기
   const handleEdit = () => {
-		setOptionContent({
-			modalText: "\n경매글을 수정하시겠습니까?",
-			btnText: "수정할래요",
-			isConfirm: true,
-			onClickBtn: () => {
-				dispatch(clearMode());
-				navigate(`/auctionEdit/${+id}`);
-			},
-		});
-		setOptionVisible(true);
+    setOptionContent({
+      modalText: "\n경매글을 수정하시겠습니까?",
+      btnText: "수정할래요",
+      isConfirm: true,
+      onClickBtn: () => {
+        dispatch(clearMode());
+        navigate(`/auctionEdit/${+id}`);
+      },
+    });
+    setOptionVisible(true);
+  };
+
+  // 신고하기
+  const Declaration = () => {
+    setOptionContent({
+      modalText: "\n서비스 준비중입니다",
+    });
+
+    setOptionVisible(true);
   };
 
   return (
@@ -80,8 +89,8 @@ const MenuModal = ({ isMenuModal, setIsMenuModal, data, id }) => {
             </>
           ) : (
             <>
-              <div>글쓴이 차단하기</div>
-              <div>신고하기</div>
+              <div onClick={() => Declaration()}>글쓴이 차단하기</div>
+              <div onClick={() => Declaration()}>신고하기</div>
             </>
           )}
         </MenuModalWrap>
