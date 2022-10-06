@@ -1,12 +1,10 @@
 ![땅땅 소개 이미지](https://user-images.githubusercontent.com/50540673/193454063-648c8a78-d599-4856-ae23-fab6e4a669fc.png)
 
 ## 🙌 프로젝트 소개
-중고 물품을 경매하는 사이트입니다.<br>
-컨텐츠를 보고 별점과 코멘트를 남겨주세요.
+**중고 물품을 경매하는 사이트입니다.**<br>
 
-나에게 소중했던 물품이 당신에게도 쓸모있는 물건이라면!
-안녕하세요 B반 5조 땅땅입니다.
-땅땅은 구매자와 판매자 사이에 합당한 가격에 땅땅에서 경매를 통해서 구매하자! 라는 생각에서 시작한 프로젝트입니다.
+나에게 소중했던 물품이 당신에게도 쓸모있는 물건이라면!<br>
+**땅땅은 구매자와 판매자 사이에 합당한 가격에 땅땅에서 경매를 통해서 구매하자!** 라는 생각에서 시작한 프로젝트입니다.
 
 [땅땅 사이트 들어가기](https://www.ddangddang.world)<br />
 [땅땅 팀 노션 링크 들어가기](https://typhoon-sphere-952.notion.site/6d35e88c83f74a48a069e2e5f093cf35)
@@ -40,13 +38,13 @@
 
 <img src ="https://user-images.githubusercontent.com/109058715/192780161-56ef26e7-4e47-46f2-9d26-3dd8df71157b.png" width="400px" height="400px" >
 
-2021년 국내 중고거래 시장 규모는 약 25조원 규모로 추산됩니다. 전 세대를 아우르는 중고거래에 대한 의식이 긍정적으로 변화함에 따라 "땅땅" 은 이색적인 경매 서비스 경험을 
-제공하고자 합니다.
+2021년 국내 중고거래 시장 규모는 약 25조원 규모로 추산됩니다. <br>
+전 세대를 아우르는 중고거래에 대한 의식이 긍정적으로 변화함에 따라 "땅땅" 은 이색적인 경매 서비스 경험을 제공하고자 합니다.
 
 <br><br>
 
 ## ⚒️ 프로젝트 아키텍처
-<img src ="https://user-images.githubusercontent.com/50540673/194068005-4a43fbbd-02f4-4901-ace2-373b87453bf1.png" width="1000px" height="600px" >
+<img src ="https://user-images.githubusercontent.com/50540673/193460656-22aa5fc0-886c-430b-a17f-fd27070789eb.png" width="1000px" height="600px" >
 
 <br>
 
@@ -88,6 +86,20 @@
 #### 3. 판매자와 구매자의 1:1 채팅해보기
 #### 4. 경매 거래 후기 작성하고 신뢰도 확인하기
 #### 5. 경매 제목으로 검색해보기
+
+<br><br>
+
+## 🎥 시연 GIF
+**메인페이지**|**회원가입 & 로그인**
+:--------:|:--------:|
+![메인페이지](https://user-images.githubusercontent.com/109033607/194208269-cdcf0912-83fd-45bf-8ab0-7e7e5662408f.gif)|![회원가입_로그인](https://user-images.githubusercontent.com/109033607/194151946-57d86a35-357f-4f43-876f-60c9b72b1249.gif)
+**경매목록**|**경매등록**
+![경매목록](https://user-images.githubusercontent.com/109033607/194158600-925dfe4c-ba16-4d2a-9e2b-f2775352f589.gif)|![경매등록](https://user-images.githubusercontent.com/109033607/194207528-4d7c4845-f8bf-4061-bece-8e373a00740f.gif)
+**경매상세 & 실시간채팅**|**1:1채팅 & 평가하기**
+![실시간채팅_전체_](https://user-images.githubusercontent.com/109033607/194211916-8d670cc0-43dc-441c-b213-e3feacdabc93.gif)|![평가하기(전체)](https://user-images.githubusercontent.com/109033607/194213490-05c5bada-0732-4420-acbe-2abb404448eb.gif)
+**마이페이지**|**검색화면**
+![마이페이지_전체_-1](https://user-images.githubusercontent.com/109033607/194210384-a8555ae5-b4fc-4c62-9974-b410a05f80f7.gif)|![검색화면](https://user-images.githubusercontent.com/109033607/194159838-6d9677ee-a4a9-4547-9001-a46684fe7f4a.gif)
+
 
 <br><br>
 
