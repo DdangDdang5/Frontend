@@ -1,4 +1,7 @@
+// React import
 import React from "react";
+
+// Package import
 import styled from "styled-components";
 
 const AnswerContent = ({ text, isClick }) => {

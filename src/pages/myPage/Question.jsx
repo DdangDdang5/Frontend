@@ -1,5 +1,10 @@
+// React import
 import React, { useState } from "react";
+
+// Package import
 import styled from "styled-components";
+
+// Component & Page import
 import Header from "../../components/header/Header";
 import AnswerContent from "../../components/myPage/AnswerContent";
 import QuestionContent from "../../components/myPage/QuestionContent";

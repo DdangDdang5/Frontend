@@ -1,7 +1,12 @@
+// React import
 import React from "react";
-import Header from "../../components/header/Header";
+
+// Package import
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+
+// Component & Page import
+import Header from "../../components/header/Header";
 
 const Notice1 = () => {
   const { state } = useLocation();

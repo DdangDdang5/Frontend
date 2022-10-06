@@ -1,10 +1,12 @@
 // React import
 import React, { useEffect, useRef, useState } from "react";
+
+// Package import
 import { useNavigate } from "react-router-dom";
-import { FontEvent } from "../../shared/fonts/font";
 
 // Shared import
 import { Back, EventImg, InfoImg, Next, NextImg } from "../../shared/images";
+import { FontEvent } from "../../shared/fonts/font";
 
 // Style import
 import {
@@ -123,59 +125,65 @@ const SwipeImage = ({
 						${diff.getMinutes().toString().padStart(2, "0")}분
 					`;
 
-              return (
-                <SwipeItem key={idx} minHeight={minHeight}>
-                  <SwipeImg src={item.multiImages[0]?.imgUrl} />
-                  {/* <SwipeImgLayer /> */}
+                return (
+                  <SwipeItem key={idx} minHeight={minHeight}>
+                    <SwipeImg src={item.multiImages[0]?.imgUrl} />
+                    {/* <SwipeImgLayer /> */}
 
-                  {/* 메인화면 배너 */}
-                  <SwipeContent>
-                    <BannerContent>
-                      <BannerTime idx={idx}>{auctionPeriodDiff}</BannerTime>
-                      <BannerTitle>{item.title}</BannerTitle>
-                    </BannerContent>
-                    <BannerPriceWrap>
-                      <span>최고입찰가</span>
-                      <BannerPrice>{item.nowPrice}원</BannerPrice>
-                    </BannerPriceWrap>
-                    <BannerCircle idx={idx} />
-                  </SwipeContent>
+                    {/* 메인화면 배너 */}
+                    <SwipeContent>
+                      <BannerContent>
+                        <BannerTime idx={idx}>{auctionPeriodDiff}</BannerTime>
+                        <BannerTitle>{item.title}</BannerTitle>
+                      </BannerContent>
+                      <BannerPriceWrap>
+                        <span>최고입찰가</span>
+                        <BannerPrice>{item.nowPrice}원</BannerPrice>
+                      </BannerPriceWrap>
+                      <BannerCircle idx={idx} />
+                    </SwipeContent>
 
-                  <SwipeIdx isMain={isMain}>
-                    {Array.from({ length: data.length }, (_, idxI) =>
-                      idx === idxI ? (
-                        <SwipeIdxItem key={idxI} idxNow={true} />
-                      ) : (
-                        <SwipeIdxItem key={idxI} idxNow={false} />
-                      ),
-                    )}
-                  </SwipeIdx>
-                </SwipeItem>
-              );
-            } else {
-              return (
-                <SwipeItem key={idx} minHeight={minHeight}>
-                  <SwipeImg src={item.imgUrl} />
+                    <SwipeIdx isMain={isMain}>
+                      {Array.from({ length: data.length }, (_, idxI) =>
+                        idx === idxI ? (
+                          <SwipeIdxItem key={idxI} idxNow={true} />
+                        ) : (
+                          <SwipeIdxItem key={idxI} idxNow={false} />
+                        )
+                      )}
+                    </SwipeIdx>
+                  </SwipeItem>
+                );
+              } else {
+                return (
+                  <SwipeItem key={idx} minHeight={minHeight}>
+                    <SwipeImg src={item.imgUrl} />
 
-                  <div></div>
+                    <div></div>
 
-                  <SwipeIdx isMain={isMain}>
-                    {Array.from({ length: data.length }, (_, idxI) =>
-                      idx === idxI ? (
-                        <SwipeIdxItem key={idxI} idxNow={true} />
-                      ) : (
-                        <SwipeIdxItem key={idxI} idxNow={false} />
-                      ),
-                    )}
-                  </SwipeIdx>
-                </SwipeItem>
-              );
-            }
-          }
-					): 
-						Array.from({ length: 2 }, (_, idx) => (
-              <EventBanner key={idx} idx={idx} isMain={isMain} onClick={idx ? () => navigate("/event/1") : () => navigate("/infoDetail")}>
-
+                    <SwipeIdx isMain={isMain}>
+                      {Array.from({ length: data.length }, (_, idxI) =>
+                        idx === idxI ? (
+                          <SwipeIdxItem key={idxI} idxNow={true} />
+                        ) : (
+                          <SwipeIdxItem key={idxI} idxNow={false} />
+                        )
+                      )}
+                    </SwipeIdx>
+                  </SwipeItem>
+                );
+              }
+            })
+          : Array.from({ length: 2 }, (_, idx) => (
+              <EventBanner
+                key={idx}
+                idx={idx}
+                isMain={isMain}
+                onClick={
+                  idx
+                    ? () => navigate("/event/1")
+                    : () => navigate("/infoDetail")
+                }>
                 <FontEvent />
                 <EventContent idx={idx} isMain={isMain}>
                   <EventDate idx={idx} isMain={isMain}>
@@ -207,14 +215,14 @@ const SwipeImage = ({
           {currentImgIndex !== 0 ? (
             <SwipeBtn location="prev" onClick={prevSlide}>
               {/* <Back className="back-btn" /> */}
-							<NextImg />
+              <NextImg />
             </SwipeBtn>
           ) : null}
 
           {currentImgIndex !== 1 ? (
             <SwipeBtn location="next" onClick={nextSlide}>
               {/* <Next className="next-btn" /> */}
-							<NextImg />
+              <NextImg />
             </SwipeBtn>
           ) : null}
         </>
