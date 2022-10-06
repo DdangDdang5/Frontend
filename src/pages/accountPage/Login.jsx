@@ -2,15 +2,15 @@
 import { Fragment, useRef, useState, useCallback, useEffect } from "react";
 
 // Redux import
-import { useDispatch, useSelector } from "react-redux/es/exports";
+import { useDispatch } from "react-redux/es/exports";
 import { loginMemberThunk } from "../../redux/modules/MemberSlice";
 
 // Package import
 import { useNavigate } from "react-router-dom";
 
 // Component & Element & Shared import
-import Button from "../../elements/button/Button";
 import Header from "../../components/header/Header";
+import Button from "../../elements/button/Button";
 import { KAKAO_OAUTH_URL } from "../../shared/SocialAuth";
 import { Delete, Kakao, Logo } from "../../shared/images";
 
@@ -34,26 +34,12 @@ import {
 const Login = ({ location }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loginError, setLoginError] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const isLogin = useSelector((state) => state.member.isLogin);
-  const member = useSelector((state) => state.member.member);
 
   if (location?.state) {
     localStorage.setItem("from", location?.state?.from);
   }
-
-  useEffect(() => {
-    // if (token) history.push("/");
-  }, [isLogin]);
-
-  const [check, setCheck] = useState({
-    email: false,
-    id: false,
-    password: false,
-  });
 
   const iconRef = useRef();
 
@@ -63,6 +49,7 @@ const Login = ({ location }) => {
   const deleteEmailText = useCallback(() => {
     setEmail("");
   }, [email]);
+
   const deletePasswordText = useCallback(() => {
     setPassword("");
   }, [password]);

@@ -1,29 +1,27 @@
 // React import
 import React, { useEffect, useState } from "react";
-import { isIOS } from "react-device-detect";
 
 // Redux import
 import { doneAuction } from "../../redux/modules/AuctionSlice";
-import {
-  clearChatMessageList,
-  getChatMessageList,
-} from "../../redux/modules/ChatSlice";
+import { getChatMessageList } from "../../redux/modules/ChatSlice";
 
 // Package import
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { isIOS } from "react-device-detect";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
-// Component & Element & Shared import
+// Component import
 import Header from "../../components/header/Header";
 import PageModal from "../../components/modal/PageModal";
-import OptionModal from "../../components/modal/OptionModal";
+import ChatOptionModal from "../../components/modal/ChatOptionModal";
 import CountdownTimer from "../../components/countDownTimer/CountDownTimer";
 import { useCountdown } from "../../components/hooks/UseCountDown";
-import Button from "../../elements/button/Button";
-import { Add, BasicProfile, Send } from "../../shared/images";
+
+// Page & Shared import
 import Loading from "../etcPage/Loading";
+import { Add, BasicProfile, Send } from "../../shared/images";
 
 // Style import
 import {
@@ -38,15 +36,11 @@ import {
   MenuItem,
   MenuItemList,
   Message,
-  MessageChecked,
   MessageInfo,
   MessageInput,
   MessageProfile,
   MessageTime,
   MessageWrap,
-  ModalBtnWrap,
-  ModalTextWrap,
-  OptionModalContainer,
   SendBtn,
   SendIOSContainer,
 } from "./Chat.styled";
@@ -74,7 +68,7 @@ const Chat = () => {
     (state) => state.chat.chatMessageList,
   ).filter((item) => item.roomId === roomId);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); // 로딩 화면
 
   const [visible, setVisible] = useState(false); // 채팅 메뉴 모달
   const [optionVisible, setOptionVisible] = useState(false); // alert 모달
@@ -85,7 +79,7 @@ const Chat = () => {
     onClickBtn: () => {},
   });
 
-  const [chatList, setChatList] = useState([]);
+  const [chatList, setChatList] = useState([]); // 웹소켓 연결 시 메시지 저장
   const [userData, setUserData] = useState({
     type: "",
     roomId: roomId,
@@ -128,26 +122,10 @@ const Chat = () => {
     initialChat();
   }, []);
 
-  // useEffect(() => {
-  //   var timeout;
-  //   // 5초 이상 로딩시 새로고침
-  //   if (loading) {
-  //     timeout = setInterval(() => {
-  // 			initialChat();
-  //     }, 5000);
-  //   }
-
-  //   return () => {
-  //     if (loading) {
-  // 			onDisconnected();
-  //       setTimeout(timeout);
-  //     }
-  //   };
-  // }, []);
-
   useEffect(() => {
     dispatch(getChatMessageList(roomId));
 
+    // 기존 채팅방에 채팅 메시지가 존재할 시
     if (chatMessageList[0]?.data?.length > 0) {
       if (chatList.length > 0) {
         setChatList([...chatMessageList[0].data]);
@@ -156,10 +134,9 @@ const Chat = () => {
         setChatList([...chatList]);
       }
     }
-    // console.log("5555555555555555555");
-    // console.log(chatMessageList);
   }, [JSON.stringify(chatMessageList)]);
 
+  // 웹소켓 메시지 송/수신 시 채팅 스크롤 최하단으로
   useEffect(() => {
     scrollToBottom();
   }, [chatList]);
@@ -220,6 +197,7 @@ const Chat = () => {
     });
   };
 
+  // 채팅 메시지 시간 계산
   const calcTime = (createdAt) => {
     if (isIOS) {
       const [hours, minutes, seconds] = createdAt?.split(" ")[1]?.split(":");
@@ -235,6 +213,7 @@ const Chat = () => {
     }
   };
 
+  // kakao 로그인 시 닉네임 수정
   const checkNickname = (nickName) => {
     if (nickName.includes("kakao")) {
       return (nickName = nickName.split("kakao")[0] + "kakao");
@@ -243,6 +222,7 @@ const Chat = () => {
     }
   };
 
+  // 채팅 스크롤 최하단으로
   const scrollToBottom = () => {
     window.document.body
       .querySelector("#chat-content")
@@ -267,20 +247,16 @@ const Chat = () => {
   };
 
   const onConnected = () => {
-    // setUserData({ ...userData, type: "ENTER" });
-
     stompClient.subscribe(`/topic/chat/room/${roomId}`, onMessageReceived);
 
-    // 채팅방 들어감
     userJoin();
-
     scrollToBottom();
   };
 
   const onError = (err) => {
-    console.log(err);
   };
 
+  // 웹소켓 채팅방 입장
   const userJoin = () => {
     let chatMessage = {
       type: "ENTER",
@@ -291,6 +267,7 @@ const Chat = () => {
 
     stompClient.send("/app/chat/message", {}, JSON.stringify(chatMessage));
 
+    // 1:1 채팅 시 상대방 닉네임을 안다면 상대방도 입장
     if (chatOther) {
       stompClient.send(
         "/app/chat/message",
@@ -301,6 +278,7 @@ const Chat = () => {
     setLoading(false);
   };
 
+  // 웹소켓 메시지 수신
   const onMessageReceived = (payload) => {
     let payloadData = JSON.parse(payload.body);
 
@@ -312,6 +290,7 @@ const Chat = () => {
     scrollToBottom();
   };
 
+  // 웹소켓 메시지 송신
   const sendMessage = () => {
     if (stompClient && userData.message) {
       let chatMessage = {
@@ -328,12 +307,14 @@ const Chat = () => {
     scrollToBottom();
   };
 
+  // 채팅 시 엔터키 입력 -> 채팅
   const onKeyPress = (event) => {
     if (event.key === "Enter") {
       sendMessage();
     }
   };
 
+  // 웹소켓 연결 해제
   const onDisconnected = (isDone) => {
     if (stompClient !== null) {
       stompClient.disconnect();
@@ -351,8 +332,6 @@ const Chat = () => {
     }
   };
 
-	// console.log(+minutes, +seconds, +minutes + +seconds);
-
   return (
     <>
       {loading ? (
@@ -365,13 +344,12 @@ const Chat = () => {
               pageName={title}
               menu={true}
               onClickBtn={onClickMenu}
-              // onClickTitle={() => navigate(`/auctionDetail/${auctionId}`)}
               onClickBackBtn={() => onDisconnected(false)}
             />
 
             {/* 경매 남은 시간 */}
             <AuctionTimeWrap isDetail={isDetail}>
-							{isDetail ? (
+              {isDetail ? (
                 auctionStatus && +minutes + +seconds > 0 ? (
                   <>
                     <span>남은 시간</span>
@@ -392,6 +370,7 @@ const Chat = () => {
                   (chat, idx) =>
                     chat.type === "TALK" && (
                       <div key={idx}>
+												{/* 채팅 메시지 본인이 아닐 때 */}
                         {chat.sender !== nickName ? (
                           <ChatMessage>
                             {chat.profileImgUrl ? (
@@ -416,6 +395,7 @@ const Chat = () => {
                             </MessageInfo>
                           </ChatMessage>
                         ) : (
+													// 채팅 메시지 본인일 때
                           <ChatMessage isMe={true}>
                             <MessageInfo isMe={true}>
                               {/* <MessageChecked>1</MessageChecked> */}
@@ -456,8 +436,8 @@ const Chat = () => {
             </ChatFooter>
           </ChatContainer>
 
-          {/* 메뉴 모달 */}
-          <OptionModal
+          {/* 채팅 메뉴 모달 */}
+          <ChatOptionModal
             minHeight="50px"
             visible={visible}
             setVisible={setVisible}
@@ -465,10 +445,10 @@ const Chat = () => {
             <MenuItemList>
               <MenuItem onClick={onClickFinishMenu}>거래 완료하기</MenuItem>
               {/* <MenuItem>차단하기</MenuItem>
-          <MenuItem>신고하기</MenuItem> */}
-              {/* <MenuItem onClick={onDisconnected}>채팅방 나가기</MenuItem> */}
+          		<MenuItem>신고하기</MenuItem>
+              <MenuItem onClick={onDisconnected}>채팅방 나가기</MenuItem> */}
             </MenuItemList>
-          </OptionModal>
+          </ChatOptionModal>
 
           {/* 메뉴 모달의 옵션 클릭 모달 */}
           <PageModal

@@ -30,7 +30,6 @@ const ModalLayout = styled.div`
   right: 0;
 
   display: ${(props) => (props.visible ? "block" : "none")};
-  /* z-index: 20; */
 `;
 
 const ModalWrapper = styled.div`
@@ -46,9 +45,7 @@ const ModalWrapper = styled.div`
 	right: 0;
 
   display: ${(props) => (props.visible ? "block" : "none")};
-  /* overflow: auto; */
   outline: 0;
-  /* pointer-events: none; */
 `;
 
 const ModalInner = styled.div`
@@ -61,7 +58,6 @@ const ModalInner = styled.div`
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
 
   position: relative;
-  /* top: 0; */
 `;
 
 export default AuctionJoinModal;

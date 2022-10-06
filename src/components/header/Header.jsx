@@ -1,14 +1,8 @@
 // React import
-import React from "react";
-
-//Redux import
-import { useDispatch } from "react-redux";
+import React, { useState } from "react";
 
 // Package import
 import { useNavigate } from "react-router-dom";
-
-// Component import
-import OptionModal from "../modal/OptionModal";
 
 // Shared import
 import {
@@ -30,6 +24,7 @@ import {
   PageTitle,
   SaveBtn,
 } from "./Header.styled";
+import PageModal from "../modal/PageModal";
 
 // props 정리
 // 1. left
@@ -57,42 +52,67 @@ const Header = ({
   color,
 }) => {
   const navigate = useNavigate();
+  const [optionVisible, setOptionVisible] = useState(false); // alert 모달
+  const [optionContent, setOptionContent] = useState({
+    modalText: "",
+    btnText: "",
+    isConfirm: false,
+    onClickBtn: () => {},
+  });
+
+  const Declaration = () => {
+    setOptionContent({
+      modalText: "\n서비스 준비중입니다",
+    });
+
+    setOptionVisible(true);
+  };
 
   return (
-    <HeaderContainer>
-      <HeaderContent color={color}>
-        {/* left */}
-        <HeaderTitle>
-          {back ? (
-            <Back
-              onClick={onClickBackBtn ? onClickBackBtn : () => navigate(-1)}
-            />
-          ) : null}
-          {close ? <Close id="close" onClick={() => navigate(-1)} /> : null}
-          {pageName ? (
-            <PageTitle onClick={onClickTitle}>{pageName}</PageTitle>
-          ) : null}
-          {logo ? (
-            <Logo id="logo" onClick={() => navigate("/")}>
-              땅땅
-            </Logo>
-          ) : null}
-        </HeaderTitle>
+    <>
+      <HeaderContainer>
+        <HeaderContent color={color}>
+          {/* left */}
+          <HeaderTitle>
+            {back ? (
+              <Back
+                onClick={onClickBackBtn ? onClickBackBtn : () => navigate(-1)}
+              />
+            ) : null}
+            {close ? <Close id="close" onClick={() => navigate(-1)} /> : null}
+            {pageName ? (
+              <PageTitle onClick={onClickTitle}>{pageName}</PageTitle>
+            ) : null}
+            {logo ? (
+              <Logo id="logo" onClick={() => navigate("/")}>
+                땅땅
+              </Logo>
+            ) : null}
+          </HeaderTitle>
 
-        {/* right */}
-        <HeaderIconContainer>
-          {search ? <SearchImg onClick={() => navigate("/search")} /> : null}
-          {alarm ? <Alarm onClick={() => navigate("/notification")} /> : null}
-          {share ? <Share /> : null}
-          {menu ? <Menu onClick={onClickBtn} /> : null}
-          {save ? (
-            <SaveBtn onClick={onClickSave} state={save.state}>
-              {save.type}
-            </SaveBtn>
-          ) : null}
-        </HeaderIconContainer>
-      </HeaderContent>
-    </HeaderContainer>
+          {/* right */}
+          <HeaderIconContainer>
+            {search ? <SearchImg onClick={() => navigate("/search")} /> : null}
+            {alarm ? <Alarm onClick={() => navigate("/notification")} /> : null}
+            {share ? <Share onClick={() => Declaration()} /> : null}
+            {menu ? <Menu onClick={onClickBtn} /> : null}
+            {save ? (
+              <SaveBtn onClick={onClickSave} state={save.state}>
+                {save.type}
+              </SaveBtn>
+            ) : null}
+          </HeaderIconContainer>
+        </HeaderContent>
+      </HeaderContainer>
+      <PageModal
+        visible={optionVisible}
+        setVisible={setOptionVisible}
+        modalText={optionContent.modalText}
+        btnText={optionContent.btnText}
+        isConfirm={optionContent.isConfirm}
+        onClickBtn={optionContent.onClickBtn}
+      />
+    </>
   );
 };
 

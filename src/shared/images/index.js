@@ -35,15 +35,6 @@ import { ReactComponent as imgDelete } from "./icon/ImgDelete.svg";
 import { ReactComponent as underArrow } from "./icon/UnderArrow.svg";
 import { ReactComponent as nextImg } from "./icon/NextImg.svg";
 
-// Logo import
-import { ReactComponent as logoClassic } from "./logo/LogoClassic.svg";
-import { ReactComponent as logoWood } from "./logo/LogoWood.svg";
-import { ReactComponent as logoSilver } from "./logo/LogoSliver.svg";
-import { ReactComponent as logoGold } from "./logo/LogoGold.svg";
-import { ReactComponent as logoRainbow } from "./logo/LogoRainbow.svg";
-
-import { ReactComponent as eventImg } from "./EventImg.svg";
-import { ReactComponent as infoImg } from "./InfoImg.svg";
 import { ReactComponent as loadingImg } from "./icon/LoadingImg.svg";
 
 // icon
@@ -83,13 +74,4 @@ export const ImgDelete = imgDelete;
 export const UnderArrow = underArrow;
 export const NextImg = nextImg;
 
-// 3d hammer
-export const LogoClassic = logoClassic;
-export const LogoWood = logoWood;
-export const LogoSilver = logoSilver;
-export const LogoGold = logoGold;
-export const LogoRainbow = logoRainbow;
-
-export const EventImg = eventImg;
-export const InfoImg = infoImg;
 export const LoadingImg = loadingImg;

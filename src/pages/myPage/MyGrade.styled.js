@@ -15,30 +15,35 @@ export const MyGradeContent = styled.div`
   position: absolute;
   top: 70px;
 	bottom: 0px;
-  /* bottom: ${(props) => props.isIOS ? "80px" : "70px"}; */
 `;
 
 export const MyGradeImgWrap = styled.div`
+	width: 100%;
+	height: 120px;
   margin-top: 5%;
 
   position: relative;
 
-  svg {
+  img {
     width: 120px;
     height: 120px;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   div {
     width: 113px;
     height: 113px;
     border-radius: 50%;
-    background-color: ${(props) => props.theme.colors.Gray2};
+    background-color: ${(props) => props.theme.colors.Gray1};
 
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: -10;
   }
 `;
 
@@ -155,7 +160,7 @@ export const GradeItem = styled.div`
 	align-items: center;
 
 
-	svg {
+	img {
 		width: 60px;
 		height: 60px;
 	}

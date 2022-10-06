@@ -1,6 +1,5 @@
 // React import
 import React from "react";
-import { createDispatchHook } from "react-redux";
 
 // Package improt
 import { useNavigate } from "react-router-dom";
@@ -20,6 +19,7 @@ import {
 const ChatRoom = ({ room }) => {
   const navigate = useNavigate();
 
+	// 채팅방 마지막 메시지 시간 계산
   const calcTime = (createdAt) => {
     const date = new Date(createdAt);
     return (

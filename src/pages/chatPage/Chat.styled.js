@@ -3,17 +3,6 @@ import styled from "styled-components";
 
 export const ChatContainer = styled.div``;
 
-export const ChatContent = styled.div`
-  width: 100%;
-  background-color: ${(props) => props.theme.colors.Gray1};
-
-  position: absolute;
-	top: 112px;
-  bottom: ${(props) => props.isIOS ? "80px" : "70px"};
-
-  overflow-y: scroll;
-`;
-
 export const AuctionTimeWrap = styled.div`
   width: 100%;
   height: 42px;
@@ -37,7 +26,16 @@ export const AuctionTime = styled.span`
   font-weight: ${(props) => props.theme.fontWeights.bold} !important;
 `;
 
-export const MemberList = styled.div``;
+export const ChatContent = styled.div`
+  width: 100%;
+  background-color: ${(props) => props.theme.colors.Gray1};
+
+  position: absolute;
+	top: 112px;
+  bottom: ${(props) => props.isIOS ? "80px" : "70px"};
+
+  overflow-y: scroll;
+`;
 
 export const ChatMessageList = styled.ul`
   margin: 20px 12px;
@@ -50,7 +48,6 @@ export const ChatMessageList = styled.ul`
 
 export const ChatMessage = styled.div`
   width: 100%;
-  /* margin-bottom: 20px; */
 
   color: ${(props) => props.theme.colors.Black};
   font-size: ${(props) => props.theme.fontSizes.ms};
@@ -123,8 +120,6 @@ export const ChatFooter = styled.div`
   width: calc(100% - 40px);
   height: ${(props) => props.isIOS ? "80px" : "70px"};
   padding: 0 20px;
-	/* padding-bottom:${(props) => props.isIOS ? "10px" : null};  */
-	/* margin-bottom: ${(props) => props.isIOS ? "10px" : null}; */
 
   position: absolute;
   bottom: 0;
@@ -204,26 +199,4 @@ export const MenuItemList = styled.div`
 
 export const MenuItem = styled.div`
 	padding: 12px 20px;
-`;
-
-export const OptionModalContainer = styled.div`
-	padding: 32px;
-`;
-
-export const ModalTextWrap = styled.div`
-	color: ${(props) => props.theme.colors.Black};
-	font-size: ${(props) => props.theme.fontSizes.ms};
-	font-weight: ${(props) => props.theme.fontWeights.normal};
-
-	display: flex;
-	flex-direction: column;
-	gap: 4px;
-`;
-
-export const ModalBtnWrap = styled.div`
-	margin-top: 28px;
-
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
 `;
