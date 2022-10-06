@@ -20,7 +20,7 @@ import Header from "../../components/header/Header";
 // Element & Shared import
 import { BasicProfile, Camera, Delete, Ok } from "../../shared/images";
 import PageModal from "../../components/modal/PageModal";
-import { SignUpBoxInputIcon } from "../signUp/SignUp.styled";
+import { SignUpBoxInputIcon } from "../accountPage/SignUp.styled";
 
 const MyPageEdit = () => {
   const dispatch = useDispatch();

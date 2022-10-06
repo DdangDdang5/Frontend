@@ -122,12 +122,9 @@ export const LoginBoxSignUp = styled.div`
 `;
 
 export const LoginBoxSignUpText = styled.span`
-  /* width: 100%; */
   text-align: center;
   display: flex;
   line-height: 140%;
-  /* margin-left: 5%; */
-  /* gap: 30%; */
 `;
 
 export const LoginBoxSignUpLink = styled.span`
