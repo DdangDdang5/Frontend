@@ -12,6 +12,7 @@ import {
 // Package import
 import styled from "styled-components";
 import { isIOS } from "react-device-detect";
+import { useNavigate } from "react-router-dom";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -21,6 +22,7 @@ import AuctionRow from "../../components/auctionElement/AuctionRow";
 
 const MyPageParticipationAuction = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isAuction, setIsAuction] = useState(true);
 
   const {
@@ -109,10 +111,27 @@ const MyPageParticipationAuction = () => {
                   item.reviewDone ? (
                     <ActionBtn>평가완료</ActionBtn>
                   ) : (
-                    <ActionBtn>평가하기</ActionBtn>
+                    <ActionBtn
+                      onClick={() =>
+                        navigate(`/auctionReview/${item.auctionId}`)
+                      }>
+                      평가하기
+                    </ActionBtn>
                   )
                 ) : (
-                  <ActionBtn>채팅방 입장하기</ActionBtn>
+                  <ActionBtn
+                    onClick={() => {
+                      navigate(`/chat/${item.onoRoomId}`, {
+                        state: {
+                          auctionId: item.auctionId,
+                          isDetail: false,
+                          title: item.title,
+                        },
+                      });
+                      window.location.reload();
+                    }}>
+                    채팅방 입장하기
+                  </ActionBtn>
                 )}
               </React.Fragment>
             );
