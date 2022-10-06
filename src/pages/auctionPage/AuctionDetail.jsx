@@ -133,9 +133,6 @@ const AuctionDetail = () => {
 
   const imgList = data?.multiImages;
 
-  // console.log(chatList);
-  // console.log(userData);
-
   const tagsArray = [
     data.tags?.tag2,
     data.tags?.tag1,
@@ -166,9 +163,6 @@ const AuctionDetail = () => {
 
       if (data?.auctionStatus === false) {
         dispatch(winAuctionItem(params.auctionId));
-
-        // console.log(bid);
-        // console.log(data);
 
         if (bid) {
           if (bid.seller === nickName || bid.bidder === nickName) {
@@ -259,12 +253,6 @@ const AuctionDetail = () => {
         ? +chatList[chatList.length - 1]?.message
         : data.startPrice
     );
-    // console.log(
-    //   data?.nowPrice,
-    //   +chatList[chatList.length - 1]?.message,
-    //   nowPrice,
-    // );
-    // console.log(userData?.message);
 
     if (+userData.message > nowPrice) {
       if (+userData.message > 999999) {
