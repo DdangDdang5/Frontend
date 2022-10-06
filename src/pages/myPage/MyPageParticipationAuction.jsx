@@ -12,6 +12,7 @@ import {
 // Package import
 import styled from "styled-components";
 import { isIOS } from "react-device-detect";
+import { useNavigate } from "react-router-dom";
 
 // Component import
 import Header from "../../components/header/Header";
@@ -21,6 +22,7 @@ import AuctionRow from "../../components/auctionElement/AuctionRow";
 
 const MyPageParticipationAuction = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isAuction, setIsAuction] = useState(true);
 
   const {
@@ -29,6 +31,8 @@ const MyPageParticipationAuction = () => {
     paging,
     followingItem,
   } = useSelector((state) => state.myPage);
+
+  console.log(data);
 
   const [shouldShownData, setShouldShownData] = useState([]);
 
@@ -101,7 +105,34 @@ const MyPageParticipationAuction = () => {
               <React.Fragment key={`${index}_${item.id}`}>
                 <AuctionRow item={item} index={index} />
                 {/* 일단 추후 업데이트 예정 */}
-                {/* {isAuction ? <></> : <ActionBtn>채팅방 입장하기</ActionBtn>} */}
+                {isAuction ? (
+                  <></>
+                ) : item.auctionDone ? (
+                  item.reviewDone ? (
+                    <ActionBtn>평가완료</ActionBtn>
+                  ) : (
+                    <ActionBtn
+                      onClick={() =>
+                        navigate(`/auctionReview/${item.auctionId}`)
+                      }>
+                      평가하기
+                    </ActionBtn>
+                  )
+                ) : (
+                  <ActionBtn
+                    onClick={() => {
+                      navigate(`/chat/${item.onoRoomId}`, {
+                        state: {
+                          auctionId: item.auctionId,
+                          isDetail: false,
+                          title: item.title,
+                        },
+                      });
+                      window.location.reload();
+                    }}>
+                    채팅방 입장하기
+                  </ActionBtn>
+                )}
               </React.Fragment>
             );
           })}

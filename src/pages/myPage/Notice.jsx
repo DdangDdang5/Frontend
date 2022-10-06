@@ -1,9 +1,12 @@
 // React import
 import React from "react";
 
-import styled from "styled-components";
-import Header from "../../components/header/Header";
+// Package import
 import { isIOS } from "react-device-detect";
+import styled from "styled-components";
+
+// Component & Page import
+import Header from "../../components/header/Header";
 import NoticeContent from "../../components/myPage/NoticeContent";
 
 const Notice = () => {

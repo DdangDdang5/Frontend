@@ -1,11 +1,17 @@
+// React import
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { HeartEmpty, HeartFull } from "../../shared/images";
-import { useDispatch, useSelector } from "react-redux";
+
+// Redux import
 import {
   auctionDetailData,
   auctionFavorite,
 } from "../../redux/modules/AuctionSlice";
+
+// Package import
+import { useDispatch, useSelector } from "react-redux";
+
+// Shared import
+import { HeartEmpty, HeartFull } from "../../shared/images";
 
 const AuctionHeart = ({ params }) => {
   // 좋아요 기능
