@@ -278,7 +278,6 @@ const Chat = () => {
   };
 
   const onError = (err) => {
-    console.log(err);
   };
 
   const userJoin = () => {

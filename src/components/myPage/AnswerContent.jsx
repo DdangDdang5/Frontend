@@ -2,7 +2,6 @@ import React from "react";
 import styled from "styled-components";
 
 const AnswerContent = ({ text, isClick }) => {
-  console.log(isClick);
   return (
     <ContentWrap isClick={isClick}>
       <Body>

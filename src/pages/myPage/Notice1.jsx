@@ -5,7 +5,6 @@ import styled from "styled-components";
 
 const Notice1 = () => {
   const { state } = useLocation();
-  console.log(state);
   return (
     <NoticeLayout>
       <Header back={true} pageName="공지사항" />
