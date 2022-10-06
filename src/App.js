@@ -1,10 +1,6 @@
-// React import
-import { useEffect, useState } from "react";
-
 // Package import
 import { Route, Routes } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { isIOS, isMacOs, isSafari } from "react-device-detect";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 
 // Page import
@@ -12,18 +8,15 @@ import Main from "../src/pages/main/Main";
 import InfoDetail from "./pages/main/InfoDetail";
 import Login from "../src/pages/accountPage/Login";
 import SignUp from "../src/pages/accountPage/SignUp";
-
 import Search from "../src/pages/searchPage/Search";
 import Chat from "../src/pages/chatPage/Chat";
 import ChatList from "../src/pages/chatPage/ChatList";
-
 import AuctionList from "../src/pages/auctionPage/AuctionList";
 import AuctionWrite from "../src/pages/auctionPage/AuctionWrite";
 import AuctionDetail from "../src/pages/auctionPage/AuctionDetail";
 import AuctionReview from "./pages/auctionPage/AuctionReview";
 import AuctionEdit from "./pages/auctionPage/AuctionEdit";
 import UserProfile from "./pages/auctionPage/UserProfile";
-
 import MyPage from "./pages/myPage/MyPage";
 import MyPageEdit from "./pages/myPage/MyPageEdit";
 import MyGrade from "./pages/myPage/MyGrade";
@@ -33,10 +26,8 @@ import MyPageMyAuction from "./pages/myPage/MyPageMyAuction";
 import Notice from "./pages/myPage/Notice";
 import Notice1 from "./pages/myPage/Notice1";
 import Question from "./pages/myPage/Question";
-
 import Event from "./pages/eventPage/Event";
 import EventList from "./pages/eventPage/EventList";
-
 import NotFound from "./pages/etcPage/NotFound";
 import Loading from "./pages/etcPage/Loading";
 
@@ -47,123 +38,13 @@ import CategoryModal from "./components/modal/CategoryModal";
 // Style import
 import { FontRegular } from "./shared/fonts/font";
 
-// Notification import
-// import { onMessageListener } from "./firebaseInit";
-// import Notifications from "./components/notification/Notification";
-// import ReactNotificationComponent from "./components/notification/ReactNotification";
-// import { ToastNotification } from "./pages/notification/ToastNotification";
-// import { add } from "./redux/modules/NotificationSlice";
-// import MypageEdit from "./pages/myPage/MyPageEdit";
-
 function App() {
-  const dispatch = useDispatch();
-
   const modal = useSelector((state) => state.modal.show);
-
-  // 알림
-  const [show, setShow] = useState(false);
-  const [notification, setNotification] = useState({ title: "", body: "" });
-
-  // if (!((isIOS || isMacOs) && isSafari)) {
-  //   onMessageListener()
-  //     .then((payload) => {
-  //       setShow(true);
-  //       setNotification({
-  //         title: payload.notification.title,
-  //         body: payload.notification.body,
-  //       });
-  //       console.log(payload);
-  //     })
-  //     .catch((err) => console.log("failed: ", err));
-  // }
-
-  // useEffect(() => {
-  //   // 경매 생성 시 알림!!!!
-  //   let url = process.env.REACT_APP_URL + "/auction/stream";
-  //   const sse = new EventSource(url);
-  // 	console.log(sse);
-
-  // 	sse.onmessage = (event) => {
-  // 		console.log(event);
-  // 	}
-
-  //   sse.addEventListener("post-list-event", (event) => {
-  //     const data = JSON.parse(event.data);
-  // 		console.log(event);
-  //   });
-
-  //   sse.onerror = (error) => {
-  // 		console.log('error post-list-event');
-  // 		console.log(error)
-  //     sse.close();
-  //   };
-
-  //   return () => {
-  //     sse.close();
-  //   };
-  // }, []);
-
-  const notifToastList = useSelector(
-    (state) => state.notification.notifToastList
-  );
-
-  // console.log(notifToastList);
-  // const EventSource = NativeEventSource || EventSourcePolyfill;
-
-  // useEffect(() => {
-  //   let url =
-  //     process.env.REACT_APP_URL +
-  //     "/subscribe/" +
-  //     sessionStorage.getItem("memberId");
-  //   const sse = new EventSource(url);
-  //   console.log(sse);
-
-  //   sse.onopen = (event) => {
-  //     console.log("connection opened", event);
-  //   };
-
-  //   sse.addEventListener("message", (event) => {
-  //     console.log(event);
-  //     // const data = JSON.parse(event.data);
-  //     // console.log(data);
-
-  // 		// dispatch(add({ newNotifs: data }));
-
-  // 		if (event.type === 'message' && event.data.startsWith('{')) {
-  // 			setNotification((prev) => [JSON.parse(event.data)]);
-
-  // 			// queryClient.invalidateQueries('alertList');
-  // 		}
-
-  //   });
-
-  //   sse.onerror = (error) => {
-  //     sse.close();
-  //   };
-
-  //   return () => {
-  //     sse.close();
-  //   };
-  // }, []);
 
   return (
     <AppContainer>
       <FontRegular />
       <AppContent>
-        {/* {!((isIOS || isMacOs) && isSafari) && show ? (
-        <ReactNotificationComponent
-          title={notification.title}
-          body={notification.body}
-        />
-      ) : (
-        <></>
-      )}
-      {!((isIOS || isMacOs) && isSafari) ? <Notifications /> : <></>} */}
-
-        {/* {notifToastList?.map((item) => (
-          <ToastNotification notif={item} />
-        ))} */}
-
         <Routes>
           <Route path="*" element={<NotFound />} />
           <Route path="/" element={<Main />} />
@@ -191,7 +72,6 @@ function App() {
             element={<MyPageInterestAuction />}
           />
           <Route path="/userProfile/:memberId" element={<UserProfile />} />
-          {/* <Route path="/notification" element={<Notification />} /> */}
           <Route path="/event/:eventId" element={<Event />} />
           <Route path="/eventList" element={<EventList />} />
           <Route path="/notice" element={<Notice />} />

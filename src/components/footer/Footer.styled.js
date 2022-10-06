@@ -10,7 +10,6 @@ export const FooterContainer = styled.div`
 
   position: absolute;
   bottom: ${(props) => (props.isIOS ? "10px" : "0")};
-  /* z-index: 1; */
 `;
 
 export const FooterItemContainer = styled.div`

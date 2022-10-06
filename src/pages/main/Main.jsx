@@ -7,6 +7,7 @@ import {
   getAuctionHitList,
   getAuctionNewList,
 } from "../../redux/modules/AuctionListSlice";
+import { clearAuction } from "../../redux/modules/AuctionSlice";
 import { clearMode } from "../../redux/modules/ModalSlice";
 
 // Package import
@@ -14,15 +15,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { isIOS } from "react-device-detect";
 
-// Component & Element & Shared import
+// Component import
 import Header from "../../components/header/Header";
 import Footer from "../../components/footer/Footer";
-import AuctionCategoryList from "../../components/auctionCategory/AuctionCategoryList";
 import SwipeImage from "../../components/swipeImage/SwipeImage";
-import { EventImg, InfoImg, Next } from "../../shared/images";
-import PlusButton from "../../elements/button/PlusButton";
-import { FontEvent, FontRegular } from "../../shared/fonts/font";
+import AuctionCategoryList from "../../components/auctionCategory/AuctionCategoryList";
+import AuctionRow from "../../components/auctionElement/AuctionRow";
+
+// Page & Element & Shared import
 import Loading from "../etcPage/Loading";
+import PlusButton from "../../elements/button/PlusButton";
+import { Next } from "../../shared/images";
 
 // Style import
 import {
@@ -34,8 +37,6 @@ import {
   ListHeaderMore,
   MainContainer,
   MainContent,
-  NewItem,
-  NewItemContent,
   NewItemPrice,
   NewItemPriceWrap,
   NewItemTitle,
@@ -49,8 +50,6 @@ import {
   TagRegion,
   TagWrap,
 } from "./Main.styled";
-import { clearAuction } from "../../redux/modules/AuctionSlice";
-import AuctionRow from "../../components/auctionElement/AuctionRow";
 
 const Main = () => {
   const dispatch = useDispatch();
@@ -81,12 +80,13 @@ const Main = () => {
     getAuctionData();
   }, [JSON.stringify(auctionAllList)]);
 
+	// 상세 화면으로 이동
   const moveAuctionDetail = (auctionId) => {
     dispatch(clearAuction());
     navigate(`/auctionDetail/${auctionId}`);
-    // window.location.reload();
   };
 
+	// 경매 목록 화면으로 이동
   const moveAuctionList = () => {
     dispatch(clearMode());
     navigate("/auctionList");
@@ -98,18 +98,15 @@ const Main = () => {
         <Loading />
       ) : (
         <>
-          {/* <Header logo={true} search={true} alarm={true} /> */}
           <Header logo={true} search={true} />
 
           <MainContent isIOS={isIOS}>
             {/* 배너 */}
             <BannerContainer>
               {/* 마감임박 경매 배너 */}
-              {/* <SwipeImage isMain={true} data={auctionNewList} height="100%" /> */}
 
               <SwipeImage
                 isMain={true}
-                data={undefined}
                 height="100%"
                 width="100%"
               />

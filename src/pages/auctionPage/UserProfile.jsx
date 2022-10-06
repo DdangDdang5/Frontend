@@ -5,11 +5,12 @@ import React, { useEffect } from "react";
 import { getMember } from "../../redux/modules/MemberSlice";
 
 // Package import
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 // Component & Shared import
 import Header from "../../components/header/Header";
+import AuctionRow from "../../components/auctionElement/AuctionRow";
 import { findGrade } from "../../shared/Grade";
 import { BasicProfile } from "../../shared/images";
 
@@ -21,25 +22,12 @@ import {
   MidTabLabel,
   MidTabRadioBtn,
   MyGradeImgWrap,
-  UserProfileContainer,
   UserProfileContent,
   UserProfileInfo,
   UserProfileWrap,
 } from "./UserProfile.styled";
-import {
-  ReviewItem,
-  ReviewItemContent,
-  ReviewItemPrice,
-  ReviewItemPriceWrap,
-  ReviewItemTitle,
-  TagRegion,
-  TagWrap,
-} from "../auctionPage/AuctionReview.styled";
-import { clearAuction } from "../../redux/modules/AuctionSlice";
-import AuctionRow from "../../components/auctionElement/AuctionRow";
 
 const UserProfile = () => {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { memberId } = useParams();
@@ -54,14 +42,12 @@ const UserProfile = () => {
       : doneAuctionList.push(item),
   );
 
-  // console.log(saleAuctionList, doneAuctionList);
-
   useEffect(() => {
     dispatch(getMember(memberId));
   }, []);
 
   return (
-    <UserProfileContainer>
+    <>
       <Header back={true} pageName="프로필" />
 
       <UserProfileContent>
@@ -119,42 +105,16 @@ const UserProfile = () => {
           {/* 경매완료 목록 */}
           <MidTabContent id="auction-done-content">
             <ItemList>
-              {doneAuctionList?.map((item) => (
-                <ReviewItem
-                  key={item.auctionId}
-                  onClick={() => {
-                    dispatch(clearAuction());
-                    navigate(`/auctionDetail/${item.auctionId}`);
-                  }}
-                >
-                  <img
-                    src={item.multiImages[0]?.imgUrl}
-                    alt="user-sale-auction-img"
-                  />
-                  <ReviewItemContent>
-                    <TagWrap backgroundColor="gray">
-                      {item.delivery ? <span>택배</span> : null}
-                      {item.direct ? <span>직거래</span> : null}
-                      <TagRegion>{item.region}</TagRegion>
-                    </TagWrap>
-                    <ReviewItemTitle>{item.title}</ReviewItemTitle>
-                    <ReviewItemPriceWrap>
-                      <span>최근입찰가</span>
-                      <ReviewItemPrice>
-                        {item.nowPrice
-                          .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                        원
-                      </ReviewItemPrice>
-                    </ReviewItemPriceWrap>
-                  </ReviewItemContent>
-                </ReviewItem>
+              {doneAuctionList?.map((item, idx) => (
+                <React.Fragment key={idx}>
+                  <AuctionRow item={item} index={idx} />
+                </React.Fragment>
               ))}
             </ItemList>
           </MidTabContent>
         </MidTabContainer>
       </UserProfileContent>
-    </UserProfileContainer>
+    </>
   );
 };
 

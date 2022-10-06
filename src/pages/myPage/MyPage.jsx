@@ -150,6 +150,7 @@ const MyPage = () => {
                     onClick={() =>
                       memberId && navigate(`/myGrade/${memberId}`)
                     }>
+										<div></div>
                     {findGrade(data?.trustGrade)}
                   </MyGradeImgWrap>
                 </>

@@ -3,6 +3,8 @@ import { useEffect, Fragment } from "react";
 
 // Redux import
 import { kakaoOauthThunk } from "../redux/modules/MemberSlice";
+
+// Package import
 import { useDispatch } from "react-redux";
 
 const Kakao = () => {
@@ -19,4 +21,5 @@ const Kakao = () => {
 
   return <Fragment></Fragment>;
 };
+
 export default Kakao;

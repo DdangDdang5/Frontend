@@ -1,14 +1,8 @@
 // React import
 import React, { useState } from "react";
 
-//Redux import
-import { useDispatch } from "react-redux";
-
 // Package import
 import { useNavigate } from "react-router-dom";
-
-// Component import
-import OptionModal from "../modal/OptionModal";
 
 // Shared import
 import {

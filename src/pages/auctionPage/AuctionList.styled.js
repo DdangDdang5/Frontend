@@ -28,6 +28,7 @@ export const CategoryWrap = styled.div`
         : props.state === "전체 품목"
         ? props.theme.colors.Gray1
         : props.theme.colors.Blue1};
+
   border-radius: 100px;
 `;
 

@@ -60,6 +60,7 @@ const AuctionCategory = ({ division, divisionName }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+	// 선택된 카테고리, 지역에 맞는 API 호출
   const onCheckCategoryRegion = (categoryName, regionName) => {
     const categoryNameCheck = categoryName.split(/\s|\//g).join(""); // 공백, / 제거
     const regionNameCheck = regionName.split(" ").join(""); // 공백 제거
@@ -83,6 +84,7 @@ const AuctionCategory = ({ division, divisionName }) => {
     }
   };
 
+	// 카테고리, 지역 선택
   const onClickModalItem = (division, divisionName) => {
     if (division === "regionList") {
       dispatch(
@@ -97,9 +99,9 @@ const AuctionCategory = ({ division, divisionName }) => {
     }
   };
 
+	// 카테고리, 지역 선택 후 경매 목록으로 이동
   const onClickAuctionDivision = () => {
     onClickModalItem(division, divisionName);
-
     navigate("/auctionList");
   };
 
@@ -107,44 +109,44 @@ const AuctionCategory = ({ division, divisionName }) => {
     <CategoryItem division={division} onClick={onClickAuctionDivision}>
       {
         {
-          "전체 품목": <CategoryImg src={All} />,
+          "전체 품목": <CategoryImg src={All} alt="category" alt="category"/>,
 
-          가전: <CategoryImg src={HomeElectronics} />,
-          "가구/인테리어": <CategoryImg src={Interior} />,
-          "남성 패션": <CategoryImg src={ManFashion} />,
-          디지털: <CategoryImg src={Digital} />,
-          "여성 패션": <CategoryImg src={WomanFashion} />,
-          악세서리: <CategoryImg src={Accessory} />,
-          "스포츠/레저": <CategoryImg src={Sport} />,
-          "취미/게임/악기": <CategoryImg src={Hobby} />,
-          "뷰티/미용": <CategoryImg src={Beauty} />,
+          가전: <CategoryImg src={HomeElectronics} alt="category"/>,
+          "가구/인테리어": <CategoryImg src={Interior} alt="category"/>,
+          "남성 패션": <CategoryImg src={ManFashion} alt="category"/>,
+          디지털: <CategoryImg src={Digital} alt="category"/>,
+          "여성 패션": <CategoryImg src={WomanFashion} alt="category"/>,
+          악세서리: <CategoryImg src={Accessory} alt="category"/>,
+          "스포츠/레저": <CategoryImg src={Sport} alt="category"/>,
+          "취미/게임/악기": <CategoryImg src={Hobby} alt="category"/>,
+          "뷰티/미용": <CategoryImg src={Beauty} alt="category"/>,
 
-          "서울 전체": <CategoryImg division="region" src={Seoul} />,
-          도봉구: <CategoryImg division="region" src={Dobong} />,
-          동대문구: <CategoryImg division="region" src={Dongdaemun} />,
-          동작구: <CategoryImg division="region" src={Dongjak} />,
-          은평구: <CategoryImg division="region" src={Eunpyeong} />,
-          강북구: <CategoryImg division="region" src={Gangbuk} />,
-          강동구: <CategoryImg division="region" src={Gangdong} />,
-          강남구: <CategoryImg division="region" src={Gangnam} />,
-          강서구: <CategoryImg division="region" src={Gangseo} />,
-          금천구: <CategoryImg division="region" src={Geumcheon} />,
-          구로구: <CategoryImg division="region" src={Guro} />,
-          관악구: <CategoryImg division="region" src={Gwanak} />,
-          광진구: <CategoryImg division="region" src={Gwangjin} />,
-          종로구: <CategoryImg division="region" src={Jongno} />,
-          중구: <CategoryImg division="region" src={Jung} />,
-          중랑구: <CategoryImg division="region" src={Jungnang} />,
-          마포구: <CategoryImg division="region" src={Mapo} />,
-          노원구: <CategoryImg division="region" src={Nowon} />,
-          서초구: <CategoryImg division="region" src={Seocho} />,
-          서대문구: <CategoryImg division="region" src={Seodaemun} />,
-          성북구: <CategoryImg division="region" src={Seongbuk} />,
-          성동구: <CategoryImg division="region" src={Seongdong} />,
-          송파구: <CategoryImg division="region" src={Songpa} />,
-          양천구: <CategoryImg division="region" src={Yangcheon} />,
-          영등포구: <CategoryImg division="region" src={Yeoungdeongpo} />,
-          용산구: <CategoryImg division="region" src={Yongsan} />,
+          "서울 전체": <CategoryImg division="region" src={Seoul} alt="region"/>,
+          도봉구: <CategoryImg division="region" src={Dobong} alt="region"/>,
+          동대문구: <CategoryImg division="region" src={Dongdaemun} alt="region"/>,
+          동작구: <CategoryImg division="region" src={Dongjak} alt="region"/>,
+          은평구: <CategoryImg division="region" src={Eunpyeong} alt="region"/>,
+          강북구: <CategoryImg division="region" src={Gangbuk} alt="region"/>,
+          강동구: <CategoryImg division="region" src={Gangdong} alt="region"/>,
+          강남구: <CategoryImg division="region" src={Gangnam} alt="region"/>,
+          강서구: <CategoryImg division="region" src={Gangseo} alt="region"/>,
+          금천구: <CategoryImg division="region" src={Geumcheon} alt="region"/>,
+          구로구: <CategoryImg division="region" src={Guro} alt="region"/>,
+          관악구: <CategoryImg division="region" src={Gwanak} alt="region"/>,
+          광진구: <CategoryImg division="region" src={Gwangjin} alt="region"/>,
+          종로구: <CategoryImg division="region" src={Jongno} alt="region"/>,
+          중구: <CategoryImg division="region" src={Jung} alt="region"/>,
+          중랑구: <CategoryImg division="region" src={Jungnang} alt="region"/>,
+          마포구: <CategoryImg division="region" src={Mapo} alt="region"/>,
+          노원구: <CategoryImg division="region" src={Nowon} alt="region"/>,
+          서초구: <CategoryImg division="region" src={Seocho} alt="region"/>,
+          서대문구: <CategoryImg division="region" src={Seodaemun} alt="region"/>,
+          성북구: <CategoryImg division="region" src={Seongbuk} alt="region"/>,
+          성동구: <CategoryImg division="region" src={Seongdong} alt="region"/>,
+          송파구: <CategoryImg division="region" src={Songpa} alt="region"/>,
+          양천구: <CategoryImg division="region" src={Yangcheon} alt="region"/>,
+          영등포구: <CategoryImg division="region" src={Yeoungdeongpo} alt="region"/>,
+          용산구: <CategoryImg division="region" src={Yongsan} alt="region"/>,
         }[divisionName]
       }
 
