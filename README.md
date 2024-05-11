@@ -7,7 +7,7 @@
 **땅땅은 구매자와 판매자 사이에 합당한 가격에 땅땅에서 경매를 통해서 구매하자!** 라는 생각에서 시작한 프로젝트입니다.
 
 [땅땅 사이트 들어가기](https://www.ddangddang.world)<br />
-[땅땅 팀 노션 링크 들어가기](https://typhoon-sphere-952.notion.site/6d35e88c83f74a48a069e2e5f093cf35)
+[땅땅 팀 노션 링크 들어가기](https://typhoon-sphere-952.notion.site/4be7c776b2ec4a048bd4346b7d8c3c5c)
 
 <br>
 
@@ -50,32 +50,39 @@
 
 ## ⚖️ 기술스택
 #### Front-end
-![javaScript](https://camo.githubusercontent.com/fe1c8df487dbc029d3a1819dcc5bf79e066f1307131191ac2b02de8c3c55da81/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4a6176615363726970742d4637444631453f7374796c653d266c6f676f3d4a617661536372697074266c6f676f436f6c6f723d7768697465)
-![React](https://camo.githubusercontent.com/34c6a7afcc16731e2c4d73f3af9b275b172b2e46dc1e82be3f121a71fe067de9/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f52656163742d3631444146423f7374796c653d266c6f676f3d5265616374266c6f676f436f6c6f723d7768697465)
-![Redux](https://camo.githubusercontent.com/d58ceb12a14709c7049878ae358ef7628e42d4276108b758cbb66a8922e7ef3e/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f52656475782d3736344142433f7374796c653d266c6f676f3d5265647578266c6f676f436f6c6f723d7768697465)
-![ReactRouter](https://camo.githubusercontent.com/d257f8e18789ba1e6d34a9c63cbe150083c96b6f0da2eb059ae02422914ea80a/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f526561637420526f757465722d4341343234353f7374796c653d266c6f676f3d526561637420526f75746572266c6f676f436f6c6f723d7768697465)
-![Axios](https://camo.githubusercontent.com/809053601ae7a670d58865bd88e0f313cc5ced1c0915ff43aeb2ad1d1bf252c2/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4178696f732d3638323865323f7374796c653d)
-![styledComponents](https://camo.githubusercontent.com/8d29f15964b1cb2254deccb293a2c444eee52078b3d448b6149c17c5ab40d2ce/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f7374796c65642d636f6d706f6e656e74732d4442373039333f7374796c653d266c6f676f3d7374796c65642d636f6d706f6e656e7473266c6f676f436f6c6f723d7768697465)
+<div>
+<img src="https://img.shields.io/badge/Javascript-F7DF1E?style=flat-square&logo=Javascript&logoColor=black"/>
+<img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>
+<img src="https://img.shields.io/badge/Redux-764ABC?style=flat-square&logo=Redux&logoColor=white"/>
+<img src="https://img.shields.io/badge/React Router-CA4245?style=flat-square&logo=React Router&logoColor=white"/>
+<img src="https://img.shields.io/badge/axios-671ddf?&style=flat-square&logo=axios&logoColor=white"/>
+<img src="https://img.shields.io/badge/Styled components-DB7093?style=flat-square&logo=Styled-components&logoColor=black"/>
 <img src="https://img.shields.io/badge/Socket.io-010101?style=flat-square&logo=socket.io&logoColor=white" />
 <img src="https://img.shields.io/badge/Stomp-010101?style=flat-square&logoColor=white" />
 <img src="https://img.shields.io/badge/AWSAmplify-FF9900?style=flat-square&logo=awsaplify&logoColor=white" /> 
+</div>
 
 #### Dev tools 
-
-![VisualStudioCode](https://camo.githubusercontent.com/e9f45e009429d35852b90e211cac4d3881b18471d8faa43b24bdaf4c8a19723b/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f56697375616c2053747564696f20436f64652d3030374143433f7374796c653d266c6f676f3d56697375616c2053747564696f20436f6465266c6f676f436f6c6f723d7768697465)
-![Git](https://camo.githubusercontent.com/a5e39b99ce3f82aa5b1d04379575311317fccec3787a98f9e8b94b4034142d3e/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4769742d4630353033323f7374796c653d266c6f676f3d476974266c6f676f436f6c6f723d7768697465)
-![Github](https://camo.githubusercontent.com/245d233220d2b61c6e4c7177cf60be551e2be541c43c4deb25cd935903745233/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f4769744875622d3138313731373f7374796c653d266c6f676f3d476974487562266c6f676f436f6c6f723d7768697465)
+<div>
+<img src="https://img.shields.io/badge/VSCode-0078D4?style=flat-square&logo=visual%20studio%20code&logoColor=white" />
+<img src="https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white" />
+<img src="https://img.shields.io/badge/GitHub-100000?style=flat-square&logo=github&logoColor=white" />
 <img src="https://img.shields.io/badge/KakaoTalk-FFCD00?style=flat-square&logo=kakaotalk&logoColor=white" />
 <img src="https://img.shields.io/badge/PWA-5A0FC8?style=flat-square&logo=pwa&logoColor=white" />
 <img src="https://img.shields.io/badge/Redis-DC382D?style=flat-square&logo=redis&logoColor=white" />
+</div>
+
 #### Back-end
-<img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat-square&logo=spring&logoColor=white" /> <img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white" /> 
+<div>
+<img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat-square&logo=spring&logoColor=white" />
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white" /> 
 <img src="https://img.shields.io/badge/NGINX-009639?style=flat-square&logo=nginx&logoColor=white" /> 
 <img src="https://img.shields.io/badge/Socket.io-010101?style=flat-square&logo=socket.io&logoColor=white" />
 <img src="https://img.shields.io/badge/Stomp-010101?style=flat-square&logoColor=white" />
 <img src="https://img.shields.io/badge/AmazonEC2-FF9900?style=flat-square&logo=amazonec2&logoColor=white" /> 
 <img src="https://img.shields.io/badge/AmazonS3-569A31?style=flat-square&logo=amazons3&logoColor=white" /> 
 <img src="https://img.shields.io/badge/AmazonRDS-527FFF?style=flat-square&logo=amazonrds&logoColor=white" /> 
+</div>
 
 <br><br>
 
